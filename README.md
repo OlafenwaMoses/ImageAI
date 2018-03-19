@@ -1,7 +1,6 @@
 # ImageAI
 A python library built to empower developers to build applications and systems  with self-contained Computer Vision capabilities
 <hr>
-<hr>
 Built with simplicity in mind, ImageAI 
     supports a list of state-of-the-art Machine Learning algorithms for image recognition.
     ImageAI currently supports image recognition using 4 different Machine Learning algorithms 
@@ -14,15 +13,15 @@ Built with simplicity in mind, ImageAI
     prediction.
 </p>
 <br><br>
-<hr>
+
 <h3><b><u>Dependencies</u></b></h3>
                             To use <b>ImageAI</b> in your application developments, you must have installed the following 
  dependencies before you install <b>ImageAI</b> : <br> <br>
-       <span><b>- Python 3.5.1 (and later versions) </b>      <a href="" style="text-decoration: none;" >How to Install<a> (Support for Python 2.7 coming soon) </span> <br> 
-       <span><b>- pip3 </b>              <a href="" style="text-decoration: none;" >How to Install<a></span> <br>
-       <span><b>- Tensorflow 1.4.0 (and later versions) </b>      <a href="" style="text-decoration: none;" >How to Install<a></span> <br>
-       <span><b>- Numpy 1.13.1 (and later versions) </b>      <a href="" style="text-decoration: none;" >How to Install<a></span> <br>
-       <span><b>- SciPy 0.19.1 (and later versions) </b>      <a href="" style="text-decoration: none;" >How to Install<a></span> <br>
+       <span><b>- Python 3.5.1 (and later versions) </b>      <a href="https://www.python.org/downloads/" style="text-decoration: none;" >Download<a> (Support for Python 2.7 coming soon) </span> <br> 
+       <span><b>- pip3 </b>              <a href="https://pypi.python.org/pypi/pip" style="text-decoration: none;" >Install<a></span> <br>
+       <span><b>- Tensorflow 1.4.0 (and later versions)  </b>      <a href="https://www.tensorflow.org/install/install_windows" style="text-decoration: none;" > Install<a></span> <br>
+       <span><b>- Numpy 1.13.1 (and later versions) </b>      <a href="https://www.scipy.org/install.html" style="text-decoration: none;" >Install<a></span> <br>
+       <span><b>- SciPy 0.19.1 (and later versions) </b>      <a href="https://www.scipy.org/install.html" style="text-decoration: none;" >Install<a></span> <br>
 
  <h3><b><u>Installation</u></b></h3>
       To install ImageAI, download the Python Wheel <a href="dist/imageai-1.0.1-py3-none-any.whl" ><b>
@@ -37,10 +36,10 @@ To perform image prediction on any picture, take the following simple steps.  Th
  image prediction include <b>SqueezeNet</b>, <b>ResNet</b>, <b>InceptionV3</b> and <b>DenseNet</b>. Each of these
   algorithms have individual model files which you must use depending on the choice of your algorithm. To download the
    model file for your choice of algorithm, click on any of the links below: <br> <br>
-       <span><b>- <a href="" style="text-decoration: none;" >SqueezeNet</a> (Size = 4.82 mb, fastest prediction time and moderate accuracy) </b></span> <br>
-       <span><b>- <a href="" style="text-decoration: none;" >ResNet</a></b> by Microsoft Research <b>(Size = 98 mb, fast prediction time and high accuracy) </b></span> <br>
-       <span><b>- <a href="" style="text-decoration: none;" >InceptionV3</a></b> by Google Brain team <b>(Size = 91.6 mb, slow prediction time and higher accuracy) </b></span> <br>
-       <span><b>- <a href="" style="text-decoration: none;" >DenseNet</a></b> by Facebook AI Research <b>(Size = 31.6 mb, slower prediction time and highest accuracy) </b></span> <br><br>
+       <span><b>- <a href="https://github.com/rcmalli/keras-squeezenet/releases/download/v1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >SqueezeNet</a> (Size = 4.82 mb, fastest prediction time and moderate accuracy) </b></span> <br>
+       <span><b>- <a href="https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >ResNet</a></b> by Microsoft Research <b>(Size = 98 mb, fast prediction time and high accuracy) </b></span> <br>
+       <span><b>- <a href="https://github.com/fchollet/deep-learning-models/releases/download/v0.5/inception_v3_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >InceptionV3</a></b> by Google Brain team <b>(Size = 91.6 mb, slow prediction time and higher accuracy) </b></span> <br>
+       <span><b>- <a href="https://github.com/titu1994/DenseNet/releases/download/v3.0/DenseNet-BC-121-32.h5" style="text-decoration: none;" >DenseNet</a></b> by Facebook AI Research <b>(Size = 31.6 mb, slower prediction time and highest accuracy) </b></span> <br><br>
 
    After you download the model file of your choice, you will need to download one more file which will be a JSON file that contains the model
     mapping for all the 1000 objects supported. Find the link below: <br> <br>
@@ -140,6 +139,7 @@ picturesfolder = os.environ["USERPROFILE"] + "\\Pictures\\"
 allfiles = os.listdir(picturesfolder)
 
 class PredictionThread(threading.Thread):
+    
     def __init__(self):
         threading.Thread.__init__(self)
 
