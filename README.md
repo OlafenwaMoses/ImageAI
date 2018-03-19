@@ -33,9 +33,7 @@ Built with simplicity in mind, ImageAI
 
 <h3><b><u>Using ImageAI</u></b></h3>
       ImageAI provides 4 different algorithms and model types to perform image prediction.
-To perform image prediction on any picture, take the following simple steps.
-
-            1)   The 4 algorithms provided for
+To perform image prediction on any picture, take the following simple steps.  The 4 algorithms provided for
  image prediction include <b>SqueezeNet</b>, <b>ResNet</b>, <b>InceptionV3</b> and <b>DenseNet</b>. Each of these
   algorithms have individual model files which you must use depending on the choice of your algorithm. To download the
    model file for your choice of algorithm, click on any of the links below: <br> <br>
@@ -88,8 +86,7 @@ import os</pre></b>
       The code above imports the <b>ImageAI</b> library 
  and the python <b>os</b> class. <br>
 <b><pre>execution_path = os.getcwd()</pre></b>
-<br>
-      The above line obtains the path to the folder that contains
+<br> The above line obtains the path to the folder that contains
 your python file (in this example, your FirstPrediction.py) . <br>
 
 <b><pre>prediction = ImagePrediction()
@@ -101,9 +98,7 @@ prediction.setJsonPath(execution_path + "\\imagenet_class_index.json")</pre></b>
   in the second line, then we set the model path of the prediction object to the path of the model file (<b>resnet50_weights_tf_dim_ordering_tf_kernels.h5</b>) we copied to the python file folder
   in the third line, and then set the json path of the prediction object to the path of the json file (<b>imagenet_class_index.json</b>) you copied to the python file folder.
 
-<b><pre>predictions, percentage_probabilities = prediction.predictImage("C:\\Users\\MyUser\\Downloads\\sample.jpg", result_count=5)</pre></b>
-
-      In the above line, we defined 2 variables to be equal to the function
+<b><pre>predictions, percentage_probabilities = prediction.predictImage("C:\\Users\\MyUser\\Downloads\\sample.jpg", result_count=5)</pre></b> In the above line, we defined 2 variables to be equal to the function
  called to predict an image, which is the <b>.predictImage()</b> function, into which we parsed the path to 
  our image and also state the number of prediction results we want to have (values from 1 to 1000) parsing 
  <b> result_count=5 </b>. The <b>.predictImage()</b> function will return 2 array objects with the first (<b>predictions</b>) being
@@ -111,9 +106,7 @@ prediction.setJsonPath(execution_path + "\\imagenet_class_index.json")</pre></b>
   prediction.
 
   <b><pre>for index in range(len(predictions)):
-        print(predictions[index] + " : " + percentage_probabilities[index])</pre></b>
-
-      The above line obtains each object in the <b>predictions</b> array, and also 
+        print(predictions[index] + " : " + percentage_probabilities[index])</pre></b> The above line obtains each object in the <b>predictions</b> array, and also 
 obtain the corresponding percentage probability from the <b>percentage_probabilities</b>, and finally prints
 the result of both to console.
 
@@ -208,9 +201,7 @@ predictionThread.start()
  
 
  <h3><b><u>Contact Developers</u></b></h3>
- <p>
-
-      <b>Moses Olafenwa</b> <br>
+ <p> <b>Moses Olafenwa</b> <br>
       <i>Website: </i>    <a style="text-decoration: none;" href="https://moses.specpal.science"> https://moses.specpal.science</a> <br>
       <i>Twitter: </i>    <a style="text-decoration: none;" href="https://twitter.com/OlafenwaMoses"> @OlafenwaMoses</a> <br>
       <i>Medium : </i>    <a style="text-decoration: none;" href="https://medium.com/@guymodscientist"> @guymodscientist</a> <br>
