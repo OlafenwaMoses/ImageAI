@@ -202,15 +202,15 @@ predictionThread.start()
 
  <h3><b><u>Contact Developers</u></b></h3>
  <p> <b>Moses Olafenwa</b> <br>
-      <i>Website: </i>    <a style="text-decoration: none;" href="https://moses.specpal.science"> https://moses.specpal.science</a> <br>
-      <i>Twitter: </i>    <a style="text-decoration: none;" href="https://twitter.com/OlafenwaMoses"> @OlafenwaMoses</a> <br>
-      <i>Medium : </i>    <a style="text-decoration: none;" href="https://medium.com/@guymodscientist"> @guymodscientist</a> <br>
-      <i>Facebook : </i>    <a style="text-decoration: none;" href="https://facebook.com/moses.olafenwa"> moses.olafenwa</a> <br>
+      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="https://moses.specpal.science"> https://moses.specpal.science</a> <br>
+      <i>Twitter: </i>    <a style="text-decoration: none;" target="_blank" href="https://twitter.com/OlafenwaMoses"> @OlafenwaMoses</a> <br>
+      <i>Medium : </i>    <a style="text-decoration: none;" target="_blank" href="https://medium.com/@guymodscientist"> @guymodscientist</a> <br>
+      <i>Facebook : </i>    <a style="text-decoration: none;" target="_blank" href="https://facebook.com/moses.olafenwa"> moses.olafenwa</a> <br>
 <br><br>
       <b>John Olafenwa</b> <br>
-      <i>Website: </i>    <a style="text-decoration: none;" href="https://john.specpal.science"> https://john.specpal.science</a> <br>
-      <i>Twitter: </i>    <a style="text-decoration: none;" href="https://twitter.com/johnolafenwa"> @johnolafenwa</a> <br>
-      <i>Medium : </i>    <a style="text-decoration: none;" href="https://medium.com/@johnolafenwa"> @johnolafenwa</a> <br>
+      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="https://john.specpal.science"> https://john.specpal.science</a> <br>
+      <i>Twitter: </i>    <a style="text-decoration: none;" target="_blank" href="https://twitter.com/johnolafenwa"> @johnolafenwa</a> <br>
+      <i>Medium : </i>    <a style="text-decoration: none;" target="_blank" href="https://medium.com/@johnolafenwa"> @johnolafenwa</a> <br>
       <i>Facebook : </i>    <a style="text-decoration: none;" href="https://facebook.com/olafenwajohn"> olafenwajohn</a> <br>
 
 
