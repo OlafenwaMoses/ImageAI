@@ -183,7 +183,7 @@ predictionThread.start()
             <b>- setModelTypeAsDenseNet</b>    This function should be called should you 
       chose to use the DenseNet model file for the image prediction. You only need to call it once. <br>
             <b>- setModelPath()</b>    You need to call this function only once and parse the path to
-       the model file path into it. The model file type must correspond to the model type you set. <br>
+       the model file path into it. The model file type must correspond to the model type you set.  <br>
             <b>- setJsonPath()</b>    You need to call this function only once and parse the path to
        the <b>imagenet_class_index.json</b> into it. <br>
              <b>- loadModel()</b>    You need to call this function
