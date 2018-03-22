@@ -160,7 +160,7 @@ predictionThread.start()
 <h3><b><u>Sample Application</u></b></h3>
       As a demonstration of the what you can do with ImageAI, we have 
  built a complete AI powered Photo gallery for Windows called <b>IntelliP</b> ,  using <b>ImageAI</b> and UI framework <b>Kivy</b>. Follow this 
- <a href=""  > link </a> to download page of the application and its source code.
+ <a href="https://github.com/OlafenwaMoses/IntelliP"  > link </a> to download page of the application and its source code.
 <br>
 
 <h3><b><u>Documentation</u></b></h3>
