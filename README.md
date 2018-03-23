@@ -24,8 +24,11 @@ Built with simplicity in mind, ImageAI
        <span><b>- SciPy 0.19.1 (and later versions) </b>      <a href="https://www.scipy.org/install.html" style="text-decoration: none;" >Install<a></span> <br>
 
  <h3><b><u>Installation</u></b></h3>
-      To install ImageAI, download the Python Wheel <a href="dist/imageai-1.0.1-py3-none-any.whl" ><b>
-    imageai-1.0.1-py3-none-any.whl</b></a> and run the python installation instruction in the Windows command line
+      To install ImageAI, run the python installation instruction below in the command line: <br><br>
+    <span>      <b>pip3 install https://github.com/OlafenwaMoses/ImageAI/raw/master/dist/imageai-1.0.1-py3-none-any.whl </b></span> <br><br> <br>
+    
+   or download the Python Wheel <a href="dist/imageai-1.0.1-py3-none-any.whl" ><b>
+    imageai-1.0.1-py3-none-any.whl</b></a> and run the python installation instruction in the  command line
      to the path of the file like the one below: <br><br>
     <span>      <b>pip3 install C:\User\MyUser\Downloads\imageai-1.0.1-py3-none-any.whl</b></span> <br><br>
 
