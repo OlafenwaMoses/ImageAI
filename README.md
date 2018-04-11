@@ -173,11 +173,13 @@ multiple_prediction.setModelPath(execution_path + "\\resnet50_weights_tf_dim_ord
 multiple_prediction.loadModel()
 
 all_images_array = []
+
 all_files = os.listdir(execution_path)
 for each_file in all_files:
     if(each_file.endswith(".jpg") or each_file.endswith(".png")):
         all_images_array.append(each_file)
 results_array = multiple_prediction.predictMultipleImages(all_images_array, result_count_per_image=5)
+
 for each_result in results_array:
     predictions, percentage_probabilities = each_result["predictions"], each_result["percentage_probabilities"]
     for index in range(len(predictions)):
