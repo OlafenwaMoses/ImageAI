@@ -5,7 +5,7 @@ A python library built to empower developers to build applications and systems  
 Built with simplicity in mind, ImageAI 
     supports a list of state-of-the-art Machine Learning algorithms for image recognition.
     ImageAI currently supports image recognition using 4 different Machine Learning algorithms 
-    trained on the ImageNet-1000 dataset and Object Detection trained on COCO dataset. <br>
+    trained on the ImageNet-1000 dataset and Object Detection using RetinaNet trained on COCO dataset. <br>
                                    Eventually, <b>ImageAI</b> will provide support for a wider
     and more specialized aspects of Computer Vision including and not limited to image 
     recognition in special environments and special fields and custom image
