@@ -172,9 +172,7 @@ multiple_prediction.setModelTypeAsResNet()
 multiple_prediction.setModelPath(execution_path + "\\resnet50_weights_tf_dim_ordering_tf_kernels.h5")
 multiple_prediction.loadModel()
 
-
 all_images_array = []
-
 all_files = os.listdir(execution_path)
 for each_file in all_files:
     if(each_file.endswith(".jpg") or each_file.endswith(".png")):
@@ -187,13 +185,15 @@ for each_result in results_array:
     print("-----------------------")</pre></b> <br>
     In the above code, the <b>.predictMultipleImages()</b> function will return an array which contains a dictionary per image. 
  Each dictionary contains the arrays for predictions and percentage probability for each prediction. <br>
-    <p>Sample Result:
+    <p>Sample Result:</p>
     <br>
     <div style="width: 800px;" >
           <img src="images/1.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
           <img src="images/2.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
           <img src="images/3.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
-    </div>  <pre>convertible : 52.459555864334106
+    </div>  
+<pre>
+convertible : 52.459555864334106
 sports_car : 37.61284649372101
 pickup : 3.1751200556755066
 car_wheel : 1.817505806684494
@@ -211,7 +211,7 @@ crane : 10.620515048503876
 kite : 10.20539253950119
 white_stork : 1.6472270712256432
 -----------------------</pre>
-</p>
+
 
 <br><br>
 
