@@ -104,7 +104,7 @@ for index in range(len(predictions)):
 
 <p>Sample Result:
     <br>
-    <img src="images/sample.jpg" style="width: 400px; height: auto;" /> 
+    <img src="sample.jpg" style="width: 400px; height: auto;" /> 
     <pre>sports_car : 90.61029553413391
 car_wheel : 5.9294357895851135
 racer : 0.9972884319722652
