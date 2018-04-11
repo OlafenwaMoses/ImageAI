@@ -161,7 +161,8 @@ the result of both to console.
    predictions you want per image by parsing <b>result_count_per_image=5</b> (default value is 2) <br><br>
 
   Find the sample code below: <br>
-  <b><pre>import os
+  <b><pre>
+import os
 from imageai.Prediction import ImagePrediction
 
 execution_path = os.getcwd()
@@ -178,7 +179,6 @@ all_files = os.listdir(execution_path)
 for each_file in all_files:
     if(each_file.endswith(".jpg") or each_file.endswith(".png")):
         all_images_array.append(each_file)
-
 results_array = multiple_prediction.predictMultipleImages(all_images_array, result_count_per_image=5)
 for each_result in results_array:
     predictions, percentage_probabilities = each_result["predictions"], each_result["percentage_probabilities"]
@@ -193,8 +193,7 @@ for each_result in results_array:
           <img src="images/1.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
           <img src="images/2.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
           <img src="images/3.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
-    </div>
-    <pre>convertible : 52.459555864334106
+    </div>  <pre>convertible : 52.459555864334106
 sports_car : 37.61284649372101
 pickup : 3.1751200556755066
 car_wheel : 1.817505806684494
