@@ -52,7 +52,7 @@ Built with simplicity in mind, ImageAI
  <br> <br>
        <span><b>- Python 3.5.1 (and later versions) </b>      <a href="https://www.python.org/downloads/" style="text-decoration: none;" >Download<a> (Support for Python 2.7 coming soon) </span> <br> 
        <span><b>- pip3 </b>              <a href="https://pypi.python.org/pypi/pip" style="text-decoration: none;" >Install<a></span> <br>
-       <span><b>- Tensorflow 1.4.0 (and later versions)  </b>      <a href="https://www.tensorflow.org/install/install_windows" style="text-decoration: none;" > Install</a></span> <br>
+       <span><b>- Tensorflow 1.4.0 (and later versions)  </b>      <a href="https://www.tensorflow.org/install/install_windows" style="text-decoration: none;" > Install</a></span> or install via pip <pre> pip3 install --upgrade tensorflow </pre> <br>
        <span><b>- Numpy 1.13.1 (and later versions) </b>      <a href="https://www.scipy.org/install.html" style="text-decoration: none;" >Install</a></span> <br>
        <span><b>- SciPy 0.19.1 (and later versions) </b>      <a href="https://www.scipy.org/install.html" style="text-decoration: none;" >Install</a></span> <br>
        <span><b>- OpenCV  </b> (Required as from ImageAI 1.0.2)       <a href="https://pypi.python.org/pypi/opencv-python" style="text-decoration: none;" >Install</a></span> <br>
