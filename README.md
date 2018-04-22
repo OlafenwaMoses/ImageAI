@@ -1,5 +1,6 @@
 # ImageAI
-A python library built to empower developers to build applications and systems  with self-contained Computer Vision capabilities
+A python library built to empower developers to build applications and systems  with self-contained Computer Vision capabilities.
+<p>An <b>AI Commons</b> project [https://commons.specpal.science] </p>
 <hr>
 
 Built with simplicity in mind, ImageAI 
