@@ -31,16 +31,15 @@ To produce a model that can perform well in practical applications, I recommend 
 This images are the ones to be used to test the model as it trains <br>
 8. Once you have done this, the structure of your image dataset folder should look like below: <br> <br>
 
-<b><pre>pets >>
-     train >> dog >> dog_train_images
-           >> cat >> cat_train_images
-           >> squirrel >> squirrel_train_images
+<b><pre>pets >
+     train >> dog >>> dog_train_images
+           >> cat >>> cat_train_images
+           >> squirrel >>> squirrel_train_images
            >> snake >> snake_train_images
-
-     test  >> dog >> dog_test_images
-           >> cat >> cat_test_images
-           >> squirrel >> squirrel_test_images
-           >> snake >> snake_test_images</pre></b>
+     test  >> dog >>> dog_test_images
+           >> cat >>> cat_test_images
+           >> squirrel >>> squirrel_test_images
+           >> snake >>> snake_test_images</pre></b>
 
 9. Then your training code goes as follows: <br> <br>
 <b><pre>from imageai.Prediction.Custom import ModelTraining
@@ -543,24 +542,19 @@ if(len(os.listdir(DATASET_TRAIN_DIR)) < 10):
     if(os.path.exists(TRAIN_ZIP_ONE) == False):
         print("Downloading idenprof-train1.zip")
         data = requests.get("https://github.com/OlafenwaMoses/IdenProf/releases/download/v1.0/idenprof-train1.zip", stream = True)
-
         with open(TRAIN_ZIP_ONE, "wb") as file:
             shutil.copyfileobj(data.raw, file)
         del data
-
     if (os.path.exists(TRAIN_ZIP_TWO) == False):
         print("Downloading idenprof-train2.zip")
         data = requests.get("https://github.com/OlafenwaMoses/IdenProf/releases/download/v1.0/idenprof-train2.zip", stream=True)
-
         with open(TRAIN_ZIP_TWO, "wb") as file:
             shutil.copyfileobj(data.raw, file)
         del data
-
     print("Extracting idenprof-train1.zip")
     extract1 = ZipFile(TRAIN_ZIP_ONE)
     extract1.extractall(DATASET_TRAIN_DIR)
     extract1.close()
-
     print("Extracting idenprof-train2.zip")
     extract2 = ZipFile(TRAIN_ZIP_TWO)
     extract2.extractall(DATASET_TRAIN_DIR)
@@ -571,13 +565,10 @@ if(len(os.listdir(DATASET_TRAIN_DIR)) < 10):
 if(len(os.listdir(DATASET_TEST_DIR)) < 10):
     if (os.path.exists(TEST_ZIP) == False):
         print("Downloading idenprof-test.zip")
-
         data = requests.get("https://github.com/OlafenwaMoses/IdenProf/releases/download/v1.0/idenprof-test.zip", stream=True)
-
         with open(TEST_ZIP, "wb") as file:
             shutil.copyfileobj(data.raw, file)
         del data
-
     print("Extracting idenprof-test.zip")
     extract = ZipFile(TEST_ZIP)
     extract.extractall(DATASET_TEST_DIR)
@@ -619,10 +610,7 @@ The <b>ModelTraining</b> class can be used to train custom models  by instantiat
                  ****** initial_learning_rate(optional) , this value is used to adjust the weights generated in the network. You are advised
                                                      to keep this value as it is if you don't have deep understanding of this concept.   <br>
                  ****** show_network_summary(optional) , this value is used to show the structure of the network should you desire to see it.
-                                                    Itis set to False by default  <br>  <br>
-
-
-                :param num_objects:  <br>
+                                                    Itis set to False by default  <br>  <br>:param num_objects:  <br>
                 :param num_experiments:  <br>
                 :param enhance_data:  <br>
                 :param batch_size:  <br>
