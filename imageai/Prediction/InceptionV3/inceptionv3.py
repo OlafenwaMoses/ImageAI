@@ -79,7 +79,7 @@ def conv2d_bn(x,
 def InceptionV3(include_top=True,
                 weights='imagenet',
                 input_tensor=None,
-                input_shape=None,
+                model_input=None,
                 pooling=None,
                 classes=1000, model_path=""):
     """Instantiates the Inception v3 architecture.
@@ -131,36 +131,16 @@ def InceptionV3(include_top=True,
         ValueError: in case of invalid argument for `weights`,
             or invalid input shape.
     """
-    if weights not in {'imagenet', None}:
-        raise ValueError('The `weights` argument should be either '
-                         '`None` (random initialization) or `imagenet` '
-                         '(pre-training on ImageNet).')
+
 
     if weights == 'imagenet' and include_top and classes != 1000:
         raise ValueError('If using `weights` as imagenet with `include_top`'
                          ' as true, `classes` should be 1000')
 
-    # Determine proper input shape
-    input_shape = _obtain_input_shape(
-        input_shape,
-        default_size=299,
-        min_size=139,
-        data_format=K.image_data_format(),
-        require_flatten=False,
-        weights=weights)
 
-    if input_tensor is None:
-        img_input = Input(shape=input_shape)
-    else:
-        if not K.is_keras_tensor(input_tensor):
-            img_input = Input(tensor=input_tensor, shape=input_shape)
-        else:
-            img_input = input_tensor
+    img_input = model_input
+    channel_axis = 3
 
-    if K.image_data_format() == 'channels_first':
-        channel_axis = 1
-    else:
-        channel_axis = 3
 
     x = conv2d_bn(img_input, 32, 3, 3, strides=(2, 2), padding='valid')
     x = conv2d_bn(x, 32, 3, 3, padding='valid')
@@ -367,9 +347,13 @@ def InceptionV3(include_top=True,
                               'at ~/.keras/keras.json.')
         if include_top:
             weights_path = model_path
+            model.load_weights(weights_path)
         else:
             weights_path = ""
+    elif (weights == "trained"):
+        weights_path = model_path
         model.load_weights(weights_path)
+
     return model
 
 

@@ -65,7 +65,7 @@ def preprocess_input(x, data_format=None):
     return x
 
 
-def DenseNet(input_shape=None, depth=40, nb_dense_block=3, growth_rate=12, nb_filter=-1, nb_layers_per_block=-1,
+def DenseNet(model_input, depth=40, nb_dense_block=3, growth_rate=12, nb_filter=-1, nb_layers_per_block=-1,
              bottleneck=False, reduction=0.0, dropout_rate=0.0, weight_decay=1e-4, subsample_initial_block=False,
              include_top=True, weights=None, input_tensor=None,
              classes=10, activation='softmax', model_path = ''):
@@ -120,10 +120,7 @@ def DenseNet(input_shape=None, depth=40, nb_dense_block=3, growth_rate=12, nb_fi
             A Keras model instance.
         '''
 
-    if weights not in {'imagenet', None}:
-        raise ValueError('The `weights` argument should be either '
-                         '`None` (random initialization) or `cifar10` '
-                         '(pre-training on CIFAR-10).')
+
 
     if weights == 'imagenet' and include_top and classes != 1000:
         raise ValueError('If using `weights` as ImageNet with `include_top`'
@@ -136,19 +133,7 @@ def DenseNet(input_shape=None, depth=40, nb_dense_block=3, growth_rate=12, nb_fi
         raise ValueError('sigmoid activation can only be used when classes = 1')
 
     # Determine proper input shape
-    input_shape = _obtain_input_shape(input_shape,
-                                      default_size=32,
-                                      min_size=8,
-                                      data_format=K.image_data_format(),
-                                      require_flatten=include_top)
-
-    if input_tensor is None:
-        img_input = Input(shape=input_shape)
-    else:
-        if not K.is_keras_tensor(input_tensor):
-            img_input = Input(tensor=input_tensor, shape=input_shape)
-        else:
-            img_input = input_tensor
+    img_input = model_input
 
     x = __create_dense_net(classes, img_input, include_top, depth, nb_dense_block,
                            growth_rate, nb_filter, nb_layers_per_block, bottleneck, reduction,
@@ -186,6 +171,10 @@ def DenseNet(input_shape=None, depth=40, nb_dense_block=3, growth_rate=12, nb_fi
                               '`image_data_format="channels_last"` in '
                               'your Keras config '
                               'at ~/.keras/keras.json.')
+
+    elif (weights == "trained"):
+        weights_path = model_path
+        model.load_weights(weights_path)
 
 
 
@@ -310,7 +299,7 @@ def DenseNetFCN(input_shape, nb_dense_block=5, growth_rate=16, nb_layers_per_blo
     return model
 
 
-def DenseNetImageNet121(input_shape=None,
+def DenseNetImageNet121(model_input=None,
                         bottleneck=True,
                         reduction=0.5,
                         dropout_rate=0.0,
@@ -320,7 +309,7 @@ def DenseNetImageNet121(input_shape=None,
                         input_tensor=None,
                         classes=1000,
                         activation='softmax', model_path = ''):
-    return DenseNet(input_shape, depth=121, nb_dense_block=4, growth_rate=32, nb_filter=64,
+    return DenseNet(model_input, depth=121, nb_dense_block=4, growth_rate=32, nb_filter=64,
                     nb_layers_per_block=[6, 12, 24, 16], bottleneck=bottleneck, reduction=reduction,
                     dropout_rate=dropout_rate, weight_decay=weight_decay, subsample_initial_block=True,
                     include_top=include_top, weights=weights, input_tensor=input_tensor,
@@ -600,7 +589,7 @@ def __create_dense_net(nb_classes, img_input, include_top, depth=40, nb_dense_bl
 
     x = BatchNormalization(axis=concat_axis, epsilon=1.1e-5)(x)
     x = Activation('relu')(x)
-    x = GlobalAveragePooling2D()(x)
+    x = GlobalAveragePooling2D(name="global_avg_pooling")(x)
 
     if include_top:
         x = Dense(nb_classes, activation=activation)(x)
@@ -740,10 +729,7 @@ def __create_fcn_dense_net(nb_classes, img_input, include_top, nb_dense_block=5,
 
 if __name__ == '__main__':
 
-    from keras.utils.vis_utils import plot_model
-    #model = DenseNetFCN((32, 32, 3), growth_rate=16, nb_layers_per_block=[4, 5, 7, 10, 12, 15], upsampling_type='deconv')
+
     model = DenseNet((32, 32, 3), depth=100, nb_dense_block=3,
                      growth_rate=12, bottleneck=True, reduction=0.5, weights=None)
     model.summary()
-
-    #plot_model(model, 'test.png', show_shapes=True)

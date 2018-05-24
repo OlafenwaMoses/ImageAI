@@ -29,6 +29,14 @@ def read_image_bgr(path):
     image = np.asarray(Image.open(path).convert('RGB'))
     return image[:, :, ::-1].copy()
 
+def read_image_array(image_array):
+    image = np.asarray(Image.fromarray(np.uint8(image_array)))
+    return image[:, :, ::-1].copy()
+
+def read_image_stream(image_stream):
+    image = np.asarray(Image.open(image_stream))
+    return image[:, :, ::-1].copy()
+
 
 def preprocess_image(x):
     # mostly identical to "https://github.com/fchollet/keras/blob/master/keras/applications/imagenet_utils.py"
