@@ -42,13 +42,13 @@ print(video_path)
 
 <div style="width: 600px;" >
           <b><p><i>Input Video (a 1min 24seconds video)</i></p></b>
-          <video width="500px" height="315px" controls="controls">
-<source src="../../videos/traffic.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+          <a href="https://github.com/OlafenwaMoses/ImageAI/blob/master/videos/traffic.mp4" >
+<img src="../../images/video-1.jpg" />
+</a>
           <b><p><i>Output Video</i></p></b>
-          <iframe width="500" height="315" src="https://www.youtube.com/embed/qplVDqOmElI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <p>C:\Users\User\PycharmProjects\ImageAITest\traffic_detected.avi</p>
+          <a href="https://www.youtube.com/embed/qplVDqOmElI?rel=0" >
+<img src="../../images/video-2.jpg" />
+</a><p>C:\Users\User\PycharmProjects\ImageAITest\traffic_detected.avi</p>
     </div> <br>
 
 <br>
@@ -138,8 +138,9 @@ which is the function that allows us to perform detection of custom objects. The
  to the custom objects variable we defined.
 
 <b><p><i>Output Video</i></p></b>
-          <iframe width="500" height="315" src="https://www.youtube.com/embed/YfAycAzkwPM?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-    <p>C:\Users\User\PycharmProjects\ImageAITest\traffic_custom_detected.avi</p>
+<a href="https://www.youtube.com/embed/YfAycAzkwPM?rel=0" >
+<img src="../../images/video-3.jpg" />
+</a><p>C:\Users\User\PycharmProjects\ImageAITest\traffic_custom_detected.avi</p>
     </div> <br>
 
 
@@ -162,7 +163,10 @@ The results below are obtained from detections performed on a NVIDIA K80 GPU. Li
 
 <b><i>Video Length = 1min 24seconds, Detection Speed = "normal" , Minimum Percentage Probability = 50 (default), Detection Time = 29min 3seconds </i></b>
 <div style="width: 600px;" >
-   <iframe width="500" height="315" src="https://www.youtube.com/embed/qplVDqOmElI?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<a href="https://www.youtube.com/embed/qplVDqOmElI?rel=0" >
+<img src="../../images/video-4.jpg" />
+</a>
+   
 
 </div>
 
@@ -227,7 +231,9 @@ See the results and link to download the videos below:
 
 <b><i>Video Length = 1min 24seconds, Detection Speed = "fastest" , Minimum Percentage Probability = 20 , Frame Detection Interval = 5, Detection Time = 2min 18seconds  </i></b>
 <div style="width: 600px;" >
-   <iframe width="500" height="315" src="https://www.youtube.com/embed/S-jgBTQgbd4?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<a href="https://www.youtube.com/embed/S-jgBTQgbd4?rel=0" >
+<img src="../../images/video-3.jpg" />
+  
 
 </div>
 
@@ -255,12 +261,7 @@ See the results and link to download the videos below:
              <b>- loadModel()</b>      This function is required and is used to load the model structure into the program from the file path defined <br>
                 in the setModelPath() function. This function receives an optional value which is "detection_speed". <br>
                 The value is used to reduce the time it takes to detect objects in a video, down to about a 10% of the normal time, with <br>
-                 with just slight reduction in the number of objects detected. <br> <br>
-
-
-                ***** prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash" <br> <br>
-
-                :param detection_speed: <br>
+                 with just slight reduction in the number of objects detected. <br> <br> ***** prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash" <br> <br>:param detection_speed: <br>
                 :return:  <br> <br>
             <b>- detectObjectsFromVideo()</b> This function is used to detect objects observable in the given video path: <br> <br>
                             ****** input_file_path , which is the file path to the input video <br>
@@ -268,42 +269,26 @@ See the results and link to download the videos below:
                             ****** frames_per_second , which is the number of frames to be used in the output video <br>
                             ****** frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected. <br>
                             ****** minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br>
-                            ****** log_progress (optional) , which states if the progress of the frame processed is to be logged to console <br> <br>
-
-
-                    :param input_file_path: <br>
+                            ****** log_progress (optional) , which states if the progress of the frame processed is to be logged to console <br> <br>:param input_file_path: <br>
                     :param output_file_path: <br>
                     :param frames_per_second: <br>
                     :param frame_detection_interval: <br>
                     :param minimum_percentage_probability: <br>
                     :param log_progress: <br>
-                    :return output_video_filepath:
-
-    <br> <br> <br>
+                    :return output_video_filepath:<br> <br> <br>
     <b>- CustomObjecs()</b>  This function can be optionally called to handpick the type of objects you want to detect <br>
                          from a video. The objects are pre-initiated in the function variables and predefined as 'False', <br>
                          which you can easily set to true for any number of objects available.  This function <br>
                          returns a dictionary which must be parsed into the 'detectCustomObjectsFromVideo()'. Detecting <br>
-                          custom objects only happens when you call the function 'detectCustomObjectsFromVideo()' <br> <br>
-
-
-                        ****** true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present <br> <br>
-
-                        :param boolean_values: <br>
-                        :return: custom_objects_dict <br>
-
-    <br> <br> <br>
-
-                <b>- detectCustomObjectsFromVideo()</b> This function is used to detect specific object(s) observable in the given video path: <br> <br>
+                          custom objects only happens when you call the function 'detectCustomObjectsFromVideo()' <br> <br> ****** true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present <br> <br>:param boolean_values: <br>
+                        :return: custom_objects_dict <br><br> <br> <br><b>- detectCustomObjectsFromVideo()</b> This function is used to detect specific object(s) observable in the given video path: <br> <br>
                             * custom_objects , which is the dictionary returned by the 'CustomObjects' function <br>
                             * input_file_path , which is the file path to the input video <br>
                             * output_file_path , which is the path to the output video <br>
                             * frames_per_second , which is the number of frames to be used in the output video <br>
                             * frame_detection_interval (optional, 1 by default) , which is the intervals of frames that will be detected. <br>
                             * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br>
-                            * log_progress (optional) , which states if the progress of the frame processed is to be logged to console <br> <br>
-
-                    :param custom_objects: <br>
+                            * log_progress (optional) , which states if the progress of the frame processed is to be logged to console <br> <br>:param custom_objects: <br>
                     :param input_file_path: <br>
                     :param output_file_path: <br>
                     :param frames_per_second: <br>
