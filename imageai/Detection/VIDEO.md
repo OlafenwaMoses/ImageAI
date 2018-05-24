@@ -43,7 +43,7 @@ print(video_path)
 <div style="width: 600px;" >
           <b><p><i>Input Video (a 1min 24seconds video)</i></p></b>
           <a href="https://github.com/OlafenwaMoses/ImageAI/blob/master/videos/traffic.mp4" >
-<img src="../../images/video-1.jpg" />
+<img src="../../images/video--1.jpg" />
 </a>
           <b><p><i>Output Video</i></p></b>
           <a href="https://www.youtube.com/embed/qplVDqOmElI?rel=0" >
