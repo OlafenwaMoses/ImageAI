@@ -37,9 +37,7 @@ for eachObject in detections:
     print("--------------------------------")
 
 
-</pre></b>
-
-    <p>Sample Result:
+</pre></b><p>Sample Result:
     <br>
     <div style="width: 600px;" >
           <b><p><i>Input Image</i></p></b>
@@ -341,10 +339,7 @@ This means you can now perform object detection in production applications such 
 in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsFromImage()</b> function. See example below.
 
 <pre>detections = detector.detectObjectsFromImage(input_type="array", input_image=image_array , output_image_path=os.path.join(execution_path , "image.jpg")) # For numpy array input type
-detections = detector.detectObjectsFromImage(input_type="stream", input_image=image_stream , output_image_path=os.path.join(execution_path , "test2new.jpg")) # For file stream input type</pre>
-
-
-    <br> To perform object detection with numpy array output you just need to state the output type
+detections = detector.detectObjectsFromImage(input_type="stream", input_image=image_stream , output_image_path=os.path.join(execution_path , "test2new.jpg")) # For file stream input type</pre><br> To perform object detection with numpy array output you just need to state the output type
 in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsFromImage()</b> function. See example below.
 
 <pre>detected_image_array, detections = detector.detectObjectsFromImage(output_type="array", input_image="image.jpg" ) # For numpy array output type
@@ -366,12 +361,7 @@ in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsF
              <b>- loadModel()</b>      This function is required and is used to load the model structure into the program from the file path defined <br>
                 in the setModelPath() function. This function receives an optional value which is "detection_speed". <br>
                 The value is used to reduce the time it takes to detect objects in an image, down to about a 10% of the normal time, with <br>
-                 with just slight reduction in the number of objects detected. <br> <br>
-
-
-                ***** prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash" <br> <br>
-
-                :param detection_speed: <br>
+                 with just slight reduction in the number of objects detected. <br> <br> ***** prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash" <br> <br>:param detection_speed: <br>
                 :return:  <br> <br>
         <b>- detectObjectsFromImage()</b> This   function is used to detect objects observable in the given image path: <br>
                     ****** input_image , which can be file to path, image numpy array or image file stream <br>
@@ -379,9 +369,7 @@ in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsF
                     ****** input_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file", "array" and "stream" <br>
                     ****** output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array" <br>
                     ****** extract_detected_objects (optional) , option to save each object detected individually as an image and return an array of the objects' image path. <br>
-                    ****** minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br> <br>
-
-            The values returned by this function depends on the parameters parsed. The possible values returnable
+                    ****** minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br> <br> The values returned by this function depends on the parameters parsed. The possible values returnable
             are stated as below <br>
             - If extract_detected_objects = False or at its default value and output_type = 'file' or <br>
                 at its default value, you must parse in the 'output_image_path' as a string to the path you want <br>
@@ -389,36 +377,26 @@ in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsF
                 1. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name <br>
-                    * percentage_probability <br> <br>
-
-            - If extract_detected_objects = False or at its default value and output_type = 'array' ,
-              Then the function will return: <br>
-
-                1. a numpy array of the detected image <br>
+                    * percentage_probability <br> <br>- If extract_detected_objects = False or at its default value and output_type = 'array' ,
+              Then the function will return: <br>1. a numpy array of the detected image <br>
                 2. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name <br>
-                    * percentage_probability <br> <br>
-
-            - If extract_detected_objects = True and output_type = 'file' or <br>
+                    * percentage_probability <br> <br>- If extract_detected_objects = True and output_type = 'file' or <br>
                 at its default value, you must parse in the 'output_image_path' as a string to the path you want <br>
                 the detected image to be saved. Then the function will return: <br>
                 1. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name  <br>
                     * percentage_probability <br>
-                2. an array of string paths to the image of each object extracted from the image <br> <br>
-
-            - If extract_detected_objects = True and output_type = 'array', the the function will return: <br>
+                2. an array of string paths to the image of each object extracted from the image <br> <br>- If extract_detected_objects = True and output_type = 'array', the the function will return: <br>
                 1. a numpy array of the detected image <br>
                 2. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name <br>
                     * percentage_probability <br>
                 3. an array of numpy arrays of each object detected in the image <br> <br>
-
-
-            :param input_image: <br>
+      :param input_image: <br>
             :param output_image_path: <br>
             :param input_type: <br>
             :param output_type: <br>
@@ -431,25 +409,16 @@ in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsF
                          from an image. The objects are pre-initiated in the function variables and predefined as 'False', <br>
                          which you can easily set to true for any number of objects available.  This function <br>
                          returns a dictionary which must be parsed into the 'detectCustomObjectsFromImage()'. Detecting <br>
-                          custom objects only happens when you call the function 'detectCustomObjectsFromImage()' <br> <br>
-
-
-                        ****** true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present <br> <br>
-
-                        :param boolean_values: <br>
+                          custom objects only happens when you call the function 'detectCustomObjectsFromImage()' <br> <br>****** true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present <br> <br>:param boolean_values: <br>
                         :return: custom_objects_dict <br>
-    <br><br> <br>
-
-    <b>- detectCustomObjectsFromImage()</b> This function is used to detect predefined objects observable in the given image path: <br>
+    <br><br> <br><b>- detectCustomObjectsFromImage()</b> This function is used to detect predefined objects observable in the given image path: <br>
                             * custom_objects , an instance of the CustomObject class to filter which objects to detect <br>
                             * input_image , which can be file to path, image numpy array or image file stream <br>
                             * output_image_path , file path to the output image that will contain the detection boxes and label, if output_type="file" <br>
                             * input_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file", "array" and "stream" <br>
                             * output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array" <br>
                             * extract_detected_objects (optional, False by default) , option to save each object detected individually as an image and return an array of the objects' image path. <br>
-                            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br> <br>
-
-                    The values returned by this function depends on the parameters parsed. The possible values returnable
+                            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br> <br> The values returned by this function depends on the parameters parsed. The possible values returnable
             are stated as below <br>
             - If extract_detected_objects = False or at its default value and output_type = 'file' or <br>
                 at its default value, you must parse in the 'output_image_path' as a string to the path you want <br>
@@ -457,36 +426,25 @@ in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsF
                 1. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name <br>
-                    * percentage_probability <br> <br>
-
-            - If extract_detected_objects = False or at its default value and output_type = 'array' ,
-              Then the function will return: <br>
-
-                1. a numpy array of the detected image <br>
+                    * percentage_probability <br> <br>- If extract_detected_objects = False or at its default value and output_type = 'array' ,
+              Then the function will return: <br>1. a numpy array of the detected image <br>
                 2. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name <br>
-                    * percentage_probability <br> <br>
-
-            - If extract_detected_objects = True and output_type = 'file' or  <br>
+                    * percentage_probability <br> <br>- If extract_detected_objects = True and output_type = 'file' or  <br>
                 at its default value, you must parse in the 'output_image_path' as a string to the path you want <br>
                 the detected image to be saved. Then the function will return: <br>
                 1. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name <br>
                     * percentage_probability <br>
-                2. an array of string paths to the image of each object extracted from the image <br> <br>
-
-            - If extract_detected_objects = True and output_type = 'array', the the function will return: <br>
+                2. an array of string paths to the image of each object extracted from the image <br> <br>- If extract_detected_objects = True and output_type = 'array', the the function will return: <br>
                 1. a numpy array of the detected image <br>
                 2. an array of dictionaries, with each dictionary corresponding to the objects <br>
                     detected in the image. Each dictionary contains the following property: <br>
                     * name <br>
                     * percentage_probability <br>
-                3. an array of numpy arrays of each object detected in the image <br> <br>
-
-
-            :param input_image: <br>
+                3. an array of numpy arrays of each object detected in the image <br> <br>:param input_image: <br>
             :param output_image_path: <br>
             :param input_type: <br>
             :param output_type: <br>
