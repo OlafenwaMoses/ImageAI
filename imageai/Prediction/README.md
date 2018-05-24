@@ -352,9 +352,7 @@ predictionThread.start()
             ****** input_type (optional) , the type of input to be parsed. Acceptable values are "file", "array" and "stream" <br>
             ****** image_input , file path/numpy array/image file stream of the image. <br>
             ****** result_count (optional) , the number of predictions to be sent which must be whole numbers between <br>
-                1 and 1000. The default is 5. <br>
-
-        This function returns 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results' <br>
+                1 and 1000. The default is 5. <br>This function returns 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results' <br>
         contains possible objects classes arranged in descending of their percentage probabilities. The 'prediction_probabilities' <br>
         contains the percentage probability of each object class. The position of each object class in the 'prediction_results' <br>
         array corresponds with the positions of the percentage possibilities in the 'prediction_probabilities' array. <br> <br>
@@ -367,15 +365,11 @@ predictionThread.start()
                     ****** input_type , the type of inputs contained in the parsed array. Acceptable values are "file", "array" and "stream" <br>
                     ****** sent_images_array , an array of image file paths, image numpy array or image file stream <br>
                     ****** result_count_per_image (optionally) , the number of predictions to be sent per image, which must be whole numbers between
-                        1 and 1000. The default is 2. <br> <br>
-
-                This function returns an array of dictionaries, with each dictionary containing 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results'
+                        1 and 1000. The default is 2. <br> <br>This function returns an array of dictionaries, with each dictionary containing 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results'
                 contains possible objects classes arranged in descending of their percentage probabilities. The 'prediction_probabilities'
                 contains the percentage probability of each object class. The position of each object class in the 'prediction_results'
                 array corresponds with the positions of the percentage possibilities in the 'prediction_probabilities' array. <br> <br>
-
-
-                <b><i>:param input_type: </i></b> <br>
+<b><i>:param input_type: </i></b> <br>
                 <b><i>:param sent_images_array: </i></b> <br>
                 <b><i>:param result_count_per_image: </i></b> <br>
                 <b><i>:return output_array: </i></b><br>  <br>
