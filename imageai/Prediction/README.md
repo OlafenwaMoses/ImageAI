@@ -15,10 +15,10 @@ To perform image prediction on any picture, take the following simple steps.  Th
  image prediction include <b>SqueezeNet</b>, <b>ResNet</b>, <b>InceptionV3</b> and <b>DenseNet</b>. Each of these
   algorithms have individual model files which you must use depending on the choice of your algorithm. To download the
    model file for your choice of algorithm, click on any of the links below: <br> <br>
-       <span><b>- <a href="https://github.com/rcmalli/keras-squeezenet/releases/download/v1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >SqueezeNet</a> (Size = 4.82 mb, fastest prediction time and moderate accuracy) </b></span> <br>
-       <span><b>- <a href="https://github.com/fchollet/deep-learning-models/releases/download/v0.2/resnet50_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >ResNet50</a></b> by Microsoft Research <b>(Size = 98 mb, fast prediction time and high accuracy) </b></span> <br>
+       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >SqueezeNet</a> (Size = 4.82 mb, fastest prediction time and moderate accuracy) </b></span> <br>
+       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >ResNet50</a></b> by Microsoft Research <b>(Size = 98 mb, fast prediction time and high accuracy) </b></span> <br>
        <span><b>- <a href="https://github.com/fchollet/deep-learning-models/releases/download/v0.5/inception_v3_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >InceptionV3</a></b> by Google Brain team <b>(Size = 91.6 mb, slow prediction time and higher accuracy) </b></span> <br>
-       <span><b>- <a href="https://github.com/titu1994/DenseNet/releases/download/v3.0/DenseNet-BC-121-32.h5" style="text-decoration: none;" >DenseNet121</a></b> by Facebook AI Research <b>(Size = 31.6 mb, slower prediction time and highest accuracy) </b></span> <br><br>
+       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5" style="text-decoration: none;" >DenseNet121</a></b> by Facebook AI Research <b>(Size = 31.6 mb, slower prediction time and highest accuracy) </b></span> <br><br>
  Great! Once you have downloaded this model file, start a new python project, and then copy the model file to your project
      folder where your python files (.py files) will be . Download the image below, or take any image on your computer
  and copy it to your python project's folder. Then create a python file and give it a name; an example is <b>FirstPrediction.py</b>.
