@@ -14,7 +14,7 @@
 each object from the image. The object detection class provided only supports the current state-of-the-art RetinaNet,
 while other object detection networks will be supported in the nearest future. To start performing object detection,
 you must download the RetinaNet object detection via the link below: <br> <br>
- <span><b>- <a href="https://github.com/fizyr/keras-retinanet/releases/download/0.2/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >RetinaNet</a></b> <b>(Size = 145 mb) </b></span> <br><br>
+ <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >RetinaNet</a></b> <b>(Size = 145 mb) </b></span> <br><br>
  Once you download the RetinaNet model file, you should copy the model file to the your project folder where your .py files will be.
  Then create a python file and give it a name; an example is FirstObjectDetection.py. Then write the code below into the python file: <br><br>
 
