@@ -12,7 +12,7 @@
       ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports the current state-of-the-art RetinaNet,
 while other object detection networks will be supported in the nearest future. This is a Preview release but capable lots of incredible options.
 To start performing object detection, you must download the RetinaNet object detection via the link below: <br> <br>
- <span><b>- <a href="https://github.com/fizyr/keras-retinanet/releases/download/0.2/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >RetinaNet</a></b> <b>(Size = 145 mb) </b></span> <br><br>
+ <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >RetinaNet</a></b> <b>(Size = 145 mb) </b></span> <br><br>
 Because video object detection is a compute intensive tasks, we advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
  installed. Performing Video Object Detection CPU will be slower than using an NVIDIA GPU powered computer. You can use Google Colab for this
  experiment as it has an NVIDIA K80 GPU available.
