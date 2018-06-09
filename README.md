@@ -302,3 +302,15 @@ Kindly follow the link below to download the publication.
 
  9. Tsung-Yi. et al, Focal Loss for Dense Object Detection <br>
  <a href="https://arxiv.org/abs/1708.02002" >https://arxiv.org/abs/1708.02002</a> <br><br>
+ 
+ 10. O Russakovsky et al, ImageNet Large Scale Visual Recognition Challenge <br>
+ <a href="https://arxiv.org/abs/1409.0575" >https://arxiv.org/abs/1409.0575</a> <br><br>
+ 
+ 11. TY Lin et al, Microsoft COCO: Common Objects in Context <br>
+ <a href="https://arxiv.org/abs/1405.0312" >https://arxiv.org/abs/1405.0312</a> <br><br>
+ 
+ 12. Moses & John Olafenwa, Dataset is a collection of images of identifiable professionals.<br>
+ <a href="https://github.com/OlafenwaMoses/IdenProf" >https://github.com/OlafenwaMoses/IdenProf</a> <br><br>
+ 
+ 
+ 
