@@ -1,6 +1,6 @@
 # ImageAI <br>
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
- and few lines of code.
+ and few lines of code. <br><br>
 An <b>AI Commons</b> project <a href="https://commons.specpal.science" >https://commons.specpal.science </a>
 Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) and [John Olafenwa](https://twitter.com/johnolafenwa), brothers, creators of [TorchFusion](https://github.com/johnolafenwa/TorchFusion)
 and Authors of [Introduction to Deep Computer Vision](https://john.specpal.science/deepvision)
