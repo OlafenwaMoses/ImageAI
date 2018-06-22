@@ -79,7 +79,7 @@ with 'flash' detection accuracy balanced with 'minimum_percentage_probability' w
 <h3><b><u>Image Prediction</u></b></h3>
 <b>ImageAI</b> provides 4 different algorithms and model types to perform image prediction, trained on the ImageNet-1000 dataset.
 The 4 algorithms provided for image prediction include <b>SqueezeNet</b>, <b>ResNet</b>, <b>InceptionV3</b> and <b>DenseNet</b>. 
-You will find below the result of an example prediction using the ResNet50 model, and the 'Full Details & Documentation' link.
+You will find below the result of an example prediction using the ResNet50 model, and the 'Full Details & Documentation' link below the image.
 Click the link to see the full sample codes, explainations, best practices guide and documentation.
 <p><img src="images/1.jpg" style="width: 400px; height: auto;" /> 
     <pre>convertible : 52.459555864334106
@@ -101,7 +101,7 @@ minivan : 1.7487050965428352</pre>
 <b>ImageAI</b> provides very convenient and powerful methods
  to perform object detection on images and extract each object from the image. The object detection class provided only supports
  the current state-of-the-art RetinaNet, but with options to adjust for state of the art performance or real time processing.
-You will find below the result of an example object detection using the RetinaNet model, and the 'Full Details & Documentation' link.
+You will find below the result of an example object detection using the RetinaNet model, and the 'Full Details & Documentation' link below the images.
 Click the link to see the full sample codes, explainations, best practices guide and documentation.
     <div style="width: 600px;" >
           <b><p><i>Input Image</i></p></b></br>
@@ -143,7 +143,7 @@ person : 87.10319399833679
 <b>ImageAI</b> provides very convenient and powerful methods
  to perform object detection in videos and track specific object(s). The video object detection class provided only supports
  the current state-of-the-art RetinaNet, but with options to adjust for state of the art performance or real time processing.
-You will find below the result of an example object detection using the RetinaNet model, and the 'Full Details & Documentation' link.
+You will find below the result of an example object detection using the RetinaNet model, and the 'Full Details & Documentation' link below the images.
 Click the link to see the full videos, sample codes, explainations, best practices guide and documentation.
 <p><div style="width: 600px;" >
           <p><i><b>Video Object Detection</b></i></p>
@@ -167,7 +167,7 @@ Click the link to see the full videos, sample codes, explainations, best practic
 <h3><b><u>Custom Model Training </u></b></h3>
 <b>ImageAI</b> provides classes and methods for you to train a new model that can be used to perform prediction on your own custom objects.
 You can train your custom models using SqueezeNet, ResNet50, InceptionV3 and DenseNet in less than <b> 12 </b> lines of code.
-You will find below the 'Full Details & Documentation' link.
+You will find below the 'Full Details & Documentation' link below the image.
 Click the link to see the guide to preparing training images, sample training codes, explainations, best practices guide and documentation.
 <br>
 <p><br>
@@ -190,7 +190,7 @@ Click the link to see the guide to preparing training images, sample training co
 <h3><b><u>Custom Image Prediction </u></b></h3>
 <b>ImageAI</b> provides classes and methods for you to run image prediction your own custom objects using your own model trained with <b>ImageAI</b> Model Training class.
 You can use custom models trained with SqueezeNet, ResNet50, InceptionV3 and DenseNet and the JSON file containing the mapping of the custom object names.
-You will find below the 'Full Details & Documentation' link.
+You will find below the 'Full Details & Documentation' link below the image.
 Click the link to see the guide to sample training codes, explainations, best practices guide and documentation.
 <br>
 <p><br>
