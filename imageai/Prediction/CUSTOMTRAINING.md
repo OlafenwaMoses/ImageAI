@@ -498,7 +498,9 @@ Let us explain the details shown above: <br>
 3. The line  <b>Epoch 00000: saving model to C:\Users\User\PycharmProjects\ImageAITest\pets\models\model_ex-000_acc-0.100000.h5
 </b> refers to the model saved after the present experiment. The <b>ex_000</b> represents the experiment at this stage
  while the <b>acc_0.100000</b> and <b>val_acc: 0.1000</b> represents the accuracy of the model on the test images after the present experiment (maximum value value
- of accuracy is 1.0).  This result helps to know the best performed model you can use for custom image prediction.
+ of accuracy is 1.0).  This result helps to know the best performed model you can use for custom image prediction. <br> <br>
+ Once you are done training your custom model, you can use the "CustomImagePrediction" class to perform image prediction with your model. Simply follow the link below. <br><br>
+ <a href="https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md" >https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md</a>
 
 <br><br>
 <h3><b><u>Training on the IdenProf data</u></b></h3>
