@@ -43,7 +43,6 @@ This images are the ones to be used to test the model as it trains <br>
 
 9. Then your training code goes as follows: <br> <br>
 <b><pre>from imageai.Prediction.Custom import ModelTraining
-
 model_trainer = ModelTraining()
 model_trainer.setModelTypeAsResNet()
 model_trainer.setDataDirectory("pets")
