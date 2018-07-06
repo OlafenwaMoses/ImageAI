@@ -21,7 +21,9 @@ you must download the RetinaNet object detection via the link below: <br> <br>
 <div id="firstdetection" ></div>
  <h3><b>FirstObjectDetection.py</b></h3>
 
-<b><pre>from imageai.Detection import ObjectDetection
+<b><pre>
+```python
+from imageai.Detection import ObjectDetection
 import os
 
 execution_path = os.getcwd()
@@ -35,8 +37,7 @@ detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_
 for eachObject in detections:
     print(eachObject["name"] + " : " + eachObject["percentage_probability"] )
     print("--------------------------------")
-
-
+```
 </pre></b><p>Sample Result:
     <br>
     <div style="width: 600px;" >
