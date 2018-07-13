@@ -1,23 +1,31 @@
-# ImageAI : Video Object Detection and Tracking (Preview Release)<br>
+# ImageAI : Video Object Detection, Tracking  and Analysis<br>
 <p>An <b>AI Commons</b> project <a href="https://commons.specpal.science" >https://commons.specpal.science </a></p>
 <hr>
 <br>
 <h3><b><u>TABLE OF CONTENTS</u></b></h3>
 <a href="#videodetection" >&#9635 First Video Object Detection</a><br>
 <a href="#customvideodetection" >&#9635 Custom Video Object Detection (Object Tracking)</a><br>
+<a href="#camerainputs" >&#9635 Camera / Live Stream Video Detection</a><br>
+<a href="#videoanalysis" >&#9635 Video Analysis</a><br>
 <a href="#videodetectionspeed" >&#9635 Detection Speed</a><br>
+<a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a><br>
 <a href="#videodetectionintervals" >&#9635 Frame Detection Intervals</a><br>
+<a href="#support" >&#9635 Support the ImageAI Project</a><br>
 <a href="#documentation" >&#9635 Documentation</a><br>
 <br>
-      ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports the current state-of-the-art RetinaNet,
-while other object detection networks will be supported in the nearest future. This is a Preview release but capable lots of incredible options.
-To start performing object detection, you must download the RetinaNet object detection via the link below: <br> <br>
- <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >RetinaNet</a></b> <b>(Size = 145 mb) </b></span> <br><br>
+      ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports RetinaNet, YOLOv3 and TinyYOLOv3. This version of <b>ImageAI</b> provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
+To start performing video object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: <br> <br>
+ <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >RetinaNet</a></b> <b>(Size = 145 mb, high performance and accuracy, with longer detection time) </b></span> <br>
+
+<span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >YOLOv3</a></b> <b>(Size = 237 mb, moderate performance and accuracy, with a moderate detection time) </b></span> <br>
+
+<span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >TinyYOLOv3</a></b> <b>(Size = 34 mb, optimized for speed and moderate performance, with fast detection time) </b></span> <br><br>
+
 Because video object detection is a compute intensive tasks, we advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
  installed. Performing Video Object Detection CPU will be slower than using an NVIDIA GPU powered computer. You can use Google Colab for this
  experiment as it has an NVIDIA K80 GPU available.
 <br> <br>
- Once you download the RetinaNet model file, you should copy the model file to the your project folder where your .py files will be.
+ Once you download the object detection model file, you should copy the model file to the your project folder where your .py files will be.
  Then create a python file and give it a name; an example is FirstVideoObjectDetection.py. Then write the code below into the python file: <br><br>
 
 
@@ -143,6 +151,147 @@ which is the function that allows us to perform detection of custom objects. The
 </a><p>C:\Users\User\PycharmProjects\ImageAITest\traffic_custom_detected.avi</p>
     </div> <br>
 
+<br><br>
+
+<div id="camerainputs"></div>
+<h3><b><u>Camera / Live Stream Video Detection</u></b></h3>
+<b>ImageAI</b> now allows live-video detection with support for camera inputs. Using <b>OpenCV</b>'s <b>VideoCapture()</b> function, you can load live-video streams from a device camera, cameras connected by cable or IP cameras, and parse it into <b>ImageAI</b>'s <b>detectObjectsFromVideo()</b> and <b>detectCustomObjectsFromVideo()</b> functions. All features that are supported for detecting objects in a video file is also available for detecting objects in a camera's live-video feed. Find below an example of detecting live-video feed from the device camera. <br>
+
+<pre>
+from imageai.Detection import VideoObjectDetection
+import os
+import cv2
+
+execution_path = os.getcwd()
+
+
+camera = cv2.VideoCapture(0)
+
+detector = VideoObjectDetection()
+detector.setModelTypeAsRetinaNet()
+detector.setModelPath(os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.loadModel()
+
+
+video_path = detector.detectObjectsFromVideo(camera_input=camera,
+                                output_file_path=os.path.join(execution_path, "camera_detected_video")
+                                , frames_per_second=20, log_progress=True, minimum_percentage_probability=40)
+</pre>
+
+The difference in the code above and the code for the detection of a video file is that we defined an <b>OpenCV VideoCapture</b> instance and loaded the default device camera into it. Then we parsed the camera we defined into the parameter <b>camera_input</b> which replaces the <b>input_file_path</b> that is used for video file.
+
+<br><br>
+<div id="videoanalysis"></div>
+<h3><b><u>Video Analysis</u></b></h3>
+
+<b>ImageAI</b> now provide commercial-grade video analysis in the Video Object Detection class, for both video file inputs and camera inputs. This feature allows developers to obtain deep insights into any video processed with <b>ImageAI</b>. This insights can be visualized in real-time, stored in a NoSQL database for future review or analysis. <br><br>
+
+For video analysis, the <b>detectObjectsFromVideo()</b> and <b>detectCustomObjectsFromVideo()</b> now allows you to state your own defined functions which will be executed for every frame, seconds and/or minute of the video detected as well as a state a function that will be executed at the end of a video detection. Once this functions are stated, they will receive raw but comprehensive analytical data on the index of the frame/second/minute, objects detected (name, percentage_probability and box_points), number of instances of each unique object detected and average number of occurrence of each unique object detected over a second/minute and entire video. <br>
+To obtain the video analysis, all you need to do is specify a function, state the corresponding parameters it will be receiving and parse the function name into the <b>per_frame_function</b>, <b>per_second_function</b>, <b>per_minute_function</b> and <b>video_complete_function</b> parameters in the detection function. Find below examples of video analysis functions. <br>
+
+<pre>
+def forFrame(frame_number, output_array, output_count):
+    print("FOR FRAME " , frame_number)
+    print("Output for each object : ", output_array)
+    print("Output count for unique objects : ", output_count)
+    print("------------END OF A FRAME --------------")
+
+def forSeconds(second_number, output_arrays, count_arrays, average_output_count):
+    print("SECOND : ", second_number)
+    print("Array for the outputs of each frame ", output_arrays)
+    print("Array for output count for unique objects in each frame : ", count_arrays)
+    print("Output average count for unique objects in the last second: ", average_output_count)
+    print("------------END OF A SECOND --------------")
+
+def forMinute(minute_number, output_arrays, count_arrays, average_output_count):
+    print("SECOND : ", minute_number)
+    print("Array for the outputs of each frame ", output_arrays)
+    print("Array for output count for unique objects in each frame : ", count_arrays)
+    print("Output average count for unique objects in the last second: ", average_output_count)
+    print("------------END OF A MINUTE --------------")
+
+video_detector = VideoObjectDetection()
+video_detector.setModelTypeAsYOLOv3()
+video_detector.setModelPath(os.path.join(execution_path, "yolo.h5"))
+video_detector.loadModel()
+
+video_detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "traffic.mp4"), output_file_path=os.path.join(execution_path, "traffic_detected") ,  frames_per_second=10, per_second_function=forSeconds, per_frame_function = forFrame, per_minute_function= forMinute, minimum_percentage_probability=30)
+
+</pre>
+
+<br> When the detection starts on a video feed, be it from a video file or camera input, the result will have the format as below: <br>
+<b> *Results for the Frame function</b>
+<pre>
+FOR FRAME : 1
+ 
+Output for each object : [{'box_points': (362, 295, 443, 355), 'name': 'boat', 'percentage_probability': 26.666194200515747}, {'box_points': (319, 245, 386, 296), 'name': 'boat', 'percentage_probability': 30.052968859672546}, {'box_points': (219, 308, 341, 358), 'name': 'boat', 'percentage_probability': 47.46982455253601}, {'box_points': (589, 198, 621, 241), 'name': 'bus', 'percentage_probability': 24.62330162525177}, {'box_points': (519, 181, 583, 263), 'name': 'bus', 'percentage_probability': 27.446213364601135}, {'box_points': (493, 197, 561, 272), 'name': 'bus', 'percentage_probability': 59.81815457344055}, {'box_points': (432, 187, 491, 240), 'name': 'bus', 'percentage_probability': 64.42965269088745}, {'box_points': (157, 225, 220, 255), 'name': 'car', 'percentage_probability': 21.150341629981995}, {'box_points': (324, 249, 377, 293), 'name': 'car', 'percentage_probability': 24.089913070201874}, {'box_points': (152, 275, 260, 327), 'name': 'car', 'percentage_probability': 30.341443419456482}, {'box_points': (433, 198, 485, 244), 'name': 'car', 'percentage_probability': 37.205660343170166}, {'box_points': (184, 226, 233, 260), 'name': 'car', 'percentage_probability': 38.52525353431702}, {'box_points': (3, 296, 134, 359), 'name': 'car', 'percentage_probability': 47.80363142490387}, {'box_points': (357, 302, 439, 359), 'name': 'car', 'percentage_probability': 47.94844686985016}, {'box_points': (481, 266, 546, 314), 'name': 'car', 'percentage_probability': 65.8585786819458}, {'box_points': (597, 269, 624, 318), 'name': 'person', 'percentage_probability': 27.125394344329834}]
+ 
+Output count for unique objects : {'bus': 4, 'boat': 3, 'person': 1, 'car': 8}
+
+------------END OF A FRAME --------------
+</pre>
+
+For any function you parse into the <b>per_frame_function</b>, the function will be executed after every single video frame is processed and he following will be parsed into it: <br>
+<b>  >>  Frame Index : </b> This is the position number of the frame inside the video (e.g 1 for first frame and 20 for twentieth frame).<br>
+<b>  >>  Output Array : </b> This is an array of dictionaries. Each dictionary corresponds to each detected object in the image and it contains the "name", "percentage_probabaility" and "box_points"(x1,y1,x2,y2) values of the object. <br>
+<b>  >>  Output Count : </b> This is a dictionary that has the name of each unique object detected as its keys and the number of instances of the objects detected as the values. <br> <br>
+
+<b> *Results for the Second function</b>
+<pre>
+FOR SECOND : 1
+ 
+ Array for the outputs of each frame [[{'box_points': (362, 295, 443, 355), 'name': 'boat', 'percentage_probability': 26.666194200515747}, {'box_points': (319, 245, 386, 296), 'name': 'boat', 'percentage_probability': 30.052968859672546}, {'box_points': (219, 308, 341, 358), 'name': 'boat', 'percentage_probability': 47.46982455253601}, {'box_points': (589, 198, 621, 241), 'name': 'bus', 'percentage_probability': 24.62330162525177}, {'box_points': (519, 181, 583, 263), 'name': 'bus', 'percentage_probability': 27.446213364601135}, {'box_points': (493, 197, 561, 272), 'name': 'bus', 'percentage_probability': 59.81815457344055}, {'box_points': (432, 187, 491, 240), 'name': 'bus', 'percentage_probability': 64.42965269088745}, {'box_points': (157, 225, 220, 255), 'name': 'car', 'percentage_probability': 21.150341629981995}, {'box_points': (324, 249, 377, 293), 'name': 'car', 'percentage_probability': 24.089913070201874}, {'box_points': (152, 275, 260, 327), 'name': 'car', 'percentage_probability': 30.341443419456482}, {'box_points': (433, 198, 485, 244), 'name': 'car', 'percentage_probability': 37.205660343170166}, {'box_points': (184, 226, 233, 260), 'name': 'car', 'percentage_probability': 38.52525353431702}, {'box_points': (3, 296, 134, 359), 'name': 'car', 'percentage_probability': 47.80363142490387}, {'box_points': (357, 302, 439, 359), 'name': 'car', 'percentage_probability': 47.94844686985016}, {'box_points': (481, 266, 546, 314), 'name': 'car', 'percentage_probability': 65.8585786819458}, {'box_points': (597, 269, 624, 318), 'name': 'person', 'percentage_probability': 27.125394344329834}],
+ [{'box_points': (316, 240, 384, 302), 'name': 'boat', 'percentage_probability': 29.594269394874573}, {'box_points': (361, 295, 441, 354), 'name': 'boat', 'percentage_probability': 36.11513376235962}, {'box_points': (216, 305, 340, 357), 'name': 'boat', 'percentage_probability': 44.89373862743378}, {'box_points': (432, 198, 488, 244), 'name': 'truck', 'percentage_probability': 22.914741933345795}, {'box_points': (589, 199, 623, 240), 'name': 'bus', 'percentage_probability': 20.545457303524017}, {'box_points': (519, 182, 583, 263), 'name': 'bus', 'percentage_probability': 24.467085301876068}, {'box_points': (492, 197, 563, 271), 'name': 'bus', 'percentage_probability': 61.112016439437866}, {'box_points': (433, 188, 490, 241), 'name': 'bus', 'percentage_probability': 65.08989334106445}, {'box_points': (352, 303, 442, 357), 'name': 'car', 'percentage_probability': 20.025095343589783}, {'box_points': (136, 172, 188, 195), 'name': 'car', 'percentage_probability': 21.571354568004608}, {'box_points': (152, 276, 261, 326), 'name': 'car', 'percentage_probability': 33.07966589927673}, {'box_points': (181, 225, 230, 256), 'name': 'car', 'percentage_probability': 35.111838579177856}, {'box_points': (432, 198, 488, 244), 'name': 'car', 'percentage_probability': 36.25282347202301}, {'box_points': (3, 292, 130, 360), 'name': 'car', 'percentage_probability': 67.55480170249939}, {'box_points': (479, 265, 546, 314), 'name': 'car', 'percentage_probability': 71.47912979125977}, {'box_points': (597, 269, 625, 318), 'name': 'person', 'percentage_probability': 25.903674960136414}],................, 
+[{'box_points': (133, 250, 187, 278), 'name': 'umbrella', 'percentage_probability': 21.518094837665558}, {'box_points': (154, 233, 218, 259), 'name': 'umbrella', 'percentage_probability': 23.687003552913666}, {'box_points': (348, 311, 425, 360), 'name': 'boat', 'percentage_probability': 21.015766263008118}, {'box_points': (11, 164, 137, 225), 'name': 'bus', 'percentage_probability': 32.20453858375549}, {'box_points': (424, 187, 485, 243), 'name': 'bus', 'percentage_probability': 38.043853640556335}, {'box_points': (496, 186, 570, 264), 'name': 'bus', 'percentage_probability': 63.83994221687317}, {'box_points': (588, 197, 622, 240), 'name': 'car', 'percentage_probability': 23.51653128862381}, {'box_points': (58, 268, 111, 303), 'name': 'car', 'percentage_probability': 24.538707733154297}, {'box_points': (2, 246, 72, 301), 'name': 'car', 'percentage_probability': 28.433072566986084}, {'box_points': (472, 273, 539, 323), 'name': 'car', 'percentage_probability': 87.17672824859619}, {'box_points': (597, 270, 626, 317), 'name': 'person', 'percentage_probability': 27.459821105003357}]
+ ]
+ 
+Array for output count for unique objects in each frame : [{'bus': 4, 'boat': 3, 'person': 1, 'car': 8},
+ {'truck': 1, 'bus': 4, 'boat': 3, 'person': 1, 'car': 7},
+ {'bus': 5, 'boat': 2, 'person': 1, 'car': 5},
+ {'bus': 5, 'boat': 1, 'person': 1, 'car': 9},
+ {'truck': 1, 'bus': 2, 'car': 6, 'person': 1},
+ {'truck': 2, 'bus': 4, 'boat': 2, 'person': 1, 'car': 7},
+ {'truck': 1, 'bus': 3, 'car': 7, 'person': 1, 'umbrella': 1},
+ {'bus': 4, 'car': 7, 'person': 1, 'umbrella': 2},
+ {'bus': 3, 'car': 6, 'boat': 1, 'person': 1, 'umbrella': 3},
+ {'bus': 3, 'car': 4, 'boat': 1, 'person': 1, 'umbrella': 2}]
+ 
+Output average count for unique objects in the last second: {'truck': 0.5, 'bus': 3.7, 'umbrella': 0.8, 'boat': 1.3, 'person': 1.0, 'car': 6.6}
+
+------------END OF A SECOND --------------
+</pre>
+
+In the above result, the video was processed and saved in 10 frames per second (FPS). For any function you parse into the <b>per_second_function</b>, the function will be executed after every single second of the video that is processed and he following will be parsed into it: <br>
+<b>  >>  Second Index : </b> This is the position number of the second inside the video (e.g 1 for first second and 20 for twentieth second).<br>
+<b>  >>  Output Array : </b> This is an array of arrays, with each contained array and its position (array index + 1) corresponding to the equivalent frame in the last second of the video (In the above example, their are 10 arrays which corresponds to the 10 frames contained in one second). Each contained array contains dictionaries. Each dictionary corresponds to each detected object in the image and it contains the "name", "percentage_probabaility" and "box_points"(x1,y1,x2,y2) values of the object. <br>
+<b>  >>  Count arrays : </b> This is an array of dictionaries. Each dictionary and its position (array index + 1)  corresponds to the equivalent frame in the last second of he video.  Each dictionary has the name of each unique object detected as its keys and the number of instances of the objects detected as the values. <br> 
+<b>  >>  Average Output Count : </b> This is a dictionary that has the name of each unique object detected in the last second as its keys and the average number of instances of the objects detected across the number of frames as the values. <br> <br>
+
+<b> *Results for the Minute function</b>
+The above set of <b>4 parameters</b> that are returned for every second of the video processed is the same parameters to that will be returned for every minute of the video processed. The difference is that the index returned corresponds to the minute index, the <b>output_arrays</b> is an array that contains the number of FPS * 60  number of arrays (in the code example above, 10 frames per second(fps) * 60 seconds = 600 frames = 600 arrays), and the <b>count_arrays</b> is an array that contains the number of FPS * 60  number of dictionaries (in the code example above, 10 frames per second(fps) * 60 seconds = 600 frames = 600 dictionaries) and the <b>average_output_count</b> is a dictionary that covers all the objects detected in all the frames contained in the last minute.
+
+<br><br>
+<b> ***Results for the Video Complete Function</b> <br>
+<b>ImageAI</b> allows you to obtain complete analysis of the entire video processed. All you need is to define a function like the forSecond or forMinute function and set the <b>video_complete_function</b> parameter into your <b>.detectObjectsFromVideo()</b> or <b>.detectCustomObjectsFromVideo()</b> function. The same values for the per_second-function and per_minute_function will be returned. The difference is that no index will be returned and the other 3 values will be returned, and the 3 values will cover all frames in the video. Below is a sample function: <br>
+<pre>
+def forFull(output_arrays, count_arrays, average_output_count):
+    #Perform action on the 3 parameters returned into the function
+
+video_detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "traffic.mp4"), output_file_path=os.path.join(execution_path, "traffic_detected") ,  frames_per_second=10, video_complete_function=forFull, minimum_percentage_probability=30)
+
+</pre>
+<br>
+<b>FINAL NOTE ON VIDEO ANALYSIS</b> : <b>ImageAI</b> allows you to obtain the detected video frame as a Numpy array at each frame, second and minute function. All you need to do is specify one more parameter in your function and set <b>return_detected_frame=True</b> in your <b>detectObjectsFromVideo()</b> or <b>detectCustomObjectsFrom()</b> function. Once this is set, the extra parameter you sepecified in your function will be the Numpy array of the detected frame. See a sample below: <br><br>
+<pre>
+def forFrame(frame_number, output_array, output_count, detected_frame):
+    print("FOR FRAME " , frame_number)
+    print("Output for each object : ", output_array)
+    print("Output count for unique objects : ", output_count)
+	print("Returned Objects is : ", type(detected_frame))
+    print("------------END OF A FRAME --------------")
+
+video_detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "traffic.mp4"), output_file_path=os.path.join(execution_path, "traffic_detected") ,  frames_per_second=10, per_frame_function=forFrame, minimum_percentage_probability=30, return_detected_frame=True)
+</pre>
 
 <br><br>
 
@@ -245,54 +394,28 @@ See the results and link to download the videos below:
    <a href="https://drive.google.com/open?id=1aN2nnVoFjhUWpcz2Und3dsCT9OKrakM0" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "flash" and interval=5 </button></a>
 
 </div>
-<br><br> <br>
+<br>
+
+<div id="support"></div>
+ <h3><b><u>Support the ImageAI Project</u></b></h3>
+<img src="../../supportimage.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
+The <b>ImageAI</b> project is <b>free and open-source</b>. We are devoting lots of time and effort to provide industrial grade and the best of computer vision tools using state-of-the-art machine learning algorithms, in a way that amateur, intermediate and professional developers and researcher will find easy, convenient, independent and at no cost. We are asking the support of everyone who appreciates, uses and share in our dream for this project. Visit the link below to our <b>Indiegogo campaign</b> to contribute a token, or something substantial which will earn you an exclusive free E-Book that covers tutorials and full sample codes on using <b>ImageAI</b> for real-life and large-scale projects.
+<br>
+<b><h3> [ >>> Support ImageAI on Indiegogo]() </h3></b>
+With your contributions, we will be adding more features including the ones requested by users of <b>ImageAI</b> that has contacted us. Some of the features are : <br> <br>
+<b> 1) Custom training of Object Detection Models using RetinaNet, YOLOv3 and TinyYOLOv3</b> <br>
+<b> 2) Image Segmentation</b> <br>
+<b> 3) Face, Gender and Age Detection</b> <br>
+<b> 4) Vehicle Number Plate Detection Recognition</b> <br>
+<b> 5) ImageAI and all its features for Android</b> (For integrating all ImageAI features into Android Applications) <br>
+<b> 6) ImageAI and all its features for iOS</b> (For integrating all ImageAI features into iOS Applications) <br>
+<b> 7) ImageAI and all its features for .NET</b> (ImageAI and all its features for .NET developers) <br>
 
 
 <div id="documentation" ></div>
-<h3><b><u>Documentation</u></b></h3>
-<p style="font-size: 20px;" ><b>imageai.Detection.VideoObjectDetection </b> class </p>
-<hr>
-<p>
-          The <b>VideoObjectDetection</b> class can be used to perform object detection on videos,  by instantiating it and calling the available functions below: <br>
-            <b>- setModelTypeAsRetinaNet()</b>    This function should be called
-            to use the RetinaNet model file for object detection. You only need to call it once. <br>
-            <b>- setModelPath()</b>    You need to call this function only once and parse the path to
-       the model file path into it. The model file type must correspond to the model type you set.  <br>
-             <b>- loadModel()</b>      This function is required and is used to load the model structure into the program from the file path defined <br>
-                in the setModelPath() function. This function receives an optional value which is "detection_speed". <br>
-                The value is used to reduce the time it takes to detect objects in a video, down to about a 10% of the normal time, with <br>
-                 with just slight reduction in the number of objects detected. <br> <br> ***** prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash" <br> <br>:param detection_speed: <br>
-                :return:  <br> <br>
-            <b>- detectObjectsFromVideo()</b> This function is used to detect objects observable in the given video path: <br> <br>
-                            ****** input_file_path , which is the file path to the input video <br>
-                            ****** output_file_path , which is the path to the output video <br>
-                            ****** frames_per_second , which is the number of frames to be used in the output video <br>
-                            ****** frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected. <br>
-                            ****** minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br>
-                            ****** log_progress (optional) , which states if the progress of the frame processed is to be logged to console <br> <br>:param input_file_path: <br>
-                    :param output_file_path: <br>
-                    :param frames_per_second: <br>
-                    :param frame_detection_interval: <br>
-                    :param minimum_percentage_probability: <br>
-                    :param log_progress: <br>
-                    :return output_video_filepath:<br> <br> <br>
-    <b>- CustomObjecs()</b>  This function can be optionally called to handpick the type of objects you want to detect <br>
-                         from a video. The objects are pre-initiated in the function variables and predefined as 'False', <br>
-                         which you can easily set to true for any number of objects available.  This function <br>
-                         returns a dictionary which must be parsed into the 'detectCustomObjectsFromVideo()'. Detecting <br>
-                          custom objects only happens when you call the function 'detectCustomObjectsFromVideo()' <br> <br> ****** true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present <br> <br>:param boolean_values: <br>
-                        :return: custom_objects_dict <br><br> <br> <br><b>- detectCustomObjectsFromVideo()</b> This function is used to detect specific object(s) observable in the given video path: <br> <br>
-                            * custom_objects , which is the dictionary returned by the 'CustomObjects' function <br>
-                            * input_file_path , which is the file path to the input video <br>
-                            * output_file_path , which is the path to the output video <br>
-                            * frames_per_second , which is the number of frames to be used in the output video <br>
-                            * frame_detection_interval (optional, 1 by default) , which is the intervals of frames that will be detected. <br>
-                            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output. <br>
-                            * log_progress (optional) , which states if the progress of the frame processed is to be logged to console <br> <br>:param custom_objects: <br>
-                    :param input_file_path: <br>
-                    :param output_file_path: <br>
-                    :param frames_per_second: <br>
-                    :param frame_detection_interval: <br>
-                    :param minimum_percentage_probability: <br>
-                    :param log_progress: <br>
-                    :return output_video_filepath: <br>
+<h3><b><u> >> Documentation</u></b></h3>
+We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
+
+<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
+<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+

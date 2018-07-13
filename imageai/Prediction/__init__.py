@@ -231,7 +231,7 @@ class ImagePrediction:
                         for result in results:
                             countdown += 1
                             prediction_results.append(str(result[1]))
-                            prediction_probabilities.append(str(result[2] * 100))
+                            prediction_probabilities.append(result[2] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -281,7 +281,7 @@ class ImagePrediction:
                         for result in results:
                             countdown += 1
                             prediction_results.append(str(result[1]))
-                            prediction_probabilities.append(str(result[2] * 100))
+                            prediction_probabilities.append(result[2] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -332,7 +332,7 @@ class ImagePrediction:
                         for result in results:
                             countdown += 1
                             prediction_results.append(str(result[1]))
-                            prediction_probabilities.append(str(result[2] * 100))
+                            prediction_probabilities.append(result[2] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -384,7 +384,7 @@ class ImagePrediction:
                         for result in results:
                             countdown += 1
                             prediction_results.append(str(result[1]))
-                            prediction_probabilities.append(str(result[2] * 100))
+                            prediction_probabilities.append(result[2] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -468,7 +468,7 @@ class ImagePrediction:
                             for result in results:
                                 countdown += 1
                                 prediction_results.append(str(result[1]))
-                                prediction_probabilities.append(str(result[2] * 100))
+                                prediction_probabilities.append(result[2] * 100)
                     except:
                         raise ValueError("An error occured! Try again.")
 
@@ -522,7 +522,7 @@ class ImagePrediction:
                             for result in results:
                                 countdown += 1
                                 prediction_results.append(str(result[1]))
-                                prediction_probabilities.append(str(result[2] * 100))
+                                prediction_probabilities.append(result[2] * 100)
                     except:
                         raise ValueError("An error occured! Try again.")
 
@@ -577,7 +577,7 @@ class ImagePrediction:
                             for result in results:
                                 countdown += 1
                                 prediction_results.append(str(result[1]))
-                                prediction_probabilities.append(str(result[2] * 100))
+                                prediction_probabilities.append(result[2] * 100)
                     except:
                         raise ValueError("An error occured! Try again.")
 
@@ -633,7 +633,7 @@ class ImagePrediction:
                             for result in results:
                                 countdown += 1
                                 prediction_results.append(str(result[1]))
-                                prediction_probabilities.append(str(result[2] * 100))
+                                prediction_probabilities.append(result[2] * 100)
                     except:
                         raise ValueError("An error occured! Try again.")
 

@@ -16,18 +16,18 @@ Built with simplicity in mind, <b>ImageAI</b>
 
 <br> <br>
 
-<b>New Release : ImageAI 2.0.1</b>
+<b>New Release : ImageAI 2.0.2</b>
 <br> What's new:
 <br>
-- Addition of Custom Image Prediction model trainings using SqueezeNet, ResNet50, InceptionV3 and DenseNet121 <br>
-- Addition of Custom Image Prediction with custom trained models and generated model class json  <br>
-- Preview Release: Addition of Video Object Detection and Video Custom Objects Detection (object tracking)  <br>
-- Addition of file, numpy array and stream input types for all image prediction and object detection tasks (file inputs only for video detections)  <br>
-- Addition of file and numpy array output types for object detection and custom object detection in images  <br>
-- Introduction of 4 speed modes ('normal', 'fast', 'faster' and 'fastest') for image prediction, allowing prediction time to reduce by 50% at 'fastest' while maintaining prediction accuracy  <br>
-- Introduction of 5 speed modes ('normal', 'fast', 'faster', 'fastest' and 'flash') for all object detection and video object detection tasks, allowing detection time to reduce by over 80%  <br>
-with 'flash' detection accuracy balanced with 'minimum_percentage_probability' which is kept at low values <br>
-- Introduction of rate of frame detections, allowing developers to adjust intervals of detections in videos in favour of real time/close to real time result. <br>  <br>
+- Option to state image size during custom image prediction model trainings <br>
+- Object Detection and Video Object detection now returns bounding box coordinates **('box points')** (x1,y1,x2, y2) for each object detected in addition to object's 'name' and 'percentage probability' <br>
+- Options to hide 'percentage probability' and/or object 'name' from being shown in detected image or video
+- Support for video object detection on video live stream from device camera, connected camera and IP camera <br>
+- Support for **YOLOv3** and **TinyYOLOv3** for all object detection and video object detection tasks.
+- Video object detection for all input types (video file and camera) now allows defining custom functions to execute after each frame, each second and each minute of the video is detected and processed. Also include option to specify custom function at once video is fully detected and processed <br>
+- For each custom function specified, **ImageAI** returns the **frame**/**seconds**/**minute**/**full video analysis** of the detections that include the objects' details ( **name** , **percentage** **probability**, **box_points**), number of instance of each unique object detected (counts) and overall average count of the number of instance of each unique object detected in the case of **second** / **minute** / **full video analysis**<br>
+- Options to return detected frame at every frame, second or minute processed as a **Numpy array**.
+ <br>  <br>
 <br>
 
 <h3><b><u>TABLE OF CONTENTS</u></b></h3>
@@ -35,23 +35,24 @@ with 'flash' detection accuracy balanced with 'minimum_percentage_probability' w
 <a href="#installation" >&#9635 Installation</a><br>
 <a href="#prediction" >&#9635 Image Prediction</a><br>
 <a href="#detection" >&#9635 Object Detection</a><br>
-<a href="#videodetection" >&#9635 Video Object Detection and Tracking</a><br>
+<a href="#videodetection" >&#9635 Video Object Detection, Tracking & Analysis</a><br>
 <a href="#customtraining" >&#9635 Custom Model Training</a><br>
 <a href="#customprediction" >&#9635 Custom Image Prediction</a><br>
-<a href="#sample" >&#9635 Sample Applications</a><br>
+<a href="#documentation" >&#9635 Documentation</a><br>
+<a href="#sample" >&#9635 Projects Built on ImageAI</a><br>
 <a href="#recommendation" >&#9635 AI Practice Recommendations</a><br>
+<a href="#support" >&#9635 Support the ImageAI Project</a><br>
 <a href="#contact" >&#9635 Contact Developers</a><br>
+<a href="#contributors" >&#9635 Contributors</a><br>
 <a href="#ref" >&#9635 References</a><br>
 
 
 <br><br>
 
 <div id="dependencies"></div>
-<h3><b><u>Dependencies</u></b></h3>
-                            To use <b>ImageAI</b> in your application developments, you must have installed the following 
+<h3><b><u>Dependencies</u></b></h3>To use <b>ImageAI</b> in your application developments, you must have installed the following 
  dependencies before you install <b>ImageAI</b> : 
  
-
  
  <br> <br>
        <span><b>- Python 3.5.1 (and later versions) </b>      <a href="https://www.python.org/downloads/" style="text-decoration: none;" >Download</a> (Support for Python 2.7 coming soon) </span> <br>
@@ -66,21 +67,16 @@ with 'flash' detection accuracy balanced with 'minimum_percentage_probability' w
        <span><b>- Keras 2.x  </b>     <a href="https://keras.io/#installation" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install keras </pre> 
 
 <div id="installation"></div>
- <h3><b><u>Installation</u></b></h3>
-      To install ImageAI, run the python installation instruction below in the command line: <br><br>
-    <span>      <b>pip3 install https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.1/imageai-2.0.1-py3-none-any.whl </b></span> <br><br> <br>
+ <h3><b><u>Installation</u></b></h3> To install ImageAI, run the python installation instruction below in the command line: <br><br>
+    <span>      <b>pip3 install https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.2/imageai-2.0.2-py3-none-any.whl </b></span> <br><br> <br>
     
-   or download the Python Wheel <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.1/imageai-2.0.1-py3-none-any.whl" ><b>
-    imageai-2.0.1-py3-none-any.whl</b></a> and run the python installation instruction in the  command line
+   or download the Python Wheel <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.2/imageai-2.0.2-py3-none-any.whl" ><b>
+    imageai-2.0.2-py3-none-any.whl</b></a> and run the python installation instruction in the  command line
      to the path of the file like the one below: <br><br>
-    <span>      <b>pip3 install C:\User\MyUser\Downloads\imageai-2.0.1-py3-none-any.whl</b></span> <br><br>
+    <span>      <b>pip3 install C:\User\MyUser\Downloads\imageai-2.0.2-py3-none-any.whl</b></span> <br><br>
 
 <div id="prediction"></div>
 <h3><b><u>Image Prediction</u></b></h3>
-<b>ImageAI</b> provides 4 different algorithms and model types to perform image prediction, trained on the ImageNet-1000 dataset.
-The 4 algorithms provided for image prediction include <b>SqueezeNet</b>, <b>ResNet</b>, <b>InceptionV3</b> and <b>DenseNet</b>. 
-You will find below the result of an example prediction using the ResNet50 model, and the 'Tutorials & Documentation' link below the image.
-Click the link to see the full sample codes, explainations, best practices guide and documentation.
 <p><img src="images/1.jpg" style="width: 400px; height: auto;" /> 
     <pre>convertible : 52.459555864334106
 sports_car : 37.61284649372101
@@ -89,7 +85,12 @@ car_wheel : 1.817505806684494
 minivan : 1.7487050965428352</pre>
 </p>
 
-<a href="imageai/Prediction/" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
+<b>ImageAI</b> provides 4 different algorithms and model types to perform image prediction, trained on the ImageNet-1000 dataset.
+The 4 algorithms provided for image prediction include <b>SqueezeNet</b>, <b>ResNet</b>, <b>InceptionV3</b> and <b>DenseNet</b>. 
+
+Click the link below to see the full sample codes, explanations and best practices guide.
+
+<a href="imageai/Prediction/" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorial & Guide </button></a>
 
 <br>
 
@@ -98,12 +99,7 @@ minivan : 1.7487050965428352</pre>
 
 <div id="detection"></div>
 <h3><b><u>Object Detection</u></b></h3>
-<b>ImageAI</b> provides very convenient and powerful methods
- to perform object detection on images and extract each object from the image. The object detection class provided only supports
- the current state-of-the-art RetinaNet, but with options to adjust for state of the art performance or real time processing.
-You will find below the result of an example object detection using the RetinaNet model, and the 'Tutorials & Documentation' link below the images.
-Click the link to see the full sample codes, explainations, best practices guide and documentation.
-    <div style="width: 600px;" >
+<div style="width: 600px;" >
           <b><p><i>Input Image</i></p></b></br>
           <img src="images/image2.jpg" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
           <b><p><i>Output Image</i></p></b>
@@ -125,10 +121,13 @@ person : 87.10319399833679
 --------------------------------
 
 </pre>
+<b>ImageAI</b> provides very convenient and powerful methods
+ to perform object detection on images and extract each object from the image. The object detection class provides support for RetinaNet, YOLOv3 and TinyYOLOv3, with options to adjust for state of the art performance or real time processing.
+
+Click the link below to see the full sample codes, explanations and best practices guide.
 
 
-
-<a href="imageai/Detection/" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
+<a href="imageai/Detection/" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorial & Guide</button></a>
 
 <br><br>
 
@@ -140,36 +139,35 @@ person : 87.10319399833679
 
 <div id="videodetection"></div>
 <h3><b><u>Video Object Detection and Tracking</u></b></h3>
-<b>ImageAI</b> provides very convenient and powerful methods
- to perform object detection in videos and track specific object(s). The video object detection class provided only supports
- the current state-of-the-art RetinaNet, but with options to adjust for state of the art performance or real time processing.
-You will find below the result of an example object detection using the RetinaNet model, and the 'Tutorials & Documentation' link below the images.
-Click the link to see the full videos, sample codes, explainations, best practices guide and documentation.
+
 <p><div style="width: 600px;" >
-          <p><i><b>Video Object Detection</b></i></p>
+          <p><i><b>Video Object Detection & Analysis</b></i></p>
 <p><i>Below is a snapshot of a video with objects detected.</i></p>
           <img src="images/video1.jpg" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
           <p><i><b>Video Custom Object Detection (Object Tracking)</b></i></p>
             <p><i>Below is a snapshot of a video with only person, bicycle and motorcyle detected.</i></p>
-          <img src="images/video2.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
+          <img src="images/video2.jpg" style="width: 500px; height: auto; margin-left: 50px; " /><br>
+          <p><i><b>Video Analysis Visualization </b></i></p>
+            <p><i>Below is a visualization of video analysis returned by **ImageAI** into a 'per_second' function.</i></p>
+          <img src="images/video_analysis_visualization.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
     </div> <br>
+
+<b>ImageAI</b> provides very convenient and powerful methods
+ to perform object detection in videos and track specific object(s). The video object detection class provided only supports
+ the current state-of-the-art RetinaNet, but with options to adjust for state of the art performance or real time processing.
+Click the link to see the full videos, sample codes, explanations and best practices guide.
 
 
 </p>
 
 
-<a href="imageai/Detection/VIDEO.md" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
+<a href="imageai/Detection/VIDEO.md" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorial & Guide </button></a>
 
-
-<br> <br>
+<br>
 
 <div id="customtraining"></div>
 <h3><b><u>Custom Model Training </u></b></h3>
-<b>ImageAI</b> provides classes and methods for you to train a new model that can be used to perform prediction on your own custom objects.
-You can train your custom models using SqueezeNet, ResNet50, InceptionV3 and DenseNet in less than <b> 12 </b> lines of code.
-You will find below the 'Full Details & Documentation' link below the image.
-Click the link below the image to see the guide to preparing training images, sample training codes, explainations, best practices guide and documentation.
-<br>
+
 <p><br>
     <div style="width: 600px;" >
             <p><i>A sample from the IdenProf Dataset used to train a Model for predicting professionals.</i></p>
@@ -178,6 +176,11 @@ Click the link below the image to see the guide to preparing training images, sa
 
 
 </p>
+
+<b>ImageAI</b> provides classes and methods for you to train a new model that can be used to perform prediction on your own custom objects.
+You can train your custom models using SqueezeNet, ResNet50, InceptionV3 and DenseNet in  <b> 5 </b> lines of code.
+Click the link below to see the guide to preparing training images, sample training codes, explanations and best practices.
+<br>
 
 
 <a href="imageai/Prediction/CUSTOMTRAINING.md" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
@@ -188,12 +191,8 @@ Click the link below the image to see the guide to preparing training images, sa
 
 <div id="customprediction"></div>
 <h3><b><u>Custom Image Prediction </u></b></h3>
-<b>ImageAI</b> provides classes and methods for you to run image prediction your own custom objects using your own model trained with <b>ImageAI</b> Model Training class.
-You can use custom models trained with SqueezeNet, ResNet50, InceptionV3 and DenseNet and the JSON file containing the mapping of the custom object names.
-You will find the 'Tutorials & Documentation' link below the image.
-Click the link to see the guide to sample training codes, explainations, best practices guide and documentation.
-<br>
-<p><br>
+
+<p>
 <p><i>Prediction from a sample model trained on IdenProf, for predicting professionals</i></p>
       <img src="images/4.jpg" style="width: 400px; height: auto;" />
     <pre>mechanic : 76.82620286941528
@@ -205,6 +204,11 @@ pilot : 2.239348366856575</pre>
 
 </p>
 
+<b>ImageAI</b> provides classes and methods for you to run image prediction your own custom objects using your own model trained with <b>ImageAI</b> Model Training class.
+You can use your custom models trained with SqueezeNet, ResNet50, InceptionV3 and DenseNet and the JSON file containing the mapping of the custom object names.
+Click the link below to see the guide to sample training codes, explanations, and best practices guide.
+<br>
+
 
 <a href="imageai/Prediction/CUSTOMPREDICTION.md" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
 
@@ -214,10 +218,19 @@ pilot : 2.239348366856575</pre>
 
 
 
-<br><br> <br>
+<br><br>
+<div id="documentation"></div>
+<h3><b><u>Documentation </u></b></h3>
+
+We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
+
+<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
+<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+
+<br> <br>
 
 <div id="performance"></div>
-<h3><b><u>Real-Time and High Perfomance Implementation</u></b></h3>
+<h3><b><u>Real-Time and High Performance Implementation</u></b></h3>
 <b>ImageAI</b> provides abstracted and convenient implementations of state-of-the-art Computer Vision technologies. All of <b>ImageAI</b> implementations and code can work on any computer system with moderate CPU capacity. However, the speed of processing for operations like image prediction, object detection and others on CPU is slow and not suitable for real-time applications. To perform real-time Computer Vision operations with high performance, you need to use GPU enabled technologies.
 <br> <br>
 <b>ImageAI</b> uses the Tensorflow backbone for it's Computer Vision operations. Tensorflow supports both CPUs and GPUs ( Specifically NVIDIA GPUs.  You can get one for your PC or get a PC that has one) for machine learning and artificial intelligence algorithms' implementations. To use Tensorflow that supports the use of GPUs, follow the link below :
@@ -235,8 +248,7 @@ FOR UBUNTU <br>
 <br><br>
 
 <div id="sample"></div>
-<h3><b><u>Sample Applications</u></b></h3>
-      As a demonstration of  what you can do with ImageAI, we have 
+<h3><b><u>Sample Applications</u></b></h3> As a demonstration of  what you can do with ImageAI, we have 
  built a complete AI powered Photo gallery for Windows called <b>IntelliP</b> ,  using <b>ImageAI</b> and UI framework <b>Kivy</b>. Follow this 
  <a href="https://github.com/OlafenwaMoses/IntelliP"  > link </a> to download page of the application and its source code. <br> <br>
 
@@ -254,6 +266,23 @@ Kindly follow the link below to download the publication.
 <a href="https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society/" >https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society/</a>
  <br> <br>
 
+
+
+<div id="support"></div>
+ <h3><b><u>Support the ImageAI Project</u></b></h3>
+<img src="supportimage.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
+The <b>ImageAI</b> project is <b>free and open-source</b>. We are devoting lots of time and effort to provide industrial grade and the best of computer vision tools using state-of-the-art machine learning algorithms, in a way that amateur, intermediate and professional developers and researcher will find easy, convenient, independent and at no cost. We are asking the support of everyone who appreciates, uses and share in our dream for this project. Visit the link below to our <b>Indiegogo campaign</b> to contribute a token, or something substantial which will earn you an exclusive free E-Book that covers tutorials and full sample codes on using <b>ImageAI</b> for real-life and large-scale projects.
+<br>
+<b><h3> [ >>> Support ImageAI on Indiegogo]() </h3></b>
+With your contributions, we will be adding more features including the ones requested by users of <b>ImageAI</b> that has contacted us. Some of the features are : <br> <br>
+<b> 1) Custom training of Object Detection Models using RetinaNet, YOLOv3 and TinyYOLOv3</b> <br>
+<b> 2) Image Segmentation</b> <br>
+<b> 3) Face, Gender and Age Detection</b> <br>
+<b> 4) Vehicle Number Plate Detection Recognition</b> <br>
+<b> 5) ImageAI and all its features for Android</b> (For integrating all ImageAI features into Android Applications) <br>
+<b> 6) ImageAI and all its features for iOS</b> (For integrating all ImageAI features into iOS Applications) <br>
+<b> 7) ImageAI and all its features for .NET</b> (ImageAI and all its features for .NET developers) <br>
+
 <div id="contact"></div>
  <h3><b><u>Contact Developers</u></b></h3>
  <p> <b>Moses Olafenwa</b> <br>
@@ -269,6 +298,23 @@ Kindly follow the link below to download the publication.
       <i>Twitter: </i>    <a style="text-decoration: none;" target="_blank" href="https://twitter.com/johnolafenwa"> @johnolafenwa</a> <br>
       <i>Medium : </i>    <a style="text-decoration: none;" target="_blank" href="https://medium.com/@johnolafenwa"> @johnolafenwa</a> <br>
       <i>Facebook : </i>    <a style="text-decoration: none;" href="https://facebook.com/olafenwajohn"> olafenwajohn</a> <br>
+
+
+ </p>
+
+ <br><br>
+
+<div id="contact"></div>
+ <h3><b><u>Contributors</u></b></h3>
+We are inviting anyone who wishes to contribute to the <b>ImageAI</b> project to reach to us. We primarily need contributions in translating the documentation of the project's code to major languages that includes but not limited to French, Spanish, Portuguese, Arabian and more. We want every developer and researcher around the world to benefit from this project irrespective of their native languages. <br>
+
+We give special thanks to <b>[Kang vcar](https://github.com/kangvcar/)</b> for his incredible and excellent work in translating <b>ImageAI</b>'s documentation to the Chinese language. Find below the contact details of those who have contributed immensely to the <b>ImageAI</b> project.
+
+ <p> <b>Kang vcar</b> <br>
+    <i>Email: </i>    <a style="text-decoration: none;"  href="mailto:kangvcar@mail.com"> kangvcar@mail.com</a> <br>
+      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="http://www.kangvcar.com"> http://www.kangvcar.com</a> <br>
+      <i>Twitter: </i>    <a style="text-decoration: none;" target="_blank" href="https://twitter.com/OlafenwaMoses"> @kangvcar</a> <br>
+
 
 
  </p>

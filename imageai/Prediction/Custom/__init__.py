@@ -14,6 +14,7 @@ from tensorflow.python.keras.callbacks import ModelCheckpoint
 from io import open
 import json
 import numpy as np
+import warnings
 
 
 
@@ -132,7 +133,7 @@ class ModelTraining:
 
 
 
-    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False):
+    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224):
 
         """
                  'trainModel()' function starts the actual training. It accepts the following values:
@@ -146,6 +147,8 @@ class ModelTraining:
                                                      to keep this value as it is if you don't have deep understanding of this concept.
                  - show_network_summary(optional) , this value is used to show the structure of the network should you desire to see it.
                                                     Itis set to False by default
+                 - training_image_size(optional) , this value is used to define the image size on which the model will be trained. The
+                                            value is 224 by default and is kept at a minimum of 100.
 
                  *
 
@@ -155,6 +158,7 @@ class ModelTraining:
                 :param batch_size:
                 :param initial_learning_rate:
                 :param show_network_summary:
+                :param training_image_size:
                 :return:
                 """
         self.__num_epochs = num_experiments
@@ -163,9 +167,14 @@ class ModelTraining:
 
 
         num_classes = num_objects
-        image_input = Input(shape=(224, 224, 3))
 
-        image_input = Input(shape=(224, 224, 3))
+        if(training_image_size < 100):
+            warnings.warn("The specified training_image_size {} is less than 100. Hence the training_image_size will default to 100.".format(training_image_size))
+            training_image_size = 100
+
+
+
+        image_input = Input(shape=(training_image_size, training_image_size, 3))
         if (self.__modelType == "squeezenet"):
             model = SqueezeNet(weights="custom", num_classes=num_classes, model_input=image_input)
         elif (self.__modelType == "resnet"):
@@ -212,10 +221,10 @@ class ModelTraining:
         test_datagen = ImageDataGenerator(
             rescale=1. / 255)
 
-        train_generator = train_datagen.flow_from_directory(self.__train_dir, target_size=(224, 224),
+        train_generator = train_datagen.flow_from_directory(self.__train_dir, target_size=(training_image_size, training_image_size),
                                                             batch_size=batch_size,
                                                             class_mode="categorical")
-        test_generator = test_datagen.flow_from_directory(self.__test_dir, target_size=(224, 224),
+        test_generator = test_datagen.flow_from_directory(self.__test_dir, target_size=(training_image_size, training_image_size),
                                                           batch_size=batch_size,
                                                           class_mode="categorical")
 
