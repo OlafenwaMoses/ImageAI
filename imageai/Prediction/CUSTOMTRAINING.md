@@ -6,10 +6,10 @@ using state-of-the-art SqueezeNet, ResNet50, InceptionV3 and DenseNet
 which you can load into the <b>imageai.Prediction.Custom.CustomImagePrediction</b> class. This allows
  you to train your own model on any set of images that corresponds to any type of objects/persons.
 The training process generates a JSON file that maps the objects types in your image dataset
-and lots of models. You will then peak the model with the highest accuracy and perform custom
+and creates lots of models. You will then peak the model with the highest accuracy and perform custom
 image prediction using the model and the JSON file generated. <br><br>
 
-Because video model training is a compute intensive tasks, we strong advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
+Because model training is a compute intensive tasks, we strongly advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
  installed. Performing model training on CPU will my take hours or days. With NVIDIA GPU powered computer system, this will take
  a few hours.  You can use Google Colab for this experiment as it has an NVIDIA K80 GPU available.
 
@@ -28,7 +28,7 @@ This images are the ones to be used to train the model <br>
 To produce a model that can perform well in practical applications, I recommend you about 500 or more
  images per object. 1000 images per object is just great <br>
 7. In each folder present in the test folder, put about 100 to 200 images of each object in its respective folder.
-This images are the ones to be used to test the model as it trains <br>
+These images are the ones to be used to test the model as it trains <br>
 8. Once you have done this, the structure of your image dataset folder should look like below: <br> <br>
 
 <b><pre>	pets//train//dog//dog-train-images

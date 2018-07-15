@@ -9,7 +9,7 @@ and Authors of [Introduction to Deep Computer Vision](https://john.specpal.scien
 Built with simplicity in mind, <b>ImageAI</b> 
     supports a list of state-of-the-art Machine Learning algorithms for image prediction, custom image prediction, object detection, video detection, video object tracking
     and image predictions trainings. <b>ImageAI</b> currently supports image prediction and training using 4 different Machine Learning algorithms 
-    trained on the ImageNet-1000 dataset. <b>ImageAI</b> also supports object detection, video detection and object tracking  using RetinaNet trained on COCO dataset. <br>
+    trained on the ImageNet-1000 dataset. <b>ImageAI</b> also supports object detection, video detection and object tracking  using RetinaNet, YOLOv3 and TinyYOLOv3 trained on COCO dataset. <br>
                                    Eventually, <b>ImageAI</b> will provide support for a wider
     and more specialized aspects of Computer Vision including and not limited to image 
     recognition in special environments and special fields.
