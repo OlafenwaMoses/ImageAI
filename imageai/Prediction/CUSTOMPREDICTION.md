@@ -91,7 +91,7 @@ in the <b>ImagePrediction</b> class. Follow this <a href="README.md" >link</a> t
 <img src="../../supportimage.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
 The <b>ImageAI</b> project is <b>free and open-source</b>. We are devoting lots of time and effort to provide industrial grade and the best of computer vision tools using state-of-the-art machine learning algorithms, in a way that amateur, intermediate and professional developers and researcher will find easy, convenient, independent and at no cost. We are asking the support of everyone who appreciates, uses and share in our dream for this project. Visit the link below to our <b>Indiegogo campaign</b> to contribute a token, or something substantial which will earn you an exclusive free E-Book that covers tutorials and full sample codes on using <b>ImageAI</b> for real-life and large-scale projects.
 <br>
-<b><h3> [ >>> Support ImageAI on Indiegogo]() </h3></b>
+<b><a href="" ><h3> >>> Support ImageAI on Indiegogo </h3></a></b>
 With your contributions, we will be adding more features including the ones requested by users of <b>ImageAI</b> that has contacted us. Some of the features are : <br> <br>
 <b> 1) Custom training of Object Detection Models using RetinaNet, YOLOv3 and TinyYOLOv3</b> <br>
 <b> 2) Image Segmentation</b> <br>
