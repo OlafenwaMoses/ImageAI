@@ -585,9 +585,6 @@ model_trainer.trainModel(num_objects=10, num_experiments=100, enhance_data=True,
 
 <br><br><br>
 
-<div id="documentation" ></div>
-<h3><b><u>Documentation</u></b></h3>
-
 
 
 <h3><b><u>Submitting Custom Model</u></b></h3>
@@ -603,21 +600,9 @@ We are providing an opportunity for anyone that uses <b></b> to train a model to
       <i>Facebook : </i>    <a style="text-decoration: none;" target="_blank" href="https://facebook.com/moses.olafenwa"> moses.olafenwa</a> <br>
 <br><br>
 
-<h3><b><u>Support the ImageAI Project</u></b></h3>
-<img src="../../supportimage.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
-The <b>ImageAI</b> project is <b>free and open-source</b>. We are devoting lots of time and effort to provide industrial grade and the best of computer vision tools using state-of-the-art machine learning algorithms, in a way that amateur, intermediate and professional developers and researcher will find easy, convenient, independent and at no cost. We are asking the support of everyone who appreciates, uses and share in our dream for this project. Visit the link below to our <b>Indiegogo campaign</b> to contribute a token, or something substantial which will earn you an exclusive free E-Book that covers tutorials and full sample codes on using <b>ImageAI</b> for real-life and large-scale projects.
-<br> <br>
-<b> [Click here to Support ImageAI on Indiegogo](https://igg.me/at/imageai) </b><br> <br>
-With your contributions, we will be adding more features including the ones requested by users of <b>ImageAI</b> that has contacted us. Some of the features are : <br> <br>
-<b> 1) Custom training of Object Detection Models using RetinaNet, YOLOv3 and TinyYOLOv3</b> <br>
-<b> 2) Image Segmentation</b> <br>
-<b> 3) Face, Gender and Age Detection</b> <br>
-<b> 4) Vehicle Number Plate Detection Recognition</b> <br>
-<b> 5) ImageAI and all its features for Android</b> (For integrating all ImageAI features into Android Applications) <br>
-<b> 6) ImageAI and all its features for iOS</b> (For integrating all ImageAI features into iOS Applications) <br>
-<b> 7) ImageAI and all its features for .NET</b> (ImageAI and all its features for .NET developers) <br>
 
 
+<div id="documentation" ></div>
 <h3><b><u> >> Documentation</u></b></h3>
 We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
 

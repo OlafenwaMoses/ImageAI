@@ -10,7 +10,6 @@
 <a href="#videodetectionspeed" >&#9635 Detection Speed</a><br>
 <a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a><br>
 <a href="#videodetectionintervals" >&#9635 Frame Detection Intervals</a><br>
-<a href="#support" >&#9635 Support the ImageAI Project</a><br>
 <a href="#documentation" >&#9635 Documentation</a><br>
 <br>
       ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports RetinaNet, YOLOv3 and TinyYOLOv3. This version of <b>ImageAI</b> provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
@@ -395,22 +394,6 @@ See the results and link to download the videos below:
 
 </div>
 <br>
-
-<div id="support"></div>
- <h3><b><u>Support the ImageAI Project</u></b></h3>
-<img src="../../supportimage.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
-The <b>ImageAI</b> project is <b>free and open-source</b>. We are devoting lots of time and effort to provide industrial grade and the best of computer vision tools using state-of-the-art machine learning algorithms, in a way that amateur, intermediate and professional developers and researcher will find easy, convenient, independent and at no cost. We are asking the support of everyone who appreciates, uses and share in our dream for this project. Visit the link below to our <b>Indiegogo campaign</b> to contribute a token, or something substantial which will earn you an exclusive free E-Book that covers tutorials and full sample codes on using <b>ImageAI</b> for real-life and large-scale projects.
-<br> <br>
-<b> [Click here to Support ImageAI on Indiegogo](https://igg.me/at/imageai) </b><br> <br>
-With your contributions, we will be adding more features including the ones requested by users of <b>ImageAI</b> that has contacted us. Some of the features are : <br> <br>
-<b> 1) Custom training of Object Detection Models using RetinaNet, YOLOv3 and TinyYOLOv3</b> <br>
-<b> 2) Image Segmentation</b> <br>
-<b> 3) Face, Gender and Age Detection</b> <br>
-<b> 4) Vehicle Number Plate Detection Recognition</b> <br>
-<b> 5) ImageAI and all its features for Android</b> (For integrating all ImageAI features into Android Applications) <br>
-<b> 6) ImageAI and all its features for iOS</b> (For integrating all ImageAI features into iOS Applications) <br>
-<b> 7) ImageAI and all its features for .NET</b> (ImageAI and all its features for .NET developers) <br>
-
 
 <div id="documentation" ></div>
 <h3><b><u> >> Documentation</u></b></h3>
