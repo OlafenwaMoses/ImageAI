@@ -1,7 +1,8 @@
 import cv2
 
 from imageai.Detection.keras_retinanet.models.resnet import resnet50_retinanet
-from imageai.Detection.keras_retinanet.utils.image import read_image_bgr, read_image_array, read_image_stream, preprocess_image, resize_image
+from imageai.Detection.keras_retinanet.utils.image import read_image_bgr, read_image_array, read_image_stream, \
+    preprocess_image, resize_image
 from imageai.Detection.keras_retinanet.utils.visualization import draw_box, draw_caption
 from imageai.Detection.keras_retinanet.utils.colors import label_color
 
@@ -52,34 +53,45 @@ class ObjectDetection:
         self.__input_image_min = 1333
         self.__input_image_max = 800
 
-        self.numbers_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train',
-                   7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter',
-                   13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant',
-                   21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie',
-                   28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite',
-                   34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket',
-                   39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl',
-                   46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog',
-                   53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed',
-                   60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard',
-                   67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator',
-                   73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier',
-                   79: 'toothbrush'}
+        self.numbers_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
+                                 6: 'train',
+                                 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign',
+                                 12: 'parking meter',
+                                 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow',
+                                 20: 'elephant',
+                                 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag',
+                                 27: 'tie',
+                                 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball',
+                                 33: 'kite',
+                                 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard',
+                                 38: 'tennis racket',
+                                 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon',
+                                 45: 'bowl',
+                                 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot',
+                                 52: 'hot dog',
+                                 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant',
+                                 59: 'bed',
+                                 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote',
+                                 66: 'keyboard',
+                                 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
+                                 72: 'refrigerator',
+                                 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
+                                 78: 'hair drier',
+                                 79: 'toothbrush'}
 
         # Unique instance variables for YOLOv3 and TinyYOLOv3 model
         self.__yolo_iou = 0.45
         self.__yolo_score = 0.1
-        self.__yolo_anchors = np.array([[ 10. , 13.], [ 16. , 30.], [ 33. , 23.], [ 30. , 61.], [ 62. , 45.], [ 59. , 119.], [116. , 90.], [156. , 198.], [373. , 326.]])
-        self.__yolo_model_image_size = (416,416)
+        self.__yolo_anchors = np.array(
+            [[10., 13.], [16., 30.], [33., 23.], [30., 61.], [62., 45.], [59., 119.], [116., 90.], [156., 198.],
+             [373., 326.]])
+        self.__yolo_model_image_size = (416, 416)
         self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes = "", "", ""
         self.sess = K.get_session()
 
-
         # Unique instance variables for TinyYOLOv3.
-        self.__tiny_yolo_anchors = np.array([[ 10. , 14.], [ 23. , 27.], [ 37. , 58.], [ 81. , 82.], [135. , 169.],[344. , 319.]])
-
-
-
+        self.__tiny_yolo_anchors = np.array(
+            [[10., 14.], [23., 27.], [37., 58.], [81., 82.], [135., 169.], [344., 319.]])
 
     def setModelTypeAsRetinaNet(self):
         """
@@ -107,7 +119,6 @@ class ObjectDetection:
 
         self.__modelType = "tinyyolov3"
 
-
     def setModelPath(self, model_path):
         """
          'setModelPath()' function is required and is used to set the file path to a RetinaNet
@@ -116,11 +127,9 @@ class ObjectDetection:
           :return:
         """
 
-        if(self.__modelPathAdded == False):
+        if (self.__modelPathAdded == False):
             self.modelPath = model_path
             self.__modelPathAdded = True
-
-
 
     def loadModel(self, detection_speed="normal"):
         """
@@ -136,7 +145,7 @@ class ObjectDetection:
                 :return:
         """
 
-        if(self.__modelType == "retinanet"):
+        if (self.__modelType == "retinanet"):
             if (detection_speed == "normal"):
                 self.__input_image_min = 800
                 self.__input_image_max = 1333
@@ -152,9 +161,9 @@ class ObjectDetection:
             elif (detection_speed == "flash"):
                 self.__input_image_min = 100
                 self.__input_image_max = 250
-        elif(self.__modelType == "yolov3"):
+        elif (self.__modelType == "yolov3"):
             if (detection_speed == "normal"):
-                self.__yolo_model_image_size = (416,416)
+                self.__yolo_model_image_size = (416, 416)
             elif (detection_speed == "fast"):
                 self.__yolo_model_image_size = (320, 320)
             elif (detection_speed == "faster"):
@@ -176,17 +185,17 @@ class ObjectDetection:
             elif (detection_speed == "flash"):
                 self.__yolo_model_image_size = (272, 272)
 
-
         if (self.__modelLoaded == False):
-            if(self.__modelType == ""):
+            if (self.__modelType == ""):
                 raise ValueError("You must set a valid model type before loading the model.")
-            elif(self.__modelType == "retinanet"):
+            elif (self.__modelType == "retinanet"):
                 model = resnet50_retinanet(num_classes=80)
                 model.load_weights(self.modelPath)
                 self.__model_collection.append(model)
                 self.__modelLoaded = True
             elif (self.__modelType == "yolov3"):
-                model = yolo_main(Input(shape=(None, None, 3)), len(self.__yolo_anchors) // 3, len(self.numbers_to_names))
+                model = yolo_main(Input(shape=(None, None, 3)), len(self.__yolo_anchors) // 3,
+                                  len(self.numbers_to_names))
                 model.load_weights(self.modelPath)
 
                 hsv_tuples = [(x / len(self.numbers_to_names), 1., 1.)
@@ -200,16 +209,19 @@ class ObjectDetection:
                 np.random.seed(None)
 
                 self.__yolo_input_image_shape = K.placeholder(shape=(2,))
-                self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes = yolo_eval(model.output, self.__yolo_anchors,
-                                                                  len(self.numbers_to_names), self.__yolo_input_image_shape,
-                                                                  score_threshold=self.__yolo_score, iou_threshold=self.__yolo_iou)
-
+                self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes = yolo_eval(model.output,
+                                                                                       self.__yolo_anchors,
+                                                                                       len(self.numbers_to_names),
+                                                                                       self.__yolo_input_image_shape,
+                                                                                       score_threshold=self.__yolo_score,
+                                                                                       iou_threshold=self.__yolo_iou)
 
                 self.__model_collection.append(model)
                 self.__modelLoaded = True
 
             elif (self.__modelType == "tinyyolov3"):
-                model = tiny_yolo_main(Input(shape=(None, None, 3)), len(self.__tiny_yolo_anchors) // 2, len(self.numbers_to_names))
+                model = tiny_yolo_main(Input(shape=(None, None, 3)), len(self.__tiny_yolo_anchors) // 2,
+                                       len(self.numbers_to_names))
                 model.load_weights(self.modelPath)
 
                 hsv_tuples = [(x / len(self.numbers_to_names), 1., 1.)
@@ -223,16 +235,19 @@ class ObjectDetection:
                 np.random.seed(None)
 
                 self.__yolo_input_image_shape = K.placeholder(shape=(2,))
-                self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes = yolo_eval(model.output, self.__tiny_yolo_anchors,
-                                                                  len(self.numbers_to_names), self.__yolo_input_image_shape,
-                                                                  score_threshold=self.__yolo_score, iou_threshold=self.__yolo_iou)
-
+                self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes = yolo_eval(model.output,
+                                                                                       self.__tiny_yolo_anchors,
+                                                                                       len(self.numbers_to_names),
+                                                                                       self.__yolo_input_image_shape,
+                                                                                       score_threshold=self.__yolo_score,
+                                                                                       iou_threshold=self.__yolo_iou)
 
                 self.__model_collection.append(model)
                 self.__modelLoaded = True
 
-
-    def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file", extract_detected_objects = False, minimum_percentage_probability = 50, display_percentage_probability=True, display_object_name = True):
+    def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
+                               extract_detected_objects=False, minimum_percentage_probability=50,
+                               display_percentage_probability=True, display_object_name=True):
         """
             'detectObjectsFromImage()' function is used to detect objects observable in the given image path:
                     * input_image , which can be file to path, image numpy array or image file stream
@@ -299,9 +314,9 @@ class ObjectDetection:
             :return detected_detected_objects_image_array:
         """
 
-        if(self.__modelLoaded == False):
+        if (self.__modelLoaded == False):
             raise ValueError("You must call the loadModel() function before making object detection.")
-        elif(self.__modelLoaded == True):
+        elif (self.__modelLoaded == True):
             try:
                 if (self.__modelType == "retinanet"):
                     output_objects_array = []
@@ -349,13 +364,13 @@ class ObjectDetection:
                         detection_details = detections[0, index, :4].astype(int)
                         draw_box(detected_copy, detection_details, color=color)
 
-                        if(display_object_name == True and display_percentage_probability == True):
+                        if (display_object_name == True and display_percentage_probability == True):
                             caption = "{} {:.3f}".format(self.numbers_to_names[label], (score * 100))
                             draw_caption(detected_copy, detection_details, caption)
-                        elif(display_object_name == True):
+                        elif (display_object_name == True):
                             caption = "{} ".format(self.numbers_to_names[label])
                             draw_caption(detected_copy, detection_details, caption)
-                        elif(display_percentage_probability == True):
+                        elif (display_percentage_probability == True):
                             caption = " {:.3f}".format((score * 100))
                             draw_caption(detected_copy, detection_details, caption)
 
@@ -421,7 +436,6 @@ class ObjectDetection:
                     image_data /= 255.
                     image_data = np.expand_dims(image_data, 0)
 
-
                     model = self.__model_collection[0]
 
                     out_boxes, out_scores, out_classes = self.sess.run(
@@ -432,7 +446,6 @@ class ObjectDetection:
                             K.learning_phase(): 0
                         })
 
-
                     min_probability = minimum_percentage_probability / 100
                     counting = 0
 
@@ -441,7 +454,6 @@ class ObjectDetection:
                         box = out_boxes[a]
                         score = out_scores[a]
 
-                        
                         if score < min_probability:
                             continue
 
@@ -460,7 +472,6 @@ class ObjectDetection:
                         bottom = min(image.size[1], np.floor(bottom + 0.5).astype('int32'))
                         right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
 
-
                         try:
                             color = label_color(b)
                         except:
@@ -475,7 +486,6 @@ class ObjectDetection:
                             draw_caption(detected_copy, detection_details, predicted_class)
                         elif (display_percentage_probability == True):
                             draw_caption(detected_copy, detection_details, str(score * 100))
-
 
                         each_object_details = {}
                         each_object_details["name"] = predicted_class
@@ -514,18 +524,26 @@ class ObjectDetection:
 
 
             except:
-                raise ValueError("Ensure you specified correct input image, input type, output type and/or output image path ")
-
+                raise ValueError(
+                    "Ensure you specified correct input image, input type, output type and/or output image path ")
 
     def CustomObjects(self, person=False, bicycle=False, car=False, motorcycle=False, airplane=False,
-                      bus=False, train=False, truck=False, boat=False, traffic_light=False, fire_hydrant=False, stop_sign=False,
-                      parking_meter=False, bench=False, bird=False, cat=False, dog=False, horse=False, sheep=False, cow=False, elephant=False, bear=False, zebra=False,
-                      giraffe=False, backpack=False, umbrella=False, handbag=False, tie=False, suitcase=False, frisbee=False, skis=False, snowboard=False,
-                      sports_ball=False, kite=False, baseball_bat=False, baseball_glove=False, skateboard=False, surfboard=False, tennis_racket=False,
-                      bottle=False, wine_glass=False, cup=False, fork=False, knife=False, spoon=False, bowl=False, banana=False, apple=False, sandwich=False, orange=False,
-                      broccoli=False, carrot=False, hot_dog=False, pizza=False, donot=False, cake=False, chair=False, couch=False, potted_plant=False, bed=False,
-                      dining_table=False, toilet=False, tv=False, laptop=False, mouse=False, remote=False, keyboard=False, cell_phone=False, microwave=False,
-                      oven=False, toaster=False, sink=False, refrigerator=False, book=False, clock=False, vase=False, scissors=False, teddy_bear=False, hair_dryer=False,
+                      bus=False, train=False, truck=False, boat=False, traffic_light=False, fire_hydrant=False,
+                      stop_sign=False,
+                      parking_meter=False, bench=False, bird=False, cat=False, dog=False, horse=False, sheep=False,
+                      cow=False, elephant=False, bear=False, zebra=False,
+                      giraffe=False, backpack=False, umbrella=False, handbag=False, tie=False, suitcase=False,
+                      frisbee=False, skis=False, snowboard=False,
+                      sports_ball=False, kite=False, baseball_bat=False, baseball_glove=False, skateboard=False,
+                      surfboard=False, tennis_racket=False,
+                      bottle=False, wine_glass=False, cup=False, fork=False, knife=False, spoon=False, bowl=False,
+                      banana=False, apple=False, sandwich=False, orange=False,
+                      broccoli=False, carrot=False, hot_dog=False, pizza=False, donot=False, cake=False, chair=False,
+                      couch=False, potted_plant=False, bed=False,
+                      dining_table=False, toilet=False, tv=False, laptop=False, mouse=False, remote=False,
+                      keyboard=False, cell_phone=False, microwave=False,
+                      oven=False, toaster=False, sink=False, refrigerator=False, book=False, clock=False, vase=False,
+                      scissors=False, teddy_bear=False, hair_dryer=False,
                       toothbrush=False):
 
         """
@@ -544,36 +562,45 @@ class ObjectDetection:
 
         custom_objects_dict = {}
         input_values = [person, bicycle, car, motorcycle, airplane,
-                      bus, train, truck, boat, traffic_light, fire_hydrant, stop_sign,
-                      parking_meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra,
-                      giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard,
-                      sports_ball, kite, baseball_bat, baseball_glove, skateboard, surfboard, tennis_racket,
-                      bottle, wine_glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange,
-                      broccoli, carrot, hot_dog, pizza, donot, cake, chair, couch, potted_plant, bed,
-                      dining_table, toilet, tv, laptop, mouse, remote, keyboard, cell_phone, microwave,
-                      oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy_bear, hair_dryer,
-                      toothbrush]
+                        bus, train, truck, boat, traffic_light, fire_hydrant, stop_sign,
+                        parking_meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra,
+                        giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard,
+                        sports_ball, kite, baseball_bat, baseball_glove, skateboard, surfboard, tennis_racket,
+                        bottle, wine_glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange,
+                        broccoli, carrot, hot_dog, pizza, donot, cake, chair, couch, potted_plant, bed,
+                        dining_table, toilet, tv, laptop, mouse, remote, keyboard, cell_phone, microwave,
+                        oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy_bear, hair_dryer,
+                        toothbrush]
         actual_labels = ["person", "bicycle", "car", "motorcycle", "airplane",
-                      "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign",
-                      "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra",
-                      "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
-                      "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket",
-                      "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange",
-                      "broccoli", "carrot", "hot dog", "pizza", "donot", "cake", "chair", "couch", "potted plant", "bed",
-                      "dining table", "toilet", "tv", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave",
-                      "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair dryer",
-                      "toothbrush"]
+                         "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign",
+                         "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear",
+                         "zebra",
+                         "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis",
+                         "snowboard",
+                         "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard",
+                         "tennis racket",
+                         "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich",
+                         "orange",
+                         "broccoli", "carrot", "hot dog", "pizza", "donot", "cake", "chair", "couch", "potted plant",
+                         "bed",
+                         "dining table", "toilet", "tv", "laptop", "mouse", "remote", "keyboard", "cell phone",
+                         "microwave",
+                         "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear",
+                         "hair dryer",
+                         "toothbrush"]
 
         for input_value, actual_label in zip(input_values, actual_labels):
-            if(input_value == True):
+            if (input_value == True):
                 custom_objects_dict[actual_label] = "valid"
             else:
                 custom_objects_dict[actual_label] = "invalid"
 
         return custom_objects_dict
 
-
-    def detectCustomObjectsFromImage(self, custom_objects=None, input_image="", output_image_path="", input_type="file", output_type="file", extract_detected_objects = False, minimum_percentage_probability = 50, display_percentage_probability=True, display_object_name = True):
+    def detectCustomObjectsFromImage(self, custom_objects=None, input_image="", output_image_path="", input_type="file",
+                                     output_type="file", extract_detected_objects=False,
+                                     minimum_percentage_probability=50, display_percentage_probability=True,
+                                     display_object_name=True):
         """
                     'detectCustomObjectsFromImage()' function is used to detect predefined objects observable in the given image path:
                             * custom_objects , an instance of the CustomObject class to filter which objects to detect
@@ -644,7 +671,7 @@ class ObjectDetection:
             raise ValueError("You must call the loadModel() function before making object detection.")
         elif (self.__modelLoaded == True):
             try:
-                if(self.__modelType == "retinanet"):
+                if (self.__modelType == "retinanet"):
                     output_objects_array = []
                     detected_objects_image_array = []
 
@@ -705,7 +732,6 @@ class ObjectDetection:
                             caption = " {:.3f}".format((score * 100))
                             draw_caption(detected_copy, detection_details, caption)
 
-
                         each_object_details = {}
                         each_object_details["name"] = self.numbers_to_names[label]
                         each_object_details["percentage_probability"] = score * 100
@@ -739,7 +765,7 @@ class ObjectDetection:
                             return output_objects_array
                         elif (output_type == "array"):
                             return detected_copy, output_objects_array
-                elif(self.__modelType == "yolov3" or self.__modelType =="tinyyolov3"):
+                elif (self.__modelType == "yolov3" or self.__modelType == "tinyyolov3"):
                     output_objects_array = []
                     detected_objects_image_array = []
 
@@ -860,8 +886,6 @@ class ObjectDetection:
                     "Ensure you specified correct input image, input type, output type and/or output image path ")
 
 
-
-
 class VideoObjectDetection:
     """
                     This is the object detection class for videos and camera live stream inputs in the ImageAI library. It provides support for RetinaNet,
@@ -889,19 +913,31 @@ class VideoObjectDetection:
         self.__input_image_max = 800
         self.__detection_storage = None
 
-        self.numbers_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train',
-                   7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter',
-                   13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant',
-                   21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie',
-                   28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite',
-                   34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket',
-                   39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl',
-                   46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog',
-                   53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed',
-                   60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard',
-                   67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator',
-                   73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier',
-                   79: 'toothbrush'}
+        self.numbers_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
+                                 6: 'train',
+                                 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign',
+                                 12: 'parking meter',
+                                 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow',
+                                 20: 'elephant',
+                                 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag',
+                                 27: 'tie',
+                                 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball',
+                                 33: 'kite',
+                                 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard',
+                                 38: 'tennis racket',
+                                 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon',
+                                 45: 'bowl',
+                                 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot',
+                                 52: 'hot dog',
+                                 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant',
+                                 59: 'bed',
+                                 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote',
+                                 66: 'keyboard',
+                                 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
+                                 72: 'refrigerator',
+                                 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
+                                 78: 'hair drier',
+                                 79: 'toothbrush'}
 
         # Unique instance variables for YOLOv3 model
         self.__yolo_iou = 0.45
@@ -941,7 +977,6 @@ class VideoObjectDetection:
                 """
         self.__modelType = "tinyyolov3"
 
-
     def setModelPath(self, model_path):
         """
          'setModelPath()' function is required and is used to set the file path to a RetinaNet,
@@ -950,11 +985,9 @@ class VideoObjectDetection:
           :return:
         """
 
-        if(self.__modelPathAdded == False):
+        if (self.__modelPathAdded == False):
             self.modelPath = model_path
             self.__modelPathAdded = True
-
-
 
     def loadModel(self, detection_speed="normal"):
         """
@@ -1070,9 +1103,11 @@ class VideoObjectDetection:
                 self.__model_collection.append(model)
                 self.__modelLoaded = True
 
-
-
-    def detectObjectsFromVideo(self, input_file_path="", camera_input = None, output_file_path="", frames_per_second=20, frame_detection_interval=1, minimum_percentage_probability=50, log_progress=False, display_percentage_probability=True, display_object_name = True, save_detected_video = True, per_frame_function = None, per_second_function = None, per_minute_function = None, video_complete_function = None, return_detected_frame = False ):
+    def detectObjectsFromVideo(self, input_file_path="", camera_input=None, output_file_path="", frames_per_second=20,
+                               frame_detection_interval=1, minimum_percentage_probability=50, log_progress=False,
+                               display_percentage_probability=True, display_object_name=True, save_detected_video=True,
+                               per_frame_function=None, per_second_function=None, per_minute_function=None,
+                               video_complete_function=None, return_detected_frame=False):
 
         """
                     'detectObjectsFromVideo()' function is used to detect objects observable in the given video path or a camera input:
@@ -1171,19 +1206,19 @@ class VideoObjectDetection:
                     :return this_video_counting:
                 """
 
-        if(input_file_path == ""  and camera_input == None):
-            raise ValueError("You must set 'input_file_path' to a valid video file, or set 'camera_input' to a valid camera")
+        if (input_file_path == "" and camera_input == None):
+            raise ValueError(
+                "You must set 'input_file_path' to a valid video file, or set 'camera_input' to a valid camera")
         elif (save_detected_video == True and output_file_path == ""):
             raise ValueError(
                 "You must set 'output_video_filepath' to a valid video file name, in which the detected video will be saved. If you don't intend to save the detected video, set 'save_detected_video=False'")
 
         else:
             try:
-                if(self.__modelType == "retinanet"):
+                if (self.__modelType == "retinanet"):
 
                     output_frames_dict = {}
                     output_frames_count_dict = {}
-
 
                     input_video = cv2.VideoCapture(input_file_path)
                     if (camera_input != None):
@@ -1271,13 +1306,16 @@ class VideoObjectDetection:
 
                             output_frames_count_dict[counting] = output_objects_count
 
+                            detected_copy = cv2.cvtColor(detected_copy, cv2.COLOR_BGR2RGB)
+
                             if (save_detected_video == True):
                                 output_video.write(detected_copy)
 
                             if (per_frame_function != None):
-                                if(return_detected_frame == True):
-                                    per_frame_function(counting, output_objects_array, output_objects_count, detected_copy)
-                                elif(return_detected_frame == False):
+                                if (return_detected_frame == True):
+                                    per_frame_function(counting, output_objects_array, output_objects_count,
+                                                       detected_copy)
+                                elif (return_detected_frame == False):
                                     per_frame_function(counting, output_objects_array, output_objects_count)
 
                             if (per_second_function != None):
@@ -1304,7 +1342,6 @@ class VideoObjectDetection:
                                         this_second_counting[eachCountingItem] = this_second_counting[
                                                                                      eachCountingItem] / frames_per_second
 
-
                                     if (return_detected_frame == True):
                                         per_second_function(int(counting / frames_per_second),
                                                             this_second_output_object_array, this_second_counting_array,
@@ -1318,7 +1355,6 @@ class VideoObjectDetection:
                             if (per_minute_function != None):
 
                                 if (counting != 1 and (counting % (frames_per_second * 60)) == 0):
-
 
                                     this_minute_output_object_array = []
                                     this_minute_counting_array = []
@@ -1339,8 +1375,8 @@ class VideoObjectDetection:
 
                                     for eachCountingItem in this_minute_counting:
                                         this_minute_counting[eachCountingItem] = this_minute_counting[
-                                                                                     eachCountingItem] / (frames_per_second * 60)
-
+                                                                                     eachCountingItem] / (
+                                                                                 frames_per_second * 60)
 
                                     if (return_detected_frame == True):
                                         per_minute_function(int(counting / (frames_per_second * 60)),
@@ -1352,13 +1388,11 @@ class VideoObjectDetection:
                                                             this_minute_output_object_array, this_minute_counting_array,
                                                             this_minute_counting)
 
-                            if(save_detected_video == True):
-                                output_video.write(detected_copy)
+
                         else:
                             break
 
                     if (video_complete_function != None):
-
 
                         this_video_output_object_array = []
                         this_video_counting_array = []
@@ -1368,22 +1402,20 @@ class VideoObjectDetection:
                             this_video_output_object_array.append(output_frames_dict[aa + 1])
                             this_video_counting_array.append(output_frames_count_dict[aa + 1])
 
-
                         for eachCountingDict in this_video_counting_array:
                             for eachItem in eachCountingDict:
                                 try:
                                     this_video_counting[eachItem] = this_video_counting[eachItem] + \
-                                                                     eachCountingDict[eachItem]
+                                                                    eachCountingDict[eachItem]
                                 except:
                                     this_video_counting[eachItem] = eachCountingDict[eachItem]
 
                         for eachCountingItem in this_video_counting:
                             this_video_counting[eachCountingItem] = this_video_counting[
-                                                                         eachCountingItem] / counting
+                                                                        eachCountingItem] / counting
 
                         video_complete_function(this_video_output_object_array, this_video_counting_array,
-                                            this_video_counting)
-
+                                                this_video_counting)
 
                     input_video.release()
                     output_video.release()
@@ -1391,17 +1423,14 @@ class VideoObjectDetection:
                     if (save_detected_video == True):
                         return output_video_filepath
 
-                elif(self.__modelType == "yolov3" or self.__modelType == "tinyyolov3"):
+                elif (self.__modelType == "yolov3" or self.__modelType == "tinyyolov3"):
 
                     output_frames_dict = {}
                     output_frames_count_dict = {}
 
-
-
-
                     input_video = cv2.VideoCapture(input_file_path)
 
-                    if(camera_input != None):
+                    if (camera_input != None):
                         input_video = camera_input
 
                     output_video_filepath = output_file_path + '.avi'
@@ -1455,14 +1484,12 @@ class VideoObjectDetection:
                                         K.learning_phase(): 0
                                     })
 
-
                             min_probability = minimum_percentage_probability / 100
 
                             for a, b in reversed(list(enumerate(out_classes))):
                                 predicted_class = self.numbers_to_names[b]
                                 box = out_boxes[a]
                                 score = out_scores[a]
-
 
                                 if score < min_probability:
                                     continue
@@ -1496,9 +1523,7 @@ class VideoObjectDetection:
                                 each_object_details["box_points"] = detection_details
                                 output_objects_array.append(each_object_details)
 
-
                             output_frames_dict[counting] = output_objects_array
-
 
                             output_objects_count = {}
                             for eachItem in output_objects_array:
@@ -1509,11 +1534,12 @@ class VideoObjectDetection:
                                     output_objects_count[eachItemName] = 1
 
                             output_frames_count_dict[counting] = output_objects_count
+                            detected_copy = cv2.cvtColor(detected_copy, cv2.COLOR_BGR2RGB)
 
-                            if(save_detected_video == True):
+                            if (save_detected_video == True):
                                 output_video.write(detected_copy)
 
-                            if(per_frame_function != None):
+                            if (per_frame_function != None):
                                 if (per_frame_function != None):
                                     if (return_detected_frame == True):
                                         per_frame_function(counting, output_objects_array, output_objects_count,
@@ -1521,32 +1547,29 @@ class VideoObjectDetection:
                                     elif (return_detected_frame == False):
                                         per_frame_function(counting, output_objects_array, output_objects_count)
 
-                            if(per_second_function != None):
-                                if(counting != 1 and (counting % frames_per_second) == 0):
+                            if (per_second_function != None):
+                                if (counting != 1 and (counting % frames_per_second) == 0):
 
                                     this_second_output_object_array = []
                                     this_second_counting_array = []
                                     this_second_counting = {}
 
                                     for aa in range(counting):
-                                        if(aa >= (counting - frames_per_second)):
+                                        if (aa >= (counting - frames_per_second)):
                                             this_second_output_object_array.append(output_frames_dict[aa + 1])
                                             this_second_counting_array.append(output_frames_count_dict[aa + 1])
-
-
-
 
                                     for eachCountingDict in this_second_counting_array:
                                         for eachItem in eachCountingDict:
                                             try:
-                                                this_second_counting[eachItem] = this_second_counting[eachItem] + eachCountingDict[eachItem]
+                                                this_second_counting[eachItem] = this_second_counting[eachItem] + \
+                                                                                 eachCountingDict[eachItem]
                                             except:
                                                 this_second_counting[eachItem] = eachCountingDict[eachItem]
 
                                     for eachCountingItem in this_second_counting:
-                                        this_second_counting[eachCountingItem] = this_second_counting[eachCountingItem] / frames_per_second
-
-
+                                        this_second_counting[eachCountingItem] = this_second_counting[
+                                                                                     eachCountingItem] / frames_per_second
 
                                     if (return_detected_frame == True):
                                         per_second_function(int(counting / frames_per_second),
@@ -1561,7 +1584,6 @@ class VideoObjectDetection:
                             if (per_minute_function != None):
 
                                 if (counting != 1 and (counting % (frames_per_second * 60)) == 0):
-
 
                                     this_minute_output_object_array = []
                                     this_minute_counting_array = []
@@ -1582,7 +1604,8 @@ class VideoObjectDetection:
 
                                     for eachCountingItem in this_minute_counting:
                                         this_minute_counting[eachCountingItem] = this_minute_counting[
-                                                                                     eachCountingItem] / (frames_per_second * 60)
+                                                                                     eachCountingItem] / (
+                                                                                 frames_per_second * 60)
 
                                     if (return_detected_frame == True):
                                         per_minute_function(int(counting / (frames_per_second * 60)),
@@ -1595,14 +1618,12 @@ class VideoObjectDetection:
                                                             this_minute_counting)
 
 
-                            if(save_detected_video == True):
-                                output_video.write(detected_copy)
+
 
                         else:
                             break
 
                     if (video_complete_function != None):
-
 
                         this_video_output_object_array = []
                         this_video_counting_array = []
@@ -1612,22 +1633,20 @@ class VideoObjectDetection:
                             this_video_output_object_array.append(output_frames_dict[aa + 1])
                             this_video_counting_array.append(output_frames_count_dict[aa + 1])
 
-
                         for eachCountingDict in this_video_counting_array:
                             for eachItem in eachCountingDict:
                                 try:
                                     this_video_counting[eachItem] = this_video_counting[eachItem] + \
-                                                                     eachCountingDict[eachItem]
+                                                                    eachCountingDict[eachItem]
                                 except:
                                     this_video_counting[eachItem] = eachCountingDict[eachItem]
 
                         for eachCountingItem in this_video_counting:
                             this_video_counting[eachCountingItem] = this_video_counting[
-                                                                         eachCountingItem] / counting
+                                                                        eachCountingItem] / counting
 
                         video_complete_function(this_video_output_object_array, this_video_counting_array,
-                                            this_video_counting)
-
+                                                this_video_counting)
 
                     input_video.release()
                     output_video.release()
@@ -1637,19 +1656,27 @@ class VideoObjectDetection:
 
 
             except:
-                raise ValueError("An error occured. It may be that your input video is invalid. Ensure you specified a proper string value for 'output_file_path' is 'save_detected_video' is not False. "
-                                 "Also ensure your per_frame, per_second, per_minute or video_complete_analysis function is properly configured to receive the right parameters. ")
-
+                raise ValueError(
+                    "An error occured. It may be that your input video is invalid. Ensure you specified a proper string value for 'output_file_path' is 'save_detected_video' is not False. "
+                    "Also ensure your per_frame, per_second, per_minute or video_complete_analysis function is properly configured to receive the right parameters. ")
 
     def CustomObjects(self, person=False, bicycle=False, car=False, motorcycle=False, airplane=False,
-                      bus=False, train=False, truck=False, boat=False, traffic_light=False, fire_hydrant=False, stop_sign=False,
-                      parking_meter=False, bench=False, bird=False, cat=False, dog=False, horse=False, sheep=False, cow=False, elephant=False, bear=False, zebra=False,
-                      giraffe=False, backpack=False, umbrella=False, handbag=False, tie=False, suitcase=False, frisbee=False, skis=False, snowboard=False,
-                      sports_ball=False, kite=False, baseball_bat=False, baseball_glove=False, skateboard=False, surfboard=False, tennis_racket=False,
-                      bottle=False, wine_glass=False, cup=False, fork=False, knife=False, spoon=False, bowl=False, banana=False, apple=False, sandwich=False, orange=False,
-                      broccoli=False, carrot=False, hot_dog=False, pizza=False, donot=False, cake=False, chair=False, couch=False, potted_plant=False, bed=False,
-                      dining_table=False, toilet=False, tv=False, laptop=False, mouse=False, remote=False, keyboard=False, cell_phone=False, microwave=False,
-                      oven=False, toaster=False, sink=False, refrigerator=False, book=False, clock=False, vase=False, scissors=False, teddy_bear=False, hair_dryer=False,
+                      bus=False, train=False, truck=False, boat=False, traffic_light=False, fire_hydrant=False,
+                      stop_sign=False,
+                      parking_meter=False, bench=False, bird=False, cat=False, dog=False, horse=False, sheep=False,
+                      cow=False, elephant=False, bear=False, zebra=False,
+                      giraffe=False, backpack=False, umbrella=False, handbag=False, tie=False, suitcase=False,
+                      frisbee=False, skis=False, snowboard=False,
+                      sports_ball=False, kite=False, baseball_bat=False, baseball_glove=False, skateboard=False,
+                      surfboard=False, tennis_racket=False,
+                      bottle=False, wine_glass=False, cup=False, fork=False, knife=False, spoon=False, bowl=False,
+                      banana=False, apple=False, sandwich=False, orange=False,
+                      broccoli=False, carrot=False, hot_dog=False, pizza=False, donot=False, cake=False, chair=False,
+                      couch=False, potted_plant=False, bed=False,
+                      dining_table=False, toilet=False, tv=False, laptop=False, mouse=False, remote=False,
+                      keyboard=False, cell_phone=False, microwave=False,
+                      oven=False, toaster=False, sink=False, refrigerator=False, book=False, clock=False, vase=False,
+                      scissors=False, teddy_bear=False, hair_dryer=False,
                       toothbrush=False):
 
         """
@@ -1668,37 +1695,48 @@ class VideoObjectDetection:
 
         custom_objects_dict = {}
         input_values = [person, bicycle, car, motorcycle, airplane,
-                      bus, train, truck, boat, traffic_light, fire_hydrant, stop_sign,
-                      parking_meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra,
-                      giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard,
-                      sports_ball, kite, baseball_bat, baseball_glove, skateboard, surfboard, tennis_racket,
-                      bottle, wine_glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange,
-                      broccoli, carrot, hot_dog, pizza, donot, cake, chair, couch, potted_plant, bed,
-                      dining_table, toilet, tv, laptop, mouse, remote, keyboard, cell_phone, microwave,
-                      oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy_bear, hair_dryer,
-                      toothbrush]
+                        bus, train, truck, boat, traffic_light, fire_hydrant, stop_sign,
+                        parking_meter, bench, bird, cat, dog, horse, sheep, cow, elephant, bear, zebra,
+                        giraffe, backpack, umbrella, handbag, tie, suitcase, frisbee, skis, snowboard,
+                        sports_ball, kite, baseball_bat, baseball_glove, skateboard, surfboard, tennis_racket,
+                        bottle, wine_glass, cup, fork, knife, spoon, bowl, banana, apple, sandwich, orange,
+                        broccoli, carrot, hot_dog, pizza, donot, cake, chair, couch, potted_plant, bed,
+                        dining_table, toilet, tv, laptop, mouse, remote, keyboard, cell_phone, microwave,
+                        oven, toaster, sink, refrigerator, book, clock, vase, scissors, teddy_bear, hair_dryer,
+                        toothbrush]
         actual_labels = ["person", "bicycle", "car", "motorcycle", "airplane",
-                      "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign",
-                      "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear", "zebra",
-                      "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis", "snowboard",
-                      "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard", "tennis racket",
-                      "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich", "orange",
-                      "broccoli", "carrot", "hot dog", "pizza", "donot", "cake", "chair", "couch", "potted plant", "bed",
-                      "dining table", "toilet", "tv", "laptop", "mouse", "remote", "keyboard", "cell phone", "microwave",
-                      "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair dryer",
-                      "toothbrush"]
+                         "bus", "train", "truck", "boat", "traffic light", "fire hydrant", "stop sign",
+                         "parking meter", "bench", "bird", "cat", "dog", "horse", "sheep", "cow", "elephant", "bear",
+                         "zebra",
+                         "giraffe", "backpack", "umbrella", "handbag", "tie", "suitcase", "frisbee", "skis",
+                         "snowboard",
+                         "sports ball", "kite", "baseball bat", "baseball glove", "skateboard", "surfboard",
+                         "tennis racket",
+                         "bottle", "wine glass", "cup", "fork", "knife", "spoon", "bowl", "banana", "apple", "sandwich",
+                         "orange",
+                         "broccoli", "carrot", "hot dog", "pizza", "donot", "cake", "chair", "couch", "potted plant",
+                         "bed",
+                         "dining table", "toilet", "tv", "laptop", "mouse", "remote", "keyboard", "cell phone",
+                         "microwave",
+                         "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear",
+                         "hair dryer",
+                         "toothbrush"]
 
         for input_value, actual_label in zip(input_values, actual_labels):
-            if(input_value == True):
+            if (input_value == True):
                 custom_objects_dict[actual_label] = "valid"
             else:
                 custom_objects_dict[actual_label] = "invalid"
 
         return custom_objects_dict
 
-
-    def detectCustomObjectsFromVideo(self, custom_objects=None, input_file_path="", camera_input = None , output_file_path="", frames_per_second=20, frame_detection_interval=1, minimum_percentage_probability=50, log_progress=False, display_percentage_probability=True, display_object_name = True, save_detected_video = True, per_frame_function = None, per_second_function = None, per_minute_function = None, video_complete_function = None, return_detected_frame = False ):
-
+    def detectCustomObjectsFromVideo(self, custom_objects=None, input_file_path="", camera_input=None,
+                                     output_file_path="", frames_per_second=20, frame_detection_interval=1,
+                                     minimum_percentage_probability=50, log_progress=False,
+                                     display_percentage_probability=True, display_object_name=True,
+                                     save_detected_video=True, per_frame_function=None, per_second_function=None,
+                                     per_minute_function=None, video_complete_function=None,
+                                     return_detected_frame=False):
 
         """
                             'detectObjectsFromVideo()' function is used to detect specific object(s) observable in the given video path or given camera live stream input:
@@ -1808,7 +1846,7 @@ class VideoObjectDetection:
 
         else:
             try:
-                if(self.__modelType == "retinanet"):
+                if (self.__modelType == "retinanet"):
                     output_frames_dict = {}
                     output_frames_count_dict = {}
 
@@ -1903,6 +1941,8 @@ class VideoObjectDetection:
 
                             output_frames_count_dict[counting] = output_objects_count
 
+                            detected_copy = cv2.cvtColor(detected_copy, cv2.COLOR_BGR2RGB)
+
                             if (save_detected_video == True):
                                 output_video.write(detected_copy)
 
@@ -1951,7 +1991,6 @@ class VideoObjectDetection:
 
                                 if (counting != 1 and (counting % (frames_per_second * 60)) == 0):
 
-
                                     this_minute_output_object_array = []
                                     this_minute_counting_array = []
                                     this_minute_counting = {}
@@ -1972,7 +2011,7 @@ class VideoObjectDetection:
                                     for eachCountingItem in this_minute_counting:
                                         this_minute_counting[eachCountingItem] = this_minute_counting[
                                                                                      eachCountingItem] / (
-                                                                                 frames_per_second * 60)
+                                                                                     frames_per_second * 60)
 
                                     if (return_detected_frame == True):
                                         per_minute_function(int(counting / (frames_per_second * 60)),
@@ -1984,13 +2023,11 @@ class VideoObjectDetection:
                                                             this_minute_output_object_array, this_minute_counting_array,
                                                             this_minute_counting)
 
-                            if (save_detected_video == True):
-                                output_video.write(detected_copy)
+
                         else:
                             break
 
                     if (video_complete_function != None):
-
 
                         this_video_output_object_array = []
                         this_video_counting_array = []
@@ -2022,7 +2059,7 @@ class VideoObjectDetection:
                         return output_video_filepath
 
 
-                elif(self.__modelType == "yolov3" or self.__modelType == "tinyyolov3"):
+                elif (self.__modelType == "yolov3" or self.__modelType == "tinyyolov3"):
                     output_frames_dict = {}
                     output_frames_count_dict = {}
 
@@ -2091,7 +2128,6 @@ class VideoObjectDetection:
                                 if score < min_probability:
                                     continue
 
-
                                 if (custom_objects != None):
                                     if (custom_objects[predicted_class] == "invalid"):
                                         continue
@@ -2136,6 +2172,8 @@ class VideoObjectDetection:
                                     output_objects_count[eachItemName] = 1
 
                             output_frames_count_dict[counting] = output_objects_count
+
+                            detected_copy = cv2.cvtColor(detected_copy, cv2.COLOR_BGR2RGB)
 
                             if (save_detected_video == True):
                                 output_video.write(detected_copy)
@@ -2185,7 +2223,6 @@ class VideoObjectDetection:
 
                                 if (counting != 1 and (counting % (frames_per_second * 60)) == 0):
 
-
                                     this_minute_output_object_array = []
                                     this_minute_counting_array = []
                                     this_minute_counting = {}
@@ -2206,7 +2243,7 @@ class VideoObjectDetection:
                                     for eachCountingItem in this_minute_counting:
                                         this_minute_counting[eachCountingItem] = this_minute_counting[
                                                                                      eachCountingItem] / (
-                                                                                 frames_per_second * 60)
+                                                                                     frames_per_second * 60)
 
                                     if (return_detected_frame == True):
                                         per_minute_function(int(counting / (frames_per_second * 60)),
@@ -2218,14 +2255,11 @@ class VideoObjectDetection:
                                                             this_minute_output_object_array, this_minute_counting_array,
                                                             this_minute_counting)
 
-                            if (save_detected_video == True):
-                                output_video.write(detected_copy)
 
                         else:
                             break
 
                     if (video_complete_function != None):
-
 
                         this_video_output_object_array = []
                         this_video_counting_array = []
