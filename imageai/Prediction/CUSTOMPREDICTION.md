@@ -7,7 +7,7 @@
 You will be able to use your model trained with <b>ImageAI</b> and the corresponding model_class JSON file to predict custom objects
 that you have trained the model on. In this example, we will be using the model trained for 20 experiments on <b>IdenProf</b>, a dataset
  of uniformed professionals and achieved 65.17% accuracy on the test dataset (You can use your own trained model and generated JSON file. This 'class' is provided mainly for the purpose to use your own custom models.).  Download the ResNet model of the model and JSON files in links below: <br>
-       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0.1/resnet_model_ex-020_acc-0.651714.h5" style="text-decoration: none;" >ResNet</a></b> (Size = 90.4 mb)</span> <br>
+       <span><b>- <a href="https://github.com/OlafenwaMoses/IdenProf/releases/download/v1.0/idenprof_061-0.7933.h5" style="text-decoration: none;" >ResNet</a></b> (Size = 90.4 mb)</span> <br>
         <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0.1/model_class.json" style="text-decoration: none;" >IdenProf model_class.json file</a></b> </span> <br>
        Great! Once you have downloaded this model file and the JSON file, start a new python project, and then copy the model file
 and the JSON file to your project folder where your python files (.py files) will be . Download the image below, or take any image on your computer
@@ -22,7 +22,7 @@ execution_path = os.getcwd()
 
 prediction = CustomImagePrediction()
 prediction.setModelTypeAsResNet()
-prediction.setModelPath(os.path.join(execution_path, "resnet_model_ex-020_acc-0.651714.h5"))
+prediction.setModelPath(os.path.join(execution_path, "idenprof_061-0.7933.h5"))
 prediction.setJsonPath(os.path.join(execution_path, "model_class.json"))
 prediction.loadModel(num_objects=10)
 
