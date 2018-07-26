@@ -78,7 +78,7 @@ prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_or
   prediction.
 
   <b><pre>for eachPrediction, eachProbability in zip(predictions, probabilities):
-    print(eachPrediction + " : " + eachProbability)</pre></b> The above line obtains each object in the <b>predictions</b> array, and also
+    print(eachPrediction, " : " , eachProbability)</pre></b> The above line obtains each object in the <b>predictions</b> array, and also
 obtains the corresponding percentage probability from the <b>percentage_probabilities</b>, and finally prints
 the result of both to console.
 
@@ -122,7 +122,7 @@ results_array = multiple_prediction.predictMultipleImages(all_images_array, resu
 for each_result in results_array:
     predictions, percentage_probabilities = each_result["predictions"], each_result["percentage_probabilities"]
     for index in range(len(predictions)):
-        print(predictions[index] + " : " + percentage_probabilities[index])
+        print(predictions[index] , " : " , percentage_probabilities[index])
     print("-----------------------")</pre></b> <br>
     In the above code, the <b>.predictMultipleImages()</b> function will return an array which contains a dictionary per image.
  Each dictionary contains the arrays for predictions and percentage probability for each prediction. <br>
@@ -314,7 +314,7 @@ class PredictionThread(threading.Thread):
             if eachPicture.endswith(".png") or eachPicture.endswith(".jpg"):
                 predictions, percentage_probabilities = prediction.predictImage(picturesfolder + eachPicture, result_count=1)
                 for prediction, percentage_probability in zip(predictions, probabilities):
-                    print(prediction + " : " + percentage_probability)
+                    print(prediction , " : " , percentage_probability)
 
 predictionThread = PredictionThread ()
 predictionThread.start()
