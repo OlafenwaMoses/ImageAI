@@ -83,6 +83,14 @@ def test_dir(detector, in_dir, out_dir, prob=20, short_size=300, process_id=0,pr
     for dirname in os.listdir(in_dir):
         if dirname[0] == '.':
             continue
+        arr = dirname.split('.')
+        if len(arr) < 3:
+            logging.error(dirname + ' \t dirname split error')
+            continue
+        series_id = int(arr[2])
+
+        if process_num > 1 and process_id >= 0 and series_id % process_num != process_id:
+            continue
         in_path1 = os.path.join(in_dir, dirname)
         out_path1 = os.path.join(out_dir, dirname)
         if not os.path.isdir(out_path1):
@@ -99,14 +107,23 @@ def test_dir(detector, in_dir, out_dir, prob=20, short_size=300, process_id=0,pr
             print(in_path2)
             print(out_path2)
             t0 = time.time()
-            img_obj, name, pp, point = detector.detectCustomObjectsFromImage(custom_objects, in_path2, output_type='array', minimum_percentage_probability=prob)
+            # img_obj, name, pp, point = detector.detectCustomObjectsFromImage(custom_objects, in_path2, output_type='array', minimum_percentage_probability=prob)
+            img, objs = detector.detectCustomObjectsFromImage(custom_objects, in_path2, output_type='array', minimum_percentage_probability=prob)
             t1 = time.time() - t0
-            if img_obj is None:
+            if img is None:
+                logging.info(in_path2 + ' read image error')
+                continue
+            elif objs is None or len(objs) < 1:
                 logging.info(in_path2 + ' get no car')
                 # shutil.copy2(in_path2, out_path2)
+                cv2.imwrite(out_path2, img)
             else:
+                car = objs[-1]
+                name, pp, point = car['name'], car['percentage_probability'], car["box_points"]
                 logging.info(in_path2 + ' %s %6.3f %s  time:%6.3f' % (name, pp, str(point), t1))
                 # pltimage.imsave(out_path2, img_obj)
+                x1, y1, x2, y2 = point
+                img_obj = img[y1:y2, x1:x2]
                 img_obj = _resize_short_side(img_obj, short_size)
                 cv2.imwrite(out_path2, img_obj)
             # break

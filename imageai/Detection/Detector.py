@@ -19,6 +19,7 @@ import colorsys
 from imageai.Detection.YOLOv3.models import yolo_main, tiny_yolo_main
 from imageai.Detection.YOLOv3.utils import letterbox_image, yolo_eval
 
+import traceback
 
 def get_session():
     config = tf.ConfigProto()
@@ -919,16 +920,21 @@ class ObjectDetection:
             display_object_name
             display_percentage_probability
         '''
-
-        if (input_type == "file"):
-            image = Image.open(input_image)
-            input_image = read_image_bgr(input_image)
-        elif (input_type == "array"):
-            image = Image.fromarray(np.uint8(input_image))
-            input_image = read_image_array(input_image)
-        elif (input_type == "stream"):
-            image = Image.open(input_image)
-            input_image = read_image_stream(input_image)
+        try:
+            if (input_type == "file"):
+                image = Image.open(input_image)
+                input_image = read_image_bgr(input_image)
+            elif (input_type == "array"):
+                image = Image.fromarray(np.uint8(input_image))
+                input_image = read_image_array(input_image)
+            elif (input_type == "stream"):
+                image = Image.open(input_image)
+                input_image = read_image_stream(input_image)
+        except Exception:
+            print('************************1***********************************')
+            print(traceback.print_exc())
+            print('***********************************************************')
+            return None, None
 
         detected_copy = input_image
         detected_copy = cv2.cvtColor(detected_copy, cv2.COLOR_BGR2RGB)
@@ -959,17 +965,27 @@ class ObjectDetection:
         output_objects_array = []
         # detected_objects_image_array = []
         for a, b in reversed(list(enumerate(out_classes))):
-            predicted_class = self.numbers_to_names[b]
+            try:
+                predicted_class = self.numbers_to_names[b]
+            except Exception:
+                print('************************1***********************************')
+                print(traceback.print_exc())
+                print('***********************************************************')
+                continue
             box = out_boxes[a]
             score = out_scores[a]
 
             if score < min_probability:
                 continue
-
-            if (custom_objects != None):
-                if (custom_objects[predicted_class] == "invalid"):
-                    continue
-
+            try:
+                if (custom_objects != None):
+                    if (custom_objects[predicted_class] == "invalid"):
+                        continue
+            except Exception:
+                print('************************2***********************************')
+                print(traceback.print_exc())
+                print('***********************************************************')
+                continue
             counting += 1
 
             # objects_dir = output_image_path + "-objects"
@@ -1034,9 +1050,11 @@ class ObjectDetection:
         #     elif (output_type == "array"):
         #         return detected_copy, output_objects_array
         if len(output_objects_array) < 1:
-            return input_image, 'None', 0.0, (0,0,1,1)
-        else:
-            obj = output_objects_array[-1]
-            x1, y1, x2, y2 = obj['box_points']
-            return input_image[y1:y2, x1:x2], obj['name'], obj['percentage_probability'], obj['box_points']
+            # return input_image, 'None', 0.0, (0,0,1,1)
+            return input_image, None
+        # else:
+            # obj = output_objects_array[-1]
+            # x1, y1, x2, y2 = obj['box_points']
+            # return input_image[y1:y2, x1:x2], obj['name'], obj['percentage_probability'], obj['box_points']
+        return input_image, output_objects_array
         pass
