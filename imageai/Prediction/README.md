@@ -38,13 +38,11 @@ prediction.loadModel()
 
 predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "1.jpg"), result_count=5 )
 for eachPrediction, eachProbability in zip(predictions, probabilities):
-    print(eachPrediction + " : " + eachProbability)
+    print(eachPrediction , " : " , eachProbability)
 
 </pre></b>
 
-<p>Sample Result:
-    <br>
-    <img src="../../images/1.jpg" style="width: 400px; height: auto;" />
+<p>Sample Result: <br><img src="../../images/1.jpg" style="width: 400px; height: auto;" />
     <pre>convertible : 52.459555864334106
 sports_car : 37.61284649372101
 pickup : 3.1751200556755066
@@ -80,7 +78,7 @@ prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_or
   prediction.
 
   <b><pre>for eachPrediction, eachProbability in zip(predictions, probabilities):
-    print(eachPrediction + " : " + eachProbability)</pre></b> The above line obtains each object in the <b>predictions</b> array, and also
+    print(eachPrediction, " : " , eachProbability)</pre></b> The above line obtains each object in the <b>predictions</b> array, and also
 obtains the corresponding percentage probability from the <b>percentage_probabilities</b>, and finally prints
 the result of both to console.
 
@@ -90,7 +88,7 @@ the result of both to console.
 <br><br>
 
 <div id="multiprediction"></div>
-<h3><b><u>Multiple Images Prediction</u></b></h3>
+<h3><b><u>  >> Multiple Images Prediction</u></b></h3>
  You can run image prediction on more than one image using a single function, which is the <b>.predictMultipleImages()</b>
   function. It works by doing the following: <br>
   - Define your normal <b>ImagePrediction</b> instance <br>
@@ -124,7 +122,7 @@ results_array = multiple_prediction.predictMultipleImages(all_images_array, resu
 for each_result in results_array:
     predictions, percentage_probabilities = each_result["predictions"], each_result["percentage_probabilities"]
     for index in range(len(predictions)):
-        print(predictions[index] + " : " + percentage_probabilities[index])
+        print(predictions[index] , " : " , percentage_probabilities[index])
     print("-----------------------")</pre></b> <br>
     In the above code, the <b>.predictMultipleImages()</b> function will return an array which contains a dictionary per image.
  Each dictionary contains the arrays for predictions and percentage probability for each prediction. <br>
@@ -160,7 +158,7 @@ white_stork : 1.6472270712256432
 
 
 <div id="predictionspeed"></div>
-<h3><b><u>Prediction Speed</u></b></h3>
+<h3><b><u> >> Prediction Speed</u></b></h3>
 <b> ImageAI </b> now provides prediction speeds for all image prediction tasks. The prediction speeds allow you to reduce
  the time of prediction at a rate between 20% - 60%, and yet having just slight changes but accurate prediction
  results. The available prediction speeds are <b>"normal"</b>(default), <b>"fast"</b>, <b>"faster"</b> and <b>"fastest"</b>.
@@ -270,7 +268,7 @@ great_grey_owl : 0.0699841941241175
 
 
 <div id="inputtype"></div>
-<h3><b><u>Image Input Types</u></b></h3>
+<h3><b><u> >> Image Input Types</u></b></h3>
 Previous version of <b>ImageAI</b> supported only file inputs and accepts file paths to an image for image prediction.
 Now, <b>ImageAI</b> supports 3 input types which are <b>file path to image file</b>(default), <b>numpy array of image</b> and <b>image file stream</b>.
 This means you can now perform image prediction in production applications such as on a web server and system
@@ -285,8 +283,7 @@ predictions, probabilities = prediction.predictImage(image_stream, result_count=
 <br><br>
 
 <div id="threadprediction"></div>
-<h3><b><u>Prediction in MultiThreading</u></b></h3>
-       When developing programs that run heavy task on the deafult thread like User Interfaces (UI),
+<h3><b><u> >> Prediction in MultiThreading</u></b></h3> When developing programs that run heavy task on the deafult thread like User Interfaces (UI),
  you should consider running your predictions in a new thread. When running image prediction using ImageAI in
  a new thread, you must take note the following: <br>
          - You can create your prediction object, set its model type, set model path and json path
@@ -317,7 +314,7 @@ class PredictionThread(threading.Thread):
             if eachPicture.endswith(".png") or eachPicture.endswith(".jpg"):
                 predictions, percentage_probabilities = prediction.predictImage(picturesfolder + eachPicture, result_count=1)
                 for prediction, percentage_probability in zip(predictions, probabilities):
-                    print(prediction + " : " + percentage_probability)
+                    print(prediction , " : " , percentage_probability)
 
 predictionThread = PredictionThread ()
 predictionThread.start()
@@ -325,53 +322,11 @@ predictionThread.start()
 
 
 
+
 <div id="documentation" ></div>
-<h3><b><u>Documentation</u></b></h3>
-<p style="font-size: 20px;" ><b>imageai.Prediction.ImagePrediction </b> class </p>
-<hr>
-<p>
-           The <b>ImagePrediction</b> class can be used to perform image prediction
-      in any python application by instanciating it and calling the available functions below: <br>
-            <b>- setModelTypeAsSqueezeNet()</b>    This function should be called should you
-      chose to use the SqueezeNet model file for the image prediction. You only need to call it once. <br>
-            <b>- setModelTypeAsResNet()</b>    This function should be called should you
-      chose to use the ResNet model file for the image prediction. You only need to call it once. <br>
-            <b>- setModelTypeAsInceptionV3()</b>    This function should be called should you
-      chose to use the InceptionV3Net model file for the image prediction. You only need to call it once. <br>
-            <b>- setModelTypeAsDenseNet</b>    This function should be called should you
-      chose to use the DenseNet model file for the image prediction. You only need to call it once. <br>
-            <b>- setModelPath()</b>    You need to call this function only once and parse the path to
-       the model file path into it as a string. The model file type must correspond to the model type you set.  <br>
-             <b>- loadModel()</b>    You need to call this function
-        once only before you attempt to call the <b>predictImage()</b> function .<br>
-     This function receives an optional value which is "prediction_speed".
-        The value is used to reduce the time it takes to predict an image, down to about 60% of the normal time,
-        with just slight changes or drop in prediction accuracy, depending on the nature of the image. <br>
-        <b><i>* prediction_speed (optional); Acceptable values are "normal", "fast", "faster" and "fastest" </i></b> <br> <br>
-              <b>- predictImage()</b>   This function is used to predict a given image by receiving the following arguments: <br>
-            ****** input_type (optional) , the type of input to be parsed. Acceptable values are "file", "array" and "stream" <br>
-            ****** image_input , file path/numpy array/image file stream of the image. <br>
-            ****** result_count (optional) , the number of predictions to be sent which must be whole numbers between <br>
-                1 and 1000. The default is 5. <br>This function returns 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results' <br>
-        contains possible objects classes arranged in descending of their percentage probabilities. The 'prediction_probabilities' <br>
-        contains the percentage probability of each object class. The position of each object class in the 'prediction_results' <br>
-        array corresponds with the positions of the percentage possibilities in the 'prediction_probabilities' array. <br> <br>
-        <i><b>:param input_type: </b></i><br>
-        <i><b>:param image_input: </b></i><br>
-        <i><b>:param result_count: </b></i> <br>
-        <i><b>:return prediction_results, prediction_probabilities: </b></i>
- <br> <br>
-             <b>- predictMultipleImages()</b> This function is used to predict more than one image by receiving the following arguments: <br>
-                    ****** input_type , the type of inputs contained in the parsed array. Acceptable values are "file", "array" and "stream" <br>
-                    ****** sent_images_array , an array of image file paths, image numpy array or image file stream <br>
-                    ****** result_count_per_image (optionally) , the number of predictions to be sent per image, which must be whole numbers between
-                        1 and 1000. The default is 2. <br> <br>This function returns an array of dictionaries, with each dictionary containing 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results'
-                contains possible objects classes arranged in descending of their percentage probabilities. The 'prediction_probabilities'
-                contains the percentage probability of each object class. The position of each object class in the 'prediction_results'
-                array corresponds with the positions of the percentage possibilities in the 'prediction_probabilities' array. <br> <br>
-<b><i>:param input_type: </i></b> <br>
-                <b><i>:param sent_images_array: </i></b> <br>
-                <b><i>:param result_count_per_image: </i></b> <br>
-                <b><i>:return output_array: </i></b><br>  <br>
- </p>
+<h3><b><u>  >> Documentation</u></b></h3>
+We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
+
+<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
+<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
 

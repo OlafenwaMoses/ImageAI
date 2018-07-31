@@ -20,5 +20,5 @@ results_array = multiple_prediction.predictMultipleImages(all_images_array, resu
 for each_result in results_array:
     predictions, percentage_probabilities = each_result["predictions"], each_result["percentage_probabilities"]
     for index in range(len(predictions)):
-        print(predictions[index] + " : " + percentage_probabilities[index])
+        print(predictions[index] , " : " , percentage_probabilities[index])
     print("-----------------------")

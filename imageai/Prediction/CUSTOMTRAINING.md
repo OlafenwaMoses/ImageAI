@@ -6,10 +6,10 @@ using state-of-the-art SqueezeNet, ResNet50, InceptionV3 and DenseNet
 which you can load into the <b>imageai.Prediction.Custom.CustomImagePrediction</b> class. This allows
  you to train your own model on any set of images that corresponds to any type of objects/persons.
 The training process generates a JSON file that maps the objects types in your image dataset
-and lots of models. You will then peak the model with the highest accuracy and perform custom
+and creates lots of models. You will then peak the model with the highest accuracy and perform custom
 image prediction using the model and the JSON file generated. <br><br>
 
-Because video model training is a compute intensive tasks, we strong advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
+Because model training is a compute intensive tasks, we strongly advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
  installed. Performing model training on CPU will my take hours or days. With NVIDIA GPU powered computer system, this will take
  a few hours.  You can use Google Colab for this experiment as it has an NVIDIA K80 GPU available.
 
@@ -28,18 +28,18 @@ This images are the ones to be used to train the model <br>
 To produce a model that can perform well in practical applications, I recommend you about 500 or more
  images per object. 1000 images per object is just great <br>
 7. In each folder present in the test folder, put about 100 to 200 images of each object in its respective folder.
-This images are the ones to be used to test the model as it trains <br>
+These images are the ones to be used to test the model as it trains <br>
 8. Once you have done this, the structure of your image dataset folder should look like below: <br> <br>
 
-<b><pre>pets >
-     train >> dog >>> dog_train_images
-           >> cat >>> cat_train_images
-           >> squirrel >>> squirrel_train_images
-           >> snake >> snake_train_images
-     test  >> dog >>> dog_test_images
-           >> cat >>> cat_test_images
-           >> squirrel >>> squirrel_test_images
-           >> snake >>> snake_test_images</pre></b>
+<b><pre>	pets//train//dog//dog-train-images
+        pets//train//cat//cat-train-images
+        pets//train//squirrel//squirrel-train-images
+        pets//train//snake//snake-train-images 
+	pets//test//dog//dog-test-images
+        pets//test//cat//cat-test-images
+        pets//test//squirrel//squirrel-test-images
+        pets//test//snake//snake-test-images
+     </pre></b>
 
 9. Then your training code goes as follows: <br> <br>
 <b><pre>from imageai.Prediction.Custom import ModelTraining
@@ -585,41 +585,6 @@ model_trainer.trainModel(num_objects=10, num_experiments=100, enhance_data=True,
 
 <br><br><br>
 
-<div id="documentation" ></div>
-<h3><b><u>Documentation</u></b></h3>
-<p style="font-size: 20px;" ><b>imageai.Prediction.Custom.ModelTraining </b> class </p>
-<hr>
-<p>
-The <b>ModelTraining</b> class can be used to train custom models  by instantiating it and calling the available functions below: <br>
-            <b>- setModelTypeAsSqueezeNet()</b>    This is used to set the model type to the SqueezeNet model
-        for the training instance object . <br>
-            <b>- setModelTypeAsResNet()</b>    This is used to set the  model type to the ResNet50 model
-        for the training instance object . <br>
-            <b>- setModelTypeAsInceptionV3()</b>    This is used to set the  model type to the InceptionV3 model
-        for the training instance object . <br>
-        <b>- setModelTypeAsDenseNet()</b>    This is used to set the  model type to the DenseNet model
-        for the training instance object . <br>
-        <b>- setDataDirectory()</b>    This is required to set the path to which the data/dataset to be used for
-                 training is kept. <br>
-        <b>- trainModel()</b>  This  function starts the actual training. It accepts the following values:  <br>  <br>
-                 ****** num_objects , which is the number of classes present in the dataset that is to be used for training  <br>
-                 ****** num_experiments , also known as epochs, it is the number of times the network will train on all the training dataset  <br>
-                 ****** enhance_data (optional) , this is used to modify the dataset and create more instance of the training set to enhance the training result  <br>
-                 ****** batch_size (optional) , due to memory constraints, the network trains on a batch at once, until all the training set is exhausted.  <br>
-                                            The value is set to 32 by default, but can be increased or decreased depending on the meormory of the  <br>
-                                            compute used for training. The batch_size is conventionally set to 16, 32, 64, 128.  <br>
-                 ****** initial_learning_rate(optional) , this value is used to adjust the weights generated in the network. You are advised
-                                                     to keep this value as it is if you don't have deep understanding of this concept.   <br>
-                 ****** show_network_summary(optional) , this value is used to show the structure of the network should you desire to see it.
-                                                    Itis set to False by default  <br>  <br>:param num_objects:  <br>
-                :param num_experiments:  <br>
-                :param enhance_data:  <br>
-                :param batch_size:  <br>
-                :param initial_learning_rate:  <br>
-                :param show_network_summary:  <br>
-                :return: <br>
-
-</p>
 
 
 <h3><b><u>Submitting Custom Model</u></b></h3>
@@ -634,5 +599,15 @@ We are providing an opportunity for anyone that uses <b></b> to train a model to
       <i>Medium : </i>    <a style="text-decoration: none;" target="_blank" href="https://medium.com/@guymodscientist"> @guymodscientist</a> <br>
       <i>Facebook : </i>    <a style="text-decoration: none;" target="_blank" href="https://facebook.com/moses.olafenwa"> moses.olafenwa</a> <br>
 <br><br>
+
+
+
+<div id="documentation" ></div>
+<h3><b><u> >> Documentation</u></b></h3>
+We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
+
+<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
+<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+
 
 

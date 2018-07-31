@@ -4,8 +4,8 @@ import os
 execution_path = os.getcwd()
 
 detector = VideoObjectDetection()
-detector.setModelTypeAsRetinaNet()
-detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.setModelTypeAsYOLOv3()
+detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
 detector.loadModel()
 
 video_path = detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "traffic.mp4"),
