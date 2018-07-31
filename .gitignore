@@ -1,13 +1,9 @@
 *.pyc
-<<<<<<< HEAD
 *.pyo
 *.pyd
 
 .DS_Store
-=======
-.DS_Store
 .vscode/
 *.log
 nohup.out
->>>>>>> origin/zxdev_win
-
+Thumbs.db
