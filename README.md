@@ -4,9 +4,9 @@ A python library built to empower developers to build applications and systems w
 
 <img src="logo1.png" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
 
-An <b>AI Commons</b> project <a href="https://commons.specpal.science" >https://commons.specpal.science </a>
+An <b>AI Commons</b> project <a href="https://aicommons.science" >https://aicommons.science </a>
 Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) and [John Olafenwa](https://twitter.com/johnolafenwa), brothers, creators of [TorchFusion](https://github.com/johnolafenwa/TorchFusion)
-and Authors of [Introduction to Deep Computer Vision](https://john.specpal.science/deepvision)
+and Authors of [Introduction to Deep Computer Vision](https://john.aicommons.science/deepvision)
 <hr>
 
 Built with simplicity in mind, <b>ImageAI</b> 
@@ -276,14 +276,14 @@ Kindly follow the link below to download the publication.
  <h3><b><u>Contact Developers</u></b></h3>
  <p> <b>Moses Olafenwa</b> <br>
     <i>Email: </i>    <a style="text-decoration: none;"  href="mailto:guymodscientist@gmail.com"> guymodscientist@gmail.com</a> <br>
-      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="https://moses.specpal.science"> https://moses.specpal.science</a> <br>
+      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="https://moses.aicommons.science"> https://moses.aicommons.science</a> <br>
       <i>Twitter: </i>    <a style="text-decoration: none;" target="_blank" href="https://twitter.com/OlafenwaMoses"> @OlafenwaMoses</a> <br>
       <i>Medium : </i>    <a style="text-decoration: none;" target="_blank" href="https://medium.com/@guymodscientist"> @guymodscientist</a> <br>
       <i>Facebook : </i>    <a style="text-decoration: none;" target="_blank" href="https://facebook.com/moses.olafenwa"> moses.olafenwa</a> <br>
 <br><br>
       <b>John Olafenwa</b> <br>
     <i>Email: </i>    <a style="text-decoration: none;"  href="mailto:johnolafenwa@gmail.com"> johnolafenwa@gmail.com</a> <br>
-      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="https://john.specpal.science"> https://john.specpal.science</a> <br>
+      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="https://john.aicommons.science"> https://john.aicommons.science</a> <br>
       <i>Twitter: </i>    <a style="text-decoration: none;" target="_blank" href="https://twitter.com/johnolafenwa"> @johnolafenwa</a> <br>
       <i>Medium : </i>    <a style="text-decoration: none;" target="_blank" href="https://medium.com/@johnolafenwa"> @johnolafenwa</a> <br>
       <i>Facebook : </i>    <a style="text-decoration: none;" href="https://facebook.com/olafenwajohn"> olafenwajohn</a> <br>
