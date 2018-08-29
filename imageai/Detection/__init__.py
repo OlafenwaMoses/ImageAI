@@ -76,7 +76,7 @@ class ObjectDetection:
                                  67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
                                  72: 'refrigerator',
                                  73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
-                                 78: 'hair drier',
+                                 78: 'hair dryer',
                                  79: 'toothbrush'}
 
         # Unique instance variables for YOLOv3 and TinyYOLOv3 model
@@ -936,7 +936,7 @@ class VideoObjectDetection:
                                  67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
                                  72: 'refrigerator',
                                  73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
-                                 78: 'hair drier',
+                                 78: 'hair dryer',
                                  79: 'toothbrush'}
 
         # Unique instance variables for YOLOv3 model
