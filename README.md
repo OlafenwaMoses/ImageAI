@@ -227,7 +227,8 @@ Click the link below to see the guide to sample training codes, explanations, an
 We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
 
 <b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
-<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b> <br>
+<b> >> Documentation - French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)</b>
 
 <br> <br>
 
