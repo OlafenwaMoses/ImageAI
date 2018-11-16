@@ -206,7 +206,7 @@ pilot : 2.239348366856575</pre>
 
 </p>
 
-<b>ImageAI</b> provides classes and methods for you to run image prediction your own custom objects using your own model trained with <b>ImageAI</b> Model Training class.
+<b>ImageAI</b> provides classes and methods for you to run image prediction on your own custom objects using your own model trained with <b>ImageAI</b> Model Training class.
 You can use your custom models trained with SqueezeNet, ResNet50, InceptionV3 and DenseNet and the JSON file containing the mapping of the custom object names.
 Click the link below to see the guide to sample training codes, explanations, and best practices guide.
 <br>
