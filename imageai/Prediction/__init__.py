@@ -1,6 +1,6 @@
 import numpy as np
 from tensorflow.python.keras.preprocessing import image
-from PIL import Image
+import Image
 
 
 from tensorflow.python.keras.layers import Input, Conv2D, MaxPool2D, Activation, concatenate, Dropout
