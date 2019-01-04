@@ -334,7 +334,7 @@ class CustomImagePrediction:
         in the setModelPath() function. This function receives an optional value which is "prediction_speed".
         The value is used to reduce the time it takes to predict an image, down to about 50% of the normal time,
         with just slight changes or drop in prediction accuracy, depending on the nature of the image.
-        * prediction_speed (optional); Acceptable values are "normal", "fast", "faster" and "fastest"
+        * prediction_speed (optional); Acceptable values are "slow", "normal", "fast", "faster" and "fastest"
 
         :param prediction_speed :
         :return:
@@ -342,7 +342,9 @@ class CustomImagePrediction:
 
         self.numObjects = num_objects
 
-        if (prediction_speed == "normal"):
+        if (prediction_speed == "slow"):
+            self.__input_image_size = 299
+        elif (prediction_speed == "normal"):
             self.__input_image_size = 224
         elif (prediction_speed == "fast"):
             self.__input_image_size = 160
