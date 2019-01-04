@@ -31,7 +31,6 @@ class ModelTraining:
 
     def __init__(self):
         self.__modelType = ""
-        self.__use_pretrained_model = False
         self.__data_dir = ""
         self.__train_dir = ""
         self.__test_dir = ""
@@ -133,7 +132,7 @@ class ModelTraining:
 
 
 
-    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224):
+    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224, pretrained_model_path=""):
 
         """
                  'trainModel()' function starts the actual training. It accepts the following values:
@@ -146,9 +145,10 @@ class ModelTraining:
                  - initial_learning_rate(optional) , this value is used to adjust the weights generated in the network. You rae advised
                                                      to keep this value as it is if you don't have deep understanding of this concept.
                  - show_network_summary(optional) , this value is used to show the structure of the network should you desire to see it.
-                                                    Itis set to False by default
+                                                    It is set to False by default
                  - training_image_size(optional) , this value is used to define the image size on which the model will be trained. The
                                             value is 224 by default and is kept at a minimum of 100.
+                 - pretrained_model_path(optional) , this file path is used to start the training from a previously trained model
 
                  *
 
@@ -172,17 +172,16 @@ class ModelTraining:
             warnings.warn("The specified training_image_size {} is less than 100. Hence the training_image_size will default to 100.".format(training_image_size))
             training_image_size = 100
 
-
-
+        weights = "trained" if (pretrained_model_path != "") else "custom"
         image_input = Input(shape=(training_image_size, training_image_size, 3))
         if (self.__modelType == "squeezenet"):
-            model = SqueezeNet(weights="custom", num_classes=num_classes, model_input=image_input)
+            model = SqueezeNet(weights=weights, num_classes=num_classes, model_input=image_input, model_path=pretrained_model_path)
         elif (self.__modelType == "resnet"):
-            model = ResNet50(weights="custom", num_classes=num_classes, model_input=image_input)
+            model = ResNet50(weights=weights, num_classes=num_classes, model_input=image_input, model_path=pretrained_model_path)
         elif (self.__modelType == "inceptionv3"):
-            model = InceptionV3(weights="custom", classes=num_classes, model_input=image_input)
+            model = InceptionV3(weights=weights, classes=num_classes, model_input=image_input, model_path=pretrained_model_path)
         elif (self.__modelType == "densenet"):
-            model = DenseNetImageNet121(weights="custom", classes=num_classes, model_input=image_input)
+            model = DenseNetImageNet121(weights=weights, classes=num_classes, model_input=image_input, model_path=pretrained_model_path)
 
         optimizer = Adam(lr=self.__initial_learning_rate, decay=1e-4)
         model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
