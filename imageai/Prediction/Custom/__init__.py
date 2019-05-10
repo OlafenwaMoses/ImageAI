@@ -133,7 +133,7 @@ class ModelTraining:
 
 
 
-    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224):
+    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224, option_loss='mean_squared_error', option_optimizer='sgd'):
 
         """
                  'trainModel()' function starts the actual training. It accepts the following values:
@@ -149,6 +149,8 @@ class ModelTraining:
                                                     Itis set to False by default
                  - training_image_size(optional) , this value is used to define the image size on which the model will be trained. The
                                             value is 224 by default and is kept at a minimum of 100.
+                 - option_loss(optional) , see https://keras.io/losses/
+                 - option_optimizer(optional) , see https://keras.io/losses/
 
                  *
 
@@ -159,6 +161,8 @@ class ModelTraining:
                 :param initial_learning_rate:
                 :param show_network_summary:
                 :param training_image_size:
+                :param option_loss:
+                :param option_optimizer:
                 :return:
                 """
         self.__num_epochs = num_experiments
@@ -242,6 +246,12 @@ class ModelTraining:
         num_train = len(train_generator.filenames)
         num_test = len(test_generator.filenames)
         print("Number of experiments (Epochs) : ", self.__num_epochs)
+
+        #
+        print("Loss : ", option_loss)
+        print("Optimizer : ", option_optimizer)
+        print("See https://keras.io/losses/")
+        model.compile(loss=option_loss, optimizer=option_optimizer)
 
         #
         model.fit_generator(train_generator, steps_per_epoch=int(num_train / batch_size), epochs=self.__num_epochs,
