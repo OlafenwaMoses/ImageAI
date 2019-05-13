@@ -1,5 +1,9 @@
 # ImageAI (v2.1.3)
 
+[![Build Status](https://travis-ci.org/Borda/ImageAI.svg?branch=master)](https://travis-ci.org/Borda/ImageAI)
+[![codecov](https://codecov.io/gh/Borda/ImageAI/branch/master/graph/badge.svg)](https://codecov.io/gh/Borda/ImageAI)
+[![CodeFactor](https://www.codefactor.io/repository/github/borda/imageai/badge)](https://www.codefactor.io/repository/github/borda/imageai)
+
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code.
 
@@ -273,10 +277,9 @@ We have provided full documentation for all **ImageAI** classes and functions in
 
 **ImageAI** uses the Tensorflow backbone for it's Computer Vision operations. Tensorflow supports both CPUs and GPUs ( Specifically NVIDIA GPUs.  You can get one for your PC or get a PC that has one) for machine learning and artificial intelligence algorithms' implementations. To use Tensorflow that supports the use of GPUs, follow the link below :
 
-
-* FOR WINDOWS - [install_windows](https://www.tensorflow.org/install/install_windows)
-* FOR macOS - [install_mac](https://www.tensorflow.org/install/install_mac)
-* FOR UBUNTU - [install_linux](https://www.tensorflow.org/install/install_linux)
+* [FOR WINDOWS](https://www.tensorflow.org/install/install_windows)
+* [FOR macOS](https://www.tensorflow.org/install/install_mac)
+* [FOR UBUNTU](https://www.tensorflow.org/install/install_linux)
 
 
 ### Projects Built on ImageAI
@@ -301,7 +304,7 @@ Kindly follow the link below to download the publication.
 
 [https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society](https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society/)
 
-### Contact Developer
+## Contact Developers
 <div id="contact"></div>
 
 - **Moses Olafenwa**
@@ -310,7 +313,7 @@ Kindly follow the link below to download the publication.
     * _Twitter:_ [@OlafenwaMoses](https://twitter.com/OlafenwaMoses)
     * _Medium:_ [@guymodscientist](https://medium.com/@guymodscientist)
     * _Facebook:_ [moses.olafenwa](https://facebook.com/moses.olafenwa)
-- **Moses Olafenwa**
+- **John Olafenwa**
     * _Email:_ johnolafenwa@gmail.com
     * _Website:_ [https://john.aicommons.science](https://john.aicommons.science)
     * _Twitter:_ [@johnolafenwa](https://twitter.com/johnolafenwa)
@@ -333,34 +336,20 @@ We give special thanks to **[Kang vcar](https://github.com/kangvcar/)** for his 
 
 
 
- ### References
+## References
  <div id="ref"></div>
 
- 1. Somshubra Majumdar, DenseNet Implementation of the paper, Densely Connected Convolutional Networks in Keras
-[https://github.com/titu1994/DenseNet](https://github.com/titu1994/DenseNet)
- 2. Broad Institute of MIT and Harvard, Keras package for deep residual networks
-[https://github.com/broadinstitute/keras-resnet](https://github.com/broadinstitute/keras-resnet)
- 3. Fizyr, Keras implementation of RetinaNet object detection
-[https://github.com/fizyr/keras-retinanet](https://github.com/fizyr/keras-retinanet)
- 4. Francois Chollet, Keras code and weights files for popular deeplearning models
-[https://github.com/fchollet/deep-learning-models](https://github.com/fchollet/deep-learning-models)
- 5. Forrest N. et al, SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and <0.5MB model size
-[https://arxiv.org/abs/1602.07360](https://arxiv.org/abs/1602.07360)
- 6. Kaiming H. et al, Deep Residual Learning for Image Recognition
-[https://arxiv.org/abs/1512.03385](https://arxiv.org/abs/1512.03385)
- 7. Szegedy. et al, Rethinking the Inception Architecture for Computer Vision
-[https://arxiv.org/abs/1512.00567](https://arxiv.org/abs/1512.00567)
- 8. Gao. et al, Densely Connected Convolutional Networks
-[https://arxiv.org/abs/1608.06993](https://arxiv.org/abs/1608.06993)
- 9. Tsung-Yi. et al, Focal Loss for Dense Object Detection
-[https://arxiv.org/abs/1708.02002](https://arxiv.org/abs/1708.02002)
- 10. O Russakovsky et al, ImageNet Large Scale Visual Recognition Challenge
-[https://arxiv.org/abs/1409.0575](https://arxiv.org/abs/1409.0575)
- 11. TY Lin et al, Microsoft COCO: Common Objects in Context
-[https://arxiv.org/abs/1405.0312](https://arxiv.org/abs/1405.0312)
- 12. Moses & John Olafenwa, A collection of images of identifiable professionals.
-[https://github.com/OlafenwaMoses/IdenProf](https://github.com/OlafenwaMoses/IdenProf)
- 13. Joseph Redmon and Ali Farhadi, YOLOv3: An Incremental Improvement.
-[https://arxiv.org/abs/1804.02767](https://arxiv.org/abs/1804.02767)
- 14. Experiencor, Training and Detecting Objects with YOLO3
-[https://github.com/experiencor/keras-yolo3](https://github.com/experiencor/keras-yolo3)
+ 1. Somshubra Majumdar, [DenseNet Implementation of the paper, Densely Connected Convolutional Networks in Keras](https://github.com/titu1994/DenseNet)
+ 2. Broad Institute of MIT and Harvard, [Keras package for deep residual networks](https://github.com/broadinstitute/keras-resnet)
+ 3. Fizyr, [Keras implementation of RetinaNet object detection](https://github.com/fizyr/keras-retinanet)
+ 4. Francois Chollet, [Keras code and weights files for popular deeplearning models](https://github.com/fchollet/deep-learning-models)
+ 5. Forrest N. et al, [SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and <0.5MB model size](https://arxiv.org/abs/1602.07360)
+ 6. Kaiming H. et al, [Deep Residual Learning for Image Recognition](https://arxiv.org/abs/1512.03385)
+ 7. Szegedy. et al, [Rethinking the Inception Architecture for Computer Vision](https://arxiv.org/abs/1512.00567)
+ 8. Gao. et al, [Densely Connected Convolutional Networks](https://arxiv.org/abs/1608.06993)
+ 9. Tsung-Yi. et al, [Focal Loss for Dense Object Detection](https://arxiv.org/abs/1708.02002)
+ 10. O Russakovsky et al, [ImageNet Large Scale Visual Recognition Challenge](https://arxiv.org/abs/1409.0575)
+ 11. TY Lin et al, [Microsoft COCO: Common Objects in Context](https://arxiv.org/abs/1405.0312)
+ 12. Moses & John Olafenwa, [A collection of images of identifiable professionals.](https://github.com/OlafenwaMoses/IdenProf)
+ 13. Joseph Redmon and Ali Farhadi, [YOLOv3: An Incremental Improvement.](https://arxiv.org/abs/1804.02767)
+ 14. Experiencor, [Training and Detecting Objects with YOLO3](https://github.com/experiencor/keras-yolo3)
