@@ -16,8 +16,8 @@ language: python
 sudo: false
 
 python:
-  - 2.7
-  # - 3.5
+  # - 2.7
+  - 3.5
   - 3.6
   - 3.7
 
@@ -28,19 +28,17 @@ before_install:
   - pip install --upgrade pip
 
 install:
-  - mkdir libs
+  - pip install Cython  # required by pycocotools
   - pip install -r requirements.txt
   - pip install "nose>=1.3.7" coverage codecov "pytest>=3.0.5" pytest-cov codacy-coverage check-manifest flake8
   - pip list
 
 before_script:
-  - mkdir output && mkdir results
   - gcc --version ; python --version ; pip --version ; pwd ; ls -l
   - # check-manifest
   - python setup.py check -m -s
 
 script:
-  # - pytest imsegm -v --doctest-modules
   - coverage run --source imageai -m py.test imageai -v --doctest-modules
   # - flake8 . --ignore=E402,E731 --max-line-length=100
   - python setup.py install
@@ -48,5 +46,5 @@ script:
 after_success:
   - codecov  # public repository on Travis CI
   - coverage xml
-  - python-codacy-coverage -r coverage.xml
+  # - python-codacy-coverage -r coverage.xml
   - coverage report
