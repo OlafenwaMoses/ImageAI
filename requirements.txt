@@ -1,8 +1,13 @@
-tensorflow
-keras
-numpy
+tensorflow>=1.4.0
+keras>=2.0.0
+numpy>=1.13.1
+scipy>=0.19.1
+opencv-python
 Pillow
 scipy
 h5py
 matplotlib
 opencv-python
+h5py
+scikit-learn
+pycocotools
