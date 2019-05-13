@@ -8,7 +8,7 @@ import pkg_resources
 import sklearn.model_selection
 import tensorflow
 
-import keras_resnet.classifiers
+from imageai.Detection.keras_resnet import classifiers
 
 _benchmarks = {
     "CIFAR-10": keras.datasets.cifar10,
@@ -18,12 +18,12 @@ _benchmarks = {
 
 
 _names = {
-    "ResNet-18": keras_resnet.classifiers.ResNet18,
-    "ResNet-34": keras_resnet.classifiers.ResNet34,
-    "ResNet-50": keras_resnet.classifiers.ResNet50,
-    "ResNet-101": keras_resnet.classifiers.ResNet101,
-    "ResNet-152": keras_resnet.classifiers.ResNet152,
-    "ResNet-200": keras_resnet.classifiers.ResNet200
+    "ResNet-18": classifiers.ResNet18,
+    "ResNet-34": classifiers.ResNet34,
+    "ResNet-50": classifiers.ResNet50,
+    "ResNet-101": classifiers.ResNet101,
+    "ResNet-152": classifiers.ResNet152,
+    "ResNet-200": classifiers.ResNet200
 }
 
 

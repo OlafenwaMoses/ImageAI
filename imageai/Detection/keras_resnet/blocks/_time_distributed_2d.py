@@ -38,9 +38,8 @@ def time_distributed_basic_2d(filters, stage=0, block=0, kernel_size=3, numerica
 
     Usage:
 
-        >>> import keras_resnet.blocks
-
-        >>> keras_resnet.blocks.time_distributed_basic_2d(64)
+        >>> from imageai.Detection.keras_resnet import blocks
+        >>> blocks.time_distributed_basic_2d(64)
 
     """
     if stride is None:
@@ -106,9 +105,8 @@ def time_distributed_bottleneck_2d(filters, stage=0, block=0, kernel_size=3, num
 
     Usage:
 
-        >>> import keras_resnet.blocks
-
-        >>> keras_resnet.blocks.time_distributed_bottleneck_2d(64)
+        >>> from imageai.Detection.keras_resnet import blocks
+        >>> blocks.time_distributed_bottleneck_2d(64)
 
     """
     if stride is None:

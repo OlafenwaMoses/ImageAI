@@ -23,14 +23,10 @@ class ResNet18(keras.models.Model):
 
     Usage:
 
-        >>> import keras_resnet.classifiers
-
+        >>> from imageai.Detection.keras_resnet import classifiers
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.classifiers.ResNet18(x)
-
+        >>> model = classifiers.ResNet18(x)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     def __init__(self, inputs, classes):
@@ -51,14 +47,10 @@ class ResNet34(keras.models.Model):
 
     Usage:
 
-        >>> import keras_resnet.classifiers
-
+        >>> from imageai.Detection.keras_resnet import classifiers
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.classifiers.ResNet34(x)
-
+        >>> model = classifiers.ResNet34(x)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     def __init__(self, inputs, classes):
@@ -79,14 +71,10 @@ class ResNet50(keras.models.Model):
 
     Usage:
 
-        >>> import keras_resnet.classifiers
-
+        >>> from imageai.Detection.keras_resnet import classifiers
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.classifiers.ResNet50(x)
-
+        >>> model = classifiers.ResNet50(x)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     def __init__(self, inputs, classes):
@@ -107,14 +95,10 @@ class ResNet101(keras.models.Model):
 
     Usage:
 
-        >>> import keras_resnet.classifiers
-
+        >>> from imageai.Detection.keras_resnet import classifiers
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.classifiers.ResNet101(x)
-
+        >>> model = classifiers.ResNet101(x)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     def __init__(self, inputs, classes):
@@ -135,14 +119,10 @@ class ResNet152(keras.models.Model):
 
     Usage:
 
-        >>> import keras_resnet.classifiers
-
+        >>> from imageai.Detection.keras_resnet import classifiers
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.classifiers.ResNet152(x)
-
+        >>> model = classifiers.ResNet152(x)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
 
     """
@@ -164,14 +144,10 @@ class ResNet200(keras.models.Model):
 
     Usage:
 
-        >>> import keras_resnet.classifiers
-
+        >>> from imageai.Detection.keras_resnet import classifiers
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.classifiers.ResNet200(x)
-
+        >>> model = classifiers.ResNet200(x)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     def __init__(self, inputs, classes):

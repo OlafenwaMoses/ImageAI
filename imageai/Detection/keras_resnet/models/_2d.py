@@ -40,19 +40,11 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
 
     Usage:
 
-        >>> import keras_resnet.blocks
-        >>> import keras_resnet.models
-
+        >>> from imageai.Detection.keras_resnet import blocks, models
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> blocks = [2, 2, 2, 2]
-
-        >>> block = keras_resnet.blocks.basic_2d
-
-        >>> model = keras_resnet.models.ResNet(x, classes, blocks, block, classes=classes)
-
+        >>> block = blocks.basic_2d
+        >>> model = models.ResNet(x, classes, [2, 2, 2, 2], block, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if keras.backend.image_data_format() == "channels_last":
@@ -109,14 +101,10 @@ def ResNet18(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
 
     Usage:
 
-        >>> import keras_resnet.models
-
+        >>> from imageai.Detection.keras_resnet import models
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.models.ResNet18(x, classes=classes)
-
+        >>> model = models.ResNet18(x, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if blocks is None:
@@ -141,14 +129,10 @@ def ResNet34(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
 
     Usage:
 
-        >>> import keras_resnet.models
-
+        >>> from imageai.Detection.keras_resnet import models
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.models.ResNet34(x, classes=classes)
-
+        >>> model = models.ResNet34(x, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if blocks is None:
@@ -173,14 +157,10 @@ def ResNet50(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
 
     Usage:
 
-        >>> import keras_resnet.models
-
+        >>> from imageai.Detection.keras_resnet import models
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.models.ResNet50(x)
-
+        >>> model = models.ResNet50(x)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if blocks is None:
@@ -206,14 +186,10 @@ def ResNet101(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
 
     Usage:
 
-        >>> import keras_resnet.models
-
+        >>> from imageai.Detection.keras_resnet import models
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.models.ResNet101(x, classes=classes)
-
+        >>> model = models.ResNet101(x, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if blocks is None:
@@ -239,14 +215,10 @@ def ResNet152(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
 
     Usage:
 
-        >>> import keras_resnet.models
-
+        >>> from imageai.Detection.keras_resnet import models
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.models.ResNet152(x, classes=classes)
-
+        >>> model = models.ResNet152(x, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if blocks is None:
@@ -272,14 +244,10 @@ def ResNet200(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
 
     Usage:
 
-        >>> import keras_resnet.models
-
+        >>> from imageai.Detection.keras_resnet import models
         >>> shape, classes = (224, 224, 3), 1000
-
         >>> x = keras.layers.Input(shape)
-
-        >>> model = keras_resnet.models.ResNet200(x, classes=classes)
-
+        >>> model = models.ResNet200(x, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if blocks is None:

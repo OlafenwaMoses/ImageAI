@@ -15,9 +15,21 @@ limitations under the License.
 """
 
 import keras
-from keras.applications.mobilenet import MobileNet, BASE_WEIGHT_PATH, get_file, relu6, DepthwiseConv2D
+from keras.applications.mobilenet import MobileNet
+from keras_applications.mobilenet import BASE_WEIGHT_PATH  # relu6 is missing
+from keras.utils import get_file
+try:
+    from keras.applications.mobilenet import DepthwiseConv2D
+except Exception:
+    from keras.layers import DepthwiseConv2D
+from tensorflow.python.keras import backend as K
 
 from ..models import retinanet
+
+
+def relu6(x):
+  return K.relu(x, max_value=6)
+
 
 mobile_net_custom_objects = {
     'relu6': relu6,

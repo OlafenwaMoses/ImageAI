@@ -37,9 +37,8 @@ def basic_3d(filters, stage=0, block=0, kernel_size=3, numerical_name=False, str
 
     Usage:
 
-        >>> import keras_resnet.blocks
-
-        >>> keras_resnet.blocks.basic_3d(64)
+        >>> from imageai.Detection.keras_resnet.blocks import basic_3d
+        >>> blocks.basic_3d(64)
     """
     if stride is None:
         if block != 0 or stage == 0:
@@ -103,9 +102,8 @@ def bottleneck_3d(filters, stage=0, block=0, kernel_size=3, numerical_name=False
 
     Usage:
 
-        >>> import keras_resnet.blocks
-
-        >>> keras_resnet.blocks.bottleneck_3d(64)
+        >>> from imageai.Detection.keras_resnet import blocks
+        >>> blocks.bottleneck_3d(64)
     """
     if stride is None:
         if block != 0 or stage == 0:
