@@ -139,16 +139,16 @@ def TimeDistributedResNet50(inputs, blocks=None, include_top=True, classes=1000,
     :param include_top: if true, includes classification layers
     :param classes: number of classes to classify (include_top must be true)
 
-    Usage:
+    Usage::
 
-        >>> from imageai.Detection.keras_resnet import models
-        >>> shape, classes = (1, 224, 224, 3), 1000
-        >>> x = keras.layers.Input(shape)
-        >>> y = models.TimeDistributedResNet50(x)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
-        >>> model = keras.models.Model(x, y)
-        >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
+         from imageai.Detection.keras_resnet import models
+         shape, classes = (1, 224, 224, 3), 1000
+         x = keras.layers.Input(shape)
+         y = models.TimeDistributedResNet50(x)
+         y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
+         y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
+         model = keras.models.Model(x, y)
+         model.compile("adam", "categorical_crossentropy", ["accuracy"])
     """
     if blocks is None:
         blocks = [3, 4, 6, 3]
@@ -169,16 +169,17 @@ def TimeDistributedResNet101(inputs, blocks=None, include_top=True, classes=1000
     :param classes: number of classes to classify (include_top must be true)
     :return model: Time distributed ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
-    Usage:
+    Usage::
 
-        >>> from imageai.Detection.keras_resnet import models
-        >>> shape, classes = (1, 224, 224, 3), 1000
-        >>> x = keras.layers.Input(shape)
-        >>> y = models.TimeDistributedResNet101(x)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
-        >>> model = keras.models.Model(x, y)
-        >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
+        from imageai.Detection.keras_resnet import models
+        shape, classes = (1, 224, 224, 3), 1000
+        x = keras.layers.Input(shape)
+        y = models.TimeDistributedResNet101(x)
+        y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
+        y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
+        model = keras.models.Model(x, y)
+        model.compile("adam", "categorical_crossentropy", ["accuracy"])
+
     """
     if blocks is None:
         blocks = [3, 4, 23, 3]
@@ -199,16 +200,17 @@ def TimeDistributedResNet152(inputs, blocks=None, include_top=True, classes=1000
     :param classes: number of classes to classify (include_top must be true)
     :return model: Time distributed ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
-    Usage:
+    Usage::
 
-        >>> from imageai.Detection.keras_resnet import models
-        >>> shape, classes = (1, 224, 224, 3), 1000
-        >>> x = keras.layers.Input(shape)
-        >>> y = models.TimeDistributedResNet152(x)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
-        >>> model = keras.models.Model(x, y)
-        >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
+         from imageai.Detection.keras_resnet import models
+         shape, classes = (1, 224, 224, 3), 100
+         x = keras.layers.Input(shape)
+         y = models.TimeDistributedResNet152(x)
+         y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
+         y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
+         model = keras.models.Model(x, y)
+         model.compile("adam", "categorical_crossentropy", ["accuracy"])
+
     """
     if blocks is None:
         blocks = [3, 8, 36, 3]
@@ -229,16 +231,17 @@ def TimeDistributedResNet200(inputs, blocks=None, include_top=True, classes=1000
     :param classes: number of classes to classify (include_top must be true)
     :return model: Time distributed ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
-    Usage:
+    Usage::
 
-        >>> from imageai.Detection.keras_resnet import models
-        >>> shape, classes = (1, 224, 224, 3), 1000
-        >>> x = keras.layers.Input(shape)
-        >>> y = models.TimeDistributedResNet200(x)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
-        >>> y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
-        >>> model = keras.models.Model(x, y)
-        >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
+         from imageai.Detection.keras_resnet import models
+         shape, classes = (1, 224, 224, 3), 100
+         x = keras.layers.Input(shape)
+         y = models.TimeDistributedResNet200(x)
+         y = keras.layers.TimeDistributed(keras.layers.Flatten())(y.output)
+         y = keras.layers.TimeDistributed(keras.layers.Dense(classes, activation="softmax"))(y)
+         model = keras.models.Model(x, y)
+         model.compile("adam", "categorical_crossentropy", ["accuracy"])
+
     """
     if blocks is None:
         blocks = [3, 24, 36, 3]
