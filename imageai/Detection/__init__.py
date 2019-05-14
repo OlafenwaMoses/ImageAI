@@ -1,9 +1,11 @@
 import cv2
+
 from imageai.Detection.keras_retinanet.models.resnet import resnet50_retinanet
 from imageai.Detection.keras_retinanet.utils.image import read_image_bgr, read_image_array, read_image_stream, \
     preprocess_image, resize_image
 from imageai.Detection.keras_retinanet.utils.visualization import draw_box, draw_caption
 from imageai.Detection.keras_retinanet.utils.colors import label_color
+
 import matplotlib.pyplot as plt
 import matplotlib.image as pltimage
 import numpy as np
@@ -26,18 +28,18 @@ def get_session():
 
 class ObjectDetection:
     """
-                    This is the object detection class for images in the ImageAI library. It provides support for RetinaNet
-                     , YOLOv3 and TinyYOLOv3 object detection networks . After instantiating this class, you can set it's properties and
-                     make object detections using it's pre-defined functions.
+    This is the object detection class for images in the ImageAI library. It provides support for RetinaNet
+     , YOLOv3 and TinyYOLOv3 object detection networks . After instantiating this class, you can set it's properties and
+     make object detections using it's pre-defined functions.
 
-                     The following functions are required to be called before object detection can be made
-                     * setModelPath()
-                     * At least of of the following and it must correspond to the model set in the setModelPath()
-                      [setModelTypeAsRetinaNet(), setModelTypeAsYOLOv3(), setModelTypeAsTinyYOLOv3()]
-                     * loadModel() [This must be called once only before performing object detection]
+     The following functions are required to be called before object detection can be made
+     * setModelPath()
+     * At least of of the following and it must correspond to the model set in the setModelPath()
+      [setModelTypeAsRetinaNet(), setModelTypeAsYOLOv3(), setModelTypeAsTinyYOLOv3()]
+     * loadModel() [This must be called once only before performing object detection]
 
-                     Once the above functions have been called, you can call the detectObjectsFromImage() function of
-                     the object detection instance object at anytime to obtain observable objects in any image.
+     Once the above functions have been called, you can call the detectObjectsFromImage() function of
+     the object detection instance object at anytime to obtain observable objects in any image.
     """
 
     def __init__(self):
@@ -51,31 +53,21 @@ class ObjectDetection:
         self.__input_image_min = 1333
         self.__input_image_max = 800
 
-        self.numbers_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
-                                 6: 'train',
-                                 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign',
-                                 12: 'parking meter',
-                                 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow',
-                                 20: 'elephant',
-                                 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag',
-                                 27: 'tie',
-                                 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball',
-                                 33: 'kite',
-                                 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard',
-                                 38: 'tennis racket',
-                                 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon',
-                                 45: 'bowl',
-                                 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot',
-                                 52: 'hot dog',
-                                 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant',
-                                 59: 'bed',
-                                 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote',
-                                 66: 'keyboard',
-                                 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
-                                 72: 'refrigerator',
-                                 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
-                                 78: 'hair dryer',
-                                 79: 'toothbrush'}
+        self.numbers_to_names = {
+            0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train',
+            7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter',
+            13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant',
+            21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie',
+            28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite',
+            34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket',
+            39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl',
+            46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog',
+            53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed',
+            60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard',
+            67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator',
+            73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier',
+            79: 'toothbrush'
+        }
 
         # Unique instance variables for YOLOv3 and TinyYOLOv3 model
         self.__yolo_iou = 0.45
@@ -101,19 +93,19 @@ class ObjectDetection:
 
     def setModelTypeAsYOLOv3(self):
         """
-                'setModelTypeAsYOLOv3()' is used to set the model type to the YOLOv3 model
-                for the video object detection instance instance object .
-                :return:
-                """
+        'setModelTypeAsYOLOv3()' is used to set the model type to the YOLOv3 model
+        for the video object detection instance instance object .
+        :return:
+        """
 
         self.__modelType = "yolov3"
 
     def setModelTypeAsTinyYOLOv3(self):
         """
-                        'setModelTypeAsTinyYOLOv3()' is used to set the model type to the TinyYOLOv3 model
-                        for the video object detection instance instance object .
-                        :return:
-                        """
+        'setModelTypeAsTinyYOLOv3()' is used to set the model type to the TinyYOLOv3 model
+        for the video object detection instance instance object .
+        :return:
+        """
 
         self.__modelType = "tinyyolov3"
 
@@ -131,16 +123,16 @@ class ObjectDetection:
 
     def loadModel(self, detection_speed="normal"):
         """
-                'loadModel()' function is required and is used to load the model structure into the program from the file path defined
-                in the setModelPath() function. This function receives an optional value which is "detection_speed".
-                The value is used to reduce the time it takes to detect objects in an image, down to about a 10% of the normal time, with
-                 with just slight reduction in the number of objects detected.
+        'loadModel()' function is required and is used to load the model structure into the program from the file path defined
+        in the setModelPath() function. This function receives an optional value which is "detection_speed".
+        The value is used to reduce the time it takes to detect objects in an image, down to about a 10% of the normal time, with
+         with just slight reduction in the number of objects detected.
 
 
-                * prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash"
+        * prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash"
 
-                :param detection_speed:
-                :return:
+        :param detection_speed:
+        :return:
         """
 
         if (self.__modelType == "retinanet"):
@@ -247,69 +239,69 @@ class ObjectDetection:
                                extract_detected_objects=False, minimum_percentage_probability=50,
                                display_percentage_probability=True, display_object_name=True):
         """
-            'detectObjectsFromImage()' function is used to detect objects observable in the given image path:
-                    * input_image , which can be a filepath, image numpy array or image file stream
-                    * output_image_path (only if output_type = file) , file path to the output image that will contain the detection boxes and label, if output_type="file"
-                    * input_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file", "array" and "stream"
-                    * output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array"
-                    * extract_detected_objects (optional) , option to save each object detected individually as an image and return an array of the objects' image path.
-                    * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
-                    * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
-                    * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
+        'detectObjectsFromImage()' function is used to detect objects observable in the given image path:
+                * input_image , which can be file to path, image numpy array or image file stream
+                * output_image_path (only if output_type = file) , file path to the output image that will contain the detection boxes and label, if output_type="file"
+                * input_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file", "array" and "stream"
+                * output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array"
+                * extract_detected_objects (optional) , option to save each object detected individually as an image and return an array of the objects' image path.
+                * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
+                * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
+                * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
 
 
-            The values returned by this function depends on the parameters parsed. The possible values returnable
-            are stated as below
-            - If extract_detected_objects = False or at its default value and output_type = 'file' or
-                at its default value, you must parse in the 'output_image_path' as a string to the path you want
-                the detected image to be saved. Then the function will return:
-                1. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+        The values returned by this function depends on the parameters parsed. The possible values returnable
+        are stated as below
+        - If extract_detected_objects = False or at its default value and output_type = 'file' or
+            at its default value, you must parse in the 'output_image_path' as a string to the path you want
+            the detected image to be saved. Then the function will return:
+            1. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
 
-            - If extract_detected_objects = False or at its default value and output_type = 'array' ,
-              Then the function will return:
+        - If extract_detected_objects = False or at its default value and output_type = 'array' ,
+          Then the function will return:
 
-                1. a numpy array of the detected image
-                2. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+            1. a numpy array of the detected image
+            2. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
 
-            - If extract_detected_objects = True and output_type = 'file' or
-                at its default value, you must parse in the 'output_image_path' as a string to the path you want
-                the detected image to be saved. Then the function will return:
-                1. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
-                2. an array of string paths to the image of each object extracted from the image
+        - If extract_detected_objects = True and output_type = 'file' or
+            at its default value, you must parse in the 'output_image_path' as a string to the path you want
+            the detected image to be saved. Then the function will return:
+            1. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
+            2. an array of string paths to the image of each object extracted from the image
 
-            - If extract_detected_objects = True and output_type = 'array', the the function will return:
-                1. a numpy array of the detected image
-                2. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
-                3. an array of numpy arrays of each object detected in the image
+        - If extract_detected_objects = True and output_type = 'array', the the function will return:
+            1. a numpy array of the detected image
+            2. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
+            3. an array of numpy arrays of each object detected in the image
 
 
-            :param input_image:
-            :param output_image_path:
-            :param input_type:
-            :param output_type:
-            :param extract_detected_objects:
-            :param minimum_percentage_probability:
-            :param display_percentage_probability:
-            :param display_object_name
-            :return image_frame:
-            :return output_objects_array:
-            :return detected_objects_image_array:
+        :param input_image:
+        :param output_image_path:
+        :param input_type:
+        :param output_type:
+        :param extract_detected_objects:
+        :param minimum_percentage_probability:
+        :param display_percentage_probability:
+        :param display_object_name
+        :return output_objects_array:
+        :return detected_copy:
+        :return detected_detected_objects_image_array:
         """
 
         if (self.__modelLoaded == False):
@@ -545,18 +537,18 @@ class ObjectDetection:
                       toothbrush=False):
 
         """
-                         The 'CustomObjects()' function allows you to handpick the type of objects you want to detect
-                         from an image. The objects are pre-initiated in the function variables and predefined as 'False',
-                         which you can easily set to true for any number of objects available.  This function
-                         returns a dictionary which must be parsed into the 'detectCustomObjectsFromImage()'. Detecting
-                          custom objects only happens when you call the function 'detectCustomObjectsFromImage()'
+         The 'CustomObjects()' function allows you to handpick the type of objects you want to detect
+         from an image. The objects are pre-initiated in the function variables and predefined as 'False',
+         which you can easily set to true for any number of objects available.  This function
+         returns a dictionary which must be parsed into the 'detectCustomObjectsFromImage()'. Detecting
+          custom objects only happens when you call the function 'detectCustomObjectsFromImage()'
 
 
-                        * true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present
+        * true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present
 
-                        :param boolean_values:
-                        :return: custom_objects_dict
-                """
+        :param boolean_values:
+        :return: custom_objects_dict
+        """
 
         custom_objects_dict = {}
         input_values = [person, bicycle, car, motorcycle, airplane,
@@ -600,70 +592,70 @@ class ObjectDetection:
                                      minimum_percentage_probability=50, display_percentage_probability=True,
                                      display_object_name=True):
         """
-                    'detectCustomObjectsFromImage()' function is used to detect predefined objects observable in the given image path:
-                            * custom_objects , an instance of the CustomObject class to filter which objects to detect
-                            * input_image , which can be file to path, image numpy array or image file stream
-                            * output_image_path , file path to the output image that will contain the detection boxes and label, if output_type="file"
-                            * input_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file", "array" and "stream"
-                            * output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array"
-                            * extract_detected_objects (optional, False by default) , option to save each object detected individually as an image and return an array of the objects' image path.
-                            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
-                            * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
-                            * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
+        'detectCustomObjectsFromImage()' function is used to detect predefined objects observable in the given image path:
+            * custom_objects , an instance of the CustomObject class to filter which objects to detect
+            * input_image , which can be file to path, image numpy array or image file stream
+            * output_image_path , file path to the output image that will contain the detection boxes and label, if output_type="file"
+            * input_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file", "array" and "stream"
+            * output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array"
+            * extract_detected_objects (optional, False by default) , option to save each object detected individually as an image and return an array of the objects' image path.
+            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
+            * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
+            * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
 
-                    The values returned by this function depends on the parameters parsed. The possible values returnable
-            are stated as below
-            - If extract_detected_objects = False or at its default value and output_type = 'file' or
-                at its default value, you must parse in the 'output_image_path' as a string to the path you want
-                the detected image to be saved. Then the function will return:
-                1. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                The values returned by this function depends on the parameters parsed. The possible values returnable
+        are stated as below
+        - If extract_detected_objects = False or at its default value and output_type = 'file' or
+            at its default value, you must parse in the 'output_image_path' as a string to the path you want
+            the detected image to be saved. Then the function will return:
+            1. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
 
-            - If extract_detected_objects = False or at its default value and output_type = 'array' ,
-              Then the function will return:
+        - If extract_detected_objects = False or at its default value and output_type = 'array' ,
+          Then the function will return:
 
-                1. a numpy array of the detected image
-                2. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+            1. a numpy array of the detected image
+            2. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
 
-            - If extract_detected_objects = True and output_type = 'file' or
-                at its default value, you must parse in the 'output_image_path' as a string to the path you want
-                the detected image to be saved. Then the function will return:
-                1. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
-                2. an array of string paths to the image of each object extracted from the image
+        - If extract_detected_objects = True and output_type = 'file' or
+            at its default value, you must parse in the 'output_image_path' as a string to the path you want
+            the detected image to be saved. Then the function will return:
+            1. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
+            2. an array of string paths to the image of each object extracted from the image
 
-            - If extract_detected_objects = True and output_type = 'array', the the function will return:
-                1. a numpy array of the detected image
-                2. an array of dictionaries, with each dictionary corresponding to the objects
-                    detected in the image. Each dictionary contains the following property:
-                    * name (string)
-                    * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
-                3. an array of numpy arrays of each object detected in the image
+        - If extract_detected_objects = True and output_type = 'array', the the function will return:
+            1. a numpy array of the detected image
+            2. an array of dictionaries, with each dictionary corresponding to the objects
+                detected in the image. Each dictionary contains the following property:
+                * name (string)
+                * percentage_probability (float)
+                * box_points (tuple of x1,y1,x2 and y2 coordinates)
+            3. an array of numpy arrays of each object detected in the image
 
 
-            :param input_image:
-            :param output_image_path:
-            :param input_type:
-            :param output_type:
-            :param extract_detected_objects:
-            :param minimum_percentage_probability:
-            :return output_objects_array:
-            :param display_percentage_probability:
-            :param display_object_name
-            :return detected_copy:
-            :return detected_detected_objects_image_array:
-                """
+        :param input_image:
+        :param output_image_path:
+        :param input_type:
+        :param output_type:
+        :param extract_detected_objects:
+        :param minimum_percentage_probability:
+        :return output_objects_array:
+        :param display_percentage_probability:
+        :param display_object_name
+        :return detected_copy:
+        :return detected_detected_objects_image_array:
+        """
 
         if (self.__modelLoaded == False):
             raise ValueError("You must call the loadModel() function before making object detection.")
@@ -886,19 +878,19 @@ class ObjectDetection:
 
 class VideoObjectDetection:
     """
-                    This is the object detection class for videos and camera live stream inputs in the ImageAI library. It provides support for RetinaNet,
-                     YOLOv3 and TinyYOLOv3 object detection networks. After instantiating this class, you can set it's properties and
-                     make object detections using it's pre-defined functions.
+    This is the object detection class for videos and camera live stream inputs in the ImageAI library. It provides support for RetinaNet,
+     YOLOv3 and TinyYOLOv3 object detection networks. After instantiating this class, you can set it's properties and
+     make object detections using it's pre-defined functions.
 
-                     The following functions are required to be called before object detection can be made
-                     * setModelPath()
-                     * At least of of the following and it must correspond to the model set in the setModelPath()
-                      [setModelTypeAsRetinaNet(), setModelTypeAsYOLOv3(), setModelTinyYOLOv3()]
-                     * loadModel() [This must be called once only before performing object detection]
+     The following functions are required to be called before object detection can be made
+     * setModelPath()
+     * At least of of the following and it must correspond to the model set in the setModelPath()
+      [setModelTypeAsRetinaNet(), setModelTypeAsYOLOv3(), setModelTinyYOLOv3()]
+     * loadModel() [This must be called once only before performing object detection]
 
-                     Once the above functions have been called, you can call the detectObjectsFromVideo() function
-                     or the detectCustomObjectsFromVideo() of  the object detection instance object at anytime to
-                     obtain observable objects in any video or camera live stream.
+     Once the above functions have been called, you can call the detectObjectsFromVideo() function
+     or the detectCustomObjectsFromVideo() of  the object detection instance object at anytime to
+     obtain observable objects in any video or camera live stream.
     """
 
     def __init__(self):
@@ -911,31 +903,21 @@ class VideoObjectDetection:
         self.__input_image_max = 800
         self.__detection_storage = None
 
-        self.numbers_to_names = {0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
-                                 6: 'train',
-                                 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign',
-                                 12: 'parking meter',
-                                 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow',
-                                 20: 'elephant',
-                                 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag',
-                                 27: 'tie',
-                                 28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball',
-                                 33: 'kite',
-                                 34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard',
-                                 38: 'tennis racket',
-                                 39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon',
-                                 45: 'bowl',
-                                 46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot',
-                                 52: 'hot dog',
-                                 53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant',
-                                 59: 'bed',
-                                 60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote',
-                                 66: 'keyboard',
-                                 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
-                                 72: 'refrigerator',
-                                 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
-                                 78: 'hair dryer',
-                                 79: 'toothbrush'}
+        self.numbers_to_names = {
+            0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus', 6: 'train',
+            7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign', 12: 'parking meter',
+            13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep', 19: 'cow', 20: 'elephant',
+            21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack', 25: 'umbrella', 26: 'handbag', 27: 'tie',
+            28: 'suitcase', 29: 'frisbee', 30: 'skis', 31: 'snowboard', 32: 'sports ball', 33: 'kite',
+            34: 'baseball bat', 35: 'baseball glove', 36: 'skateboard', 37: 'surfboard', 38: 'tennis racket',
+            39: 'bottle', 40: 'wine glass', 41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl',
+            46: 'banana', 47: 'apple', 48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog',
+            53: 'pizza', 54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed',
+            60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote', 66: 'keyboard',
+            67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink', 72: 'refrigerator',
+            73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear', 78: 'hair drier',
+            79: 'toothbrush'
+        }
 
         # Unique instance variables for YOLOv3 model
         self.__yolo_iou = 0.45
@@ -961,18 +943,18 @@ class VideoObjectDetection:
 
     def setModelTypeAsYOLOv3(self):
         """
-                'setModelTypeAsYOLOv3()' is used to set the model type to the YOLOv3 model
-                for the video object detection instance instance object .
-                :return:
-                """
+        'setModelTypeAsYOLOv3()' is used to set the model type to the YOLOv3 model
+        for the video object detection instance instance object .
+        :return:
+        """
         self.__modelType = "yolov3"
 
     def setModelTypeAsTinyYOLOv3(self):
         """
-                'setModelTypeAsTinyYOLOv3()' is used to set the model type to the TinyYOLOv3 model
-                for the video object detection instance instance object .
-                :return:
-                """
+        'setModelTypeAsTinyYOLOv3()' is used to set the model type to the TinyYOLOv3 model
+        for the video object detection instance instance object .
+        :return:
+        """
         self.__modelType = "tinyyolov3"
 
     def setModelPath(self, model_path):
@@ -989,16 +971,16 @@ class VideoObjectDetection:
 
     def loadModel(self, detection_speed="normal"):
         """
-                'loadModel()' function is required and is used to load the model structure into the program from the file path defined
-                in the setModelPath() function. This function receives an optional value which is "detection_speed".
-                The value is used to reduce the time it takes to detect objects in an image, down to about a 10% of the normal time, with
-                 with just slight reduction in the number of objects detected.
+        'loadModel()' function is required and is used to load the model structure into the program from the file path defined
+        in the setModelPath() function. This function receives an optional value which is "detection_speed".
+        The value is used to reduce the time it takes to detect objects in an image, down to about a 10% of the normal time, with
+         with just slight reduction in the number of objects detected.
 
 
-                * prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash"
+        * prediction_speed (optional); Acceptable values are "normal", "fast", "faster", "fastest" and "flash"
 
-                :param detection_speed:
-                :return:
+        :param detection_speed:
+        :return:
         """
 
         if (self.__modelType == "retinanet"):
@@ -1092,11 +1074,6 @@ class VideoObjectDetection:
 
                 self.__yolo_input_image_shape = K.placeholder(shape=(2,))
                 self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes = yolo_eval(model.output,
-                                                                                       self.__tiny_yolo_anchors,
-                                                                                       len(self.numbers_to_names),
-                                                                                       self.__yolo_input_image_shape,
-                                                                                       score_threshold=self.__yolo_score,
-                                                                                       iou_threshold=self.__yolo_iou)
 
                 self.__model_collection.append(model)
                 self.__modelLoaded = True
@@ -1108,82 +1085,97 @@ class VideoObjectDetection:
                                video_complete_function=None, return_detected_frame=False, detection_timeout = None):
 
         """
-                    'detectObjectsFromVideo()' function is used to detect objects observable in the given video path or a camera input:
-            * input_file_path , which is the file path to the input video. It is required only if 'camera_input' is not set
-            * camera_input , allows you to parse in camera input for live video detections
-            * output_file_path , which is the path to the output video. It is required only if 'save_detected_video' is not set to False
-            * frames_per_second , which is the number of frames to be used in the output video
-            * frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected.
-            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
-            * log_progress (optional) , which states if the progress of the frame processed is to be logged to console
-            * display_percentage_probability (optional), can be used to hide or show probability scores on the detected video frames
-            * display_object_name (optional), can be used to show or hide object names on the detected video frames
-            * save_save_detected_video (optional, True by default), can be set to or not to save the detected video
-            * per_frame_function (optional), this parameter allows you to parse in a function you will want to execute after each frame of the video is detected. If this parameter is set to a function, after every video  frame is detected, the function will be executed with the following values parsed into it:
-                -- position number of the frame
-                -- an array of dictinaries, with each dictinary corresponding to each object detected. Each dictionary contains 'name', 'percentage_probability' and 'box_points'
-                -- a dictionary with with keys being the name of each unique objects and value are the number of instances of the object present
-                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed as the fourth value into the function
+        'detectObjectsFromVideo()' function is used to detect objects observable in the given video path or a camera input:
+        * input_file_path , which is the file path to the input video. It is required only if 'camera_input' is not set
+        * camera_input , allows you to parse in camera input for live video detections
+        * output_file_path , which is the path to the output video. It is required only if 'save_detected_video' is not set to False
+        * frames_per_second , which is the number of frames to be used in the output video
+        * frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected.
+        * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
+        * log_progress (optional) , which states if the progress of the frame processed is to be logged to console
+        * display_percentage_probability (optional), can be used to hide or show probability scores on the detected video frames
+        * display_object_name (optional), can be used to show or hide object names on the detected video frames
+        * save_save_detected_video (optional, True by default), can be set to or not to save the detected video
+        * per_frame_function (optional), this parameter allows you to parse in a function you will want to execute after
+            each frame of the video is detected. If this parameter is set to a function, after every video
+            frame is detected, the function will be executed with the following values parsed into it:
+            -- position number of the frame
+            -- an array of dictinaries, with each dictinary corresponding to each object detected.
+                Each dictionary contains 'name', 'percentage_probability' and 'box_points'
+            -- a dictionary with with keys being the name of each unique objects and value
+                are the number of instances of the object present
+            -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+                as the fourth value into the function
 
-            * per_second_function (optional), this parameter allows you to parse in a function you will want to execute after each second of the video is detected. If this parameter is set to a function, after every second of a video is detected, the function will be executed with the following values parsed into it:
-                -- position number of the second
-                -- an array of dictionaries whose keys are position number of each frame present in the last second , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
-                -- an array of dictionaries, with each dictionary corresponding to each frame in the past second, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
-                -- a dictionary with its keys being the name of each unique object detected throughout the past second, and the key values are the average number of instances of the object found in all the frames contained in the past second
-                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
-                                                                    as the fifth value into the function
+        * per_second_function (optional), this parameter allows you to parse in a function you will want to execute after
+            each second of the video is detected. If this parameter is set to a function, after every second of a video
+             is detected, the function will be executed with the following values parsed into it:
+            -- position number of the second
+            -- an array of dictionaries whose keys are position number of each frame present in the last second , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
 
-            * per_minute_function (optional), this parameter allows you to parse in a function you will want to execute after each minute of the video is detected. If this parameter is set to a function, after every minute of a video is detected, the function will be executed with the following values parsed into it:
-                -- position number of the minute
-                -- an array of dictionaries whose keys are position number of each frame present in the last minute , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+            -- an array of dictionaries, with each dictionary corresponding to each frame in the past second, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
 
-                -- an array of dictionaries, with each dictionary corresponding to each frame in the past minute, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+            -- a dictionary with its keys being the name of each unique object detected throughout the past second, and the key values are the average number of instances of the object found in all the frames contained in the past second
 
-                -- a dictionary with its keys being the name of each unique object detected throughout the past minute, and the key values are the average number of instances of the object found in all the frames contained in the past minute
+            -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+                as the fifth value into the function
 
-                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed as the fifth value into the function
+        * per_minute_function (optional), this parameter allows you to parse in a function you will want to execute after
+            each minute of the video is detected. If this parameter is set to a function, after every minute of a video
+             is detected, the function will be executed with the following values parsed into it:
+            -- position number of the minute
+            -- an array of dictionaries whose keys are position number of each frame present in the last minute , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
 
-            * video_complete_function (optional), this parameter allows you to parse in a function you will want to execute after all of the video frames have been detected. If this parameter is set to a function, after all of frames of a video is detected, the function will be executed with the following values parsed into it:
-                -- an array of dictionaries whose keys are position number of each frame present in the entire video , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
-                -- an array of dictionaries, with each dictionary corresponding to each frame in the entire video, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
-                -- a dictionary with its keys being the name of each unique object detected throughout the entire video, and the key values are the average number of instances of the object found in all the frames contained in the entire video
+            -- an array of dictionaries, with each dictionary corresponding to each frame in the past minute, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
 
-            * return_detected_frame (optionally, False by default), option to obtain the return the last detected video frame into the per_per_frame_function, per_per_second_function or per_per_minute_function
+            -- a dictionary with its keys being the name of each unique object detected throughout the past minute, and the key values are the average number of instances of the object found in all the frames contained in the past minute
 
-            * detection_timeout (optionally, None by default), option to state the number of seconds of a video that should be detected after which the detection function stop processing the video
+            -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+                as the fifth value into the function
+
+        * video_complete_function (optional), this parameter allows you to parse in a function you will want to execute after
+            all of the video frames have been detected. If this parameter is set to a function, after all of frames of a video
+             is detected, the function will be executed with the following values parsed into it:
+            -- an array of dictionaries whose keys are position number of each frame present in the entire video , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+
+            -- an array of dictionaries, with each dictionary corresponding to each frame in the entire video, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+
+            -- a dictionary with its keys being the name of each unique object detected throughout the entire video, and the key values are the average number of instances of the object found in all the frames contained in the entire video
+
+        * return_detected_frame (optionally, False by default), option to obtain the return the last detected video frame into the per_per_frame_function,
+                                                                per_per_second_function or per_per_minute_function
 
 
-                    :param input_file_path:
-                    :param camera_input
-                    :param output_file_path:
-                    :param save_detected_video:
-                    :param frames_per_second:
-                    :param frame_detection_interval:
-                    :param minimum_percentage_probability:
-                    :param log_progress:
-                    :param display_percentage_probability:
-                    :param display_object_name:
-                    :param per_frame_function:
-                    :param per_second_function:
-                    :param per_minute_function:
-                    :param video_complete_function:
-                    :param return_detected_frame:
-                    :param detection_timeout:
-                    :return output_video_filepath:
-                    :return counting:
-                    :return output_objects_array:
-                    :return output_objects_count:
-                    :return detected_copy:
-                    :return this_second_output_object_array:
-                    :return this_second_counting_array:
-                    :return this_second_counting:
-                    :return this_minute_output_object_array:
-                    :return this_minute_counting_array:
-                    :return this_minute_counting:
-                    :return this_video_output_object_array:
-                    :return this_video_counting_array:
-                    :return this_video_counting:
-                """
+        :param input_file_path:
+        :param camera_input
+        :param output_file_path:
+        :param save_detected_video:
+        :param frames_per_second:
+        :param frame_detection_interval:
+        :param minimum_percentage_probability:
+        :param log_progress:
+        :param display_percentage_probability:
+        :param display_object_name:
+        :param per_frame_function:
+        :param per_second_function:
+        :param per_minute_function:
+        :param video_complete_function:
+        :param return_detected_frame:
+        :return output_video_filepath:
+        :return counting:
+        :return output_objects_array:
+        :return output_objects_count:
+        :return detected_copy:
+        :return this_second_output_object_array:
+        :return this_second_counting_array:
+        :return this_second_counting:
+        :return this_minute_output_object_array:
+        :return this_minute_counting_array:
+        :return this_minute_counting:
+        :return this_video_output_object_array:
+        :return this_video_counting_array:
+        :return this_video_counting:
+        """
 
         if (input_file_path == "" and camera_input == None):
             raise ValueError(
@@ -1686,18 +1678,18 @@ class VideoObjectDetection:
                       toothbrush=False):
 
         """
-                         The 'CustomObjects()' function allows you to handpick the type of objects you want to detect
-                         from a video. The objects are pre-initiated in the function variables and predefined as 'False',
-                         which you can easily set to true for any number of objects available.  This function
-                         returns a dictionary which must be parsed into the 'detectCustomObjectsFromVideo()'. Detecting
-                          custom objects only happens when you call the function 'detectCustomObjectsFromVideo()'
+         The 'CustomObjects()' function allows you to handpick the type of objects you want to detect
+         from a video. The objects are pre-initiated in the function variables and predefined as 'False',
+         which you can easily set to true for any number of objects available.  This function
+         returns a dictionary which must be parsed into the 'detectCustomObjectsFromVideo()'. Detecting
+          custom objects only happens when you call the function 'detectCustomObjectsFromVideo()'
 
 
-                        * true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present
+        * true_values_of_objects (array); Acceptable values are 'True' and False  for all object values present
 
-                        :param boolean_values:
-                        :return: custom_objects_dict
-                """
+        :param boolean_values:
+        :return: custom_objects_dict
+        """
 
         custom_objects_dict = {}
         input_values = [person, bicycle, car, motorcycle, airplane,
@@ -1745,103 +1737,99 @@ class VideoObjectDetection:
                                      return_detected_frame=False, detection_timeout = None):
 
         """
-                            'detectObjectsFromVideo()' function is used to detect specific object(s) observable in the given video path or given camera live stream input:
-                                    * custom_objects , which is the dictionary returned by the 'CustomObjects' function
-                                    * input_file_path , which is the file path to the input video. It is required only if 'camera_input' is not set
-                                    * camera_input , allows you to parse in camera input for live video detections
-                                    * output_file_path , which is the path to the output video. It is required only if 'save_detected_video' is not set to False
-                                    * frames_per_second , which is the number of frames to be used in the output video
-                                    * frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected.
-                                    * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
-                                    * log_progress (optional) , which states if the progress of the frame processed is to be logged to console
-                                    * display_percentage_probability (optional), can be used to hide or show probability scores on the detected video frames
-                                    * display_object_name (optional), can be used to show or hide object names on the detected video frames
-                                    * save_save_detected_video (optional, True by default), can be set to or not to save the detected video
-                                    * per_frame_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                        each frame of the video is detected. If this parameter is set to a function, after every video
-                                                                        frame is detected, the function will be executed with the following values parsed into it:
-                                                                        -- position number of the frame
-                                                                        -- an array of dictinaries, with each dictinary corresponding to each object detected.
-                                                                            Each dictionary contains 'name', 'percentage_probability' and 'box_points'
-                                                                        -- a dictionay with with keys being the name of each unique objects and value
-                                                                            are the number of instances of the object present
-                                                                        -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
-                                                                            as the fourth value into the function
+        'detectObjectsFromVideo()' function is used to detect specific object(s) observable in the given video path or given camera live stream input:
+                * custom_objects , which is the dictionary returned by the 'CustomObjects' function
+                * input_file_path , which is the file path to the input video. It is required only if 'camera_input' is not set
+                * camera_input , allows you to parse in camera input for live video detections
+                * output_file_path , which is the path to the output video. It is required only if 'save_detected_video' is not set to False
+                * frames_per_second , which is the number of frames to be used in the output video
+                * frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected.
+                * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
+                * log_progress (optional) , which states if the progress of the frame processed is to be logged to console
+                * display_percentage_probability (optional), can be used to hide or show probability scores on the detected video frames
+                * display_object_name (optional), can be used to show or hide object names on the detected video frames
+                * save_save_detected_video (optional, True by default), can be set to or not to save the detected video
+                * per_frame_function (optional), this parameter allows you to parse in a function you will want to execute after
+                    each frame of the video is detected. If this parameter is set to a function, after every video
+                    frame is detected, the function will be executed with the following values parsed into it:
+                    -- position number of the frame
+                    -- an array of dictinaries, with each dictinary corresponding to each object detected.
+                        Each dictionary contains 'name', 'percentage_probability' and 'box_points'
+                    -- a dictionay with with keys being the name of each unique objects and value
+                        are the number of instances of the object present
+                    -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+                        as the fourth value into the function
 
-                                    * per_second_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                        each second of the video is detected. If this parameter is set to a function, after every second of a video
-                                                                         is detected, the function will be executed with the following values parsed into it:
-                                                                        -- position number of the second
-                                                                        -- an array of dictionaries whose keys are position number of each frame present in the last second , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+                * per_second_function (optional), this parameter allows you to parse in a function you will want to execute after
+                    each second of the video is detected. If this parameter is set to a function, after every second of a video
+                     is detected, the function will be executed with the following values parsed into it:
+                    -- position number of the second
+                    -- an array of dictionaries whose keys are position number of each frame present in the last second , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
 
-                                                                        -- an array of dictionaries, with each dictionary corresponding to each frame in the past second, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+                    -- an array of dictionaries, with each dictionary corresponding to each frame in the past second, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
 
-                                                                        -- a dictionary with its keys being the name of each unique object detected throughout the past second, and the key values are the average number of instances of the object found in all the frames contained in the past second
+                    -- a dictionary with its keys being the name of each unique object detected throughout the past second, and the key values are the average number of instances of the object found in all the frames contained in the past second
 
-                                                                        -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
-                                                                            as the fifth value into the function
+                    -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+                        as the fifth value into the function
 
-                                    * per_minute_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                        each minute of the video is detected. If this parameter is set to a function, after every minute of a video
-                                                                         is detected, the function will be executed with the following values parsed into it:
-                                                                        -- position number of the minute
-                                                                        -- an array of dictionaries whose keys are position number of each frame present in the last minute , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+                * per_minute_function (optional), this parameter allows you to parse in a function you will want to execute after
+                    each minute of the video is detected. If this parameter is set to a function, after every minute of a video
+                     is detected, the function will be executed with the following values parsed into it:
+                    -- position number of the minute
+                    -- an array of dictionaries whose keys are position number of each frame present in the last minute , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
 
-                                                                        -- an array of dictionaries, with each dictionary corresponding to each frame in the past minute, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+                    -- an array of dictionaries, with each dictionary corresponding to each frame in the past minute, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
 
-                                                                        -- a dictionary with its keys being the name of each unique object detected throughout the past minute, and the key values are the average number of instances of the object found in all the frames contained in the past minute
+                    -- a dictionary with its keys being the name of each unique object detected throughout the past minute, and the key values are the average number of instances of the object found in all the frames contained in the past minute
 
-                                                                        -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
-                                                                            as the fifth value into the function
+                    -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+                        as the fifth value into the function
 
-                                    * video_complete_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                        all of the video frames have been detected. If this parameter is set to a function, after all of frames of a video
-                                                                         is detected, the function will be executed with the following values parsed into it:
-                                                                        -- an array of dictionaries whose keys are position number of each frame present in the entire video , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+                * video_complete_function (optional), this parameter allows you to parse in a function you will want to execute after
+                    all of the video frames have been detected. If this parameter is set to a function, after all of frames of a video
+                     is detected, the function will be executed with the following values parsed into it:
+                    -- an array of dictionaries whose keys are position number of each frame present in the entire video , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
 
-                                                                        -- an array of dictionaries, with each dictionary corresponding to each frame in the entire video, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+                    -- an array of dictionaries, with each dictionary corresponding to each frame in the entire video, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
 
-                                                                        -- a dictionary with its keys being the name of each unique object detected throughout the entire video, and the key values are the average number of instances of the object found in all the frames contained in the entire video
+                    -- a dictionary with its keys being the name of each unique object detected throughout the entire video, and the key values are the average number of instances of the object found in all the frames contained in the entire video
 
-                                    * return_detected_frame (optionally, False by default), option to obtain the return the last detected video frame into the per_per_frame_function,
-                                                                                            per_per_second_function or per_per_minute_function
-
-
+                * return_detected_frame (optionally, False by default), option to obtain the return the last detected video frame into the per_per_frame_function,
+                                                                        per_per_second_function or per_per_minute_function
 
 
-
-
-                            :param custom_objects:
-                            :param input_file_path:
-                            :param camera_input
-                            :param output_file_path:
-                            :param save_detected_video:
-                            :param frames_per_second:
-                            :param frame_detection_interval:
-                            :param minimum_percentage_probability:
-                            :param log_progress:
-                            :param display_percentage_probability:
-                            :param display_object_name:
-                            :param per_frame_function:
-                            :param per_second_function:
-                            :param per_minute_function:
-                            :param video_complete_function:
-                            :param return_detected_frame:
-                            :return output_video_filepath:
-                            :return counting:
-                            :return output_objects_array:
-                            :return output_objects_count:
-                            :return detected_copy:
-                            :return this_second_output_object_array:
-                            :return this_second_counting_array:
-                            :return this_second_counting:
-                            :return this_minute_output_object_array:
-                            :return this_minute_counting_array:
-                            :return this_minute_counting:
-                            :return this_video_output_object_array:
-                            :return this_video_counting_array:
-                            :return this_video_counting:
-                        """
+        :param custom_objects:
+        :param input_file_path:
+        :param camera_input
+        :param output_file_path:
+        :param save_detected_video:
+        :param frames_per_second:
+        :param frame_detection_interval:
+        :param minimum_percentage_probability:
+        :param log_progress:
+        :param display_percentage_probability:
+        :param display_object_name:
+        :param per_frame_function:
+        :param per_second_function:
+        :param per_minute_function:
+        :param video_complete_function:
+        :param return_detected_frame:
+        :return output_video_filepath:
+        :return counting:
+        :return output_objects_array:
+        :return output_objects_count:
+        :return detected_copy:
+        :return this_second_output_object_array:
+        :return this_second_counting_array:
+        :return this_second_counting:
+        :return this_minute_output_object_array:
+        :return this_minute_counting_array:
+        :return this_minute_counting:
+        :return this_video_output_object_array:
+        :return this_video_counting_array:
+        :return this_video_counting:
+        """
 
         if (input_file_path == "" and camera_input == None):
             raise ValueError(
@@ -2327,10 +2315,3 @@ class VideoObjectDetection:
                 raise ValueError(
                     "An error occured. It may be that your input video is invalid. Ensure you specified a proper string value for 'output_file_path' is 'save_detected_video' is not False. "
                     "Also ensure your per_frame, per_second, per_minute or video_complete_analysis function is properly configured to receive the right parameters. ")
-
-
-
-
-
-
-

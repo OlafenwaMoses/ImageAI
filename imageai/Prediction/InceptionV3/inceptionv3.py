@@ -61,10 +61,7 @@ def conv2d_bn(x,
     else:
         bn_name = None
         conv_name = None
-    if K.image_data_format() == 'channels_first':
-        bn_axis = 1
-    else:
-        bn_axis = 3
+    bn_axis = 3 if K.image_data_format() == "channels_last" else 1
     x = Conv2D(
         filters, (num_row, num_col),
         strides=strides,
@@ -137,10 +134,8 @@ def InceptionV3(include_top=True,
         raise ValueError('If using `weights` as imagenet with `include_top`'
                          ' as true, `classes` should be 1000')
 
-
     img_input = model_input
     channel_axis = 3
-
 
     x = conv2d_bn(img_input, 32, 3, 3, strides=(2, 2), padding='valid')
     x = conv2d_bn(x, 32, 3, 3, padding='valid')

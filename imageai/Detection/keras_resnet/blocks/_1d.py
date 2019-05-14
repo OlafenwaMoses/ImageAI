@@ -37,20 +37,14 @@ def basic_1d(filters, stage=0, block=0, kernel_size=3, numerical_name=False, str
 
     Usage:
 
-        >>> import keras_resnet.blocks
-
-        >>> keras_resnet.blocks.basic_1d(64)
+        >>> from imageai.Detection.keras_resnet import blocks
+        >>> blocks.basic_1d(64)  # doctest: +ELLIPSIS
+        <function basic_1d.<locals>.f at ...>
     """
     if stride is None:
-        if block != 0 or stage == 0:
-            stride = 1
-        else:
-            stride = 2
+        stride = 1 if block != 0 or stage == 0 else 2
 
-    if keras.backend.image_data_format() == "channels_last":
-        axis = 3
-    else:
-        axis = 1
+    axis = 3 if keras.backend.image_data_format() == "channels_last" else 1
 
     if block > 0 and numerical_name:
         block_char = "b{}".format(block)
@@ -88,32 +82,23 @@ def bottleneck_1d(filters, stage=0, block=0, kernel_size=3, numerical_name=False
     A one-dimensional bottleneck block.
 
     :param filters: the output’s feature space
-
     :param stage: int representing the stage of this block (starting from 0)
-
     :param block: int representing this block (starting from 0)
-
     :param kernel_size: size of the kernel
-
     :param numerical_name: if true, uses numbers to represent blocks instead of chars (ResNet{101, 152, 200})
-
     :param stride: int representing the stride used in the shortcut and the first conv layer, default derives stride from block id
-
     :param freeze_bn: if true, freezes BatchNormalization layers (ie. no updates are done in these layers)
 
     Usage:
 
-        >>> import keras_resnet.blocks
-
-        >>> keras_resnet.blocks.bottleneck_1d(64)
+        >>> from imageai.Detection.keras_resnet import blocks
+        >>> blocks.bottleneck_1d(64)  # doctest: +ELLIPSIS
+        <function bottleneck_1d.<locals>.f at ...>
     """
     if stride is None:
         stride = 1 if block != 0 or stage == 0 else 2
 
-    if keras.backend.image_data_format() == "channels_last":
-        axis = 3
-    else:
-        axis = 1
+    axis = 3 if keras.backend.image_data_format() == "channels_last" else 1
 
     if block > 0 and numerical_name:
         block_char = "b{}".format(block)

@@ -23,19 +23,12 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
     Constructs a `keras.models.Model` object using the given block count.
 
     :param inputs: input tensor (e.g. an instance of `keras.layers.Input`)
-
     :param blocks: the network’s residual architecture
-
     :param block: a residual block (e.g. an instance of `keras_resnet.blocks.basic_2d`)
-
     :param include_top: if true, includes classification layers
-
     :param classes: number of classes to classify (include_top must be true)
-
     :param freeze_bn: if true, freezes BatchNormalization layers (ie. no updates are done in these layers)
-
     :param numerical_names: list of bool, same size as blocks, used to indicate whether names of layers should include numbers or letters
-
     :return model: ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
     Usage:
@@ -43,14 +36,11 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
         >>> from imageai.Detection.keras_resnet import blocks, models
         >>> shape, classes = (224, 224, 3), 1000
         >>> x = keras.layers.Input(shape)
-        >>> block = blocks.basic_2d
-        >>> model = models.ResNet(x, classes, [2, 2, 2, 2], block, classes=classes)
+        >>> model = models.ResNet(x, [2, 2, 2, 2], blocks.basic_2d, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
+
     """
-    if keras.backend.image_data_format() == "channels_last":
-        axis = 3
-    else:
-        axis = 1
+    axis = 3 if keras.backend.image_data_format() == "channels_last" else 1
 
     if numerical_names is None:
         numerical_names = [True] * len(blocks)
@@ -62,27 +52,23 @@ def ResNet(inputs, blocks, block, include_top=True, classes=1000, freeze_bn=True
     x = keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding="same", name="pool1")(x)
 
     features = 64
-
     outputs = []
 
     for stage_id, iterations in enumerate(blocks):
         for block_id in range(iterations):
-            x = block(features, stage_id, block_id, numerical_name=(block_id > 0 and numerical_names[stage_id]), freeze_bn=freeze_bn)(x)
-
+            x = block(features, stage_id, block_id,
+                      numerical_name=(block_id > 0 and numerical_names[stage_id]),
+                      freeze_bn=freeze_bn)(x)
         features *= 2
-
         outputs.append(x)
 
     if include_top:
         assert classes > 0
-
         x = keras.layers.GlobalAveragePooling2D(name="pool5")(x)
         x = keras.layers.Dense(classes, activation="softmax", name="fc1000")(x)
-
-        return keras.models.Model(inputs=inputs, outputs=x, *args, **kwargs)
-    else:
-        # Else output each stages features
-        return keras.models.Model(inputs=inputs, outputs=outputs, *args, **kwargs)
+        outputs = x
+    # Else output each stages features
+    return keras.models.Model(inputs=inputs, outputs=outputs, *args, **kwargs)
 
 
 def ResNet18(inputs, blocks=None, include_top=True, classes=1000, *args, **kwargs):
@@ -90,13 +76,9 @@ def ResNet18(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
     Constructs a `keras.models.Model` according to the ResNet18 specifications.
 
     :param inputs: input tensor (e.g. an instance of `keras.layers.Input`)
-
     :param blocks: the network’s residual architecture
-
     :param include_top: if true, includes classification layers
-
     :param classes: number of classes to classify (include_top must be true)
-
     :return model: ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
     Usage:
@@ -110,7 +92,11 @@ def ResNet18(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
     if blocks is None:
         blocks = [2, 2, 2, 2]
 
-    return ResNet(inputs, blocks, block=keras_resnet.blocks.basic_2d, include_top=include_top, classes=classes, *args, **kwargs)
+    return ResNet(inputs, blocks,
+                  block=keras_resnet.blocks.basic_2d,
+                  include_top=include_top,
+                  classes=classes,
+                  *args, **kwargs)
 
 
 def ResNet34(inputs, blocks=None, include_top=True, classes=1000, *args, **kwargs):
@@ -118,13 +104,9 @@ def ResNet34(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
     Constructs a `keras.models.Model` according to the ResNet34 specifications.
 
     :param inputs: input tensor (e.g. an instance of `keras.layers.Input`)
-
     :param blocks: the network’s residual architecture
-
     :param include_top: if true, includes classification layers
-
     :param classes: number of classes to classify (include_top must be true)
-
     :return model: ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
     Usage:
@@ -138,7 +120,11 @@ def ResNet34(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
     if blocks is None:
         blocks = [3, 4, 6, 3]
 
-    return ResNet(inputs, blocks, block=keras_resnet.blocks.basic_2d, include_top=include_top, classes=classes, *args, **kwargs)
+    return ResNet(inputs, blocks,
+                  block=keras_resnet.blocks.basic_2d,
+                  include_top=include_top,
+                  classes=classes,
+                  *args, **kwargs)
 
 
 def ResNet50(inputs, blocks=None, include_top=True, classes=1000, *args, **kwargs):
@@ -146,13 +132,9 @@ def ResNet50(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
     Constructs a `keras.models.Model` according to the ResNet50 specifications.
 
     :param inputs: input tensor (e.g. an instance of `keras.layers.Input`)
-
     :param blocks: the network’s residual architecture
-
     :param include_top: if true, includes classification layers
-
     :param classes: number of classes to classify (include_top must be true)
-
     :return model: ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
     Usage:
@@ -167,7 +149,12 @@ def ResNet50(inputs, blocks=None, include_top=True, classes=1000, *args, **kwarg
         blocks = [3, 4, 6, 3]
     numerical_names = [False, False, False, False]
 
-    return ResNet(inputs, blocks, numerical_names=numerical_names, block=keras_resnet.blocks.bottleneck_2d, include_top=include_top, classes=classes, *args, **kwargs)
+    return ResNet(inputs, blocks,
+                  numerical_names=numerical_names,
+                  block=keras_resnet.blocks.bottleneck_2d,
+                  include_top=include_top,
+                  classes=classes,
+                  *args, **kwargs)
 
 
 def ResNet101(inputs, blocks=None, include_top=True, classes=1000, *args, **kwargs):
@@ -175,13 +162,9 @@ def ResNet101(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
     Constructs a `keras.models.Model` according to the ResNet101 specifications.
 
     :param inputs: input tensor (e.g. an instance of `keras.layers.Input`)
-
     :param blocks: the network’s residual architecture
-
     :param include_top: if true, includes classification layers
-
     :param classes: number of classes to classify (include_top must be true)
-
     :return model: ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
     Usage:
@@ -191,12 +174,18 @@ def ResNet101(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
         >>> x = keras.layers.Input(shape)
         >>> model = models.ResNet101(x, classes=classes)
         >>> model.compile("adam", "categorical_crossentropy", ["accuracy"])
+
     """
     if blocks is None:
         blocks = [3, 4, 23, 3]
     numerical_names = [False, True, True, False]
 
-    return ResNet(inputs, blocks, numerical_names=numerical_names, block=keras_resnet.blocks.bottleneck_2d, include_top=include_top, classes=classes, *args, **kwargs)
+    return ResNet(inputs, blocks,
+                  numerical_names=numerical_names,
+                  block=keras_resnet.blocks.bottleneck_2d,
+                  include_top=include_top,
+                  classes=classes,
+                  *args, **kwargs)
 
 
 def ResNet152(inputs, blocks=None, include_top=True, classes=1000, *args, **kwargs):
@@ -204,13 +193,9 @@ def ResNet152(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
     Constructs a `keras.models.Model` according to the ResNet152 specifications.
 
     :param inputs: input tensor (e.g. an instance of `keras.layers.Input`)
-
     :param blocks: the network’s residual architecture
-
     :param include_top: if true, includes classification layers
-
     :param classes: number of classes to classify (include_top must be true)
-
     :return model: ResNet model with encoding output (if `include_top=False`) or classification output (if `include_top=True`)
 
     Usage:
@@ -225,7 +210,12 @@ def ResNet152(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
         blocks = [3, 8, 36, 3]
     numerical_names = [False, True, True, False]
 
-    return ResNet(inputs, blocks, numerical_names=numerical_names, block=keras_resnet.blocks.bottleneck_2d, include_top=include_top, classes=classes, *args, **kwargs)
+    return ResNet(inputs, blocks,
+                  numerical_names=numerical_names,
+                  block=keras_resnet.blocks.bottleneck_2d,
+                  include_top=include_top,
+                  classes=classes,
+                  *args, **kwargs)
 
 
 def ResNet200(inputs, blocks=None, include_top=True, classes=1000, *args, **kwargs):
@@ -254,4 +244,9 @@ def ResNet200(inputs, blocks=None, include_top=True, classes=1000, *args, **kwar
         blocks = [3, 24, 36, 3]
     numerical_names = [False, True, True, False]
 
-    return ResNet(inputs, blocks, numerical_names=numerical_names, block=keras_resnet.blocks.bottleneck_2d, include_top=include_top, classes=classes, *args, **kwargs)
+    return ResNet(inputs, blocks,
+                  numerical_names=numerical_names,
+                  block=keras_resnet.blocks.bottleneck_2d,
+                  include_top=include_top,
+                  classes=classes,
+                  *args, **kwargs)
