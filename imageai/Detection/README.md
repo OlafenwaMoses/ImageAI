@@ -1,31 +1,33 @@
-# ImageAI : Object Detection <br>
-<p>An <b>DeepQuest AI</b> project <a href="https://deepquestai.com" >https://deepquestai.com </a></p>
-<hr>
-<br>
-<h3><b><u>TABLE OF CONTENTS</u></b></h3>
-<a href="#firstdetection" >&#9635 First Object Detection</a><br>
-<a href="#objectextraction" >&#9635 Object Detection, Extraction and Fine-tune</a><br>
-<a href="#customdetection" >&#9635 Custom Object Detection</a><br>
-<a href="#detectionspeed" >&#9635 Detection Speed</a><br>
-<a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a><br>
-<a href="#inputoutputtype" >&#9635 Image Input & Output Types</a><br>
-<a href="#documentation" >&#9635 Documentation</a><br>
-<br>
-      ImageAI provides very convenient and powerful methods to perform object detection on images and extract
-each object from the image. The object detection class supports RetinaNet, YOLOv3 and TinyYOLOv3. To start performing object detection,
-you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: <br> <br>
- <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5" style="text-decoration: none;" >RetinaNet</a></b> <b>(Size = 145 mb, high performance and accuracy, with longer detection time) </b></span> <br>
+# ImageAI : Object Detection
 
-<span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5" style="text-decoration: none;" >YOLOv3</a></b> <b>(Size = 237 mb, moderate performance and accuracy, with a moderate detection time) </b></span> <br>
+An **AI Commons** project [commons.specpal.science](https://commons.specpal.science)
 
-<span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5" style="text-decoration: none;" >TinyYOLOv3</a></b> <b>(Size = 34 mb, optimized for speed and moderate performance, with fast detection time) </b></span> <br><br>
+### TABLE OF CONTENTS
+
+- <a href="#firstdetection" >&#9635 First Object Detection</a>
+- <a href="#objectextraction" >&#9635 Object Detection, Extraction and Fine-tune</a>
+- <a href="#customdetection" >&#9635 Custom Object Detection</a>
+- <a href="#detectionspeed" >&#9635 Detection Speed</a>
+- <a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a>
+- <a href="#inputoutputtype" >&#9635 Image Input & Output Types</a>
+- <a href="#documentation" >&#9635 Documentation</a>
+
+
+ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class supports RetinaNet, YOLOv3 and TinyYOLOv3. To start performing object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: 
+* **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5)** _(Size = 145 mb, high performance and accuracy, with longer detection time)_
+* **[YOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5)** _(Size = 237 mb, moderate performance and accuracy, with a moderate detection time)_
+* **[TinyYOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5)** _(Size = 34 mb, optimized for speed and moderate performance, with fast detection time)_
+* **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5)** _(Size = 145 mb, high performance and accuracy, with longer detection time)_
+
+
  Once you download the object detection model file, you should copy the model file to the your project folder where your .py files will be.
- Then create a python file and give it a name; an example is FirstObjectDetection.py. Then write the code below into the python file: <br><br>
+ Then create a python file and give it a name; an example is FirstObjectDetection.py. Then write the code below into the python file:
 
+### FirstObjectDetection.py
 <div id="firstdetection" ></div>
- <h3><b>FirstObjectDetection.py</b></h3>
 
-<b><pre>from imageai.Detection import ObjectDetection
+```python
+from imageai.Detection import ObjectDetection
 import os
 
 execution_path = os.getcwd()
@@ -39,18 +41,15 @@ detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_
 for eachObject in detections:
     print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
     print("--------------------------------")
+```
 
+Sample Result:
+Input Image
+![Input Image](../../images/image2.jpg)
+Output Image
+![Output Image](../../images/yolo.jpg)
 
-</pre></b><p>Sample Result:
-    <br>
-    <div style="width: 600px;" >
-          <b><p><i>Input Image</i></p></b>
-          <img src="../../images/image2.jpg" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
-          <b><p><i>Output Image</i></p></b>
-          <img src="../../images/yolo.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
-    </div> <br>
-<pre>
-
+```
 laptop  :  87.32235431671143  :  (306, 238, 390, 284)
 --------------------------------
 laptop  :  96.86298966407776  :  (121, 209, 258, 293)
@@ -75,75 +74,64 @@ person  :  96.33603692054749  :  (415, 130, 538, 266)
 --------------------------------
 person  :  96.95255160331726  :  (174, 108, 278, 269)
 --------------------------------
+```
 
-</pre>
-
-<br>
 Let us make a breakdown of the object detection code that we used above.
 
-<b><pre>
+```python
 from imageai.Detection import ObjectDetection
 import os
 
 execution_path = os.getcwd()
-</pre></b>
- In the 3 lines above , we import the <b>ImageAI object detection </b> class in the first line, import the <b>os</b> in the second line and obtained
-  the path to folder where our python file runs.
-  <b><pre>
+```
+
+ In the 3 lines above , we import the **ImageAI object detection** class in the first line, import the `os` in the second line and obtained the path to folder where our python file runs.
+  
+```python
 detector = ObjectDetection()
 detector.setModelTypeAsYOLOv3()
 detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
 detector.loadModel()
-  </pre></b>
-  In the 4 lines above, we created a new instance of the <b>ObjectDetection</b> class in the first line, set the model type to YOLOv3 in the second line,
-  set the model path to the YOLOv3 model file we downloaded and copied to the python file folder in the third line and load the model in the
-   fourth line.
+```
 
-   <b><pre>
+In the 4 lines above, we created a new instance of the `ObjectDetection` class in the first line, set the model type to YOLOv3 in the second line, set the model path to the YOLOv3 model file we downloaded and copied to the python file folder in the third line and load the model in the fourth line.
+
+```python
 detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image2.jpg"), output_image_path=os.path.join(execution_path , "image2new.jpg"))
 
 for eachObject in detections:
     print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
     print("--------------------------------")
-</pre></b>
+```
 
-In the 2 lines above, we ran the <b>detectObjectsFromImage()</b> function and parse in the path to our image, and the path to the new
- image which the function will save. Then the function returns an array of dictionaries with each dictionary corresponding
- to the number of objects detected in the image. Each dictionary has the properties <b>name</b> (name of the object),
-<b>percentage_probability</b> (percentage probability of the detection) and <b>box_points</b> ( the x1,y1,x2 and y2 coordinates of the bounding box of the object). <br>
+In the 2 lines above, we ran the `detectObjectsFromImage()` function and parse in the path to our image, and the path to the new image which the function will save. Then the function returns an array of dictionaries with each dictionary corresponding to the number of objects detected in the image. Each dictionary has the properties `name` (name of the object), `percentage_probability` (percentage probability of the detection) and `box_points` (the x1,y1,x2 and y2 coordinates of the bounding box of the object).
 
-Should you want to use the RetinaNet which is appropriate for high-performance and high-accuracy demanding detection tasks, you will download the RetinaNet model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below: <br>
-<b><pre>
+Should you want to use the RetinaNet which is appropriate for high-performance and high-accuracy demanding detection tasks, you will download the RetinaNet model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below:
+```python
 detector = ObjectDetection()
 detector.setModelTypeAsRetinaNet()
 detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
 detector.loadModel()
-  </pre></b> <br>
+```
 
-However, if you desire TinyYOLOv3 which is optimized for speed and embedded devices, you will download the TinyYOLOv3 model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below: <br>
-<b><pre>
+However, if you desire TinyYOLOv3 which is optimized for speed and embedded devices, you will download the TinyYOLOv3 model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below:
+```python
 detector = ObjectDetection()
 detector.setModelTypeAsTinyYOLOv3()
 detector.setModelPath( os.path.join(execution_path , "yolo-tiny.h5"))
 detector.loadModel()
-  </pre></b>
+```
 
-
-<br><br>
-
+## Object Detection, Extraction and Fine-tune
 <div id="objectextraction" ></div>
-<h3><b><u> >> Object Detection, Extraction and Fine-tune</u></b></h3>
 
-In the examples we used above, we ran the object detection on an image and it
-returned the detected objects in an array as well as save a new image with rectangular markers drawn
- on each object. In our next examples, we will be able to extract each object from the input image
+In the examples we used above, we ran the object detection on an image and it returned the detected objects in an array as well as save a new image with rectangular markers drawn on each object. In our next examples, we will be able to extract each object from the input image
   and save it independently.
-  <br>
-  <br>
-  In the example code below which is very identical to the previous object detction code, we will save each object
-   detected as a seperate image.
 
-   <b><pre>from imageai.Detection import ObjectDetection
+In the example code below which is very identical to the previous object detction code, we will save each object detected as a seperate image.
+
+```python
+from imageai.Detection import ObjectDetection
 import os
 
 execution_path = os.getcwd()
@@ -159,109 +147,62 @@ for eachObject, eachObjectPath in zip(detections, objects_path):
     print(eachObject["name"] , " : " , eachObject["percentage_probability"], " : ", eachObject["box_points"] )
     print("Object's image saved in " + eachObjectPath)
     print("--------------------------------")
+```
 
-</pre></b>
+![Input Image](../../images/image3.jpg)
+![Output Images](../../images/image3new.jpg)
 
-<br>
-    <p>Sample Result:
-    <br>
-    <div style="width: 600px;" >
-          <b><p><i>Input Image</i></p></b>
-          <img src="../../images/image3.jpg" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
-          <b><p><i>Output Images</i></p></b>
-          <img src="../../images/image3new.jpg" style="width: 500px; height: auto; margin-left: 50px; " /> <br> <div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/dog-1.jpg" style="width: 100px; height: auto; margin-left: 50px;  " /> <br>
-            <center><i>dog</i></center>
-          </div>
-          <div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/motorcycle-3.jpg" style="width: 100px; height: auto; margin-left: 50px; " /> <br>
-            <center><i>motorcycle</i></center>
-          </div>
-          <div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/car-4.jpg" style="width: 100px; height: auto; margin-left: 50px; " /> <br>
-            <center><i>car</i></center>
-          </div>
-          <div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/bicycle-5.jpg" style="width: 100px; height: auto; margin-left: 50px;  " /> <br>
-            <center><i>bicycle</i></center>
-          </div>
-          <div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/person-6.jpg" style="width: 100px; height: auto; margin-left: 50px;  " /> <br>
-            <center><i>person</i></center>
-          </div>
-          <div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/person-7.jpg" style="width: 100px; height: auto; margin-left: 50px;  " /> <br>
-            <center><i>person</i></center>
-          </div>
-          <div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/person-8.jpg" style="width: 100px; height: auto; margin-left: 50px;  " /> <br>
-            <center><i>person</i></center>
-          </div><div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/person-9.jpg" style="width: 100px; height: auto; margin-left: 50px;  " /> <br>
-            <center><i>person</i></center>
-          </div>
-			<div style="width: 180px; margin-left: 10px;" >
-            <img src="../../images/image3new.jpg-objects/person-10.jpg" style="width: 100px; height: auto; margin-left: 50px;  " /> <br>
-            <center><i>person</i></center>
-          </div>
+![dog](../../images/image3new.jpg-objects/dog-1.jpg)
+![motorcycle](../../images/image3new.jpg-objects/motorcycle-3.jpg)
+![car](../../images/image3new.jpg-objects/car-4.jpg)
+![bicycle](../../images/image3new.jpg-objects/bicycle-5.jpg)
+![person](../../images/image3new.jpg-objects/person-6.jpg)
+![person](../../images/image3new.jpg-objects/person-7.jpg)
+![person](../../images/image3new.jpg-objects/person-8.jpg)
+![person](../../images/image3new.jpg-objects/person-9.jpg)
+![person](../../images/image3new.jpg-objects/person-10.jpg)
 
-    </div>
-
-<br> <br>
 
 Let us review the part of the code that perform the object detection and extract the images:
 
-<b><pre>
+```python
 detections, objects_path = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new.jpg"), minimum_percentage_probability=30,  extract_detected_objects=True)
 
 for eachObject, eachObjectPath in zip(detections, objects_path):
     print(eachObject["name"] , " : " , eachObject["percentage_probability"], " : ", eachObject["box_points"] )
     print("Object's image saved in " + eachObjectPath)
     print("--------------------------------")
-</pre></b>
+```
 
-In the above above lines, we called the <b>detectObjectsFromImage()</b> , parse in the input image path, output image part, and an
-extra parameter <b>extract_detected_objects=True</b>. This parameter states that the function should extract each object detected from the image
-and save it has a seperate image. The parameter is false by default. Once set to <b>true</b>, the function will create a directory
- which is the <b>output image path + "-objects"</b> . Then it saves all the extracted images into this new directory with
-  each image's name being the <b>detected object name + "-" + a number</b> which corresponds to the order at which the objects
-  were detected.
-  <br><br>
-This new parameter we set to extract and save detected objects as an image will make the function to return 2 values. The
- first is the array of dictionaries with each dictionary corresponding to a detected object. The second is an array of the paths
-  to the saved images of each object detected and extracted, and they are arranged in order at which the objects are in the
-  first array.
+In the above above lines, we called the `detectObjectsFromImage()` , parse in the input image path, output image part, and an extra parameter `extract_detected_objects=True`. This parameter states that the function should extract each object detected from the image and save it has a seperate image. The parameter is false by default. Once set to `true`, the function will create a directory which is the **output image path + "-objects"** . Then it saves all the extracted images into this new directory with each image's name being the **detected object name + "-" + a number** which corresponds to the order at which the objects were detected.
 
-  <br><br>
-  <b><h3>And one important feature you need to know!</h3></b> You will recall that the percentage probability
-   for each detected object is sent back by the <b>detectObjectsFromImage()</b> function. The function has a parameter
-   <b>minimum_percentage_probability</b> , whose default value is <b>50</b> (value ranges between 0 - 100) , but it set to 30 in this example. That means the function will only return a detected
-    object if it's percentage probability is <b>30 or above</b>. The value was kept at this number to ensure the integrity of the
-     detection results. You fine-tune the object
-      detection by setting <b>minimum_percentage_probability</b> equal to a smaller value to detect more number of objects or higher value to detect less number of objects.
+This new parameter we set to extract and save detected objects as an image will make the function to return 2 values. The first is the array of dictionaries with each dictionary corresponding to a detected object. The second is an array of the paths to the saved images of each object detected and extracted, and they are arranged in order at which the objects are in the first array.
 
-<br><br>
 
+**And one important feature you need to know!** You will recall that the percentage probability
+   for each detected object is sent back by the `detectObjectsFromImage()` function. The function has a parameter `minimum_percentage_probability`, whose default value is `50` (value ranges between 0 - 100) , but it set to 30 in this example. That means the function will only return a detected object if it's percentage probability is **30 or above**. The value was kept at this number to ensure the integrity of the detection results. You fine-tune the object detection by setting **minimum_percentage_probability** equal to a smaller value to detect more number of objects or higher value to detect less number of objects.
+
+
+## Custom Object Detection
 <div id="customdetection" ></div>
-<h3><b><u>  >> Custom Object Detection</u></b></h3>
-The object detection model (<b>RetinaNet</b>) supported by <b>ImageAI</b> can detect 80 different types of objects. They include: <br>
-<pre>
-      person,   bicycle,   car,   motorcycle,   airplane,
-          bus,   train,   truck,   boat,   traffic light,   fire hydrant,   stop_sign,
-          parking meter,   bench,   bird,   cat,   dog,   horse,   sheep,   cow,   elephant,   bear,   zebra,
-          giraffe,   backpack,   umbrella,   handbag,   tie,   suitcase,   frisbee,   skis,   snowboard,
-          sports ball,   kite,   baseball bat,   baseball glove,   skateboard,   surfboard,   tennis racket,
-          bottle,   wine glass,   cup,   fork,   knife,   spoon,   bowl,   banana,   apple,   sandwich,   orange,
-          broccoli,   carrot,   hot dog,   pizza,   donot,   cake,   chair,   couch,   potted plant,   bed,
-          dining table,   toilet,   tv,   laptop,   mouse,   remote,   keyboard,   cell phone,   microwave,
-          oven,   toaster,   sink,   refrigerator,   book,   clock,   vase,   scissors,   teddy bear,   hair dryer,
-          toothbrush.
-</pre>
 
-Interestingly, <b>ImageAI</b> allow you to perform detection for one or more of the items above. That means you can
- customize the type of object(s) you want to be detected in the image. Let's take a look at the code below: <br>
+The object detection model (**RetinaNet**) supported by **ImageAI** can detect 80 different types of objects. They include:
+```
+person,  bicycle,  car, motorcycle, airplane, bus, train,  truck,  boat,  traffic light,  fire hydrant, stop_sign,
+parking meter,   bench,   bird,   cat,   dog,   horse,   sheep,   cow,   elephant,   bear,   zebra,
+giraffe,   backpack,   umbrella,   handbag,   tie,   suitcase,   frisbee,   skis,   snowboard,
+sports ball,   kite,   baseball bat,   baseball glove,   skateboard,   surfboard,   tennis racket,
+bottle,   wine glass,   cup,   fork,   knife,   spoon,   bowl,   banana,   apple,   sandwich,   orange,
+broccoli,   carrot,   hot dog,   pizza,   donot,   cake,   chair,   couch,   potted plant,   bed,
+dining table,   toilet,   tv,   laptop,   mouse,   remote,   keyboard,   cell phone,   microwave,   oven,
+toaster,   sink,   refrigerator,   book,   clock,   vase,   scissors,   teddy bear,   hair dryer,   toothbrush.
+```
 
-<b><pre>from imageai.Detection import ObjectDetection
+Interestingly, **ImageAI** allow you to perform detection for one or more of the items above. That means you can
+ customize the type of object(s) you want to be detected in the image. Let's take a look at the code below:
+
+```python
+from imageai.Detection import ObjectDetection
 import os
 
 execution_path = os.getcwd()
@@ -277,80 +218,81 @@ detections = detector.detectCustomObjectsFromImage(custom_objects=custom_objects
 for eachObject in detections:
     print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
     print("--------------------------------")
+```
 
-</pre></b>
+![Result](../../images/image3custom.jpg)
 
-<p>Result:
-    <br>
-    <div style="width: 600px;" >
-          <img src="../../images/image3custom.jpg" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
-    </div>
-<br>
 
 Let us take a look at the part of the code that made this possible.
-<pre>custom_objects = detector.CustomObjects(car=True, motorcycle=True)
+```python
+custom_objects = detector.CustomObjects(car=True, motorcycle=True)
 detections = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3custom.jpg"), minimum_percentage_probability=30)
+```
 
-</pre>
 In the above code, after loading the model (can be done before loading the model as well), we defined a new variable
-"<b>custom_objects = detector.CustomObjects()</b>", in which we set its car and motorcycle properties equal to <b>True</b>.
-This is to tell the model to detect only the object we set to True. Then we call the "<b>detector.detectCustomObjectsFromImage()</b>"
-which is the function that allows us to perform detection of custom objects. Then we will set the "<b>custom_objects</b>" value
+`custom_objects = detector.CustomObjects()`, in which we set its car and motorcycle properties equal to **True**.
+This is to tell the model to detect only the object we set to True. Then we call the `detector.detectCustomObjectsFromImage()`
+which is the function that allows us to perform detection of custom objects. Then we will set the `custom_objects` value
  to the custom objects variable we defined.
-<br><br>
 
 
+## Detection Speed
 <div id="detectionspeed"></div>
-<h3><b><u>  >> Detection Speed</u></b></h3>
-<b> ImageAI </b> now provides detection speeds for all object detection tasks. The detection speeds allow you to reduce
+
+**ImageAI** now provides detection speeds for all object detection tasks. The detection speeds allow you to reduce
  the time of detection at a rate between 20% - 80%, and yet having just slight changes but accurate detection
-results. Coupled with lowering the <b>minimum_percentage_probability</b> parameter, detections can match the normal
-speed and yet reduce detection time drastically. The available detection speeds are <b>"normal"</b>(default), <b>"fast"</b>, <b>"faster"</b> , <b>"fastest"</b> and <b>"flash"</b>.
+results. Coupled with lowering the `minimum_percentage_probability` parameter, detections can match the normal
+speed and yet reduce detection time drastically. The available detection speeds are **"normal"**(default), **"fast"**, **"faster"** , **"fastest"** and **"flash"**.
 All you need to do is to state the speed mode you desire when loading the model as seen below.
 
-<b><pre>detector.loadModel(detection_speed="fast")</pre></b> <br>
+```python
+detector.loadModel(detection_speed="fast")
+```
 
-<br><br>
 
+## Hiding/Showing Object Name and Probability
 <div id="hidingdetails"></div>
-<h3><b><u>  >> Hiding/Showing Object Name and Probability</u></b></h3>
-<b>ImageAI</b> provides options to hide the name of objects detected and/or the percentage probability from being shown on the saved/returned detected image. Using the <b>detectObjectsFromImage()</b> and <b>detectCustomObjectsFromImage()</b> functions, the parameters <b>'display_object_name'</b> and <b>'display_percentage_probability'</b>  can be set to True of False individually. Take a look at the code below: <br>
-<pre>
+
+**ImageAI** provides options to hide the name of objects detected and/or the percentage probability from being shown on the saved/returned detected image. Using the `detectObjectsFromImage()` and `detectCustomObjectsFromImage()` functions, the parameters `display_object_name` and `display_percentage_probability`  can be set to True of False individually. Take a look at the code below:
+
+```python
 detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new_nodetails.jpg"), minimum_percentage_probability=30, display_percentage_probability=False, display_object_name=False)
+```
 
-</pre>
+In the above code, we specified that both the object name and percentage probability should not be shown. As you can see in the result below, both the names of the objects and their individual percentage probability is not shown in the detected image.
 
-<br> In the above code, we specified that both the object name and percentage probability should not be shown. As you can see in the result below, both the names of the objects and their individual percentage probability is not shown in the detected image. <br>
-<b><p><i>Result</i></p></b>
-          <img src="../../images/nodetails.jpg" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
-
-
-<br><br>
+![Result](../../images/nodetails.jpg)
 
 
+## Image Input & Output Types
 <div id="inputoutputtype"></div>
-<h3><b><u>  >> Image Input & Output Types</u></b></h3>
-<b>ImageAI</b> supports 3 input types of inputs which are <b>file path to image file</b>(default), <b>numpy array of image</b> and <b>image file stream</b>
-as well as 2 types of output which are image <b>file</b>(default) and numpy  <b>array </b>.
+
+**ImageAI** supports 3 input types of inputs which are **file path to image file**(default), **numpy array of image** and **image file stream**
+as well as 2 types of output which are image **file**(default) and numpy  **array **.
 This means you can now perform object detection in production applications such as on a web server and system
  that returns file in any of the above stated formats.
-<br> To perform object detection with numpy array or file stream input, you just need to state the input type
-in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsFromImage()</b> function. See example below.
 
-<pre>detections = detector.detectObjectsFromImage(input_type="array", input_image=image_array , output_image_path=os.path.join(execution_path , "image.jpg")) # For numpy array input type
-detections = detector.detectObjectsFromImage(input_type="stream", input_image=image_stream , output_image_path=os.path.join(execution_path , "test2new.jpg")) # For file stream input type</pre><br> To perform object detection with numpy array output you just need to state the output type
-in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsFromImage()</b> function. See example below.
+To perform object detection with numpy array or file stream input, you just need to state the input type
+in the `.detectObjectsFromImage()` function or the `.detectCustomObjectsFromImage()` function. See example below.
 
-<pre>detected_image_array, detections = detector.detectObjectsFromImage(output_type="array", input_image="image.jpg" ) # For numpy array output type
-</pre>
+```python
+detections = detector.detectObjectsFromImage(input_type="array", input_image=image_array , output_image_path=os.path.join(execution_path , "image.jpg")) # For numpy array input type
+detections = detector.detectObjectsFromImage(input_type="stream", input_image=image_stream , output_image_path=os.path.join(execution_path , "test2new.jpg")) # For file stream input type
+```
 
-<br><br>
+To perform object detection with numpy array output you just need to state the output type
+in the `.detectObjectsFromImage()` function or the `.detectCustomObjectsFromImage()` function. See example below.
 
+```python
+detected_image_array, detections = detector.detectObjectsFromImage(output_type="array", input_image="image.jpg" ) # For numpy array output type
+```
+
+
+## Documentation
 <div id="documentation" ></div>
-<h3><b><u> >> Documentation</u></b></h3>
-We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
 
-<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
-<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
-<br>
-<b> >> Documentation - French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)</b>
+We have provided full documentation for all **ImageAI** classes and functions in 2 major languages. Find links below:
+
+>> Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
+>> Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
+>> Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
