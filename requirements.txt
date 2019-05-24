@@ -1,0 +1,13 @@
+tensorflow>=1.4.0
+numpy>=1.13.1
+scipy>=0.19.1
+opencv-python
+Pillow
+matplotlib
+h5py
+keras>=2.0.0, <=2.0.8  # due to some runtime issue
+scikit-learn
+six
+pycocotools
+click
+pandas

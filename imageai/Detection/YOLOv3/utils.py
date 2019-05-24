@@ -1,7 +1,11 @@
+"""
+
+"""
+
+import numpy as np
+from PIL import Image
 import tensorflow as tf
 from keras import backend as K
-
-from PIL import Image
 
 
 def yolo_head(feats, anchors, num_classes, input_shape, calc_loss=False):
@@ -20,7 +24,6 @@ def yolo_head(feats, anchors, num_classes, input_shape, calc_loss=False):
 
     feats = K.reshape(
         feats, [-1, grid_shape[0], grid_shape[1], num_anchors, num_classes + 5])
-
 
     box_xy = (K.sigmoid(feats[..., :2]) + grid) / K.cast(grid_shape[::-1], K.dtype(feats))
     box_wh = K.exp(feats[..., 2:4]) * anchors_tensor / K.cast(input_shape[::-1], K.dtype(feats))
@@ -52,7 +55,6 @@ def yolo_correct_boxes(box_xy, box_wh, input_shape, image_shape):
         box_maxes[..., 0:1],
         box_maxes[..., 1:2]
     ])
-
 
     boxes *= K.concatenate([image_shape, image_shape])
     return boxes
@@ -113,15 +115,17 @@ def yolo_eval(yolo_outputs,
     return boxes_, scores_, classes_
 
 
-
 def letterbox_image(image, size):
+    # if the input image is just ndarray, convert it
+    if isinstance(image, np.ndarray):
+        image = Image.fromarray(image)
     iw, ih = image.size
     w, h = size
     scale = min(w/iw, h/ih)
     nw = int(iw*scale)
     nh = int(ih*scale)
 
-    image = image.resize((nw,nh), Image.BICUBIC)
-    new_image = Image.new('RGB', size, (128,128,128))
-    new_image.paste(image, ((w-nw)//2, (h-nh)//2))
+    image = image.resize((nw, nh), Image.BICUBIC)
+    new_image = Image.new('RGB', size, (128, 128, 128))
+    new_image.paste(image, ((w - nw) // 2, (h - nh) // 2))
     return new_image

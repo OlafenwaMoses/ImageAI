@@ -30,6 +30,7 @@ def draw_box(image, box, color, thickness=2):
         thickness : The thickness of the lines to draw a box with.
     """
     b = np.array(box).astype(int)
+    color = list(map(int, color))
     cv2.rectangle(image, (b[0], b[1]), (b[2], b[3]), color, thickness, cv2.LINE_AA)
 
 
@@ -69,9 +70,9 @@ def draw_detections(image, detections, color=None, generator=None):
         generator  : (optional) Generator which can map label to class name.
     """
     for d in detections:
-        label   = np.argmax(d[4:])
-        c       = color if color is not None else label_color(label)
-        score   = d[4 + label]
+        label = np.argmax(d[4:])
+        c = color if color is not None else label_color(label)
+        score = d[4 + label]
         caption = (generator.label_to_name(label) if generator else str(label)) + ': {0:.2f}'.format(score)
         draw_caption(image, d, caption)
 
@@ -88,8 +89,8 @@ def draw_annotations(image, annotations, color=(0, 255, 0), generator=None):
         generator   : (optional) Generator which can map label to class name.
     """
     for a in annotations:
-        label   = a[4]
-        c       = color if color is not None else label_color(label)
+        label = a[4]
+        c = color if color is not None else label_color(label)
         caption = '{}'.format(generator.label_to_name(label) if generator else label)
         draw_caption(image, a, caption)
 

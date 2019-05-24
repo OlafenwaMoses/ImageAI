@@ -31,10 +31,10 @@ import os
 execution_path = os.getcwd()
 
 detector = ObjectDetection()
-detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
-detector.loadModel()
-detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image2.jpg"), output_image_path=os.path.join(execution_path , "image2new.jpg"), minimum_percentage_probability=30)
+detector.set_model_type_as_yolo_v3()
+detector.set_model_path( os.path.join(execution_path , "yolo.h5"))
+detector.load_model()
+detections = detector.detect_objects(input_image=os.path.join(execution_path , "image2.jpg"), output_image_path=os.path.join(execution_path , "image2new.jpg"), minimum_percentage_probability=30)
 
 for eachObject in detections:
     print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
@@ -90,24 +90,23 @@ execution_path = os.getcwd()
  In the 3 lines above , we import the <b>ImageAI object detection </b> class in the first line, import the <b>os</b> in the second line and obtained
   the path to folder where our python file runs.
   <b><pre>
-detector = ObjectDetection()
-detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
-detector.loadModel()
+detector.set_model_type_as_yolo_v3()
+detector.set_model_path( os.path.join(execution_path , "yolo.h5"))
+detector.load_model()
   </pre></b>
   In the 4 lines above, we created a new instance of the <b>ObjectDetection</b> class in the first line, set the model type to YOLOv3 in the second line,
   set the model path to the YOLOv3 model file we downloaded and copied to the python file folder in the third line and load the model in the
    fourth line.
 
    <b><pre>
-detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image2.jpg"), output_image_path=os.path.join(execution_path , "image2new.jpg"))
+detections = detector.detect_objects(input_image=os.path.join(execution_path , "image2.jpg"), output_image_path=os.path.join(execution_path , "image2new.jpg"))
 
 for eachObject in detections:
     print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
     print("--------------------------------")
 </pre></b>
 
-In the 2 lines above, we ran the <b>detectObjectsFromImage()</b> function and parse in the path to our image, and the path to the new
+In the 2 lines above, we ran the <b>detect_objects()</b> function and parse in the path to our image, and the path to the new
  image which the function will save. Then the function returns an array of dictionaries with each dictionary corresponding
  to the number of objects detected in the image. Each dictionary has the properties <b>name</b> (name of the object),
 <b>percentage_probability</b> (percentage probability of the detection) and <b>box_points</b> ( the x1,y1,x2 and y2 coordinates of the bounding box of the object). <br>
@@ -115,17 +114,17 @@ In the 2 lines above, we ran the <b>detectObjectsFromImage()</b> function and pa
 Should you want to use the RetinaNet which is appropriate for high-performance and high-accuracy demanding detection tasks, you will download the RetinaNet model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below: <br>
 <b><pre>
 detector = ObjectDetection()
-detector.setModelTypeAsRetinaNet()
-detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
-detector.loadModel()
+detector.set_model_type_as_retina_net()
+detector.set_model_path( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.load_model()
   </pre></b> <br>
 
 However, if you desire TinyYOLOv3 which is optimized for speed and embedded devices, you will download the TinyYOLOv3 model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below: <br>
 <b><pre>
 detector = ObjectDetection()
-detector.setModelTypeAsTinyYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo-tiny.h5"))
-detector.loadModel()
+detector.set_model_type_as_tiny_yolo_v3()
+detector.set_model_path( os.path.join(execution_path , "yolo-tiny.h5"))
+detector.load_model()
   </pre></b>
 
 
@@ -149,11 +148,11 @@ import os
 execution_path = os.getcwd()
 
 detector = ObjectDetection()
-detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
-detector.loadModel()
+detector.set_model_type_as_yolo_v3()
+detector.set_model_path( os.path.join(execution_path , "yolo.h5"))
+detector.load_model()
 
-detections, objects_path = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new.jpg"), minimum_percentage_probability=30,  extract_detected_objects=True)
+detections, objects_path = detector.detect_objects(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new.jpg"), minimum_percentage_probability=30,  extract_detected_objects=True)
 
 for eachObject, eachObjectPath in zip(detections, objects_path):
     print(eachObject["name"] , " : " , eachObject["percentage_probability"], " : ", eachObject["box_points"] )
@@ -212,7 +211,7 @@ for eachObject, eachObjectPath in zip(detections, objects_path):
 Let us review the part of the code that perform the object detection and extract the images:
 
 <b><pre>
-detections, objects_path = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new.jpg"), minimum_percentage_probability=30,  extract_detected_objects=True)
+detections, objects_path = detector.detect_objects(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new.jpg"), minimum_percentage_probability=30,  extract_detected_objects=True)
 
 for eachObject, eachObjectPath in zip(detections, objects_path):
     print(eachObject["name"] , " : " , eachObject["percentage_probability"], " : ", eachObject["box_points"] )
@@ -267,12 +266,12 @@ import os
 execution_path = os.getcwd()
 
 detector = ObjectDetection()
-detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
-detector.loadModel()
+detector.set_model_type_as_yolo_v3()
+detector.set_model_path( os.path.join(execution_path , "yolo.h5"))
+detector.load_model()
 
-custom_objects = detector.CustomObjects(car=True, motorcycle=True)
-detections = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3custom.jpg"), minimum_percentage_probability=30)
+custom_objects = ObjectDetection.custom_objects(car=True, motorcycle=True)
+detections = detector.detect_custom_objects(custom_objects=custom_objects, input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3custom.jpg"), minimum_percentage_probability=30)
 
 for eachObject in detections:
     print(eachObject["name"] , " : ", eachObject["percentage_probability"], " : ", eachObject["box_points"] )
@@ -288,13 +287,13 @@ for eachObject in detections:
 <br>
 
 Let us take a look at the part of the code that made this possible.
-<pre>custom_objects = detector.CustomObjects(car=True, motorcycle=True)
-detections = detector.detectCustomObjectsFromImage(custom_objects=custom_objects, input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3custom.jpg"), minimum_percentage_probability=30)
+<pre>custom_objects = detector.custom_objects(car=True, motorcycle=True)
+detections = detector.detect_custom_objects(custom_objects=custom_objects, input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3custom.jpg"), minimum_percentage_probability=30)
 
 </pre>
 In the above code, after loading the model (can be done before loading the model as well), we defined a new variable
-"<b>custom_objects = detector.CustomObjects()</b>", in which we set its car and motorcycle properties equal to <b>True</b>.
-This is to tell the model to detect only the object we set to True. Then we call the "<b>detector.detectCustomObjectsFromImage()</b>"
+"<b>custom_objects = detector.custom_objects()</b>", in which we set its car and motorcycle properties equal to <b>True</b>.
+This is to tell the model to detect only the object we set to True. Then we call the "<b>detector.detect_custom_objects()</b>"
 which is the function that allows us to perform detection of custom objects. Then we will set the "<b>custom_objects</b>" value
  to the custom objects variable we defined.
 <br><br>
@@ -308,15 +307,15 @@ results. Coupled with lowering the <b>minimum_percentage_probability</b> paramet
 speed and yet reduce detection time drastically. The available detection speeds are <b>"normal"</b>(default), <b>"fast"</b>, <b>"faster"</b> , <b>"fastest"</b> and <b>"flash"</b>.
 All you need to do is to state the speed mode you desire when loading the model as seen below.
 
-<b><pre>detector.loadModel(detection_speed="fast")</pre></b> <br>
+<b><pre>detector.load_model(detection_speed="fast")</pre></b> <br>
 
 <br><br>
 
 <div id="hidingdetails"></div>
 <h3><b><u>  >> Hiding/Showing Object Name and Probability</u></b></h3>
-<b>ImageAI</b> provides options to hide the name of objects detected and/or the percentage probability from being shown on the saved/returned detected image. Using the <b>detectObjectsFromImage()</b> and <b>detectCustomObjectsFromImage()</b> functions, the parameters <b>'display_object_name'</b> and <b>'display_percentage_probability'</b>  can be set to True of False individually. Take a look at the code below: <br>
+<b>ImageAI</b> provides options to hide the name of objects detected and/or the percentage probability from being shown on the saved/returned detected image. Using the <b>detect_objects()</b> and <b>detect_custom_objects()</b> functions, the parameters <b>'display_object_name'</b> and <b>'display_percentage_probability'</b>  can be set to True of False individually. Take a look at the code below: <br>
 <pre>
-detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new_nodetails.jpg"), minimum_percentage_probability=30, display_percentage_probability=False, display_object_name=False)
+detections = detector.detect_objects(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new_nodetails.jpg"), minimum_percentage_probability=30, display_percentage_probability=False, display_object_name=False)
 
 </pre>
 
@@ -335,13 +334,13 @@ as well as 2 types of output which are image <b>file</b>(default) and numpy  <b>
 This means you can now perform object detection in production applications such as on a web server and system
  that returns file in any of the above stated formats.
 <br> To perform object detection with numpy array or file stream input, you just need to state the input type
+in the <b>.detect_objects()</b> function or the <b>.detect_custom_objects()</b> function. See example below.
+
+<pre>detections = detector.detect_objects(input_type="array", input_image=image_array , output_image_path=os.path.join(execution_path , "image.jpg")) # For numpy array input type
+detections = detector.detect_objects(input_type="stream", input_image=image_stream , output_image_path=os.path.join(execution_path , "test2new.jpg")) # For file stream input type</pre><br> To perform object detection with numpy array output you just need to state the output type
 in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsFromImage()</b> function. See example below.
 
-<pre>detections = detector.detectObjectsFromImage(input_type="array", input_image=image_array , output_image_path=os.path.join(execution_path , "image.jpg")) # For numpy array input type
-detections = detector.detectObjectsFromImage(input_type="stream", input_image=image_stream , output_image_path=os.path.join(execution_path , "test2new.jpg")) # For file stream input type</pre><br> To perform object detection with numpy array output you just need to state the output type
-in the <b>.detectObjectsFromImage()</b> function or the <b>.detectCustomObjectsFromImage()</b> function. See example below.
-
-<pre>detected_image_array, detections = detector.detectObjectsFromImage(output_type="array", input_image="image.jpg" ) # For numpy array output type
+<pre>detected_image_array, detections = detector.detect_objects(output_type="array", input_image="image.jpg" ) # For numpy array output type
 </pre>
 
 <br><br>
