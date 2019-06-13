@@ -2,39 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="73efcd46-0d15-4020-a592-9af291a1e478" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/custom_full_model_prediction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/custom_model_continuos_training.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/custom_model_convert_deepstack.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/custom_model_convert_to_tensorflow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/custom_model_transfer_learning_training.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/examples/custom_multiple_models_predict.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/camera_feed_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/camera_feed_detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/custom_model_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/custom_model_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/custom_model_training.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/custom_model_training.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/image_custom_object_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/image_custom_object_detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/image_object_detection.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/image_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/image_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/multiple_image_prediction.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/multiple_images_prediction.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/object_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/object_detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/video_analysis_per_frame.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/video_analysis_per_frame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/video_analysis_per_second.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/video_analysis_per_second.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/video_custom_object_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/video_custom_object_detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/examples/video_object_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/examples/video_object_detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Detection/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Detection/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Detection/VIDEO.md" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Detection/VIDEO.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Detection/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Detection/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/CUSTOMPREDICTION.md" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/CUSTOMPREDICTION.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/CUSTOMTRAINING.md" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/CUSTOMTRAINING.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/Custom/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/Custom/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/DenseNet/densenet.py" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/DenseNet/densenet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/InceptionV3/inceptionv3.py" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/InceptionV3/inceptionv3.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/ResNet/resnet50.py" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/ResNet/resnet50.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/imageai/Prediction/SqueezeNet/squeezenet.py" beforeDir="false" afterPath="$PROJECT_DIR$/imageai/Prediction/SqueezeNet/squeezenet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test-images/9.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/test-images/9.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,7 +14,7 @@
     <session id="536564542">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="34" />
+          <entry key="project.closed" value="35" />
           <entry key="project.open.time.0" value="3" />
           <entry key="project.open.time.1" value="7" />
           <entry key="project.open.time.102" value="1" />
@@ -105,8 +73,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/setup.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="13" column="7" lean-forward="true" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+            <state relative-caret-position="187">
+              <caret line="10" column="23" lean-forward="true" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -240,7 +208,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="C:/xampp/htdocs/deepquestai.new" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../runner" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -402,7 +370,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24851191" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -665,8 +632,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/setup.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="13" column="7" lean-forward="true" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+        <state relative-caret-position="187">
+          <caret line="10" column="23" lean-forward="true" selection-start-line="10" selection-start-column="23" selection-end-line="10" selection-end-column="23" />
         </state>
       </provider>
     </entry>

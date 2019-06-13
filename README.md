@@ -71,12 +71,12 @@ Built with simplicity in mind, <b>ImageAI</b>
 
 <div id="installation"></div>
  <h3><b><u>Installation</u></b></h3> To install ImageAI, run the python installation instruction below in the command line: <br><br>
-    <span>      <b>pip3 install https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.2/imageai-2.0.2-py3-none-any.whl </b></span> <br><br> <br>
+    <span>      <b><pre>pip3 install https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.3/imageai-2.0.3-py3-none-any.whl </pre></b></span> <br><br> <br>
     
-   or download the Python Wheel <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.2/imageai-2.0.2-py3-none-any.whl" ><b>
-    imageai-2.0.2-py3-none-any.whl</b></a> and run the python installation instruction in the  command line
+   or download the Python Wheel <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.3/imageai-2.0.3-py3-none-any.whl" ><b>
+    imageai-2.0.3-py3-none-any.whl</b></a> and run the python installation instruction in the  command line
      to the path of the file like the one below: <br><br>
-    <span>      <b>pip3 install C:\User\MyUser\Downloads\imageai-2.0.2-py3-none-any.whl</b></span> <br><br>
+    <span>      <b><pre>pip3 install C:\User\MyUser\Downloads\imageai-2.0.3-py3-none-any.whl</pre></b></span> <br><br>
 
 <div id="prediction"></div>
 <h3><b><u>Image Prediction</u></b></h3>
