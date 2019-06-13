@@ -1,48 +1,52 @@
-# ImageAI <br>
+# ImageAI (v 2.0.3)<br>
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code. <br><br>
 
 <img src="logo1.png" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
 
-An <b>AI Commons</b> project <a href="https://aicommons.science" >https://aicommons.science </a>
-Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) and [John Olafenwa](https://twitter.com/johnolafenwa), brothers, creators of [TorchFusion](https://github.com/johnolafenwa/TorchFusion)
-and Authors of [Introduction to Deep Computer Vision](https://john.aicommons.science/deepvision)
+An <b>DeepQuest AI</b> project <a href="https://deepquestai.com" >https://deepquestai.com </a>.
+Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) and [John Olafenwa](https://twitter.com/johnolafenwa), brothers, creators of [TorchFusion](https://github.com/johnolafenwa/TorchFusion), Authors of [Introduction to Deep Computer Vision](https://john.aicommons.science/deepvision) and creators of [DeepStack AI Server](https://deepstack.cc).
 <hr>
 
 Built with simplicity in mind, <b>ImageAI</b> 
     supports a list of state-of-the-art Machine Learning algorithms for image prediction, custom image prediction, object detection, video detection, video object tracking
     and image predictions trainings. <b>ImageAI</b> currently supports image prediction and training using 4 different Machine Learning algorithms 
-    trained on the ImageNet-1000 dataset. <b>ImageAI</b> also supports object detection, video detection and object tracking  using RetinaNet, YOLOv3 and TinyYOLOv3 trained on COCO dataset. <br>
+    trained on the ImageNet-1000 dataset. <b>ImageAI</b> also supports object detection, video detection and object tracking  using RetinaNet, YOLOv3 and TinyYOLOv3 trained on COCO dataset. Finally, <b>ImageAI</b> allows you to train custom models for your peforming recognition of new objects. <br>
                                    Eventually, <b>ImageAI</b> will provide support for a wider
     and more specialized aspects of Computer Vision including and not limited to image 
     recognition in special environments and special fields.
 
-<br> <br>
+<br> 
 
-<b>New Release : ImageAI 2.0.2</b>
+<b>New Release : ImageAI 2.0.3</b>
 <br> What's new:
 <br>
-- Option to state image size during custom image prediction model trainings <br>
-- Object Detection and Video Object detection now returns bounding box coordinates **('box points')** (x1,y1,x2, y2) for each object detected in addition to object's 'name' and 'percentage probability' <br>
-- Options to hide 'percentage probability' and/or object 'name' from being shown in detected image or video
-- Support for video object detection on video live stream from device camera, connected camera and IP camera <br>
-- Support for **YOLOv3** and **TinyYOLOv3** for all object detection and video object detection tasks.
-- Video object detection for all input types (video file and camera) now allows defining custom functions to execute after each frame, each second and each minute of the video is detected and processed. Also include option to specify custom function at once video is fully detected and processed <br>
-- For each custom function specified, **ImageAI** returns the **frame**/**seconds**/**minute**/**full video analysis** of the detections that include the objects' details ( **name** , **percentage** **probability**, **box_points**), number of instance of each unique object detected (counts) and overall average count of the number of instance of each unique object detected in the case of **second** / **minute** / **full video analysis**<br>
-- Options to return detected frame at every frame, second or minute processed as a **Numpy array**.
+- Options to set video <a href="imageai/Detection/VIDEO.md#detectiontimeout"><b>detection timeout</b></a> in seconds <br>
+- Options to save trained <a href="imageai/Prediction/CUSTOMTRAINING.md#savefullmodel">custom model in full </a><br>
+- Support for running custom <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionfullmodel">prediction with fully saved model</a> without specifying network type <br>
+- Support for running custom prediction with any <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionfullmodel">fully saved <b>Keras</b> model </a><br>
+- Support for converting custom trained models to <a href="imageai/Prediction/CUSTOMPREDICTION.md#converttensorflow">Tensorflow (<b>.pb</b>) format </a> <br>
+- Support for <a href="imageai/Prediction/CUSTOMPREDICTION.md#continuoustraining"><b>continuous training</b></a> from previously saved custom model <br>
+- Support for <a href="imageai/Prediction/CUSTOMTRAINING.md#transferlearning"><b>transfer learning</b></a> from pre-trained models for small datasets<br>
+- Only <a href="imageai/Prediction/CUSTOMTRAINING.md">models with increased accuracy</a> will be saved during training <br>
+- Support for loading and prediction with <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionmultiple">multiple custom models</a> <br>
+- Support for <a href="imageai/Prediction/CUSTOMPREDICTION.md#convertdeepstack">exporting models</a> to <b>DeepStack format</b> <br>
+
+
  <br>  <br>
 <br>
 
 <h3><b><u>TABLE OF CONTENTS</u></b></h3>
-<a href="#dependencies" >&#9635 Dependencies</a><br>
-<a href="#installation" >&#9635 Installation</a><br>
-<a href="#prediction" >&#9635 Image Prediction</a><br>
-<a href="#detection" >&#9635 Object Detection</a><br>
-<a href="#videodetection" >&#9635 Video Object Detection, Tracking & Analysis</a><br>
-<a href="#customtraining" >&#9635 Custom Model Training</a><br>
-<a href="#customprediction" >&#9635 Custom Image Prediction</a><br>
-<a href="#documentation" >&#9635 Documentation</a><br>
-<a href="#sample" >&#9635 Projects Built on ImageAI</a><br>
+<a href="#dependencies" > &#9635 Dependencies</a><br>
+<a href="#installation" > &#9635 Installation</a><br>
+<a href="#prediction" > &#9635 Image Prediction</a><br>
+<a href="#detection" > &#9635 Object Detection</a><br>
+<a href="#videodetection" > &#9635 Video Object Detection, Tracking & Analysis</a><br>
+ <a href="#customtraining" >&#9635 Custom Model Training</a><br>
+<a href="#customprediction" > &#9635 Custom Image Prediction</a><br>
+<a href="#documentation" > &#9635 Documentation</a><br>
+<a href="#sample" > &#9635 Projects Built on ImageAI</a><br>
+<a href="#real-time-and-high-performance-implementation" >&#9635 High Performance Implementation</a><br>
 <a href="#recommendation" >&#9635 AI Practice Recommendations</a><br>
 <a href="#contact" >&#9635 Contact Developers</a><br>
 <a href="#contributors" >&#9635 Contributors</a><br>
@@ -60,12 +64,9 @@ Built with simplicity in mind, <b>ImageAI</b>
        <span><b>- Python 3.5.1 (and later versions) </b>      <a href="https://www.python.org/downloads/" style="text-decoration: none;" >Download</a> (Support for Python 2.7 coming soon) </span> <br>
        <span><b>- pip3 </b>              <a href="https://pypi.python.org/pypi/pip" style="text-decoration: none;" >Install</a></span> <br>
        <span><b>- Tensorflow 1.4.0 (and later versions)  </b>      <a href="https://www.tensorflow.org/install/install_windows" style="text-decoration: none;" > Install</a></span> or install via pip <pre> pip3 install --upgrade tensorflow </pre> 
-       <span><b>- Numpy 1.13.1 (and later versions) </b>      <a href="https://www.scipy.org/install.html" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install numpy </pre> 
-       <span><b>- SciPy 0.19.1 (and later versions) </b>      <a href="https://www.scipy.org/install.html" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install scipy </pre> 
+       
        <span><b>- OpenCV  </b>        <a href="https://pypi.python.org/pypi/opencv-python" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install opencv-python </pre> 
-       <span><b>- Pillow  </b>       <a href="https://pypi.org/project/Pillow/2.2.1/" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install pillow </pre> 
-       <span><b>- Matplotlib  </b>       <a href="https://matplotlib.org/users/installing.html" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install matplotlib </pre> 
-       <span><b>- h5py  </b>       <a href="http://docs.h5py.org/en/latest/build.html" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install h5py </pre> 
+       
        <span><b>- Keras 2.x  </b>     <a href="https://keras.io/#installation" style="text-decoration: none;" >Install</a></span> or install via pip <pre> pip3 install keras </pre> 
 
 <div id="installation"></div>
@@ -251,7 +252,7 @@ FOR UBUNTU <br>
 <br><br>
 
 <div id="sample"></div>
-<h3><b><u>Sample Applications</u></b></h3> As a demonstration of  what you can do with ImageAI, we have 
+<h3><b><u>Projects Built on ImageAI</u></b></h3> As a demonstration of  what you can do with ImageAI, we have 
  built a complete AI powered Photo gallery for Windows called <b>IntelliP</b> ,  using <b>ImageAI</b> and UI framework <b>Kivy</b>. Follow this 
  <a href="https://github.com/OlafenwaMoses/IntelliP"  > link </a> to download page of the application and its source code. <br> <br>
 

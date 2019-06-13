@@ -6,9 +6,19 @@ using state-of-the-art SqueezeNet, ResNet50, InceptionV3 and DenseNet
 which you can load into the <b>imageai.Prediction.Custom.CustomImagePrediction</b> class. This allows
  you to train your own model on any set of images that corresponds to any type of objects/persons.
 The training process generates a JSON file that maps the objects types in your image dataset
-and creates lots of models. You will then peak the model with the highest accuracy and perform custom
+and creates lots of models. You will then pick the model with the highest accuracy and perform custom
 image prediction using the model and the JSON file generated. <br><br>
 
+<h3><b><u>TABLE OF CONTENTS</u></b></h3>
+<a href="#customtraining" > &#9635 Custom Model Training Prediction</a><br>
+<a href="#savefullmodel" > &#9635 Saving Full Custom Model (NEW)</a><br>
+<a href="#idenproftraining" > &#9635 Training on the IdenProf Dataset</a><br>
+<a href="#continuoustraining" > &#9635 Continuous Model Training (NEW)</a><br>
+<a href="#transferlearning" > &#9635 Transfer Learning (Training from a pre-trained model) (NEW)</a><br>
+
+
+<div id="customtraining"></div>
+<h3><b><u>Custom Model Training</u></b></h3>
 Because model training is a compute intensive tasks, we strongly advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
  installed. Performing model training on CPU will my take hours or days. With NVIDIA GPU powered computer system, this will take
  a few hours.  You can use Google Colab for this experiment as it has an NVIDIA K80 GPU available.
@@ -31,7 +41,7 @@ To produce a model that can perform well in practical applications, I recommend 
 These images are the ones to be used to test the model as it trains <br>
 8. Once you have done this, the structure of your image dataset folder should look like below: <br> <br>
 
-<b><pre>	pets//train//dog//dog-train-images
+<pre>	pets//train//dog//dog-train-images
         pets//train//cat//cat-train-images
         pets//train//squirrel//squirrel-train-images
         pets//train//snake//snake-train-images 
@@ -39,7 +49,7 @@ These images are the ones to be used to test the model as it trains <br>
         pets//test//cat//cat-test-images
         pets//test//squirrel//squirrel-test-images
         pets//test//snake//snake-test-images
-     </pre></b>
+     </pre>
 
 9. Then your training code goes as follows: <br> <br>
 <b><pre>from imageai.Prediction.Custom import ModelTraining
@@ -503,7 +513,24 @@ Let us explain the details shown above: <br>
  <a href="https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md" >https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md</a>
 
 <br><br>
-<h3><b><u>Training on the IdenProf data</u></b></h3>
+
+
+<div id="savefullmodel"></div>
+<h3><b><u>Saving Full Custom Model</u></b></h3>
+
+**ImageAI** now allows you to your custom model in full during training, which ensures you can perform custom prediction without necessarily specifying the network type. All you need to do is set the paramater **save_full_model** to **True** in your **trainModel()** function. See an example code below.<br>
+<pre>from imageai.Prediction.Custom import ModelTraining
+import os
+
+trainer = ModelTraining()
+trainer.setModelTypeAsDenseNet()
+trainer.setDataDirectory("idenprof")
+trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=16, show_network_summary=True, save_full_model=True)</pre>
+<br>
+
+
+<div id="idenproftraining"></div>
+<h3><b><u>Training on the IdenProf dataset</u></b></h3>
 <div style="width: 600px;" >
             <p><i>A sample from the IdenProf Dataset used to train a Model for predicting professionals.</i></p>
           <img src="../../images/idenprof.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
@@ -511,7 +538,7 @@ Let us explain the details shown above: <br>
 Below we provide a sample code to train on <b>IdenProf</b>, a dataset which contains images of 10
  uniformed professionals. The code below will download the dataset and initiate the training: <br> <br>
 
-<b><pre>
+<pre>
 from io import open
 import requests
 import shutil
@@ -581,9 +608,36 @@ model_trainer.setModelTypeAsResNet()
 model_trainer.setDataDirectory(DATASET_DIR)
 model_trainer.trainModel(num_objects=10, num_experiments=100, enhance_data=True, batch_size=32, show_network_summary=True)
 
-</pre></b>
+</pre>
 
-<br><br><br>
+<br><br>
+
+<div id="continuoustraining"></div>
+<h3><b><u>Continuous Model Training</u></b></h3>
+
+**ImageAI** now allows you to continue training your custom model on your previously saved model. This is useful in cases of incomplete training due compute time limits/large size of dataset or should you intend to further train your model. Kindly note that **continuous training** is for using a previously saved model to train on the same dataset the model was trained on. All you need to do is specify the **continue_from_model** parameter to the path of the previously saved model in your **trainModel()** function. See an example code below.<br>
+<pre>from imageai.Prediction.Custom import ModelTraining
+import os
+
+trainer = ModelTraining()
+trainer.setModelTypeAsDenseNet()
+trainer.setDataDirectory("idenprof")
+trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=8, show_network_summary=True, continue_from_model="idenprof_densenet-0.763500.h5")</pre>
+<br>
+
+<div id="transferlearning"></div>
+<h3><b><u>Transfer Learning (Training from a pre-trained model) </u></b></h3>
+
+From the feedbacks we have received over the past months, we discovered most custom models trained with **ImageAI** were based on datasets with few number of images as they fall short the minimum recommendation of 500 images per each class of objects, for a achieving a viable accuracy. <br><br> To ensure they can still train very accurate custom models using few number of images, **ImageAI** now allows you to train by leveraging **transfer learning** . This means you can take any pre-trained **ResNet50**, **Squeezenet**, **InceptionV3** and **DenseNet121** model trained on larger datasets and use it to kickstart your custom model training. All you need to do is specify the **transfer_from_model** parameter to the path of the pre-trained model, **initial_num_objects** parameter which corresponds to the number of objects in the previous dataset the pre-trained model was trained on,  all in your **trainModel()** function. See an example code below, showing how to perform transfer learning from a ResNet50 model trained on the ImageNet dataset.<br>
+<pre>from imageai.Prediction.Custom import ModelTraining
+import os
+
+trainer = ModelTraining()
+trainer.setModelTypeAsResNet()
+trainer.setDataDirectory("idenprof")
+trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=32, show_network_summary=True,transfer_from_model="resnet50_weights_tf_dim_ordering_tf_kernels.h5", initial_num_objects=1000)
+</pre>
+<br><br>
 
 
 
@@ -608,6 +662,11 @@ We have provided full documentation for all <b>ImageAI</b> classes and functions
 
 <b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
 <b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+<br>
+<b> >> Documentation - French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)</b>
+
+
+
 
 
 

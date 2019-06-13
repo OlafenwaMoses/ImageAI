@@ -1,5 +1,5 @@
 # ImageAI : Object Detection <br>
-<p>An <b>AI Commons</b> project <a href="https://commons.specpal.science" >https://commons.specpal.science </a></p>
+<p>An <b>DeepQuest AI</b> project <a href="https://deepquestai.com" >https://deepquestai.com </a></p>
 <hr>
 <br>
 <h3><b><u>TABLE OF CONTENTS</u></b></h3>
@@ -352,3 +352,5 @@ We have provided full documentation for all <b>ImageAI</b> classes and functions
 
 <b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
 <b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+<br>
+<b> >> Documentation - French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)</b>

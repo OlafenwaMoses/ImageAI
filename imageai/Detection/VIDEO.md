@@ -1,5 +1,5 @@
 # ImageAI : Video Object Detection, Tracking  and Analysis<br>
-<p>An <b>AI Commons</b> project <a href="https://commons.specpal.science" >https://commons.specpal.science </a></p>
+<p>An <b>DeepQuest AI</b> project <a href="https://deepquestai.com" >https://deepquestai.com </a></p>
 <hr>
 <br>
 <h3><b><u>TABLE OF CONTENTS</u></b></h3>
@@ -10,6 +10,7 @@
 <a href="#videodetectionspeed" >&#9635 Detection Speed</a><br>
 <a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a><br>
 <a href="#videodetectionintervals" >&#9635 Frame Detection Intervals</a><br>
+<a href="#detectiontimeout" >&#9635 Video Detection Timeout (NEW)</a><br>
 <a href="#documentation" >&#9635 Documentation</a><br>
 <br>
       ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports RetinaNet, YOLOv3 and TinyYOLOv3. This version of <b>ImageAI</b> provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
@@ -22,7 +23,7 @@ To start performing video object detection, you must download the RetinaNet, YOL
 
 Because video object detection is a compute intensive tasks, we advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
  installed. Performing Video Object Detection CPU will be slower than using an NVIDIA GPU powered computer. You can use Google Colab for this
- experiment as it has an NVIDIA K80 GPU available.
+ experiment as it has an NVIDIA K80 GPU available for free.
 <br> <br>
  Once you download the object detection model file, you should copy the model file to the your project folder where your .py files will be.
  Then create a python file and give it a name; an example is FirstVideoObjectDetection.py. Then write the code below into the python file: <br><br>
@@ -60,31 +61,30 @@ print(video_path)
 
 <br>
 Let us make a breakdown of the object detection code that we used above.
-
-<b><pre>
+<pre>
 from imageai.Detection import VideoObjectDetection
 import os
 
 execution_path = os.getcwd()
-</pre></b>
+</pre>
  In the 3 lines above , we import the <b>ImageAI video object detection </b> class in the first line, import the <b>os</b> in the second line and obtained
   the path to folder where our python file runs.
-  <b><pre>
+  <pre>
 detector = VideoObjectDetection()
 detector.setModelTypeAsRetinaNet()
 detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
 detector.loadModel()
-  </pre></b>
+  </pre>
   In the 4 lines above, we created a new instance of the <b>VideoObjectDetection</b> class in the first line, set the model type to RetinaNet in the second line,
   set the model path to the RetinaNet model file we downloaded and copied to the python file folder in the third line and load the model in the
    fourth line.
 
-   <b><pre>
+  <pre>
 video_path = detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "traffic.mp4"),
                                 output_file_path=os.path.join(execution_path, "traffic_detected")
                                 , frames_per_second=20, log_progress=True)
 print(video_path)
-</pre></b>
+</pre>
 
 In the 2 lines above, we ran the <b>detectObjectsFromVideo()</b> function and parse in the path to our video,the path to the new
  video (without the extension, it saves a .avi video by default) which the function will save, the number of frames per second (fps) that
@@ -393,6 +393,37 @@ See the results and link to download the videos below:
    <a href="https://drive.google.com/open?id=1aN2nnVoFjhUWpcz2Und3dsCT9OKrakM0" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "flash" and interval=5 </button></a>
 
 </div>
+
+<br><br>
+
+<div id="detectiontimeout"></div>
+<h3><b><u>Video Detection Timeout</u></b></h3>
+<b>ImageAI</b> now allows you to set a timeout in seconds for detection of objects in videos or camera live feed. To set a timeout for your video detection code, all you need to do is specify the <b> detection_timeout </b> parameter in the <b>detectObjectsFromVideo()</b> function to the number of desired seconds. In the example code below, we set <b>detection_timeout</b> to 120 seconds (2 minutes). 
+<br> <br>
+
+<pre>
+from imageai.Detection import VideoObjectDetection
+import os
+import cv2
+
+execution_path = os.getcwd()
+
+
+camera = cv2.VideoCapture(0)
+
+detector = VideoObjectDetection()
+detector.setModelTypeAsRetinaNet()
+detector.setModelPath(os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.loadModel()
+
+
+video_path = detector.detectObjectsFromVideo(camera_input=camera,
+                                output_file_path=os.path.join(execution_path, "camera_detected_video")
+                                , frames_per_second=20, log_progress=True, minimum_percentage_probability=40, detection_timeout=120)
+</pre>
+
+
+
 <br>
 
 <div id="documentation" ></div>
@@ -401,4 +432,6 @@ We have provided full documentation for all <b>ImageAI</b> classes and functions
 
 <b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
 <b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+<br>
+<b> >> Documentation - French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)</b>
 

@@ -5,7 +5,7 @@ execution_path = os.getcwd()
 
 multiple_prediction = ImagePrediction()
 multiple_prediction.setModelTypeAsResNet()
-multiple_prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
+multiple_prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5")) # Download the model via this link https://github.com/OlafenwaMoses/ImageAI/releases/tag/1.0
 multiple_prediction.loadModel()
 
 all_images_array = []
