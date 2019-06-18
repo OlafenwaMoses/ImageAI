@@ -26,7 +26,7 @@ Built with simplicity in mind, <b>ImageAI</b>
 - Support for running custom <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionfullmodel">prediction with fully saved model</a> without specifying network type <br>
 - Support for running custom prediction with any <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionfullmodel">fully saved <b>Keras</b> model </a><br>
 - Support for converting custom trained models to <a href="imageai/Prediction/CUSTOMPREDICTION.md#converttensorflow">Tensorflow (<b>.pb</b>) format </a> <br>
-- Support for <a href="imageai/Prediction/CUSTOMPREDICTION.md#continuoustraining"><b>continuous training</b></a> from previously saved custom model <br>
+- Support for <a href="imageai/Prediction/CUSTOMTRAINING.md#continuoustraining"><b>continuous training</b></a> from previously saved custom model <br>
 - Support for <a href="imageai/Prediction/CUSTOMTRAINING.md#transferlearning"><b>transfer learning</b></a> from pre-trained models for small datasets<br>
 - Only <a href="imageai/Prediction/CUSTOMTRAINING.md">models with increased accuracy</a> will be saved during training <br>
 - Support for loading and prediction with <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionmultiple">multiple custom models</a> <br>
