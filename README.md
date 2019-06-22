@@ -4,7 +4,7 @@ A python library built to empower developers to build applications and systems w
 
 <img src="logo1.png" style="width: 500px; height: auto; margin-left: 50px; " /> <br>
 
-An <b>DeepQuest AI</b> project <a href="https://deepquestai.com" >https://deepquestai.com </a>.
+A <b>DeepQuest AI</b> project <a href="https://deepquestai.com" >https://deepquestai.com </a>.
 Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) and [John Olafenwa](https://twitter.com/johnolafenwa), brothers, creators of [TorchFusion](https://github.com/johnolafenwa/TorchFusion), Authors of [Introduction to Deep Computer Vision](https://john.aicommons.science/deepvision) and creators of [DeepStack AI Server](https://deepstack.cc).
 <hr>
 
