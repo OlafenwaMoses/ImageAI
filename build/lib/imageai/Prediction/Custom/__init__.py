@@ -81,7 +81,7 @@ class ModelTraining:
 
     def setDataDirectory(self, data_directory=""):
         """
-                 'setDataDirectory()' is required to set the path to which the data/dataset to be used for
+        'setDataDirectory()' is required to set the path to which the data/dataset to be used for
                  training is kept. The directory can have any name, but it must have 'train' and 'test'
                  sub-directory. In the 'train' and 'test' sub-directories, there must be sub-directories
                  with each having it's name corresponds to the name/label of the object whose images are
@@ -99,8 +99,9 @@ class ModelTraining:
                         >> class4 >> class4_test_images
                         >> class5 >> class5_test_images
 
-                :return:
-                """
+        :param data_directory:
+        :return:
+        """
 
         self.__data_dir = data_directory
         self.__train_dir = os.path.join(self.__data_dir, "train")
@@ -139,7 +140,7 @@ class ModelTraining:
     def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224, continue_from_model=None, transfer_from_model=None, transfer_with_full_training=True, initial_num_objects = None, save_full_model = False):
 
         """
-                 'trainModel()' function starts the actual training. It accepts the following values:
+                 'trainModel()' function starts the model actual training. It accepts the following values:
                  - num_objects , which is the number of classes present in the dataset that is to be used for training
                  - num_experiments , also known as epochs, it is the number of times the network will train on all the training dataset
                  - enhance_data (optional) , this is used to modify the dataset and create more instance of the training set to enhance the training result

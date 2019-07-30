@@ -248,7 +248,7 @@ class ObjectDetection:
                                display_percentage_probability=True, display_object_name=True):
         """
             'detectObjectsFromImage()' function is used to detect objects observable in the given image path:
-                    * input_image , which can be file to path, image numpy array or image file stream
+                    * input_image , which can be a filepath, image numpy array or image file stream
                     * output_image_path (only if output_type = file) , file path to the output image that will contain the detection boxes and label, if output_type="file"
                     * input_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file", "array" and "stream"
                     * output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array"
@@ -307,9 +307,9 @@ class ObjectDetection:
             :param minimum_percentage_probability:
             :param display_percentage_probability:
             :param display_object_name
+            :return image_frame:
             :return output_objects_array:
-            :return detected_copy:
-            :return detected_detected_objects_image_array:
+            :return detected_objects_image_array:
         """
 
         if (self.__modelLoaded == False):
@@ -1109,70 +1109,48 @@ class VideoObjectDetection:
 
         """
                     'detectObjectsFromVideo()' function is used to detect objects observable in the given video path or a camera input:
-                            * input_file_path , which is the file path to the input video. It is required only if 'camera_input' is not set
-                            * camera_input , allows you to parse in camera input for live video detections
-                            * output_file_path , which is the path to the output video. It is required only if 'save_detected_video' is not set to False
-                            * frames_per_second , which is the number of frames to be used in the output video
-                            * frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected.
-                            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
-                            * log_progress (optional) , which states if the progress of the frame processed is to be logged to console
-                            * display_percentage_probability (optional), can be used to hide or show probability scores on the detected video frames
-                            * display_object_name (optional), can be used to show or hide object names on the detected video frames
-                            * save_save_detected_video (optional, True by default), can be set to or not to save the detected video
-                            * per_frame_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                each frame of the video is detected. If this parameter is set to a function, after every video
-                                                                frame is detected, the function will be executed with the following values parsed into it:
-                                                                -- position number of the frame
-                                                                -- an array of dictinaries, with each dictinary corresponding to each object detected.
-                                                                    Each dictionary contains 'name', 'percentage_probability' and 'box_points'
-                                                                -- a dictionary with with keys being the name of each unique objects and value
-                                                                    are the number of instances of the object present
-                                                                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
-                                                                    as the fourth value into the function
+            * input_file_path , which is the file path to the input video. It is required only if 'camera_input' is not set
+            * camera_input , allows you to parse in camera input for live video detections
+            * output_file_path , which is the path to the output video. It is required only if 'save_detected_video' is not set to False
+            * frames_per_second , which is the number of frames to be used in the output video
+            * frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected.
+            * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
+            * log_progress (optional) , which states if the progress of the frame processed is to be logged to console
+            * display_percentage_probability (optional), can be used to hide or show probability scores on the detected video frames
+            * display_object_name (optional), can be used to show or hide object names on the detected video frames
+            * save_save_detected_video (optional, True by default), can be set to or not to save the detected video
+            * per_frame_function (optional), this parameter allows you to parse in a function you will want to execute after each frame of the video is detected. If this parameter is set to a function, after every video  frame is detected, the function will be executed with the following values parsed into it:
+                -- position number of the frame
+                -- an array of dictinaries, with each dictinary corresponding to each object detected. Each dictionary contains 'name', 'percentage_probability' and 'box_points'
+                -- a dictionary with with keys being the name of each unique objects and value are the number of instances of the object present
+                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed as the fourth value into the function
 
-                            * per_second_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                each second of the video is detected. If this parameter is set to a function, after every second of a video
-                                                                 is detected, the function will be executed with the following values parsed into it:
-                                                                -- position number of the second
-                                                                -- an array of dictionaries whose keys are position number of each frame present in the last second , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
-
-                                                                -- an array of dictionaries, with each dictionary corresponding to each frame in the past second, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
-
-                                                                -- a dictionary with its keys being the name of each unique object detected throughout the past second, and the key values are the average number of instances of the object found in all the frames contained in the past second
-
-                                                                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+            * per_second_function (optional), this parameter allows you to parse in a function you will want to execute after each second of the video is detected. If this parameter is set to a function, after every second of a video is detected, the function will be executed with the following values parsed into it:
+                -- position number of the second
+                -- an array of dictionaries whose keys are position number of each frame present in the last second , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+                -- an array of dictionaries, with each dictionary corresponding to each frame in the past second, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+                -- a dictionary with its keys being the name of each unique object detected throughout the past second, and the key values are the average number of instances of the object found in all the frames contained in the past second
+                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
                                                                     as the fifth value into the function
 
-                            * per_minute_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                each minute of the video is detected. If this parameter is set to a function, after every minute of a video
-                                                                 is detected, the function will be executed with the following values parsed into it:
-                                                                -- position number of the minute
-                                                                -- an array of dictionaries whose keys are position number of each frame present in the last minute , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+            * per_minute_function (optional), this parameter allows you to parse in a function you will want to execute after each minute of the video is detected. If this parameter is set to a function, after every minute of a video is detected, the function will be executed with the following values parsed into it:
+                -- position number of the minute
+                -- an array of dictionaries whose keys are position number of each frame present in the last minute , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
 
-                                                                -- an array of dictionaries, with each dictionary corresponding to each frame in the past minute, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+                -- an array of dictionaries, with each dictionary corresponding to each frame in the past minute, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
 
-                                                                -- a dictionary with its keys being the name of each unique object detected throughout the past minute, and the key values are the average number of instances of the object found in all the frames contained in the past minute
+                -- a dictionary with its keys being the name of each unique object detected throughout the past minute, and the key values are the average number of instances of the object found in all the frames contained in the past minute
 
-                                                                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
-                                                                    as the fifth value into the function
+                -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed as the fifth value into the function
 
-                            * video_complete_function (optional), this parameter allows you to parse in a function you will want to execute after
-                                                                all of the video frames have been detected. If this parameter is set to a function, after all of frames of a video
-                                                                 is detected, the function will be executed with the following values parsed into it:
-                                                                -- an array of dictionaries whose keys are position number of each frame present in the entire video , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+            * video_complete_function (optional), this parameter allows you to parse in a function you will want to execute after all of the video frames have been detected. If this parameter is set to a function, after all of frames of a video is detected, the function will be executed with the following values parsed into it:
+                -- an array of dictionaries whose keys are position number of each frame present in the entire video , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+                -- an array of dictionaries, with each dictionary corresponding to each frame in the entire video, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+                -- a dictionary with its keys being the name of each unique object detected throughout the entire video, and the key values are the average number of instances of the object found in all the frames contained in the entire video
 
-                                                                -- an array of dictionaries, with each dictionary corresponding to each frame in the entire video, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+            * return_detected_frame (optionally, False by default), option to obtain the return the last detected video frame into the per_per_frame_function, per_per_second_function or per_per_minute_function
 
-                                                                -- a dictionary with its keys being the name of each unique object detected throughout the entire video, and the key values are the average number of instances of the object found in all the frames contained in the entire video
-
-                            * return_detected_frame (optionally, False by default), option to obtain the return the last detected video frame into the per_per_frame_function,
-                                                                                    per_per_second_function or per_per_minute_function
-
-                            * detection_timeout (optionally, None by default), option to state the number of seconds of a video that should be detected after which the detection function stop processing the video
-
-
-
-
+            * detection_timeout (optionally, None by default), option to state the number of seconds of a video that should be detected after which the detection function stop processing the video
 
 
                     :param input_file_path:

@@ -1,0 +1,6 @@
+*.db
+.idea
+*.pyc
+imageai.egg-info
+dist
+build
