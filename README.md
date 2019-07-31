@@ -1,4 +1,4 @@
-# ImageAI (v 2.1.0)<br>
+# ImageAI (v2.1.0 )<br>
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code. <br><br>
 
@@ -267,8 +267,8 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 <p>
 <p><i>Video Detection result from a custom YOLOv3 model trained to detect the Hololens headset in a video.</i></p>
-      <img src="images/customvideodetection.gif" style="width: 600px; height: auto;" />
-      ![](images/customvideodetection.gif)
+      <img src="images/customvideodetection.gif" style="width: 700px; height: auto;" />
+      
     
 
 
