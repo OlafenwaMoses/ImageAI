@@ -79,9 +79,12 @@ class ModelTraining:
         """
         self.__modelType = "inceptionv3"
 
-    def setDataDirectory(self, data_directory=""):
+    def setDataDirectory(self, data_directory="", train_subdirectory="train", test_subdirectory="test",
+                         models_subdirectory="models", json_subdirectory="json"):
         """
-        'setDataDirectory()' is required to set the path to which the data/dataset to be used for
+        'setDataDirectory()'
+
+        - data_directory , is required to set the path to which the data/dataset to be used for
                  training is kept. The directory can have any name, but it must have 'train' and 'test'
                  sub-directory. In the 'train' and 'test' sub-directories, there must be sub-directories
                  with each having it's name corresponds to the name/label of the object whose images are
@@ -99,15 +102,24 @@ class ModelTraining:
                         >> class4 >> class4_test_images
                         >> class5 >> class5_test_images
 
+        - train_subdirectory (optional), subdirectory within 'data_directory' where the training set is. Defaults to 'train'.
+        - test_subdirectory (optional), subdirectory within 'data_directory' where the testing set is. Defaults to 'test'.
+        - models_subdirectory (optional), subdirectory within 'data_directory' where the output models will be saved. Defaults to 'models'.
+        - json_subdirectory (optional), subdirectory within 'data_directory' where the model classes json file will be saved. Defaults to 'json'.
+
         :param data_directory:
+        :param train_subdirectory:
+        :param test_subdirectory:
+        :param models_subdirectory:
+        :param json_subdirectory:
         :return:
         """
 
         self.__data_dir = data_directory
-        self.__train_dir = os.path.join(self.__data_dir, "train")
-        self.__test_dir = os.path.join(self.__data_dir, "test")
-        self.__trained_model_dir = os.path.join(self.__data_dir, "models")
-        self.__model_class_dir = os.path.join(self.__data_dir, "json")
+        self.__train_dir = os.path.join(self.__data_dir, train_subdirectory)
+        self.__test_dir = os.path.join(self.__data_dir, test_subdirectory)
+        self.__trained_model_dir = os.path.join(self.__data_dir, models_subdirectory)
+        self.__model_class_dir = os.path.join(self.__data_dir, json_subdirectory)
 
     def lr_schedule(self, epoch):
 
