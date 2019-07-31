@@ -412,8 +412,11 @@ We give special thanks to <b>[Kang vcar](https://github.com/kangvcar/)</b> for h
  12. Moses & John Olafenwa, A collection of images of identifiable professionals.<br>
  <a href="https://github.com/OlafenwaMoses/IdenProf" >https://github.com/OlafenwaMoses/IdenProf</a> <br><br>
  
+ 13. Joseph Redmon and Ali Farhadi, YOLOv3: An Incremental Improvement.<br>
+ <a href="https://arxiv.org/abs/1804.02767">https://arxiv.org/abs/1804.02767</a> <br><br>
+ 
  14. Experiencor, Training and Detecting Objects with YOLO3<br>
- <https://github.com/experiencor/keras-yolo3" >https://github.com/experiencor/keras-yolo3</a> <br><br>
+ <a href="https://github.com/experiencor/keras-yolo3">https://github.com/experiencor/keras-yolo3</a> <br><br>
  
  
  
