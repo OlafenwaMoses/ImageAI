@@ -112,19 +112,10 @@ for detection, object_path in zip(detections, extracted_objects_array):
 
 <br>
     <p>Sample Result:
-    <br>
-       
-          <b><p><i>Output Images</i></p></b>
-          
-            <img src="../../../images/holo2-detected.jpg-objects/hololens-1.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            
-            <img src="../../../images/holo2-detected.jpg-objects/hololens-2.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            
+    <br><b><p><i>Output Images</i></p></b><img src="../../../images/holo2-detected.jpg-objects/hololens-1.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br><img src="../../../images/holo2-detected.jpg-objects/hololens-2.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
             <img src="../../../images/holo2-detected.jpg-objects/hololens-3.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
             <img src="../../../images/holo2-detected.jpg-objects/hololens-4.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            
             <img src="../../../images/holo2-detected.jpg-objects/hololens-5.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            
             <img src="../../../images/holo2-detected.jpg-objects/hololens-6.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
             <img src="../../../images/holo2-detected.jpg-objects/hololens-7.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
             
