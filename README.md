@@ -1,4 +1,4 @@
-# ImageAI (v 2.0.3)<br>
+# ImageAI (v 2.1.0)<br>
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code. <br><br>
 
@@ -11,26 +11,23 @@ Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) 
 Built with simplicity in mind, <b>ImageAI</b> 
     supports a list of state-of-the-art Machine Learning algorithms for image prediction, custom image prediction, object detection, video detection, video object tracking
     and image predictions trainings. <b>ImageAI</b> currently supports image prediction and training using 4 different Machine Learning algorithms 
-    trained on the ImageNet-1000 dataset. <b>ImageAI</b> also supports object detection, video detection and object tracking  using RetinaNet, YOLOv3 and TinyYOLOv3 trained on COCO dataset. Finally, <b>ImageAI</b> allows you to train custom models for your peforming recognition of new objects. <br>
+    trained on the ImageNet-1000 dataset. <b>ImageAI</b> also supports object detection, video detection and object tracking  using RetinaNet, YOLOv3 and TinyYOLOv3 trained on COCO dataset. Finally, <b>ImageAI</b> allows you to train custom models for performing detection and recognition of new objects. <br>
                                    Eventually, <b>ImageAI</b> will provide support for a wider
     and more specialized aspects of Computer Vision including and not limited to image 
     recognition in special environments and special fields.
 
 <br> 
 
-<b>New Release : ImageAI 2.0.3</b>
+<b>New Release : ImageAI 2.1.0</b>
 <br> What's new:
 <br>
-- Options to set video <a href="imageai/Detection/VIDEO.md#detectiontimeout"><b>detection timeout</b></a> in seconds <br>
-- Options to save trained <a href="imageai/Prediction/CUSTOMTRAINING.md#savefullmodel">custom model in full </a><br>
-- Support for running custom <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionfullmodel">prediction with fully saved model</a> without specifying network type <br>
-- Support for running custom prediction with any <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionfullmodel">fully saved <b>Keras</b> model </a><br>
-- Support for converting custom trained models to <a href="imageai/Prediction/CUSTOMPREDICTION.md#converttensorflow">Tensorflow (<b>.pb</b>) format </a> <br>
-- Support for <a href="imageai/Prediction/CUSTOMTRAINING.md#continuoustraining"><b>continuous training</b></a> from previously saved custom model <br>
-- Support for <a href="imageai/Prediction/CUSTOMTRAINING.md#transferlearning"><b>transfer learning</b></a> from pre-trained models for small datasets<br>
-- Only <a href="imageai/Prediction/CUSTOMTRAINING.md">models with increased accuracy</a> will be saved during training <br>
-- Support for loading and prediction with <a href="imageai/Prediction/CUSTOMPREDICTION.md#custompredictionmultiple">multiple custom models</a> <br>
-- Support for <a href="imageai/Prediction/CUSTOMPREDICTION.md#convertdeepstack">exporting models</a> to <b>DeepStack format</b> <br>
+- Training of <b>custom YOLOv3</b> models on custom image datasets annotated in Pascal VOC format <br>
+- Single and multi-model <b>mAP evaluation</b> of saved custom detection models<br>  
+- Object detection in images using <b>custom YOLOv3 models</b><br> 
+- Video Object detection in using <b>custom YOLOv3 models</b><br> 
+- Video Detection analysis in using <b>custom YOLOv3 models</b>
+- Support for <b>file</b> and <b>Numpy array</b> inputs/outputs for all custom image and video detections</b>
+
 
 
  <br>  <br>
@@ -44,6 +41,9 @@ Built with simplicity in mind, <b>ImageAI</b>
 <a href="#videodetection" > &#9635 Video Object Detection, Tracking & Analysis</a><br>
  <a href="#customtraining" >&#9635 Custom Model Training</a><br>
 <a href="#customprediction" > &#9635 Custom Image Prediction</a><br>
+<a href="#customdetectiontraining" >&#9635 Custom Detection Model Training</a><br>
+<a href="#customdetection" > &#9635 Custom Object Detection</a><br>
+<a href="#customvideodetection" > &#9635 Custom Video Object Detection & Analysis</a><br>
 <a href="#documentation" > &#9635 Documentation</a><br>
 <a href="#sample" > &#9635 Projects Built on ImageAI</a><br>
 <a href="#real-time-and-high-performance-implementation" >&#9635 High Performance Implementation</a><br>
@@ -71,12 +71,11 @@ Built with simplicity in mind, <b>ImageAI</b>
 
 <div id="installation"></div>
  <h3><b><u>Installation</u></b></h3> To install ImageAI, run the python installation instruction below in the command line: <br><br>
-    <span>      <b><pre>pip3 install https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.3/imageai-2.0.3-py3-none-any.whl </pre></b></span> <br><br> <br>
+    <span>      <b><pre>pip3 install imageai --upgrade </pre></b></span> <br><br> <br>
     
-   or download the Python Wheel <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.3/imageai-2.0.3-py3-none-any.whl" ><b>
-    imageai-2.0.3-py3-none-any.whl</b></a> and run the python installation instruction in the  command line
+   or download the Python Wheel <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/2.1.0/imageai-2.1.0-py3-none-any.whl" ><b>imageai-2.1.0-py3-none-any.whl</b></a> and run the python installation instruction in the  command line
      to the path of the file like the one below: <br><br>
-    <span>      <b><pre>pip3 install C:\User\MyUser\Downloads\imageai-2.0.3-py3-none-any.whl</pre></b></span> <br><br>
+    <span>      <b><pre>pip3 install C:\User\MyUser\Downloads\imageai-2.1.0-py3-none-any.whl</pre></b></span> <br><br>
 
 <div id="prediction"></div>
 <h3><b><u>Image Prediction</u></b></h3>
@@ -217,8 +216,70 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 
 
+<br><br>
+
+<div id="customdetectiontraining"></div>
+<h3><b><u>Custom Detection Model Training </u></b></h3>
+
+<p>
+<p><i>Training detection models to detect and recognize new objects.  </i></p>
+      <img src="images/headsets.jpg" style="width: 600px; height: auto;" />
+</p>
+
+<b>ImageAI</b> provides classes and methods for you to train new <b>YOLOv3</b> object detection models on your <b>custom dataset</b>.
+This means you can train a model to detect literally any object of interest by providing the images, the annotations and training with ImageAI.
+Click the link below to see the guide to sample training codes, explanations, and best practices guide.
+<br>
 
 
+<a href="imageai/Detection/Custom/CUSTOMDETECTIONTRAINING.md" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
+
+<br><br>
+
+<div id="customdetection"></div>
+<h3><b><u>Custom Object Detection </u></b></h3>
+
+<p>
+<p><i>Detection result from a custom YOLOv3 model trained to detect the Hololens headset.</i></p>
+      <img src="images/holo2-detected.jpg" style="width: 600px; height: auto;" />
+    <pre>hololens  :  39.69653248786926  :  [611, 74, 751, 154]
+hololens  :  87.6643180847168  :  [23, 46, 90, 79]
+hololens  :  89.25175070762634  :  [191, 66, 243, 95]
+hololens  :  64.49641585350037  :  [437, 81, 514, 133]
+hololens  :  91.78624749183655  :  [380, 113, 423, 138]</pre>
+
+
+</p>
+
+<b>ImageAI</b> now provides classes and methods for you detect and recognize your own custom objects in images using your own model trained with the <b>DetectionModelTraining</b> class.
+You can use your custom trained <b>YOLOv3</b> mode and the <b>detection_config.json</b> file generated during the training.
+Click the link below to see the guide to sample training codes, explanations, and best practices guide.
+<br>
+
+
+<a href="imageai/Detection/Custom/CUSTOMDETECTION.md" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
+
+
+<br><br>
+
+<div id="customvideodetection"></div>
+<h3><b><u>Custom Video Object Detection & Analysis </u></b></h3>
+
+<p>
+<p><i>Video Detection result from a custom YOLOv3 model trained to detect the Hololens headset in a video.</i></p>
+      <img src="images/customvideodetection.gif" style="width: 600px; height: auto;" />
+      ![](images/customvideodetection.gif)
+    
+
+
+</p>
+
+Now you can use your custom trained <b>YOLOv3</b> model to detect, recognize and analyze objects in videos.
+Click the link below to see the guide to sample training codes, explanations, and best practices guide.
+<br>
+
+
+<a href="imageai/Detection/Custom/CUSTOMVIDEODETECTION.md" ><button style="font-size: 20px; color: white; background-color: steelblue; height: 50px; border-radius: 10px; " > >>> Tutorials & Documentation </button></a>
 
 
 <br><br>
