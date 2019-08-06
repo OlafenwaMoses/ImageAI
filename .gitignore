@@ -1,7 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.cpp
+*.so
+
+# temporary structure
+dist/
+build/
+output*/
+results/
+temp/
+runner/
+temporary/
 *.db
-.idea
-*.pyc
-imageai.egg-info
-dist
-build
-runner
+
+# PyCharm
+.idea/
+# Dropbox sync
+.dropbox.attr
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+pytest.*
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+*.egg-info
