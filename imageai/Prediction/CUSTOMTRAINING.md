@@ -1,34 +1,34 @@
 # ImageAI : Custom Prediction Model Training <br>
-<hr>
-<br>
-<b>ImageAI</b> provides the most simple and powerful approach to training custom image prediction models
+
+---
+
+**ImageAI** provides the most simple and powerful approach to training custom image prediction models
 using state-of-the-art SqueezeNet, ResNet50, InceptionV3 and DenseNet
-which you can load into the <b>imageai.Prediction.Custom.CustomImagePrediction</b> class. This allows
+which you can load into the `imageai.Prediction.Custom.CustomImagePrediction` class. This allows
  you to train your own model on any set of images that corresponds to any type of objects/persons.
 The training process generates a JSON file that maps the objects types in your image dataset
 and creates lots of models. You will then pick the model with the highest accuracy and perform custom
-image prediction using the model and the JSON file generated. <br><br>
+image prediction using the model and the JSON file generated.
 
-<h3><b><u>TABLE OF CONTENTS</u></b></h3>
-<a href="#customtraining" > &#9635 Custom Model Training Prediction</a><br>
-<a href="#savefullmodel" > &#9635 Saving Full Custom Model (NEW)</a><br>
-<a href="#idenproftraining" > &#9635 Training on the IdenProf Dataset</a><br>
-<a href="#continuoustraining" > &#9635 Continuous Model Training (NEW)</a><br>
-<a href="#transferlearning" > &#9635 Transfer Learning (Training from a pre-trained model) (NEW)</a><br>
+### TABLE OF CONTENTS
+- <a href="#customtraining" > &#9635 Custom Model Training Prediction</a>
+- <a href="#savefullmodel" > &#9635 Saving Full Custom Model (NEW)</a>
+- <a href="#idenproftraining" > &#9635 Training on the IdenProf Dataset</a>
+- <a href="#continuoustraining" > &#9635 Continuous Model Training (NEW)</a>
+- <a href="#transferlearning" > &#9635 Transfer Learning (Training from a pre-trained model) (NEW)</a>
 
 
+### Custom Model Training
 <div id="customtraining"></div>
-<h3><b><u>Custom Model Training</u></b></h3>
-Because model training is a compute intensive tasks, we strongly advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
- installed. Performing model training on CPU will my take hours or days. With NVIDIA GPU powered computer system, this will take
- a few hours.  You can use Google Colab for this experiment as it has an NVIDIA K80 GPU available.
+
+Because model training is a compute intensive tasks, we strongly advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow installed. Performing model training on CPU will my take hours or days. With NVIDIA GPU powered computer system, this will take a few hours.  You can use Google Colab for this experiment as it has an NVIDIA K80 GPU available.
 
 To train a custom prediction model, you need to prepare the images you want to use to train the model.
-You will prepare the images as follows: <br>
+You will prepare the images as follows:
 
 1. Create a dataset folder with the name you will like your dataset to be called (e.g pets) <br>
-2. In the dataset folder, create a folder by the name <b>train</b> <br>
-3. In the dataset folder, create a folder by the name <b>test</b> <br>
+2. In the dataset folder, create a folder by the name **train** <br>
+3. In the dataset folder, create a folder by the name **test** <br>
 4. In the train folder, create a folder for each object you want to the model to predict and give
  the folder a name that corresponds to the respective object name (e.g dog, cat, squirrel, snake) <br>
 5. In the test folder, create a folder for each object you want to the model to predict and give
@@ -40,53 +40,58 @@ To produce a model that can perform well in practical applications, I recommend 
 7. In each folder present in the test folder, put about 100 to 200 images of each object in its respective folder.
 These images are the ones to be used to test the model as it trains <br>
 8. Once you have done this, the structure of your image dataset folder should look like below: <br> <br>
-
-<pre>	pets//train//dog//dog-train-images
+    ```
+        pets//train//dog//dog-train-images
         pets//train//cat//cat-train-images
         pets//train//squirrel//squirrel-train-images
         pets//train//snake//snake-train-images 
-	pets//test//dog//dog-test-images
+        pets//test//dog//dog-test-images
         pets//test//cat//cat-test-images
         pets//test//squirrel//squirrel-test-images
         pets//test//snake//snake-test-images
-     </pre>
-
+    ```
 9. Then your training code goes as follows: <br> <br>
-<b><pre>from imageai.Prediction.Custom import ModelTraining
+    ```python
+    from imageai.Prediction.Custom import ModelTraining
+    model_trainer = ModelTraining()
+    model_trainer.setModelTypeAsResNet()
+    model_trainer.setDataDirectory("pets")
+    model_trainer.trainModel(num_objects=4, num_experiments=100, enhance_data=True, batch_size=32, show_network_summary=True)
+    ```
+
+ Yes! Just 5 lines of code and you can train any of the available 4 state-of-the-art Deep Learning algorithms on your custom dataset.
+Now lets take a look at how the code above works.
+
+```python
+from imageai.Prediction.Custom import ModelTraining
+
 model_trainer = ModelTraining()
 model_trainer.setModelTypeAsResNet()
 model_trainer.setDataDirectory("pets")
-model_trainer.trainModel(num_objects=4, num_experiments=100, enhance_data=True, batch_size=32, show_network_summary=True)
-</pre> </b><br><br>
- Yes! Just 5 lines of code and you can train any of the available 4 state-of-the-art Deep Learning algorithms on your custom dataset.
-Now lets take a look at how the code above works. <br>
-<pre>from imageai.Prediction.Custom import ModelTraining
+```
 
-model_trainer = ModelTraining()
-model_trainer.setModelTypeAsResNet()
-model_trainer.setDataDirectory("pets")</pre>
-<br>
-In the first line, we import the <b>ImageAI</b> model training class, then we define the model trainer in the second line,
+In the first line, we import the **ImageAI** model training class, then we define the model trainer in the second line,
  we set the network type in the third line and set the path to the image dataset we want to train the network on.
 
-<pre>model_trainer.trainModel(num_objects=4, num_experiments=100, enhance_data=True, batch_size=32, show_network_summary=True)
-</pre>
-<br>
+```python
+model_trainer.trainModel(num_objects=4, num_experiments=100, enhance_data=True, batch_size=32, show_network_summary=True)
+```
 
-In the code above, we start the training process. The parameters stated in the function are as below: <br><br>
-- <b>num_objects</b> : this is to state the number of object types in the image dataset <br>
-- <b>num_experiments</b> : this is to state the number of times the network will train over all the training images,
+In the code above, we start the training process. The parameters stated in the function are as below:
+- **num_objects** : this is to state the number of object types in the image dataset <br>
+- **num_experiments** : this is to state the number of times the network will train over all the training images,
  which is also called epochs <br>
-- <b>enhance_data (optional)</b> : This is used to state if we want the network to produce modified copies of the training
+- **enhance_data (optional)** : This is used to state if we want the network to produce modified copies of the training
 images for better performance. <br>
-- <b>batch_size</b> : This is to state the number of images the network will process at ones. The images
+- **batch_size** : This is to state the number of images the network will process at ones. The images
  are processed in batches until they are exhausted per each experiment performed. <br>
-- <b>show_network_summary</b> : This is to state if the network should show the structure of the training
+- **show_network_summary** : This is to state if the network should show the structure of the training
  network in the console.
 <br><br> <br>
 
-When you start the training, you should see something like this in the console: <br>
-<pre>____________________________________________________________________________________________________
+When you start the training, you should see something like this in the console:
+```
+____________________________________________________________________________________________________
 Layer (type)                     Output Shape          Param #     Connected to
 ====================================================================================================
 input_2 (InputLayer)             (None, 224, 224, 3)   0
@@ -465,12 +470,12 @@ Using Enhanced Data Generation
 Found 4000 images belonging to 4 classes.
 Found 800 images belonging to 4 classes.
 JSON Mapping for the model classes saved to  C:\Users\User\PycharmProjects\ImageAITest\pets\json\model_class.json
-Number of experiments (Epochs) :  100</pre>
-
-<br>
+Number of experiments (Epochs) :  100
+```
 
 When the training progress progresses, you will see results as follows in the console: <br>
-<pre>Epoch 1/100
+```
+Epoch 1/100
  1/25 [>.............................] - ETA: 52s - loss: 2.3026 - acc: 0.2500
  2/25 [=>............................] - ETA: 41s - loss: 2.3027 - acc: 0.1250
  3/25 [==>...........................] - ETA: 37s - loss: 2.2961 - acc: 0.1667
@@ -497,48 +502,41 @@ When the training progress progresses, you will see results as follows in the co
 24/25 [===========================>..] - ETA: 1s - loss: 2.3097 - acc: 0.0625Epoch 00000: saving model to C:\Users\Moses\Documents\Moses\W7\AI\Custom Datasets\IDENPROF\idenprof-small-test\idenprof\models\model_ex-000_acc-0.100000.h5
 
 25/25 [==============================] - 51s - loss: 2.3095 - acc: 0.0600 - val_loss: 2.3026 - val_acc: 0.1000
+```
 
-</pre>
-
-<br>
 Let us explain the details shown above: <br>
-1. The line <b>Epoch 1/100</b> means the network is training the first experiment of the targeted 100 <br>
-2. The line <b>1/25 [>.............................] - ETA: 52s - loss: 2.3026 - acc: 0.2500</b>
-     represents the number of batches that has been trained in the present experiment<br>
-3. The line  <b>Epoch 00000: saving model to C:\Users\User\PycharmProjects\ImageAITest\pets\models\model_ex-000_acc-0.100000.h5
-</b> refers to the model saved after the present experiment. The <b>ex_000</b> represents the experiment at this stage
- while the <b>acc_0.100000</b> and <b>val_acc: 0.1000</b> represents the accuracy of the model on the test images after the present experiment (maximum value value
- of accuracy is 1.0).  This result helps to know the best performed model you can use for custom image prediction. <br> <br>
- Once you are done training your custom model, you can use the "CustomImagePrediction" class to perform image prediction with your model. Simply follow the link below. <br><br>
- <a href="https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md" >https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md</a>
+1. The line **Epoch 1/100** means the network is training the first experiment of the targeted 100 <br>
+2. The line `1/25 [>.............................] - ETA: 52s - loss: 2.3026 - acc: 0.2500` represents the number of batches that has been trained in the present experiment<br>
+3. The line  `Epoch 00000: saving model to C:\Users\User\PycharmProjects\ImageAITest\pets\models\model_ex-000_acc-0.100000.h5` refers to the model saved after the present experiment. The **ex_000** represents the experiment at this stage while the **acc_0.100000** and **val_acc: 0.1000** represents the accuracy of the model on the test images after the present experiment (maximum value value of accuracy is 1.0).  This result helps to know the best performed model you can use for custom image prediction. <br> 
+ 
+ Once you are done training your custom model, you can use the "CustomImagePrediction" class to perform image prediction with your model. Simply follow the link below.
+[imageai/Prediction/CUSTOMPREDICTION.md](https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md)
 
-<br><br>
-
-
+### Saving Full Custom Model
 <div id="savefullmodel"></div>
-<h3><b><u>Saving Full Custom Model</u></b></h3>
 
-**ImageAI** now allows you to your custom model in full during training, which ensures you can perform custom prediction without necessarily specifying the network type. All you need to do is set the paramater **save_full_model** to **True** in your **trainModel()** function. See an example code below.<br>
-<pre>from imageai.Prediction.Custom import ModelTraining
+**ImageAI** now allows you to your custom model in full during training, which ensures you can perform custom prediction without necessarily specifying the network type.
+All you need to do is set the paramater `save_full_model` to `True` in your `trainModel()` function.
+See an example code below.
+
+```python
+from imageai.Prediction.Custom import ModelTraining
 import os
 
 trainer = ModelTraining()
 trainer.setModelTypeAsDenseNet()
 trainer.setDataDirectory("idenprof")
-trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=16, show_network_summary=True, save_full_model=True)</pre>
-<br>
+trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=16, show_network_summary=True, save_full_model=True)
+```
 
+### Training on the IdenProf data
 
-<div id="idenproftraining"></div>
-<h3><b><u>Training on the IdenProf dataset</u></b></h3>
-<div style="width: 600px;" >
-            <p><i>A sample from the IdenProf Dataset used to train a Model for predicting professionals.</i></p>
-          <img src="../../images/idenprof.jpg" style="width: 500px; height: auto; margin-left: 50px; " />
-</div> <br>
-Below we provide a sample code to train on <b>IdenProf</b>, a dataset which contains images of 10
- uniformed professionals. The code below will download the dataset and initiate the training: <br> <br>
+A sample from the IdenProf Dataset used to train a Model for predicting professionals.
+![](../../images/idenprof.jpg)
 
-<pre>
+Below we provide a sample code to train on **IdenProf**, a dataset which contains images of 10 uniformed professionals. The code below will download the dataset and initiate the training:
+
+```python
 from io import open
 import requests
 import shutil
@@ -546,10 +544,7 @@ from zipfile import ZipFile
 import os
 from imageai.Prediction.Custom import ModelTraining
 
-
-
 execution_path = os.getcwd()
-
 
 TRAIN_ZIP_ONE = os.path.join(execution_path, "idenprof-train1.zip")
 TRAIN_ZIP_TWO = os.path.join(execution_path, "idenprof-train2.zip")
@@ -588,8 +583,6 @@ if(len(os.listdir(DATASET_TRAIN_DIR)) < 10):
     extract2.extractall(DATASET_TRAIN_DIR)
     extract2.close()
 
-
-
 if(len(os.listdir(DATASET_TEST_DIR)) < 10):
     if (os.path.exists(TEST_ZIP) == False):
         print("Downloading idenprof-test.zip")
@@ -607,66 +600,65 @@ model_trainer = ModelTraining()
 model_trainer.setModelTypeAsResNet()
 model_trainer.setDataDirectory(DATASET_DIR)
 model_trainer.trainModel(num_objects=10, num_experiments=100, enhance_data=True, batch_size=32, show_network_summary=True)
+```
 
-</pre>
-
-<br><br>
-
+### Continuous Model Training
 <div id="continuoustraining"></div>
-<h3><b><u>Continuous Model Training</u></b></h3>
 
-**ImageAI** now allows you to continue training your custom model on your previously saved model. This is useful in cases of incomplete training due compute time limits/large size of dataset or should you intend to further train your model. Kindly note that **continuous training** is for using a previously saved model to train on the same dataset the model was trained on. All you need to do is specify the **continue_from_model** parameter to the path of the previously saved model in your **trainModel()** function. See an example code below.<br>
-<pre>from imageai.Prediction.Custom import ModelTraining
+**ImageAI** now allows you to continue training your custom model on your previously saved model.
+This is useful in cases of incomplete training due compute time limits/large size of dataset or should you intend to further train your model.
+Kindly note that **continuous training** is for using a previously saved model to train on the same dataset the model was trained on.
+All you need to do is specify the `continue_from_model` parameter to the path of the previously saved model in your `trainModel()` function.
+See an example code below.<br>
+
+```python
+from imageai.Prediction.Custom import ModelTraining
 import os
 
 trainer = ModelTraining()
 trainer.setModelTypeAsDenseNet()
 trainer.setDataDirectory("idenprof")
-trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=8, show_network_summary=True, continue_from_model="idenprof_densenet-0.763500.h5")</pre>
-<br>
+trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=8, show_network_summary=True, continue_from_model="idenprof_densenet-0.763500.h5")
+```
 
+### Transfer Learning (Training from a pre-trained model)
 <div id="transferlearning"></div>
-<h3><b><u>Transfer Learning (Training from a pre-trained model) </u></b></h3>
 
-From the feedbacks we have received over the past months, we discovered most custom models trained with **ImageAI** were based on datasets with few number of images as they fall short the minimum recommendation of 500 images per each class of objects, for a achieving a viable accuracy. <br><br> To ensure they can still train very accurate custom models using few number of images, **ImageAI** now allows you to train by leveraging **transfer learning** . This means you can take any pre-trained **ResNet50**, **Squeezenet**, **InceptionV3** and **DenseNet121** model trained on larger datasets and use it to kickstart your custom model training. All you need to do is specify the **transfer_from_model** parameter to the path of the pre-trained model, **initial_num_objects** parameter which corresponds to the number of objects in the previous dataset the pre-trained model was trained on,  all in your **trainModel()** function. See an example code below, showing how to perform transfer learning from a ResNet50 model trained on the ImageNet dataset.<br>
-<pre>from imageai.Prediction.Custom import ModelTraining
+
+From the feedbacks we have received over the past months, we discovered most custom models trained with **ImageAI** were based on datasets with few number of images as they fall short the minimum recommendation of 500 images per each class of objects, for a achieving a viable accuracy. 
+
+To ensure they can still train very accurate custom models using few number of images, **ImageAI** now allows you to train by leveraging **transfer learning** . This means you can take any pre-trained **ResNet50**, **Squeezenet**, **InceptionV3** and **DenseNet121** model trained on larger datasets and use it to kickstart your custom model training.
+All you need to do is specify the `transfer_from_model` parameter to the path of the pre-trained model, `initial_num_objects` parameter which corresponds to the number of objects in the previous dataset the pre-trained model was trained on, all in your `trainModel()` function. See an example code below, showing how to perform transfer learning from a ResNet50 model trained on the ImageNet dataset.
+
+```python
+from imageai.Prediction.Custom import ModelTraining
 import os
 
 trainer = ModelTraining()
 trainer.setModelTypeAsResNet()
 trainer.setDataDirectory("idenprof")
 trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_size=32, show_network_summary=True,transfer_from_model="resnet50_weights_tf_dim_ordering_tf_kernels.h5", initial_num_objects=1000)
-</pre>
-<br><br>
+```
+
+### Submitting Custom Model
+
+We are providing an opportunity for anyone that uses to train a model to submit the model and its JSON mapping file
+ and have it listed in this repository. Reach to the details below should intend to share your trained model in this repository. 
 
 
-
-<h3><b><u>Submitting Custom Model</u></b></h3>
-<br>
-We are providing an opportunity for anyone that uses <b></b> to train a model to submit the model and its JSON mapping file
- and have it listed in this repository. Reach to the details below should intend to share your trained model in this repository. <br><br>
-<h3><b><u>Contact Developer</u></b></h3>
- <p> <b>Moses Olafenwa</b> <br>
-    <i>Email: </i>    <a style="text-decoration: none;"  href="mailto:guymodscientist@gmail.com"> guymodscientist@gmail.com</a> <br>
-      <i>Website: </i>    <a style="text-decoration: none;" target="_blank" href="https://moses.specpal.science"> https://moses.specpal.science</a> <br>
-      <i>Twitter: </i>    <a style="text-decoration: none;" target="_blank" href="https://twitter.com/OlafenwaMoses"> @OlafenwaMoses</a> <br>
-      <i>Medium : </i>    <a style="text-decoration: none;" target="_blank" href="https://medium.com/@guymodscientist"> @guymodscientist</a> <br>
-      <i>Facebook : </i>    <a style="text-decoration: none;" target="_blank" href="https://facebook.com/moses.olafenwa"> moses.olafenwa</a> <br>
-<br><br>
+### Contact Developer
+- **Moses Olafenwa**
+    * _Email:_ guymodscientist@gmail.com
+    * _Website:_ [https://moses.aicommons.science](https://moses.aicommons.science)
+    * _Twitter:_ [@OlafenwaMoses](https://twitter.com/OlafenwaMoses)
+    * _Medium:_ [@guymodscientist](https://medium.com/@guymodscientist)
+    * _Facebook:_ [moses.olafenwa](https://facebook.com/moses.olafenwa)
 
 
+### Documentation
 
-<div id="documentation" ></div>
-<h3><b><u> >> Documentation</u></b></h3>
-We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
+We have provided full documentation for all **ImageAI** classes and functions in 2 major languages. Find links below:**
 
-<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
-<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
-<br>
-<b> >> Documentation - French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)</b>
-
-
-
-
-
-
+* Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
+* Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
+* Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
