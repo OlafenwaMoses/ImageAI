@@ -77,7 +77,7 @@ def generate_images_annotations_json(main_dir, metadata_dir, subset, cls_index):
 
             cls_id = cls_index[class_name]
 
-            img_path = os.path.join(main_dir, 'images', subset, frame + '.jpg')
+            img_path = os.path.join(main_dir, 'sample_images', subset, frame + '.jpg')
             if frame in images_sizes:
                 width, height = images_sizes[frame]
             else:
@@ -130,7 +130,7 @@ class OpenImagesGenerator(Generator):
             fixed_labels=False,
             **kwargs
     ):
-        self.base_dir = os.path.join(main_dir, 'images', subset)
+        self.base_dir = os.path.join(main_dir, 'sample_images', subset)
         metadata_dir = os.path.join(main_dir, version)
         annotation_cache_json = os.path.join(annotation_cache_dir, subset + '.json')
 

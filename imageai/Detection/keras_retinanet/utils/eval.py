@@ -62,11 +62,11 @@ def _get_detections(generator, model, score_threshold=0.05, max_detections=100, 
         all_detections[num_images][num_classes] = detections[num_detections, 4 + num_classes]
 
     # Arguments
-        generator       : The generator used to run images through the model.
-        model           : The model to run on the images.
+        generator       : The generator used to run sample_images through the model.
+        model           : The model to run on the sample_images.
         score_threshold : The score confidence threshold to use.
         max_detections  : The maximum number of detections to use per image.
-        save_path       : The path to save the images with visualized detections to.
+        save_path       : The path to save the sample_images with visualized detections to.
     # Returns
         A list of lists containing the detections for each image in the generator.
     """
@@ -164,7 +164,7 @@ def evaluate(
         iou_threshold   : The threshold used to consider when a detection is positive or negative.
         score_threshold : The score confidence threshold to use for detections.
         max_detections  : The maximum number of detections to use per image.
-        save_path       : The path to save images with visualized detections to.
+        save_path       : The path to save sample_images with visualized detections to.
     # Returns
         A dict mapping class names to mAP scores.
     """

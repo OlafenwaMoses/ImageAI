@@ -85,8 +85,8 @@ class DetectionModelTrainer:
 
         'setDataDirectory()' is required to set the path to which the data/dataset to be used for
                  training is kept. The directory can have any name, but it must have 'train' and 'validation'
-                 sub-directory. In the 'train' and 'validation' sub-directories, there must be 'images' and 'annotations'
-                 sub-directories respectively. The 'images' folder will contain the pictures for the dataset and the
+                 sub-directory. In the 'train' and 'validation' sub-directories, there must be 'sample_images' and 'annotations'
+                 sub-directories respectively. The 'sample_images' folder will contain the pictures for the dataset and the
                  'annotations' folder will contain the XML files with details of the annotations for each image in the
                  'images folder'.
 
@@ -115,9 +115,9 @@ class DetectionModelTrainer:
         :return:
         """
 
-        self.__train_images_folder = os.path.join(data_directory, "train/images/")
+        self.__train_images_folder = os.path.join(data_directory, "train/sample_images/")
         self.__train_annotations_folder = os.path.join(data_directory, "train/annotations/")
-        self.__validation_images_folder = os.path.join(data_directory, "validation/images/")
+        self.__validation_images_folder = os.path.join(data_directory, "validation/sample_images/")
         self.__validation_annotations_folder = os.path.join(data_directory, "validation/annotations/")
 
         if os.path.exists(os.path.join(data_directory, "cache")) == False:

@@ -177,7 +177,7 @@ def resize_image(img, min_side=800, max_side=1333):
     scale = min_side / smallest_side
 
     # check if the largest side is now greater than max_side, wich can happen
-    # when images have a large aspect ratio
+    # when sample_images have a large aspect ratio
     largest_side = max(rows, cols)
     if largest_side * scale > max_side:
         scale = max_side / largest_side

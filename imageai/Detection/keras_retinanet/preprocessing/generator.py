@@ -156,7 +156,7 @@ class Generator(object):
         return image_group, annotations_group
 
     def group_images(self):
-        # determine the order of the images
+        # determine the order of the sample_images
         order = list(range(self.size()))
         if self.group_method == 'random':
             random.shuffle(order)
@@ -173,7 +173,7 @@ class Generator(object):
         # construct an image batch object
         image_batch = np.zeros((self.batch_size,) + max_shape, dtype=keras.backend.floatx())
 
-        # copy all images to the upper left part of the image batch object
+        # copy all sample_images to the upper left part of the image batch object
         for image_index, image in enumerate(image_group):
             image_batch[image_index, :image.shape[0], :image.shape[1], :image.shape[2]] = image
 
@@ -218,7 +218,7 @@ class Generator(object):
         return [regression_batch, labels_batch]
 
     def compute_input_output(self, group):
-        # load images and annotations
+        # load sample_images and annotations
         image_group       = self.load_image_group(group)
         annotations_group = self.load_annotations_group(group)
 

@@ -46,7 +46,7 @@ class KittiGenerator(Generator):
         self.base_dir = base_dir
 
         label_dir = os.path.join(self.base_dir, subset, 'labels')
-        image_dir = os.path.join(self.base_dir, subset, 'images')
+        image_dir = os.path.join(self.base_dir, subset, 'sample_images')
 
         """
         1    type         Describes the type of object: 'Car', 'Van', 'Truck',

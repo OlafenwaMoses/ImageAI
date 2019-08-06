@@ -79,7 +79,7 @@ class CocoGenerator(Generator):
 
     def load_image(self, image_index):
         image_info = self.coco.loadImgs(self.image_ids[image_index])[0]
-        path       = os.path.join(self.data_dir, 'images', self.set_name, image_info['file_name'])
+        path       = os.path.join(self.data_dir, 'sample_images', self.set_name, image_info['file_name'])
         return read_image_bgr(path)
 
     def load_annotations(self, image_index):
@@ -87,7 +87,7 @@ class CocoGenerator(Generator):
         annotations_ids = self.coco.getAnnIds(imgIds=self.image_ids[image_index], iscrowd=False)
         annotations     = np.zeros((0, 5))
 
-        # some images appear to miss annotations (like image with id 257034)
+        # some sample_images appear to miss annotations (like image with id 257034)
         if len(annotations_ids) == 0:
             return annotations
 

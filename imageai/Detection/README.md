@@ -45,9 +45,9 @@ for eachObject in detections:
 
 Sample Result:
 Input Image
-![Input Image](../../images/image2.jpg)
+![Input Image](../../sample_images/image2.jpg)
 Output Image
-![Output Image](../../images/yolo.jpg)
+![Output Image](../../sample_images/yolo.jpg)
 
 ```
 laptop  :  87.32235431671143  :  (306, 238, 390, 284)
@@ -149,18 +149,18 @@ for eachObject, eachObjectPath in zip(detections, objects_path):
     print("--------------------------------")
 ```
 
-![Input Image](../../images/image3.jpg)
-![Output Images](../../images/image3new.jpg)
+![Input Image](../../sample_images/image3.jpg)
+![Output Images](../../sample_images/image3new.jpg)
 
-![dog](../../images/image3new.jpg-objects/dog-1.jpg)
-![motorcycle](../../images/image3new.jpg-objects/motorcycle-3.jpg)
-![car](../../images/image3new.jpg-objects/car-4.jpg)
-![bicycle](../../images/image3new.jpg-objects/bicycle-5.jpg)
-![person](../../images/image3new.jpg-objects/person-6.jpg)
-![person](../../images/image3new.jpg-objects/person-7.jpg)
-![person](../../images/image3new.jpg-objects/person-8.jpg)
-![person](../../images/image3new.jpg-objects/person-9.jpg)
-![person](../../images/image3new.jpg-objects/person-10.jpg)
+![dog](../../sample_images/image3new.jpg-objects/dog-1.jpg)
+![motorcycle](../../sample_images/image3new.jpg-objects/motorcycle-3.jpg)
+![car](../../sample_images/image3new.jpg-objects/car-4.jpg)
+![bicycle](../../sample_images/image3new.jpg-objects/bicycle-5.jpg)
+![person](../../sample_images/image3new.jpg-objects/person-6.jpg)
+![person](../../sample_images/image3new.jpg-objects/person-7.jpg)
+![person](../../sample_images/image3new.jpg-objects/person-8.jpg)
+![person](../../sample_images/image3new.jpg-objects/person-9.jpg)
+![person](../../sample_images/image3new.jpg-objects/person-10.jpg)
 
 
 Let us review the part of the code that perform the object detection and extract the images:
@@ -220,7 +220,7 @@ for eachObject in detections:
     print("--------------------------------")
 ```
 
-![Result](../../images/image3custom.jpg)
+![Result](../../sample_images/image3custom.jpg)
 
 
 Let us take a look at the part of the code that made this possible.
@@ -261,7 +261,7 @@ detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_
 
 In the above code, we specified that both the object name and percentage probability should not be shown. As you can see in the result below, both the names of the objects and their individual percentage probability is not shown in the detected image.
 
-![Result](../../images/nodetails.jpg)
+![Result](../../sample_images/nodetails.jpg)
 
 
 ## Image Input & Output Types

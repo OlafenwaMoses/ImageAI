@@ -27,7 +27,7 @@ class Evaluate(keras.callbacks.Callback):
             iou_threshold   : The threshold used to consider when a detection is positive or negative.
             score_threshold : The score confidence threshold to use for detections.
             max_detections  : The maximum number of detections to use per image.
-            save_path       : The path to save images with visualized detections to.
+            save_path       : The path to save sample_images with visualized detections to.
             tensorboard     : Instance of keras.callbacks.TensorBoard used to log the mAP value.
             verbose         : Set the verbosity level, by default this is set to 1.
         """
