@@ -1,0 +1,7 @@
+tensorflow
+keras
+numpy
+Pillow
+scipy
+pycocotools
+six
