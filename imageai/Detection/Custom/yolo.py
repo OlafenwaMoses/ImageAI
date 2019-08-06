@@ -176,18 +176,6 @@ class YoloLayer(Layer):
 
         loss = loss_xy + loss_wh + loss_conf + loss_class
 
-        loss = tf.Print(loss, [grid_h, avg_obj], message='avg_obj \t\t', summarize=1000)
-        loss = tf.Print(loss, [grid_h, avg_noobj], message='avg_noobj \t\t', summarize=1000)
-        loss = tf.Print(loss, [grid_h, avg_iou], message='avg_iou \t\t', summarize=1000)
-        loss = tf.Print(loss, [grid_h, avg_cat], message='avg_cat \t\t', summarize=1000)
-        loss = tf.Print(loss, [grid_h, recall50], message='recall50 \t', summarize=1000)
-        loss = tf.Print(loss, [grid_h, recall75], message='recall75 \t', summarize=1000)   
-        loss = tf.Print(loss, [grid_h, count], message='count \t', summarize=1000)     
-        loss = tf.Print(loss, [grid_h, tf.reduce_sum(loss_xy), 
-                                       tf.reduce_sum(loss_wh), 
-                                       tf.reduce_sum(loss_conf), 
-                                       tf.reduce_sum(loss_class)],  message='loss xy, wh, conf, class: \t',   summarize=1000)   
-
 
         return loss*self.grid_scale
 
