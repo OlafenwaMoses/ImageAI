@@ -1,5 +1,5 @@
-# ImageAI : Custom Image Prediction**
-An **AI Commons** project <a href="https://commons.specpal.science" >https://commons.specpal.science </a></p>
+# ImageAI : Custom Image Prediction
+A **DeepQuest AI** project <a href="https://deepquestai.com" >https://deepquestai.com </a></p>
 
 ---
 
@@ -220,7 +220,7 @@ predictor.save_model_for_deepstack(new_model_folder= os.path.join(execution_path
 
 ### Documentation
 
-We have provided full documentation for all **ImageAI** classes and functions in 2 major languages. Find links below:**
+We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:**
 
 * Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
 * Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**

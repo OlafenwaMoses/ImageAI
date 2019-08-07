@@ -1,16 +1,16 @@
 # ImageAI : Object Detection
 
-An **AI Commons** project [commons.specpal.science](https://commons.specpal.science)
+A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ### TABLE OF CONTENTS
 
-- <a href="#firstdetection" >&#9635 First Object Detection</a>
-- <a href="#objectextraction" >&#9635 Object Detection, Extraction and Fine-tune</a>
-- <a href="#customdetection" >&#9635 Custom Object Detection</a>
-- <a href="#detectionspeed" >&#9635 Detection Speed</a>
-- <a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a>
-- <a href="#inputoutputtype" >&#9635 Image Input & Output Types</a>
-- <a href="#documentation" >&#9635 Documentation</a>
+<a href="#firstdetection" > &#9635 First Object Detection</a><br>
+<a href="#objectextraction" > &#9635 Object Detection, Extraction and Fine-tune</a><br>
+<a href="#customdetection" > &#9635 Custom Object Detection</a><br>
+<a href="#detectionspeed" > &#9635 Detection Speed</a><br>
+<a href="#hidingdetails" > &#9635 Hiding/Showing Object Name and Probability</a><br>
+<a href="#inputoutputtype" > &#9635 Image Input & Output Types</a><br>
+<a href="#documentation" > &#9635 Documentation</a>
 
 
 ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class supports RetinaNet, YOLOv3 and TinyYOLOv3. To start performing object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: 
@@ -291,7 +291,7 @@ detected_image_array, detections = detector.detectObjectsFromImage(output_type="
 ## Documentation
 <div id="documentation" ></div>
 
-We have provided full documentation for all **ImageAI** classes and functions in 2 major languages. Find links below:
+We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:
 
 >> Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
 >> Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**

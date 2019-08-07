@@ -1,20 +1,20 @@
 # ImageAI : Video Object Detection, Tracking  and Analysis
 
-An **AI Commons** project [commons.specpal.science](https://commons.specpal.science)
+A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ---
 
 ## TABLE OF CONTENTS
 
-- <a href="#videodetection" >&#9635 First Video Object Detection</a>
-- <a href="#customvideodetection" >&#9635 Custom Video Object Detection (Object Tracking)</a>
-- <a href="#camerainputs" >&#9635 Camera / Live Stream Video Detection</a>
-- <a href="#videoanalysis" >&#9635 Video Analysis</a>
-- <a href="#videodetectionspeed" >&#9635 Detection Speed</a>
-- <a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a>
-- <a href="#videodetectionintervals" >&#9635 Frame Detection Intervals</a>
-- <a href="#detectiontimeout" >&#9635 Video Detection Timeout (NEW)</a>
-- <a href="#documentation" >&#9635 Documentation</a>
+ <a href="#videodetection" > &#9635 First Video Object Detection</a><br>
+ <a href="#customvideodetection" > &#9635 Custom Video Object Detection (Object Tracking)</a><br>
+ <a href="#camerainputs" > &#9635 Camera / Live Stream Video Detection</a><br>
+ <a href="#videoanalysis" > &#9635 Video Analysis</a><br>
+ <a href="#videodetectionspeed" > &#9635 Detection Speed</a><br>
+ <a href="#hidingdetails" > &#9635 Hiding/Showing Object Name and Probability</a><br>
+ <a href="#videodetectionintervals" > &#9635 Frame Detection Intervals</a><br>
+ <a href="#detectiontimeout" > &#9635 Video Detection Timeout (NEW)</a><br>
+ <a href="#documentation" > &#9635 Documentation</a>
 
 ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports RetinaNet, YOLOv3 and TinyYOLOv3. This version of **ImageAI** provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
 
@@ -420,7 +420,7 @@ video_path = detector.detectObjectsFromVideo(camera_input=camera,
 ### Documentation
 <div id="documentation" ></div>
 
-We have provided full documentation for all **ImageAI** classes and functions in 2 major languages. Find links below: 
+We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below: 
 
 - Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
 - Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**

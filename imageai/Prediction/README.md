@@ -1,15 +1,15 @@
 # ImageAI : Image Prediction
-An **AI Commons** project [commons.specpal.science](https://commons.specpal.science)
+A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ---
 
 ### TABLE OF CONTENTS
-- <a href="#firstprediction" >&#9635 First Prediction</a>
-- <a href="#predictionspeed" >&#9635 Prediction Speed</a>
-- <a href="#inputtype" >&#9635 Image Input Types</a>
-- <a href="#multiprediction" >&#9635 Multiple Images Prediction</a>
-- <a href="#threadprediction" >&#9635 Prediction in MultiThreading</a>
-- <a href="#documentation" >&#9635 Documentation</a>
+ <a href="#firstprediction" > &#9635 First Prediction</a><br>
+ <a href="#predictionspeed" > &#9635 Prediction Speed</a><br>
+ <a href="#inputtype" > &#9635 Image Input Types</a><br>
+ <a href="#multiprediction" > &#9635 Multiple Images Prediction</a><br>
+ <a href="#threadprediction" > &#9635 Prediction in MultiThreading</a><br>
+ <a href="#documentation" > &#9635 Documentation</a>
 
 ImageAI provides 4 different algorithms and model types to perform image prediction.
 To perform image prediction on any picture, take the following simple steps.  The 4 algorithms provided for
@@ -320,7 +320,7 @@ predictionThread.start()
 
 ### Documentation
 
-We have provided full documentation for all **ImageAI** classes and functions in 2 major languages. Find links below:**
+We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:**
 
 * Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
 * Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**

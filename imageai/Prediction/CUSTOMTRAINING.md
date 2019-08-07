@@ -11,11 +11,11 @@ and creates lots of models. You will then pick the model with the highest accura
 image prediction using the model and the JSON file generated.
 
 ### TABLE OF CONTENTS
-- <a href="#customtraining" > &#9635 Custom Model Training Prediction</a>
-- <a href="#savefullmodel" > &#9635 Saving Full Custom Model (NEW)</a>
-- <a href="#idenproftraining" > &#9635 Training on the IdenProf Dataset</a>
-- <a href="#continuoustraining" > &#9635 Continuous Model Training (NEW)</a>
-- <a href="#transferlearning" > &#9635 Transfer Learning (Training from a pre-trained model) (NEW)</a>
+ <a href="#customtraining" > &#9635 Custom Model Training Prediction</a> <br>
+ <a href="#savefullmodel" > &#9635 Saving Full Custom Model (NEW)</a> <br>
+ <a href="#idenproftraining" > &#9635 Training on the IdenProf Dataset</a> <br>
+ <a href="#continuoustraining" > &#9635 Continuous Model Training (NEW)</a> <br>
+ <a href="#transferlearning" > &#9635 Transfer Learning (Training from a pre-trained model) (NEW)</a>
 
 
 ### Custom Model Training
@@ -657,7 +657,7 @@ We are providing an opportunity for anyone that uses to train a model to submit 
 
 ### Documentation
 
-We have provided full documentation for all **ImageAI** classes and functions in 2 major languages. Find links below:**
+We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:
 
 * Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
 * Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
