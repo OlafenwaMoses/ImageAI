@@ -4,12 +4,12 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 ---
 
 ### TABLE OF CONTENTS
- <a href="#firstprediction" > &#9635 First Prediction</a><br>
- <a href="#predictionspeed" > &#9635 Prediction Speed</a><br>
- <a href="#inputtype" > &#9635 Image Input Types</a><br>
- <a href="#multiprediction" > &#9635 Multiple Images Prediction</a><br>
- <a href="#threadprediction" > &#9635 Prediction in MultiThreading</a><br>
- <a href="#documentation" > &#9635 Documentation</a>
+ <a href="#firstprediction" > :white_square_button: First Prediction</a><br>
+ <a href="#predictionspeed" > :white_square_button: Prediction Speed</a><br>
+ <a href="#inputtype" > :white_square_button: Image Input Types</a><br>
+ <a href="#multiprediction" > :white_square_button: Multiple Images Prediction</a><br>
+ <a href="#threadprediction" > :white_square_button: Prediction in MultiThreading</a><br>
+ <a href="#documentation" > :white_square_button: Documentation</a>
 
 ImageAI provides 4 different algorithms and model types to perform image prediction.
 To perform image prediction on any picture, take the following simple steps.  The 4 algorithms provided for

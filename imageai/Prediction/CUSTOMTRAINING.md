@@ -11,11 +11,11 @@ and creates lots of models. You will then pick the model with the highest accura
 image prediction using the model and the JSON file generated.
 
 ### TABLE OF CONTENTS
- <a href="#customtraining" > &#9635 Custom Model Training Prediction</a> <br>
- <a href="#savefullmodel" > &#9635 Saving Full Custom Model (NEW)</a> <br>
- <a href="#idenproftraining" > &#9635 Training on the IdenProf Dataset</a> <br>
- <a href="#continuoustraining" > &#9635 Continuous Model Training (NEW)</a> <br>
- <a href="#transferlearning" > &#9635 Transfer Learning (Training from a pre-trained model) (NEW)</a>
+ <a href="#customtraining" > :white_square_button: Custom Model Training Prediction</a> <br>
+ <a href="#savefullmodel" > :white_square_button: Saving Full Custom Model (NEW)</a> <br>
+ <a href="#idenproftraining" > :white_square_button: Training on the IdenProf Dataset</a> <br>
+ <a href="#continuoustraining" > :white_square_button: Continuous Model Training (NEW)</a> <br>
+ <a href="#transferlearning" > :white_square_button: Transfer Learning (Training from a pre-trained model) (NEW)</a>
 
 
 ### Custom Model Training

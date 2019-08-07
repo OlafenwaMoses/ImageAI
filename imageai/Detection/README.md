@@ -4,13 +4,13 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ### TABLE OF CONTENTS
 
-<a href="#firstdetection" > &#9635 First Object Detection</a><br>
-<a href="#objectextraction" > &#9635 Object Detection, Extraction and Fine-tune</a><br>
-<a href="#customdetection" > &#9635 Custom Object Detection</a><br>
-<a href="#detectionspeed" > &#9635 Detection Speed</a><br>
-<a href="#hidingdetails" > &#9635 Hiding/Showing Object Name and Probability</a><br>
-<a href="#inputoutputtype" > &#9635 Image Input & Output Types</a><br>
-<a href="#documentation" > &#9635 Documentation</a>
+<a href="#firstdetection" > :white_square_button: First Object Detection</a><br>
+<a href="#objectextraction" > :white_square_button: Object Detection, Extraction and Fine-tune</a><br>
+<a href="#customdetection" > :white_square_button: Custom Object Detection</a><br>
+<a href="#detectionspeed" > :white_square_button: Detection Speed</a><br>
+<a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a><br>
+<a href="#inputoutputtype" > :white_square_button: Image Input & Output Types</a><br>
+<a href="#documentation" > :white_square_button: Documentation</a>
 
 
 ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class supports RetinaNet, YOLOv3 and TinyYOLOv3. To start performing object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: 
@@ -293,6 +293,6 @@ detected_image_array, detections = detector.detectObjectsFromImage(output_type="
 
 We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:
 
->> Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
->> Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
->> Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
+* Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
+* Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
+* Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**

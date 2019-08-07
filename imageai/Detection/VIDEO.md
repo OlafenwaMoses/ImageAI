@@ -6,15 +6,15 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ## TABLE OF CONTENTS
 
- <a href="#videodetection" > &#9635 First Video Object Detection</a><br>
- <a href="#customvideodetection" > &#9635 Custom Video Object Detection (Object Tracking)</a><br>
- <a href="#camerainputs" > &#9635 Camera / Live Stream Video Detection</a><br>
- <a href="#videoanalysis" > &#9635 Video Analysis</a><br>
- <a href="#videodetectionspeed" > &#9635 Detection Speed</a><br>
- <a href="#hidingdetails" > &#9635 Hiding/Showing Object Name and Probability</a><br>
- <a href="#videodetectionintervals" > &#9635 Frame Detection Intervals</a><br>
- <a href="#detectiontimeout" > &#9635 Video Detection Timeout (NEW)</a><br>
- <a href="#documentation" > &#9635 Documentation</a>
+ <a href="#videodetection" > :white_square_button: First Video Object Detection</a><br>
+ <a href="#customvideodetection" > :white_square_button: Custom Video Object Detection (Object Tracking)</a><br>
+ <a href="#camerainputs" > :white_square_button: Camera / Live Stream Video Detection</a><br>
+ <a href="#videoanalysis" > :white_square_button: Video Analysis</a><br>
+ <a href="#videodetectionspeed" > :white_square_button: Detection Speed</a><br>
+ <a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a><br>
+ <a href="#videodetectionintervals" > :white_square_button: Frame Detection Intervals</a><br>
+ <a href="#detectiontimeout" > :white_square_button: Video Detection Timeout (NEW)</a><br>
+ <a href="#documentation" > :white_square_button: Documentation</a>
 
 ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports RetinaNet, YOLOv3 and TinyYOLOv3. This version of **ImageAI** provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
 
