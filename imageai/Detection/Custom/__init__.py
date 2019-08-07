@@ -315,14 +315,17 @@ class DetectionModelTrainer:
         temp_anchor_array = []
         new_anchor_array = []
 
-        for aa in detection_model_json["anchors"]:
-            for aaa in aa:
-                temp_anchor_array.append(aaa)
 
-        reverse_count = len(temp_anchor_array) - 1
-        while (reverse_count > -1):
-            new_anchor_array.append(temp_anchor_array[reverse_count])
-            reverse_count -= 1
+        temp_anchor_array.append(detection_model_json["anchors"][2])
+        temp_anchor_array.append(detection_model_json["anchors"][1])
+        temp_anchor_array.append(detection_model_json["anchors"][0])
+
+
+
+        for aa in temp_anchor_array:
+            for aaa in aa:
+                new_anchor_array.append(aaa)
+
 
         self.__model_anchors = new_anchor_array
         self.__model_labels = detection_model_json["labels"]
@@ -398,6 +401,7 @@ class DetectionModelTrainer:
                 try:
                     infer_model = load_model(model_path)
 
+
                     ###############################
                     #   Run the evaluation
                     ###############################
@@ -416,6 +420,7 @@ class DetectionModelTrainer:
                     print("===============================")
                 except:
                     None
+
 
         elif(os.path.isdir(model_path)):
             model_files = os.listdir(model_path)
