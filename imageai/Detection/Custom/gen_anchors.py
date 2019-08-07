@@ -113,10 +113,9 @@ def generateAnchors(train_annotation_folder, train_image_folder, train_cache_fil
         out_string += str(int(anchors[i, 0] * 416)) + ',' + str(int(anchors[i, 1] * 416)) + ', '
 
 
-    reverse_count = len(anchor_array) -1
-    while(reverse_count > -1):
-        reverse_anchor_array.append(anchor_array[reverse_count])
-        reverse_count -= 1
+    reverse_anchor_array.append(anchor_array[12:18])
+    reverse_anchor_array.append(anchor_array[6:12])
+    reverse_anchor_array.append(anchor_array[0:6])
 
     print("Anchor Boxes generated.")
     return anchor_array, reverse_anchor_array

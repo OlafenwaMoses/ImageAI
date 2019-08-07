@@ -38,7 +38,6 @@ class DetectionModelTrainer:
         self.__model_min_input_size = 288
         self.__model_max_input_size = 448
         self.__model_anchors = []
-        self.__reversed_model_anchors = []
         self.__inference_anchors = []
         self.__json_directory = ""
         self.__model_labels = []
@@ -157,9 +156,11 @@ class DetectionModelTrainer:
         """
 
 
-        self.__model_anchors, self.__reversed_model_anchors = generateAnchors(self.__train_annotations_folder,
+        self.__model_anchors, self.__inference_anchors = generateAnchors(self.__train_annotations_folder,
                                                                           self.__train_images_folder,
                                                                           self.__train_cache_file, self.__model_labels)
+
+
 
         self.__model_labels = sorted(object_names_array)
         self.__num_objects = len(object_names_array)
@@ -168,13 +169,11 @@ class DetectionModelTrainer:
         self.__train_epochs = num_experiments
         self.__pre_trained_model = train_from_pretrained_model
 
-        self.__inference_anchors.append(self.__reversed_model_anchors[0:6])
-        self.__inference_anchors.append(self.__reversed_model_anchors[6:12])
-        self.__inference_anchors.append(self.__reversed_model_anchors[12:18])
 
         json_data = {}
         json_data["labels"] = self.__model_labels
         json_data["anchors"] = self.__inference_anchors
+
 
         with open(os.path.join(self.__json_directory, "detection_config.json"), "w+") as json_file:
             json.dump(json_data, json_file, indent=4, separators=(",", " : "),
