@@ -152,15 +152,15 @@ for eachObject, eachObjectPath in zip(detections, objects_path):
 ![Input Image](../../data-images/image3.jpg)
 ![Output Images](../../data-images/image3new.jpg)
 
-![dog](../../data-images/image3new.jpg-objects/dog-1.jpg)
-![motorcycle](../../data-images/image3new.jpg-objects/motorcycle-3.jpg)
-![car](../../data-images/image3new.jpg-objects/car-4.jpg)
-![bicycle](../../data-images/image3new.jpg-objects/bicycle-5.jpg)
-![person](../../data-images/image3new.jpg-objects/person-6.jpg)
-![person](../../data-images/image3new.jpg-objects/person-7.jpg)
-![person](../../data-images/image3new.jpg-objects/person-8.jpg)
-![person](../../data-images/image3new.jpg-objects/person-9.jpg)
-![person](../../data-images/image3new.jpg-objects/person-10.jpg)
+![dog](../../data-images/image3new-objects/dog-1.jpg)
+![motorcycle](../../data-images/image3new-objects/motorcycle-3.jpg)
+![car](../../data-images/image3new-objects/car-4.jpg)
+![bicycle](../../data-images/image3new-objects/bicycle-5.jpg)
+![person](../../data-images/image3new-objects/person-6.jpg)
+![person](../../data-images/image3new-objects/person-7.jpg)
+![person](../../data-images/image3new-objects/person-8.jpg)
+![person](../../data-images/image3new-objects/person-9.jpg)
+![person](../../data-images/image3new-objects/person-10.jpg)
 
 
 Let us review the part of the code that perform the object detection and extract the images:

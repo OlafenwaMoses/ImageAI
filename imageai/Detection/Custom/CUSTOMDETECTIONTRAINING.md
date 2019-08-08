@@ -1,108 +1,114 @@
-# ImageAI : Custom Detection Model Training <br>
-<hr>
-<br>
-<b>ImageAI</b> provides the most simple and powerful approach to training custom object detection models
+# ImageAI : Custom Detection Model Training 
+
+---
+
+
+
+**ImageAI** provides the most simple and powerful approach to training custom object detection models
 using the YOLOv3 architeture, which
-which you can load into the <b>imageai.Detection.Custom.CustomObjectDetection</b> class. This allows
+which you can load into the `imageai.Detection.Custom.CustomObjectDetection` class. This allows
  you to train your own model on any set of images that corresponds to any type of objects of interest.
-The training process generates a JSON file that maps the objects names in your image dataset and the detection anchors, as well as creates lots of models. In choosing the best model for your custom object detection task, an <b>evaluateModel()</b> function has been provided to compute the <b>mAP</b> of your saved models by allowing you to state your desired <b>IoU</b> and <b>Non-maximum Suppression</b> values. Then you can perform custom
-object detection using the model and the JSON file generated. <br><br>
+The training process generates a JSON file that maps the objects names in your image dataset and the detection anchors, as well as creates lots of models. In choosing the best model for your custom object detection task, an `evaluateModel()` function has been provided to compute the **mAP** of your saved models by allowing you to state your desired **IoU** and **Non-maximum Suppression** values. Then you can perform custom
+object detection using the model and the JSON file generated. 
 
-<h3><b><u>TABLE OF CONTENTS</u></b></h3>
-<a href="#preparingdataset" > &#9635 Preparing your custom dataset</a><br>
-<a href="#trainingdataset" > &#9635 Training on your custom Dataset</a><br>
-<a href="#evaluatingmodels" > &#9635 Evaluating your saved detection models' mAP</a><br>
+### TABLE OF CONTENTS
+- <a href="#preparingdataset" > &#9635 Preparing your custom dataset</a>
+- <a href="#trainingdataset" > &#9635 Training on your custom Dataset</a>
+- <a href="#evaluatingmodels" > &#9635 Evaluating your saved detection models' mAP</a>
 
 
+### Preparing your custom dataset
 <div id="preparingdataset"></div>
-<h3><b><u>Preparing your custom dataset</u></b></h3>
 
 To train a custom detection model, you need to prepare the images you want to use to train the model. 
-You will prepare the images as follows: <br>
+You will prepare the images as follows: 
 
-1. Decide the type of object(s) you want to detect and collect about <b>200 (minimum recommendation)</b> or more picture of each of the object(s)
-2. Once you have collected the images, you need to annotate the object(s) in the images. <b>ImageAI</b> uses the <b>Pascal VOC format</b> for image annotation. You can generate this annotation for your images using the easy to use <a href="https://github.com/tzutalin/labelImg" ><b>LabelImg</b></a> image annotation tool, available for Windows, Linux and MacOS systems. Open the link below to install the annotation tool. <br><br>
-<a href="https://github.com/tzutalin/labelImg" >https://github.com/tzutalin/labelImg</a>
+1. Decide the type of object(s) you want to detect and collect about **200 (minimum recommendation)** or more picture of each of the object(s)
+2. Once you have collected the images, you need to annotate the object(s) in the images. **ImageAI** uses the **Pascal VOC format** for image annotation. You can generate this annotation for your images using the easy to use [**LabelImg**](https://github.com/tzutalin/labelImg) image annotation tool, available for Windows, Linux and MacOS systems. Open the link below to install the annotation tool. See: [https://github.com/tzutalin/labelImg](https://github.com/tzutalin/labelImg)
+3. When you are done annotating your images, **annotation XML** files will be generated for each image in your dataset. For example, if your image names are **image(1).jpg**, **image(2).jpg**, **image(3).jpg** till **image(z).jpg**; the corresponding annotation for each of the images will be **image(1).xml**, **image(2).xml**, **image(3).xml** till **image(z).xml**. 
+4. Once you have the annotations for all your images, create a folder for your dataset (E.g headsets) and in this parent folder, create child folders **train** and **validation**
+5. In the train folder, create **images** and **annotations**
+ sub-folders. Put about 70-80% of your dataset images in the **images** folder and put the corresponding annotations for these images in the **annotations** folder.  
+6. In the validation folder, create **images** and **annotations** sub-folders. Put the rest of your dataset images in the **images** folder and put the corresponding annotations for these images in the **annotations** folder.  
+7. Once you have done this, the structure of your image dataset folder should look like below: 
+    ```
+    >> train    >> images       >> img_1.jpg
+                >> images       >> img_2.jpg
+                >> images       >> img_3.jpg
+                >> annotations  >> img_1.xml
+                >> annotations  >> img_2.xml
+                >> annotations  >> img_3.xml
+    
+    >> validation   >> images       >> img_151.jpg
+                    >> images       >> img_152.jpg
+                    >> images       >> img_153.jpg
+                    >> annotations  >> img_151.xml
+                    >> annotations  >> img_152.xml
+                    >> annotations  >> img_153.xml
+     ```
+8. You can train your custom detection model completely from scratch or use transfer learning (recommended for better accuracy) from a pre-trained YOLOv3 model. Also, we have provided a sample annotated Hololens and Headsets (Hololens and Oculus) dataset for you to train with. Download the pre-trained YOLOv3 model and the sample datasets in the link below.  
 
-3. When you are done annotating your images, <b>annotation XML</b> files will be generated for each image in your dataset. For example, if your image names are <b>image(1).jpg</b>, <b>image(2).jpg</b>, <b>image(3).jpg</b> till <b>image(z).jpg</b>; the corresponding annotation for each of the images will be <b>image(1).xml</b>, <b>image(2).xml</b>, <b>image(3).xml</b> till <b>image(z).xml</b>. 
-4. Once you have the annotations for all your images, create a folder for your dataset (E.g headsets) and in this parent folder, create child folders <b>train</b> and <b>validation</b>
-5. In the train folder, create <b>images</b> and <b>annotations</b>
- sub-folders. Put about 70-80% of your dataset images in the <b>images</b> folder and put the corresponding annotations for these images in the <b>annotations</b> folder.  <br>
-6. In the validation folder, create <b>images</b> and <b>annotations</b> sub-folders. Put the rest of your dataset images in the <b>images</b> folder and put the corresponding annotations for these images in the <b>annotations</b> folder.  <br>
-8. Once you have done this, the structure of your image dataset folder should look like below: <br> <br>
-
-<pre>	>> train    >> images       >> img_1.jpg
-                    >> images       >> img_2.jpg
-                    >> images       >> img_3.jpg
-                    >> annotations  >> img_1.xml
-                    >> annotations  >> img_2.xml
-                    >> annotations  >> img_3.xml
-
-
-        >> validation   >> images       >> img_151.jpg
-                        >> images       >> img_152.jpg
-                        >> images       >> img_153.jpg
-                        >> annotations  >> img_151.xml
-                        >> annotations  >> img_152.xml
-                        >> annotations  >> img_153.xml
-     </pre>
-
-9. You can train your custom detection model completely from scratch or use transfer learning (recommended for better accuracy) from a pre-trained YOLOv3 model. Also, we have provided a sample annotated Hololens and Headsets (Hololens and Oculus) dataset for you to train with. Download the pre-trained YOLOv3 model and the sample datasets in the link below. <br><br> 
-
-<a href="https://github.com/OlafenwaMoses/ImageAI/releases/tag/essential-v4" >https://github.com/OlafenwaMoses/ImageAI/releases/tag/essential-v4</a>
+[https://github.com/OlafenwaMoses/ImageAI/releases/tag/essential-v4](https://github.com/OlafenwaMoses/ImageAI/releases/tag/essential-v4)
 
 
+### Training on your custom dataset
 <div id="trainingdataset"></div>
-<h3><b><u>Training on your custom dataset</u></b></h3>
-Before you start training your custom detection model, kindly take note of the following: <br>
 
-- The default <b>batch_size</b> is 4. If you are training with <b>Google Colab</b>, this will be fine. However, I will advice you use a more powerful GPU than the K80 offered by Colab as the higher your <b>batch_size (8, 16)</b>, the better the accuracy of your detection model. <br>
- - If you experience <i>'_TfDeviceCaptureOp' object has no attribute '_set_device_from_string'</i> error in Google Colab, it is due to a bug in <b>Tensorflow</b>. You can solve this by installing <b>Tensorflow GPU 1.13.1</b>. <br>
- 
- <pre>pip3 install tensorflow-gpu==1.13.1</pre>
+Before you start training your custom detection model, kindly take note of the following: 
 
-Then your training code goes as follows: <br> <br>
-<pre>from imageai.Detection.Custom import DetectionModelTrainer
+- The default **batch_size** is 4. If you are training with **Google Colab**, this will be fine. However, I will advice you use a more powerful GPU than the K80 offered by Colab as the higher your **batch_size (8, 16)**, the better the accuracy of your detection model. 
+- If you experience <i>'_TfDeviceCaptureOp' object has no attribute '_set_device_from_string'</i> error in Google Colab, it is due to a bug in **Tensorflow**. You can solve this by installing **Tensorflow GPU 1.13.1**. 
+    ```bash
+     pip3 install tensorflow-gpu==1.13.1
+    ```
+
+Then your training code goes as follows: 
+```python
+from imageai.Detection.Custom import DetectionModelTrainer
 
 trainer = DetectionModelTrainer()
 trainer.setModelTypeAsYOLOv3()
 trainer.setDataDirectory(data_directory="hololens")
 trainer.setTrainConfig(object_names_array=["hololens"], batch_size=4, num_experiments=200, train_from_pretrained_model="pretrained-yolov3.h5")
 trainer.trainModel()
-</pre> <br><br>
+```
+
  Yes! Just 6 lines of code and you can train object detection models on your custom dataset.
-Now lets take a look at how the code above works. <br>
-<pre>from imageai.Detection.Custom import DetectionModelTrainer
+Now lets take a look at how the code above works. 
+
+```python
+from imageai.Detection.Custom import DetectionModelTrainer
 
 trainer = DetectionModelTrainer()
 trainer.setModelTypeAsYOLOv3()
-trainer.setDataDirectory(data_directory="hololens")</pre>
-<br>
-In the first line, we import the <b>ImageAI</b> detection model training class, then we define the model trainer in the second line,
+trainer.setDataDirectory(data_directory="hololens")
+```
+
+In the first line, we import the **ImageAI** detection model training class, then we define the model trainer in the second line,
  we set the network type in the third line and set the path to the image dataset we want to train the network on.
 
-<pre>trainer.setTrainConfig(object_names_array=["hololens"], batch_size=4, num_experiments=200, train_from_pretrained_model="pretrained-yolov3.h5")
-</pre>
-<br>
-
-In the line above, we configured our detection model trainer. The parameters we stated in the function as as below:  <br>
-
-- <b>num_objects</b> : this is an array containing the names of the objects in our dataset<br>
-- <b>batch_size</b> : this is to state the batch size for the training<br>
-- <b>num_experiments</b> : this is to state the number of times the network will train over all the training images,
- which is also called epochs <br>
-- <b>train_from_pretrained_model(optional)</b> : this is to train using transfer learning from a pre-trained <b>YOLOv3</b> model<br>
- 
- 
-<pre>trainer.trainModel()
-</pre>
-<br>
+```python
+trainer.setTrainConfig(object_names_array=["hololens"], batch_size=4, num_experiments=200, train_from_pretrained_model="pretrained-yolov3.h5")
+```
 
 
+In the line above, we configured our detection model trainer. The parameters we stated in the function as as below:  
 
-When you start the training, you should see something like this in the console: <br>
-<pre>
+- **num_objects** : this is an array containing the names of the objects in our dataset
+- **batch_size** : this is to state the batch size for the training
+- **num_experiments** : this is to state the number of times the network will train over all the training images,
+ which is also called epochs 
+- **train_from_pretrained_model(optional)** : this is to train using transfer learning from a pre-trained **YOLOv3** model
 
+```python
+trainer.trainModel()
+```
+
+
+
+
+When you start the training, you should see something like this in the console: 
+```
 Using TensorFlow backend.
 Generating anchor boxes for training images and annotation...
 Average IOU for 9 anchors: 0.78
@@ -111,8 +117,6 @@ Detection configuration saved in  hololens/json/detection_config.json
 Training on: 	['hololens']
 Training with Batch Size:  4
 Number of Experiments:  200
-
-
 
 Epoch 1/200
  - 733s - loss: 34.8253 - yolo_layer_1_loss: 6.0920 - yolo_layer_2_loss: 11.1064 - yolo_layer_3_loss: 17.6269 - val_loss: 20.5028 - val_yolo_layer_1_loss: 4.0171 - val_yolo_layer_2_loss: 7.5175 - val_yolo_layer_3_loss: 8.9683
@@ -127,13 +131,11 @@ Epoch 5/200
 Epoch 6/200
  - 655s - loss: 4.7582 - yolo_layer_1_loss: 0.9959 - yolo_layer_2_loss: 1.5986 - yolo_layer_3_loss: 2.1637 - val_loss: 5.8313 - val_yolo_layer_1_loss: 1.1880 - val_yolo_layer_2_loss: 1.9962 - val_yolo_layer_3_loss: 2.6471
 Epoch 7/200
+```
 
-</pre>
 
-<br>
-Let us explain the details shown above: <br>
-
-<pre>
+Let us explain the details shown above: 
+```
 Using TensorFlow backend.
 Generating anchor boxes for training images and annotation...
 Average IOU for 9 anchors: 0.78
@@ -142,15 +144,15 @@ Detection configuration saved in  hololens/json/detection_config.json
 Training on: 	['hololens']
 Training with Batch Size:  4
 Number of Experiments:  200
-</pre>
+```
 
-The above details signifies the following: <br>
-- <b>ImageAI</b> autogenerates the best match detection <b>anchor boxes</b> for your image dataset. <br>
+The above details signifies the following: 
+- **ImageAI** autogenerates the best match detection **anchor boxes** for your image dataset. 
 
 - The anchor boxes and the object names mapping are saved in 
-<b>json/detection_config.json</b> path of in the image dataset folder. Please note that for every new training you start, a new <b>detection_config.json</b> file is generated and is only compatible with the model saved during that training.<br> <br>
+**json/detection_config.json** path of in the image dataset folder. Please note that for every new training you start, a new **detection_config.json** file is generated and is only compatible with the model saved during that training.
 
-<pre>
+```
 Epoch 1/200
  - 733s - loss: 34.8253 - yolo_layer_1_loss: 6.0920 - yolo_layer_2_loss: 11.1064 - yolo_layer_3_loss: 17.6269 - val_loss: 20.5028 - val_yolo_layer_1_loss: 4.0171 - val_yolo_layer_2_loss: 7.5175 - val_yolo_layer_3_loss: 8.9683
 Epoch 2/200
@@ -164,131 +166,114 @@ Epoch 5/200
 Epoch 6/200
  - 655s - loss: 4.7582 - yolo_layer_1_loss: 0.9959 - yolo_layer_2_loss: 1.5986 - yolo_layer_3_loss: 2.1637 - val_loss: 5.8313 - val_yolo_layer_1_loss: 1.1880 - val_yolo_layer_2_loss: 1.9962 - val_yolo_layer_3_loss: 2.6471
 Epoch 7/200
-</pre>
+```
 
-- The above signifies the progress of the training. <br>
-- For each experiment (Epoch), the general  total validation loss (E.g - loss: 4.7582) is reported. <br>
-- For each drop in the loss after an experiment, a model is saved in the <b>hololens/models</b> folder. The lower the loss, the better the model. <br><br>
+- The above signifies the progress of the training. 
+- For each experiment (Epoch), the general  total validation loss (E.g - loss: 4.7582) is reported. 
+- For each drop in the loss after an experiment, a model is saved in the **hololens/models** folder. The lower the loss, the better the model. 
 
-Once you are done training, you can visit the link below for performing object detection with your <b>custom detection model</b> and <b>detection_config.json</b> file.
+Once you are done training, you can visit the link below for performing object detection with your **custom detection model** and **detection_config.json** file.
 
- <a href="https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Detection/Custom/CUSTOMDETECTION.md" >Detection/Custom/CUSTOMDETECTION.md</a>
+[Detection/Custom/CUSTOMDETECTION.md](./CUSTOMDETECTION.md)
  
- <br>
  
+ 
+### Evaluating your saved detection models' mAP
  <div id="evaluatingmodels"></div>
-<h3><b><u>Evaluating your saved detection models' mAP</u></b></h3>
 
-After training on your custom dataset, you can evaluate the mAP of your saved models by specifying your desired IoU and Non-maximum suppression values. See details as below: <br>
-- <b>Single Model Evaluation:</b> To evaluate a single model, simply use the example code below with the path to your dataset directory, the model file and the <b>detection_config.json</b> file saved during the training. In the example, we used an <b>object_threshold</b> of 0.3 ( percentage_score >= 30% ), <b>IoU</b> of 0.5 and <b>Non-maximum suppression</b> value of 0.5.<br>
+After training on your custom dataset, you can evaluate the mAP of your saved models by specifying your desired IoU and Non-maximum suppression values. See details as below:
 
-<pre>
-from imageai.Detection.Custom import DetectionModelTrainer
-
-trainer = DetectionModelTrainer()
-trainer.setModelTypeAsYOLOv3()
-trainer.setDataDirectory(data_directory="hololens")
-trainer.evaluateModel(model_path="detection_model-ex-60--loss-2.76.h5", json_path="detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
-</pre>
-
-Sample Result:
-
-<pre>
-
-Model File:  hololens_detection_model-ex-09--loss-4.01.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.9613
-mAP: 0.9613
-===============================
-
-</pre>
-
-
- - <b>Multi Model Evaluation:</b> To evaluate all your saved models, simply parse in the path to the folder containing the models as the <b>model_path</b> as seen in the example below:<br>
-
-
-<pre>
-from imageai.Detection.Custom import DetectionModelTrainer
-
-trainer = DetectionModelTrainer()
-trainer.setModelTypeAsYOLOv3()
-trainer.setDataDirectory(data_directory="hololens")
-trainer.evaluateModel(model_path="hololens/models", json_path="hololens/json/detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
-
-
-</pre>
-Sample Result:
-<pre>
-
-Model File:  hololens/models/detection_model-ex-07--loss-4.42.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.9231
-mAP: 0.9231
-===============================
-Model File:  hololens/models/detection_model-ex-10--loss-3.95.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.9725
-mAP: 0.9725
-===============================
-Model File:  hololens/models/detection_model-ex-05--loss-5.26.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.9204
-mAP: 0.9204
-===============================
-Model File:  hololens/models/detection_model-ex-03--loss-6.44.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.8120
-mAP: 0.8120
-===============================
-Model File:  hololens/models/detection_model-ex-18--loss-2.96.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.9431
-mAP: 0.9431
-===============================
-Model File:  hololens/models/detection_model-ex-17--loss-3.10.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.9404
-mAP: 0.9404
-===============================
-Model File:  hololens/models/detection_model-ex-08--loss-4.16.h5 
-Using IoU :  0.5
-Using Object Threshold :  0.3
-Using Non-Maximum Suppression :  0.5
-hololens: 0.9725
-mAP: 0.9725
-===============================
-
-</pre>
-
-<br><br>
+- **Single Model Evaluation:** To evaluate a single model, simply use the example code below with the path to your dataset directory, the model file and the **detection_config.json** file saved during the training. In the example, we used an **object_threshold** of 0.3 ( percentage_score >= 30% ), **IoU** of 0.5 and **Non-maximum suppression** value of 0.5.
+    ```python
+    from imageai.Detection.Custom import DetectionModelTrainer
+    
+    trainer = DetectionModelTrainer()
+    trainer.setModelTypeAsYOLOv3()
+    trainer.setDataDirectory(data_directory="hololens")
+    trainer.evaluateModel(model_path="detection_model-ex-60--loss-2.76.h5", json_path="detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
+    ```
+    Sample Result:
+    ```
+    Model File:  hololens_detection_model-ex-09--loss-4.01.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.9613
+    mAP: 0.9613
+    ===============================
+    ```
+- **Multi Model Evaluation:** To evaluate all your saved models, simply parse in the path to the folder containing the models as the **model_path** as seen in the example below:
+    ```python
+    from imageai.Detection.Custom import DetectionModelTrainer
+    
+    trainer = DetectionModelTrainer()
+    trainer.setModelTypeAsYOLOv3()
+    trainer.setDataDirectory(data_directory="hololens")
+    trainer.evaluateModel(model_path="hololens/models", json_path="hololens/json/detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
+    ```
+    Sample Result:
+    ```
+    Model File:  hololens/models/detection_model-ex-07--loss-4.42.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.9231
+    mAP: 0.9231
+    ===============================
+    Model File:  hololens/models/detection_model-ex-10--loss-3.95.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.9725
+    mAP: 0.9725
+    ===============================
+    Model File:  hololens/models/detection_model-ex-05--loss-5.26.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.9204
+    mAP: 0.9204
+    ===============================
+    Model File:  hololens/models/detection_model-ex-03--loss-6.44.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.8120
+    mAP: 0.8120
+    ===============================
+    Model File:  hololens/models/detection_model-ex-18--loss-2.96.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.9431
+    mAP: 0.9431
+    ===============================
+    Model File:  hololens/models/detection_model-ex-17--loss-3.10.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.9404
+    mAP: 0.9404
+    ===============================
+    Model File:  hololens/models/detection_model-ex-08--loss-4.16.h5 
+    Using IoU :  0.5
+    Using Object Threshold :  0.3
+    Using Non-Maximum Suppression :  0.5
+    hololens: 0.9725
+    mAP: 0.9725
+    ===============================
+    ```
 
 
-
-
-
-
+###  >> Documentation
 <div id="documentation" ></div>
-<h3><b><u> >> Documentation</u></b></h3>
-We have provided full documentation for all <b>ImageAI</b> classes and functions in 3 major languages. Find links below: <br>
 
-<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
-<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
-<br>
-<b> >> Documentation - French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)</b>
+We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below: 
+
+* Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)** 
+* Documentation - **Chinese Version**  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
+
+* Documentation - **French Version**  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
 
 
 
