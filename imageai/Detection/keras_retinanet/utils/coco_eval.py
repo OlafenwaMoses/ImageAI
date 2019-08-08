@@ -62,7 +62,7 @@ def evaluate_coco(generator, model, threshold=0.05):
             # append detection to results
             results.append(image_result)
 
-        # append image to list of processed sample_images
+        # append image to list of processed images
         image_ids.append(generator.image_ids[index])
 
         # print progress

@@ -1,4 +1,4 @@
-# ImageAI (v2.1.1 )
+# ImageAI (v2.1.3)
 
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code.
@@ -102,8 +102,8 @@ Click the link below to see the full sample codes, explanations and best practic
 ### Object Detection
 <div id="detection"></div>
 
-![Input Image](sample_images/image2.jpg)
-![Output Image](sample_images/image2new.jpg)
+![Input Image](./data-images/image2.jpg)
+![Output Image](./data-images/image2new.jpg)
 
 ```
 person : 91.946941614151
@@ -136,19 +136,19 @@ Click the link below to see the full sample codes, explanations and best practic
 
 _Below is a snapshot of a video with objects detected._
 
-![](sample_images/video1.jpg)
+![](./data-images/video1.jpg)
           
 **Video Custom Object Detection (Object Tracking)**
 
 _Below is a snapshot of a video with only person, bicycle and motorcyle detected._
 
-![](sample_images/video2.jpg)
+![](./data-images/video2.jpg)
 
 **Video Analysis Visualization**
 
 _Below is a visualization of video analysis returned by **ImageAI** into a 'per_second' function._
 
-![](sample_images/video_analysis_visualization.jpg)
+![](./data-images/video_analysis_visualization.jpg)
 
 **ImageAI** provides very convenient and powerful methods to perform object detection in videos and track specific object(s).
 The video object detection class provided only supports  the current state-of-the-art RetinaNet, but with options to adjust for state of the art performance or real time processing.
@@ -162,7 +162,7 @@ Click the link to see the full videos, sample codes, explanations and best pract
 
 _A sample from the IdenProf Dataset used to train a Model for predicting professionals._
 
-![](sample_images/idenprof.jpg)
+![](./data-images/idenprof.jpg)
 
 
 **ImageAI** provides classes and methods for you to train a new model that can be used to perform prediction on your own custom objects.
@@ -177,7 +177,7 @@ Click the link below to see the guide to preparing training images, sample train
 
 _Prediction from a sample model trained on IdenProf, for predicting professionals_
 
-![](sample_images/4.jpg)
+![](./data-images/4.jpg)
 
 ```
 mechanic : 76.82620286941528
@@ -201,7 +201,7 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 _Training detection models to detect and recognize new objects._
 
-![](sample_images/headsets.jpg)
+![](./data-images/headsets.jpg)
 
 **ImageAI** provides classes and methods for you to train new **YOLOv3** object detection models on your **custom dataset**.
 This means you can train a model to detect literally any object of interest by providing the images, the annotations and training with ImageAI.
@@ -216,7 +216,7 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 _Detection result from a custom YOLOv3 model trained to detect the Hololens headset._
 
-![](sample_images/holo2-detected.jpg)
+![](./data-images/holo2-detected.jpg)
 
 ```
 hololens  :  39.69653248786926  :  [611, 74, 751, 154]
@@ -242,7 +242,7 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 _Video Detection result from a custom YOLOv3 model trained to detect the Hololens headset in a video._
 
-![](sample_images/customvideodetection.gif)
+![](./data-images/customvideodetection.gif)
       
     
 

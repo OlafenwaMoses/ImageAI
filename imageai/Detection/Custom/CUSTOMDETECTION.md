@@ -37,9 +37,9 @@ for detection in detections:
 </pre>
 Sample Result - Input:
     
-  <img src="../../../sample_images/holo2.jpg" style="width: 600px; height: auto; " /> <br><br>
+  <img src="../../../data-images/holo2.jpg" style="width: 600px; height: auto; " /> <br><br>
   Output: <br><br>
-  <img src="../../../sample_images/holo2-detected.jpg" style="width: 600px; height: auto; " /> <br>
+  <img src="../../../data-images/holo2-detected.jpg" style="width: 600px; height: auto; " /> <br>
           
 <pre>
 hololens  :  39.69653248786926  :  [611, 74, 751, 154]
@@ -112,12 +112,12 @@ for detection, object_path in zip(detections, extracted_objects_array):
 
 <br>
     <p>Sample Result:
-    <br><b><p><i>Output Images</i></p></b><img src="../../../sample_images/holo2-detected.jpg-objects/hololens-1.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br><img src="../../../sample_images/holo2-detected.jpg-objects/hololens-2.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            <img src="../../../sample_images/holo2-detected.jpg-objects/hololens-3.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            <img src="../../../sample_images/holo2-detected.jpg-objects/hololens-4.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            <img src="../../../sample_images/holo2-detected.jpg-objects/hololens-5.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            <img src="../../../sample_images/holo2-detected.jpg-objects/hololens-6.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
-            <img src="../../../sample_images/holo2-detected.jpg-objects/hololens-7.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
+    <br><b><p><i>Output Images</i></p></b><img src="../../../data-images/holo2-detected.jpg-objects/hololens-1.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br><img src="../../../data-images/holo2-detected.jpg-objects/hololens-2.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
+            <img src="../../../data-images/holo2-detected.jpg-objects/hololens-3.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
+            <img src="../../../data-images/holo2-detected.jpg-objects/hololens-4.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
+            <img src="../../../data-images/holo2-detected.jpg-objects/hololens-5.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
+            <img src="../../../data-images/holo2-detected.jpg-objects/hololens-6.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
+            <img src="../../../data-images/holo2-detected.jpg-objects/hololens-7.jpg" style="width: 200px; height: auto; margin-left: 50px;  " /> <br>
             
           
 
@@ -169,7 +169,7 @@ detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_
 
 <br> In the above code, we specified that both the object name and percentage probability should not be shown. As you can see in the result below, both the names of the objects and their individual percentage probability is not shown in the detected image. <br>
 <b><p><i>Result</i></p></b>
-          <img src="../../../sample_images/holo2-nodetails.jpg" style="width: 600px; height: auto; " /> <br>
+          <img src="../../../data-images/holo2-nodetails.jpg" style="width: 600px; height: auto; " /> <br>
 
 
 <br><br>

@@ -532,7 +532,7 @@ trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_
 ### Training on the IdenProf data
 
 A sample from the IdenProf Dataset used to train a Model for predicting professionals.
-![](../../sample_images/idenprof.jpg)
+![](../../data-images/idenprof.jpg)
 
 Below we provide a sample code to train on **IdenProf**, a dataset which contains images of 10 uniformed professionals. The code below will download the dataset and initiate the training:
 

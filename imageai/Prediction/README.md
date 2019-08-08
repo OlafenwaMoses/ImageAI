@@ -47,7 +47,7 @@ for eachPrediction, eachProbability in zip(predictions, probabilities):
 ```
 
 Sample Result:
-![](../../sample_images/1.jpg)
+![](../../data-images/1.jpg)
 
 ```
 convertible : 52.459555864334106
@@ -131,9 +131,9 @@ In the above code, the `.predictMultipleImages()` function will return an array 
 Each dictionary contains the arrays for predictions and percentage probability for each prediction.
 
 Sample Result:
-![](../../sample_images/1.jpg)
-![](../../sample_images/2.jpg)
-![](../../sample_images/3.jpg)
+![](../../data-images/1.jpg)
+![](../../data-images/2.jpg)
+![](../../data-images/3.jpg)
 
 ```
 convertible : 52.459555864334106

@@ -50,12 +50,12 @@ video_detector.detectObjectsFromVideo(input_file_path="holo1.mp4",
 
 <div style="width: 600px;" >
           <b><p><i>Input Video</i></p></b>
-          <a href="../../../sample_videos/holo1.mp4" >
-<img src="../../../sample_images/holo-video.jpg" />
+          <a href="../../../data-videos/holo1.mp4" >
+<img src="../../../data-images/holo-video.jpg" />
 </a>
           <b><p><i>Output Video</i></p></b>
           <a href="https://www.youtube.com/watch?v=4o5GyAR4Mpw" >
-<img src="../../../sample_images/holo-video-detected.jpg" />
+<img src="../../../data-images/holo-video-detected.jpg" />
 </a><p><a href="https://www.youtube.com/watch?v=4o5GyAR4Mpw" >https://www.youtube.com/watch?v=4o5GyAR4Mpw</a></p>
     </div> <br>
 

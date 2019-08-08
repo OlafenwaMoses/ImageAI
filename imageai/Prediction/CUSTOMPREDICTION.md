@@ -53,7 +53,7 @@ for eachPrediction, eachProbability in zip(predictions, probabilities):
 ```
 
 **Sample Result:**
-![Sample Result](../../sample_images/4.jpg)
+![Sample Result](../../data-images/4.jpg)
 ```
 mechanic : 76.82620286941528
 chef : 10.106072574853897

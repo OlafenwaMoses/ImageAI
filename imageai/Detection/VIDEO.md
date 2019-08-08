@@ -53,10 +53,10 @@ print(video_path)
 
 Input Video (a 1min 24seconds video)
 
-[![](../../sample_images/video--1.jpg)](https://github.com/OlafenwaMoses/ImageAI/blob/master/sample_videos/traffic.mp4)
+[![](../../data-images/video--1.jpg)](https://github.com/OlafenwaMoses/ImageAI/blob/master/data-videos/traffic.mp4)
 
 Output Video
-[![](../../sample_images/video-2.jpg)](https://www.youtube.com/embed/qplVDqOmElI?rel=0)
+[![](../../data-images/video-2.jpg)](https://www.youtube.com/embed/qplVDqOmElI?rel=0)
 
 Let us make a breakdown of the object detection code that we used above.
 
@@ -148,7 +148,7 @@ which is the function that allows us to perform detection of custom objects. The
  to the custom objects variable we defined.
 
 Output Video
-[![Output Video](../../sample_images/video-3.jpg)](https://www.youtube.com/embed/YfAycAzkwPM?rel=0)
+[![Output Video](../../data-images/video-3.jpg)](https://www.youtube.com/embed/YfAycAzkwPM?rel=0)
 C:\Users\User\PycharmProjects\ImageAITest\traffic_custom_detected.avi
 
 
@@ -338,7 +338,7 @@ The results below are obtained from detections performed on a NVIDIA K80 GPU. Li
  the videos for each detection speed applied.
 
 Video Length = 1min 24seconds, Detection Speed = "normal" , Minimum Percentage Probability = 50 (default), Detection Time = 29min 3seconds
-[![](../../sample_images/video-4.jpg)](https://www.youtube.com/embed/qplVDqOmElI?rel=0)
+[![](../../data-images/video-4.jpg)](https://www.youtube.com/embed/qplVDqOmElI?rel=0)
 
 
 **Video Length = 1min 24seconds, Detection Speed = "fast" , Minimum Percentage Probability = 40, Detection Time = 11min 6seconds**
@@ -380,7 +380,7 @@ See the results and link to download the videos below:
 
 
 **Video Length = 1min 24seconds, Detection Speed = "fastest" , Minimum Percentage Probability = 20 , Frame Detection Interval = 5, Detection Time = 2min 18seconds**
-[![](../../sample_images/video-3.jpg)](https://www.youtube.com/embed/S-jgBTQgbd4?rel=0)
+[![](../../data-images/video-3.jpg)](https://www.youtube.com/embed/S-jgBTQgbd4?rel=0)
 
 
 **Video Length = 1min 24seconds, Detection Speed = "flash" , Minimum Percentage Probability = 10, Frame Detection Interval = 5, Detection Time = 1min 27seconds**
