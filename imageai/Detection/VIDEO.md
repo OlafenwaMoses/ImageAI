@@ -6,15 +6,15 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ## TABLE OF CONTENTS
 
- <a href="#videodetection" > :white_square_button: First Video Object Detection</a><br>
- <a href="#customvideodetection" > :white_square_button: Custom Video Object Detection (Object Tracking)</a><br>
- <a href="#camerainputs" > :white_square_button: Camera / Live Stream Video Detection</a><br>
- <a href="#videoanalysis" > :white_square_button: Video Analysis</a><br>
- <a href="#videodetectionspeed" > :white_square_button: Detection Speed</a><br>
- <a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a><br>
- <a href="#videodetectionintervals" > :white_square_button: Frame Detection Intervals</a><br>
- <a href="#detectiontimeout" > :white_square_button: Video Detection Timeout (NEW)</a><br>
- <a href="#documentation" > :white_square_button: Documentation</a>
+- <a href="#videodetection" > First Video Object Detection</a><br>
+- <a href="#customvideodetection" > Custom Video Object Detection (Object Tracking)</a><br>
+- <a href="#camerainputs" > Camera / Live Stream Video Detection</a><br>
+- <a href="#videoanalysis" > Video Analysis</a><br>
+- <a href="#videodetectionspeed" > Detection Speed</a><br>
+- <a href="#hidingdetails" > Hiding/Showing Object Name and Probability</a><br>
+- <a href="#videodetectionintervals" > Frame Detection Intervals</a><br>
+- <a href="#detectiontimeout" > Video Detection Timeout (NEW)</a><br>
+- <a href="#documentation" > Documentation</a>
 
 ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports RetinaNet, YOLOv3 and TinyYOLOv3. This version of **ImageAI** provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
 
@@ -178,7 +178,6 @@ video_path = detector.detectObjectsFromVideo(
                 output_file_path=os.path.join(execution_path, "camera_detected_video"),
                 frames_per_second=20, log_progress=True, minimum_percentage_probability=40)
 ```
-</pre>
 
 The difference in the code above and the code for the detection of a video file is that we defined an **OpenCV VideoCapture** instance and loaded the default device camera into it. Then we parsed the camera we defined into the parameter `camera_input` which replaces the `input_file_path` that is used for video file.
 
@@ -226,7 +225,6 @@ video_detector.detectObjectsFromVideo(
     per_minute_function=forMinute,
     minimum_percentage_probability=30
 )
-
 ```
 
 When the detection starts on a video feed, be it from a video file or camera input, the result will have the format as below:
