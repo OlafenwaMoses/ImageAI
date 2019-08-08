@@ -1,4 +1,4 @@
-# ImageAI (v2.1.1 )
+# ImageAI (v2.1.3 )
 
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code.
@@ -6,6 +6,7 @@ A python library built to empower developers to build applications and systems w
 ![](logo1.png)
 
 An **DeepQuest AI** project [deepquestai.com](https://deepquestai.com).
+
 Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) and [John Olafenwa](https://twitter.com/johnolafenwa), brothers, creators of [TorchFusion](https://github.com/johnolafenwa/TorchFusion), Authors of [Introduction to Deep Computer Vision](https://john.aicommons.science/deepvision) and creators of [DeepStack AI Server](https://deepstack.cc).
 
 ---
@@ -33,23 +34,23 @@ What's new:
 
 
 ### TABLE OF CONTENTS
-- <a href="#dependencies" > &#9635 Dependencies</a>
-- <a href="#installation" > &#9635 Installation</a>
-- <a href="#prediction" > &#9635 Image Prediction</a>
-- <a href="#detection" > &#9635 Object Detection</a>
-- <a href="#videodetection" > &#9635 Video Object Detection, Tracking & Analysis</a>
-- <a href="#customtraining" > &#9635 Custom Model Training</a>
-- <a href="#customprediction" > &#9635 Custom Image Prediction</a>
-- <a href="#customdetectiontraining" > &#9635 Custom Detection Model Training</a>
-- <a href="#customdetection" > &#9635 Custom Object Detection</a>
-- <a href="#customvideodetection" > &#9635 Custom Video Object Detection & Analysis</a>
-- <a href="#documentation" > &#9635 Documentation</a>
-- <a href="#sample" > &#9635 Projects Built on ImageAI</a>
-- <a href="#real-time-and-high-performance-implementation" > &#9635 High Performance Implementation</a>
-- <a href="#recommendation" > &#9635 AI Practice Recommendations</a>
-- <a href="#contact" > &#9635 Contact Developers</a>
-- <a href="#contributors" > &#9635 Contributors</a>
-- <a href="#ref" > &#9635 References</a>
+ <a href="#dependencies" > :white_square_button: Dependencies</a> <br>
+ <a href="#installation" > :white_square_button: Installation</a><br>
+ <a href="#prediction" > :white_square_button: Image Prediction</a><br>
+ <a href="#detection" > :white_square_button: Object Detection</a><br>
+ <a href="#videodetection" > :white_square_button: Video Object Detection, Tracking & Analysis</a><br>
+ <a href="#customtraining" > :white_square_button: Custom Model Training</a><br>
+ <a href="#customprediction" > :white_square_button: Custom Image Prediction</a><br>
+ <a href="#customdetectiontraining" > :white_square_button: Custom Detection Model Training</a><br>
+ <a href="#customdetection" > :white_square_button: Custom Object Detection</a><br>
+ <a href="#customvideodetection" > :white_square_button: Custom Video Object Detection & Analysis</a><br>
+ <a href="#documentation" > :white_square_button: Documentation</a><br>
+ <a href="#sample" > :white_square_button: Projects Built on ImageAI</a><br>
+ <a href="#real-time-and-high-performance-implementation" > :white_square_button: High Performance Implementation</a><br>
+ <a href="#recommendation" > :white_square_button: AI Practice Recommendations</a><br>
+ <a href="#contact" > :white_square_button: Contact Developers</a><br>
+ <a href="#contributors" > :white_square_button: Contributors</a><br>
+ <a href="#ref" > :white_square_button: References</a>
 
 
 
@@ -65,13 +66,14 @@ To use **ImageAI** in your application developments, you must have installed the
  - Keras 2.x 
  
  ```bash
-pip install -U tensorflow keras opencv-python
+pip install tensorflow keras opencv-python
 ```
 
 ### Installation
 <div id="installation"></div>
  
 To install ImageAI, run the python installation instruction below in the command line:
+
 ```bash
 pip3 install imageai --upgrade
 ```
@@ -101,6 +103,7 @@ Click the link below to see the full sample codes, explanations and best practic
 <div id="detection"></div>
 
 ![Input Image](images/image2.jpg)
+
 ![Output Image](images/image2new.jpg)
 
 ```
@@ -160,7 +163,7 @@ Click the link to see the full videos, sample codes, explanations and best pract
 
 _A sample from the IdenProf Dataset used to train a Model for predicting professionals._
 
-![](images/idenprof.jpg
+![](images/idenprof.jpg)
 
 
 **ImageAI** provides classes and methods for you to train a new model that can be used to perform prediction on your own custom objects.
@@ -304,7 +307,7 @@ Kindly follow the link below to download the publication.
 
 - **Moses Olafenwa**
     * _Email:_ guymodscientist@gmail.com
-    * _Website:_ [https://moses.aicommons.science](https://moses.aicommons.science)
+    * _Website:_ [http://olafenwamoses.me](http://olafenwamoses.me)
     * _Twitter:_ [@OlafenwaMoses](https://twitter.com/OlafenwaMoses)
     * _Medium:_ [@guymodscientist](https://medium.com/@guymodscientist)
     * _Facebook:_ [moses.olafenwa](https://facebook.com/moses.olafenwa)
@@ -361,9 +364,9 @@ We give special thanks to **[Kang vcar](https://github.com/kangvcar/)** for his 
  12. Moses & John Olafenwa, A collection of images of identifiable professionals.
 [https://github.com/OlafenwaMoses/IdenProf](https://github.com/OlafenwaMoses/IdenProf)
  13. Joseph Redmon and Ali Farhadi, YOLOv3: An Incremental Improvement.
-[https://arxiv.org/abs/1804.02767">https://arxiv.org/abs/1804.02767)
+[https://arxiv.org/abs/1804.02767](https://arxiv.org/abs/1804.02767)
  14. Experiencor, Training and Detecting Objects with YOLO3
-[https://github.com/experiencor/keras-yolo3">https://github.com/experiencor/keras-yolo3)
+[https://github.com/experiencor/keras-yolo3](https://github.com/experiencor/keras-yolo3)
  
  
  
