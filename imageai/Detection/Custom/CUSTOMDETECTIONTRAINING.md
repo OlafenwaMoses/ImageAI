@@ -10,9 +10,9 @@ The training process generates a JSON file that maps the objects names in your i
 object detection using the model and the JSON file generated. 
 
 ### TABLE OF CONTENTS
-- <a href="#preparingdataset" > &#9635 Preparing your custom dataset</a>
-- <a href="#trainingdataset" > &#9635 Training on your custom Dataset</a>
-- <a href="#evaluatingmodels" > &#9635 Evaluating your saved detection models' mAP</a>
+- <a href="#preparingdataset" > :white_square_button: Preparing your custom dataset</a>
+- <a href="#trainingdataset" > :white_square_button: Training on your custom Dataset</a>
+- <a href="#evaluatingmodels" > :white_square_button: Evaluating your saved detection models' mAP</a>
 
 
 ### Preparing your custom dataset

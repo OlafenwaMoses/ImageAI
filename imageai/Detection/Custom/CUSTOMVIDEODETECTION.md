@@ -6,13 +6,13 @@ An **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ### TABLE OF CONTENTS
 
-- <a href="#videodetection" >&#9635 First Custom Video Object Detection</a>
-- <a href="#camerainputs" >&#9635 Camera / Live Stream Video Detection</a>
-- <a href="#videoanalysis" >&#9635 Video Analysis</a>
-- <a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a>
-- <a href="#videodetectionintervals" >&#9635 Frame Detection Intervals</a>
-- <a href="#detectiontimeout" >&#9635 Video Detection Timeout (NEW)</a>
-- <a href="#documentation" >&#9635 Documentation</a>
+- <a href="#videodetection" > :white_square_button: First Custom Video Object Detection</a>
+- <a href="#camerainputs" > :white_square_button: Camera / Live Stream Video Detection</a>
+- <a href="#videoanalysis" > :white_square_button: Video Analysis</a>
+- <a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a>
+- <a href="#videodetectionintervals" > :white_square_button: Frame Detection Intervals</a>
+- <a href="#detectiontimeout" > :white_square_button: Video Detection Timeout (NEW)</a>
+- <a href="#documentation" > :white_square_button: Documentation</a>
 
 
 ImageAI provides convenient, flexible and powerful methods to perform object detection on videos using your own **custom YOLOv3 model** and the corresponding **detection_config.json** generated during the training. This version of **ImageAI** provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
@@ -24,9 +24,9 @@ To test the custom video object detection,you can download a sample custom model
 Because video object detection is a compute intensive tasks, we advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
  installed. Performing Video Object Detection CPU will be slower than using an NVIDIA GPU powered computer. You can use Google Colab for this
  experiment as it has an NVIDIA K80 GPU available for free.
-\n
+<br/>
  Once you download the custom object detection model  and JSON files, you should copy the model and the JSON files to the your project folder where your .py files will be.
- Then create a python file and give it a name; an example is FirstCustomVideoObjectDetection.py. Then write the code below into the python file: \n
+ Then create a python file and give it a name; an example is FirstCustomVideoObjectDetection.py. Then write the code below into the python file: <br/>
 
 
 ### FirstCustomVideoObjectDetection.py
@@ -52,9 +52,10 @@ video_detector.detectObjectsFromVideo(input_file_path="holo1.mp4",
 ```
 
 [**Input Video**](../../../data-videos/holo1.mp4)
-![Input Video](../../../data-images/holo-video.jpg)
+[![Input Video](../../../data-images/holo-video.jpg)](../../../data-videos/holo1.mp4)
 [**Output Video**](https://www.youtube.com/watch?v=4o5GyAR4Mpw)
-![Output Video](../../../data-images/holo-video-detected.jpg)
+[![Output Video](../../../data-images/holo-video-detected.jpg)](https://www.youtube.com/watch?v=4o5GyAR4Mpw)
+
 
 
 Let us make a breakdown of the object detection code that we used above.
@@ -118,13 +119,13 @@ video_detector.detectObjectsFromVideo(camera_input=camera,
                                           log_progress=True)
 ```
 
-The difference in the code above and the code for the detection of a video file is that we defined an **OpenCV VideoCapture** instance and loaded the default device camera into it. Then we parsed the camera we defined into the parameter **camera_input** which replaces the **input_file_path** that is used for video file.
+The difference in the code above and the code for the detection of a video file is that we defined an **OpenCV VideoCapture** instance and loaded the default device camera into it. Then we parsed the camera we defined into the parameter **camera_input** which replaces the **input_file_path** that is used for video file. 
 
-\n
+
 ### Video Analysis
 <div id="videoanalysis"></div>
 
-**ImageAI** now provide commercial-grade video analysis in the Custom Video Object Detection class, for both video file inputs and camera inputs. This feature allows developers to obtain deep insights into any video processed with **ImageAI**. This insights can be visualized in real-time, stored in a NoSQL database for future review or analysis. \n
+**ImageAI** now provide commercial-grade video analysis in the Custom Video Object Detection class, for both video file inputs and camera inputs. This feature allows developers to obtain deep insights into any video processed with **ImageAI**. This insights can be visualized in real-time, stored in a NoSQL database for future review or analysis. <br/>
 
 For video analysis, the **detectObjectsFromVideo()** now allows you to state your own defined functions which will be executed for every frame, seconds and/or minute of the video detected as well as a state a function that will be executed at the end of a video detection. Once this functions are stated, they will receive raw but comprehensive analytical data on the index of the frame/second/minute, objects detected (name, percentage_probability and box_points), number of instances of each unique object detected and average number of occurrence of each unique object detected over a second/minute and entire video.
 

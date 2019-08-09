@@ -9,11 +9,11 @@ that you have trained the model on.
 
 ### TABLE OF CONTENTS
 
-- <a href="#customprediction" > &#9635 Custom Model Prediction</a>
-- <a href="#custompredictionfullmodel" > &#9635 Custom Model Prediction with Full Model (NEW)</a>
-- <a href="#custompredictionmultiple" > &#9635 Custom Prediction with multiple models (NEW)</a>
-- <a href="#converttensorflow" > &#9635 Convert custom model to Tensorflow's format (NEW)</a>
-- <a href="#convertdeepstack" > &#9635 Convert custom model to DeepStack's format (NEW)</a>
+- <a href="#customprediction" > :white_square_button: Custom Model Prediction</a>
+- <a href="#custompredictionfullmodel" > :white_square_button: Custom Model Prediction with Full Model (NEW)</a>
+- <a href="#custompredictionmultiple" > :white_square_button: Custom Prediction with multiple models (NEW)</a>
+- <a href="#converttensorflow" > :white_square_button: Convert custom model to Tensorflow's format (NEW)</a>
+- <a href="#convertdeepstack" > :white_square_button: Convert custom model to DeepStack's format (NEW)</a>
 
 
 ### Custom Model Prediction
@@ -53,6 +53,7 @@ for eachPrediction, eachProbability in zip(predictions, probabilities):
 ```
 
 **Sample Result:**
+
 ![Sample Result](../../data-images/4.jpg)
 ```
 mechanic : 76.82620286941528

@@ -7,11 +7,11 @@ An **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ### TABLE OF CONTENTS
 
-- <a href="#customdetection" >&#9635 Custom Object Detection</a>
-- <a href="#objectextraction" >&#9635 Object Detection, Extraction and Fine-tune</a>
-- <a href="#hidingdetails" >&#9635 Hiding/Showing Object Name and Probability</a>
-- <a href="#inputoutputtype" >&#9635 Image Input & Output Types</a>
-- <a href="#documentation" >&#9635 Documentation</a>
+- <a href="#customdetection" > :white_square_button: Custom Object Detection</a>
+- <a href="#objectextraction" > :white_square_button: Object Detection, Extraction and Fine-tune</a>
+- <a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a>
+- <a href="#inputoutputtype" > :white_square_button: Image Input & Output Types</a>
+- <a href="#documentation" > :white_square_button: Documentation</a>
 
 
 ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image using your own **custom YOLOv3 model** and the corresponding **detection_config.json** generated during the training. To test the custom object detection, you can download a sample custom model we have trained to detect the Hololens headset and its **detection_config.json** file via the links below:
@@ -41,8 +41,11 @@ for detection in detections:
 ```
 
 Sample Result - Input:
+
 ![Input](../../../data-images/holo2.jpg)
+
   Output: 
+  
 ![Output](../../../data-images/holo2-detected.jpg)
           
 ```
