@@ -7,10 +7,6 @@
 
 dist: xenial  # Ubuntu 16.04
 
-env:
-  global:
-    - CODACY_PROJECT_TOKEN=aaaabbbcddddfffffhhhhh  #  TBA according created project
-
 language: python
 
 sudo: false
@@ -35,7 +31,7 @@ install:
 
 before_script:
   - gcc --version ; python --version ; pip --version ; pwd ; ls -l
-  - # check-manifest
+  # - check-manifest
   - python setup.py check -m -s
 
 script:

@@ -1074,6 +1074,11 @@ class VideoObjectDetection:
 
                 self.__yolo_input_image_shape = K.placeholder(shape=(2,))
                 self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes = yolo_eval(model.output,
+                                                                                       self.__tiny_yolo_anchors,
+                                                                                       len(self.numbers_to_names),
+                                                                                       self.__yolo_input_image_shape,
+                                                                                       score_threshold=self.__yolo_score,
+                                                                                       iou_threshold=self.__yolo_iou)
 
                 self.__model_collection.append(model)
                 self.__modelLoaded = True
