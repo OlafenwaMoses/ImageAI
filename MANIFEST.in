@@ -1,0 +1,33 @@
+# Manifest syntax https://docs.python.org/2/distutils/sourcedist.html
+graft wheelhouse
+
+recursive-exclude __pycache__  *.pyc *.pyo *.orig
+
+# Include the README
+include *.md
+
+# Include the license file
+include LICENSE
+
+recursive-include imageai *.py *.md *.txt
+
+# Include scripts
+recursive-include examples *.py *.json
+
+# Include the Requirements
+include requirements.txt
+
+include *.jpg
+include *.png
+
+# Exclude build configs
+exclude *.yml
+
+prune .git
+prune venv
+prune temp
+prune results
+prune test*
+prune data-images
+prune data-videos
+prune imageai.egg*

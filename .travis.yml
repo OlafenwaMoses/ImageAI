@@ -31,7 +31,7 @@ install:
 
 before_script:
   - gcc --version ; python --version ; pip --version ; pwd ; ls -l
-  # - check-manifest
+  - check-manifest
   - python setup.py check -m -s
 
 script:
