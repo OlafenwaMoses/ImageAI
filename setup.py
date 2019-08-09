@@ -7,10 +7,6 @@ HERE = path.abspath(path.dirname(__file__))
 with open(path.join(HERE, 'README.md'), encoding='utf-8') as fp:
     long_description = fp.read()
 
-# Get the list of required packages
-with open(path.join(HERE, 'requirements.txt'), encoding='utf-8') as fp:
-    requirements = [req.rstrip() for req in fp.readlines()]
-
 setup(
     name="imageai",
     version='2.1.3',
@@ -24,7 +20,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
 
-    install_requires=requirements,
+    install_requires=['numpy','scipy','pillow',"matplotlib", "h5py", "keras", "opencv-python"],
 
     zip_safe=False,
 
