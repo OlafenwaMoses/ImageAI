@@ -66,7 +66,7 @@ To use **ImageAI** in your application developments, you must have installed the
  - Keras 2.x 
  
  ```bash
-pip install -U tensorflow keras opencv-python
+pip install tensorflow keras opencv-python
 ```
 
 ### Installation
