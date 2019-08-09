@@ -44,3 +44,6 @@ after_success:
   - coverage xml
   # - python-codacy-coverage -r coverage.xml
   - coverage report
+
+notifications:
+  email: false
