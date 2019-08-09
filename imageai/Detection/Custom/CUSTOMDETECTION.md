@@ -64,11 +64,13 @@ detector = CustomObjectDetection()
 detector.setModelTypeAsYOLOv3()
 ```
  In the 3 lines above , we import the **ImageAI custom object detection** class in the first line, created the class instance on the second line and set the model type to YOLOv3.
-```
+ 
+```python
 detector.setModelPath("hololens-ex-60--loss-2.76.h5")
 detector.setJsonPath("detection_config.json")
 detector.loadModel()
 ```
+
   In the 3 lines above, we specified the file path to our downloaded model file in the first line , specified the path to our **detection_config.json** file in the second line and loaded the model on the third line.
 
 ```python

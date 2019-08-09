@@ -6,15 +6,15 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ## TABLE OF CONTENTS
 
-- <a href="#videodetection" > First Video Object Detection</a><br>
-- <a href="#customvideodetection" > Custom Video Object Detection (Object Tracking)</a><br>
-- <a href="#camerainputs" > Camera / Live Stream Video Detection</a><br>
-- <a href="#videoanalysis" > Video Analysis</a><br>
-- <a href="#videodetectionspeed" > Detection Speed</a><br>
-- <a href="#hidingdetails" > Hiding/Showing Object Name and Probability</a><br>
-- <a href="#videodetectionintervals" > Frame Detection Intervals</a><br>
-- <a href="#detectiontimeout" > Video Detection Timeout (NEW)</a><br>
-- <a href="#documentation" > Documentation</a>
+- <a href="#videodetection" > :white_square_button: First Video Object Detection</a>
+- <a href="#customvideodetection" > :white_square_button: Custom Video Object Detection (Object Tracking)</a>
+- <a href="#camerainputs" > :white_square_button: Camera / Live Stream Video Detection</a>
+- <a href="#videoanalysis" > :white_square_button: Video Analysis</a>
+- <a href="#videodetectionspeed" > :white_square_button: Detection Speed</a>
+- <a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a>
+- <a href="#videodetectionintervals" > :white_square_button: Frame Detection Intervals</a>
+- <a href="#detectiontimeout" > :white_square_button: Video Detection Timeout (NEW)</a>
+- <a href="#documentation" > :white_square_button: Documentation</a>
 
 ImageAI provides convenient, flexible and powerful methods to perform object detection on videos. The video object detection class provided only supports RetinaNet, YOLOv3 and TinyYOLOv3. This version of **ImageAI** provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
 
@@ -27,7 +27,7 @@ To start performing video object detection, you must download the RetinaNet, YOL
 Because video object detection is a compute intensive tasks, we advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow installed. Performing Video Object Detection CPU will be slower than using an NVIDIA GPU powered computer. You can use Google Colab for this experiment as it has an NVIDIA K80 GPU available for free.
 
  Once you download the object detection model file, you should copy the model file to the your project folder where your .py files will be.
- Then create a python file and give it a name; an example is FirstVideoObjectDetection.py. Then write the code below into the python file:
+ Then create a python file and give it a name; an example is `FirstVideoObjectDetection.py`. Then write the code below into the python file:
 
 
 ### FirstVideoObjectDetection.py
@@ -81,13 +81,12 @@ In the 4 lines above, we created a new instance of the **VideoObjectDetection** 
 
 ```python
 video_path = detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "traffic.mp4"),
-                                output_file_path=os.path.join(execution_path, "traffic_detected")
-                                , frames_per_second=20, log_progress=True)
+                                 output_file_path=os.path.join(execution_path, "traffic_detected"),
+                                 frames_per_second=20, log_progress=True)
 print(video_path)
 ```
 
 In the 2 lines above, we ran the `detectObjectsFromVideo()` function and parse in the path to our video,the path to the new video (without the extension, it saves a .avi video by default) which the function will save, the number of frames per second (fps) that you we desire the output video to have and option to log the progress of the detection in the console. Then the function returns a the path to the saved video which contains boxes and percentage probabilities rendered on objects detected in the video.
-
 
 
 ### Custom Video Object Detection
@@ -131,6 +130,7 @@ print(video_path)
 ```
 
 Let us take a look at the part of the code that made this possible.
+
 ```python
 custom_objects = detector.CustomObjects(person=True, bicycle=True, motorcycle=True)
 
@@ -142,7 +142,7 @@ video_path = detector.detectCustomObjectsFromVideo(
 ```
 
 In the above code, after loading the model (can be done before loading the model as well), we defined a new variable
-`custom_objects = detector.CustomObjects()`, in which we set its person, car and motorccyle properties equal to **True**.
+`custom_objects = detector.CustomObjects()`, in which we set its person, car and motorcycle properties equal to **True**.
 This is to tell the model to detect only the object we set to True. Then we call the `detector.detectCustomObjectsFromVideo()`
 which is the function that allows us to perform detection of custom objects. Then we will set the `custom_objects` value
  to the custom objects variable we defined.
@@ -229,7 +229,7 @@ video_detector.detectObjectsFromVideo(
 
 When the detection starts on a video feed, be it from a video file or camera input, the result will have the format as below:
 
-** *Results for the Frame function**
+**Results for the Frame function**
 ```
 FOR FRAME : 1
  
@@ -246,7 +246,7 @@ For any function you parse into the **per_frame_function**, the function will be
 * **Output Array:** This is an array of dictionaries. Each dictionary corresponds to each detected object in the image and it contains the "name", "percentage_probabaility" and "box_points"(x1,y1,x2,y2) values of the object.
 * **Output Count:** This is a dictionary that has the name of each unique object detected as its keys and the number of instances of the objects detected as the values.
 
-** *Results for the Second function**
+**Results for the Second function**
 ```
 FOR SECOND : 1
  

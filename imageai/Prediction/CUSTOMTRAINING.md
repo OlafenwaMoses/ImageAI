@@ -1,4 +1,4 @@
-# ImageAI : Custom Prediction Model Training <br>
+# ImageAI : Custom Prediction Model Training 
 
 ---
 
@@ -11,11 +11,11 @@ and creates lots of models. You will then pick the model with the highest accura
 image prediction using the model and the JSON file generated.
 
 ### TABLE OF CONTENTS
- <a href="#customtraining" > :white_square_button: Custom Model Training Prediction</a> <br>
- <a href="#savefullmodel" > :white_square_button: Saving Full Custom Model (NEW)</a> <br>
- <a href="#idenproftraining" > :white_square_button: Training on the IdenProf Dataset</a> <br>
- <a href="#continuoustraining" > :white_square_button: Continuous Model Training (NEW)</a> <br>
- <a href="#transferlearning" > :white_square_button: Transfer Learning (Training from a pre-trained model) (NEW)</a>
+- <a href="#customtraining" > :white_square_button: Custom Model Training Prediction</a> 
+- <a href="#savefullmodel" > :white_square_button: Saving Full Custom Model (NEW)</a> 
+- <a href="#idenproftraining" > :white_square_button: Training on the IdenProf Dataset</a> 
+- <a href="#continuoustraining" > :white_square_button: Continuous Model Training (NEW)</a> 
+- <a href="#transferlearning" > :white_square_button: Transfer Learning (Training from a pre-trained model) (NEW)</a>
 
 
 ### Custom Model Training
@@ -26,31 +26,26 @@ Because model training is a compute intensive tasks, we strongly advise you perf
 To train a custom prediction model, you need to prepare the images you want to use to train the model.
 You will prepare the images as follows:
 
-1. Create a dataset folder with the name you will like your dataset to be called (e.g pets) <br>
-2. In the dataset folder, create a folder by the name **train** <br>
-3. In the dataset folder, create a folder by the name **test** <br>
-4. In the train folder, create a folder for each object you want to the model to predict and give
- the folder a name that corresponds to the respective object name (e.g dog, cat, squirrel, snake) <br>
+1. Create a dataset folder with the name you will like your dataset to be called (e.g pets) 
+2. In the dataset folder, create a folder by the name **train** 
+3. In the dataset folder, create a folder by the name **test** 
+4. In the train folder, create a folder for each object you want to the model to predict and give the folder a name that corresponds to the respective object name (e.g dog, cat, squirrel, snake) 
 5. In the test folder, create a folder for each object you want to the model to predict and give
- the folder a name that corresponds to the respective object name (e.g dog, cat, squirrel, snake) <br>
-6. In each folder present in the train folder, put the images of each object in its respective folder.
-This images are the ones to be used to train the model <br>
-To produce a model that can perform well in practical applications, I recommend you about 500 or more
- images per object. 1000 images per object is just great <br>
-7. In each folder present in the test folder, put about 100 to 200 images of each object in its respective folder.
-These images are the ones to be used to test the model as it trains <br>
-8. Once you have done this, the structure of your image dataset folder should look like below: <br> <br>
+ the folder a name that corresponds to the respective object name (e.g dog, cat, squirrel, snake) 
+6. In each folder present in the train folder, put the images of each object in its respective folder. This images are the ones to be used to train the model To produce a model that can perform well in practical applications, I recommend you about 500 or more images per object. 1000 images per object is just great 
+7. In each folder present in the test folder, put about 100 to 200 images of each object in its respective folder. These images are the ones to be used to test the model as it trains 
+8. Once you have done this, the structure of your image dataset folder should look like below:  
     ```
-        pets//train//dog//dog-train-images
-        pets//train//cat//cat-train-images
-        pets//train//squirrel//squirrel-train-images
-        pets//train//snake//snake-train-images 
-        pets//test//dog//dog-test-images
-        pets//test//cat//cat-test-images
-        pets//test//squirrel//squirrel-test-images
-        pets//test//snake//snake-test-images
+    pets//train//dog//dog-train-images
+    pets//train//cat//cat-train-images
+    pets//train//squirrel//squirrel-train-images
+    pets//train//snake//snake-train-images 
+    pets//test//dog//dog-test-images
+    pets//test//cat//cat-test-images
+    pets//test//squirrel//squirrel-test-images
+    pets//test//snake//snake-test-images
     ```
-9. Then your training code goes as follows: <br> <br>
+9. Then your training code goes as follows:  
     ```python
     from imageai.Prediction.Custom import ModelTraining
     model_trainer = ModelTraining()
@@ -78,16 +73,16 @@ model_trainer.trainModel(num_objects=4, num_experiments=100, enhance_data=True, 
 ```
 
 In the code above, we start the training process. The parameters stated in the function are as below:
-- **num_objects** : this is to state the number of object types in the image dataset <br>
+- **num_objects** : this is to state the number of object types in the image dataset 
 - **num_experiments** : this is to state the number of times the network will train over all the training images,
- which is also called epochs <br>
+ which is also called epochs 
 - **enhance_data (optional)** : This is used to state if we want the network to produce modified copies of the training
-images for better performance. <br>
+images for better performance. 
 - **batch_size** : This is to state the number of images the network will process at ones. The images
- are processed in batches until they are exhausted per each experiment performed. <br>
+ are processed in batches until they are exhausted per each experiment performed. 
 - **show_network_summary** : This is to state if the network should show the structure of the training
  network in the console.
-<br><br> <br>
+ 
 
 When you start the training, you should see something like this in the console:
 ```
@@ -473,7 +468,7 @@ JSON Mapping for the model classes saved to  C:\Users\User\PycharmProjects\Image
 Number of experiments (Epochs) :  100
 ```
 
-When the training progress progresses, you will see results as follows in the console: <br>
+When the training progress progresses, you will see results as follows in the console: 
 ```
 Epoch 1/100
  1/25 [>.............................] - ETA: 52s - loss: 2.3026 - acc: 0.2500
@@ -504,10 +499,10 @@ Epoch 1/100
 25/25 [==============================] - 51s - loss: 2.3095 - acc: 0.0600 - val_loss: 2.3026 - val_acc: 0.1000
 ```
 
-Let us explain the details shown above: <br>
-1. The line **Epoch 1/100** means the network is training the first experiment of the targeted 100 <br>
-2. The line `1/25 [>.............................] - ETA: 52s - loss: 2.3026 - acc: 0.2500` represents the number of batches that has been trained in the present experiment<br>
-3. The line  `Epoch 00000: saving model to C:\Users\User\PycharmProjects\ImageAITest\pets\models\model_ex-000_acc-0.100000.h5` refers to the model saved after the present experiment. The **ex_000** represents the experiment at this stage while the **acc_0.100000** and **val_acc: 0.1000** represents the accuracy of the model on the test images after the present experiment (maximum value value of accuracy is 1.0).  This result helps to know the best performed model you can use for custom image prediction. <br> 
+Let us explain the details shown above: 
+1. The line **Epoch 1/100** means the network is training the first experiment of the targeted 100 
+2. The line `1/25 [>.............................] - ETA: 52s - loss: 2.3026 - acc: 0.2500` represents the number of batches that has been trained in the present experiment
+3. The line  `Epoch 00000: saving model to C:\Users\User\PycharmProjects\ImageAITest\pets\models\model_ex-000_acc-0.100000.h5` refers to the model saved after the present experiment. The **ex_000** represents the experiment at this stage while the **acc_0.100000** and **val_acc: 0.1000** represents the accuracy of the model on the test images after the present experiment (maximum value value of accuracy is 1.0).  This result helps to know the best performed model you can use for custom image prediction.  
  
  Once you are done training your custom model, you can use the "CustomImagePrediction" class to perform image prediction with your model. Simply follow the link below.
 [imageai/Prediction/CUSTOMPREDICTION.md](https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md)
@@ -609,7 +604,7 @@ model_trainer.trainModel(num_objects=10, num_experiments=100, enhance_data=True,
 This is useful in cases of incomplete training due compute time limits/large size of dataset or should you intend to further train your model.
 Kindly note that **continuous training** is for using a previously saved model to train on the same dataset the model was trained on.
 All you need to do is specify the `continue_from_model` parameter to the path of the previously saved model in your `trainModel()` function.
-See an example code below.<br>
+See an example code below.
 
 ```python
 from imageai.Prediction.Custom import ModelTraining
@@ -623,7 +618,6 @@ trainer.trainModel(num_objects=10, num_experiments=50, enhance_data=True, batch_
 
 ### Transfer Learning (Training from a pre-trained model)
 <div id="transferlearning"></div>
-
 
 From the feedbacks we have received over the past months, we discovered most custom models trained with **ImageAI** were based on datasets with few number of images as they fall short the minimum recommendation of 500 images per each class of objects, for a achieving a viable accuracy. 
 

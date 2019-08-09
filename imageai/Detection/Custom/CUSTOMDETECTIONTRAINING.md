@@ -2,8 +2,6 @@
 
 ---
 
-
-
 **ImageAI** provides the most simple and powerful approach to training custom object detection models
 using the YOLOv3 architeture, which
 which you can load into the `imageai.Detection.Custom.CustomObjectDetection` class. This allows
@@ -105,8 +103,6 @@ trainer.trainModel()
 ```
 
 
-
-
 When you start the training, you should see something like this in the console: 
 ```
 Using TensorFlow backend.
@@ -132,7 +128,6 @@ Epoch 6/200
  - 655s - loss: 4.7582 - yolo_layer_1_loss: 0.9959 - yolo_layer_2_loss: 1.5986 - yolo_layer_3_loss: 2.1637 - val_loss: 5.8313 - val_yolo_layer_1_loss: 1.1880 - val_yolo_layer_2_loss: 1.9962 - val_yolo_layer_3_loss: 2.6471
 Epoch 7/200
 ```
-
 
 Let us explain the details shown above: 
 ```
@@ -272,7 +267,6 @@ We have provided full documentation for all **ImageAI** classes and functions in
 
 * Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)** 
 * Documentation - **Chinese Version**  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-
 * Documentation - **French Version**  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
 
 

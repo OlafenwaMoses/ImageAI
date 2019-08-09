@@ -4,13 +4,13 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ### TABLE OF CONTENTS
 
-<a href="#firstdetection" > :white_square_button: First Object Detection</a><br>
-<a href="#objectextraction" > :white_square_button: Object Detection, Extraction and Fine-tune</a><br>
-<a href="#customdetection" > :white_square_button: Custom Object Detection</a><br>
-<a href="#detectionspeed" > :white_square_button: Detection Speed</a><br>
-<a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a><br>
-<a href="#inputoutputtype" > :white_square_button: Image Input & Output Types</a><br>
-<a href="#documentation" > :white_square_button: Documentation</a>
+- <a href="#firstdetection" > :white_square_button: First Object Detection</a>
+- <a href="#objectextraction" > :white_square_button: Object Detection, Extraction and Fine-tune</a>
+- <a href="#customdetection" > :white_square_button: Custom Object Detection</a>
+- <a href="#detectionspeed" > :white_square_button: Detection Speed</a>
+- <a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a>
+- <a href="#inputoutputtype" > :white_square_button: Image Input & Output Types</a>
+- <a href="#documentation" > :white_square_button: Documentation</a>
 
 
 ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class supports RetinaNet, YOLOv3 and TinyYOLOv3. To start performing object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: 
@@ -107,6 +107,7 @@ for eachObject in detections:
 In the 2 lines above, we ran the `detectObjectsFromImage()` function and parse in the path to our image, and the path to the new image which the function will save. Then the function returns an array of dictionaries with each dictionary corresponding to the number of objects detected in the image. Each dictionary has the properties `name` (name of the object), `percentage_probability` (percentage probability of the detection) and `box_points` (the x1,y1,x2 and y2 coordinates of the bounding box of the object).
 
 Should you want to use the RetinaNet which is appropriate for high-performance and high-accuracy demanding detection tasks, you will download the RetinaNet model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below:
+
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsRetinaNet()
@@ -115,6 +116,7 @@ detector.loadModel()
 ```
 
 However, if you desire TinyYOLOv3 which is optimized for speed and embedded devices, you will download the TinyYOLOv3 model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below:
+
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsTinyYOLOv3()

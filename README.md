@@ -81,7 +81,7 @@ pip3 install imageai --upgrade
 ### Image Prediction
 <div id="prediction"></div>
 
-![](images/1.jpg)
+![](./data-images/1.jpg)
  
 ```
 convertible : 52.459555864334106
@@ -126,7 +126,7 @@ The object detection class provides support for RetinaNet, YOLOv3 and TinyYOLOv3
 Click the link below to see the full sample codes, explanations and best practices guide.
 
 
-[ >>> Tutorial & Guide](imageai/Detection/README.md)
+[>>> Tutorial & Guide](imageai/Detection/README.md)
 
 
 ### Video Object Detection and Tracking

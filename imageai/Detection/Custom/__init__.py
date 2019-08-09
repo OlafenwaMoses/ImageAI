@@ -85,8 +85,8 @@ class DetectionModelTrainer:
 
         'setDataDirectory()' is required to set the path to which the data/dataset to be used for
                  training is kept. The directory can have any name, but it must have 'train' and 'validation'
-                 sub-directory. In the 'train' and 'validation' sub-directories, there must be 'data-images' and 'annotations'
-                 sub-directories respectively. The 'data-images' folder will contain the pictures for the dataset and the
+                 sub-directory. In the 'train' and 'validation' sub-directories, there must be 'images' and 'annotations'
+                 sub-directories respectively. The 'images' folder will contain the pictures for the dataset and the
                  'annotations' folder will contain the XML files with details of the annotations for each image in the
                  'images folder'.
 
