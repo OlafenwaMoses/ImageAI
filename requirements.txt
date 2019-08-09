@@ -3,8 +3,6 @@ keras
 numpy
 Pillow
 scipy
-pycocotools
-six
 h5py
 matplotlib
 opencv-python
