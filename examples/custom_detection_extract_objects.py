@@ -15,23 +15,23 @@ for detection, object_path in zip(detections, extracted_objects_array):
 """
 SAMPLE RESULT
 
-holo2-detected.jpg-objects\hololens-1.jpg
+holo2-detected-objects\hololens-1.jpg
 hololens  :  39.69653248786926  :  [611, 74, 751, 154]
 ---------------
 
-holo2-detected.jpg-objects\hololens-1.jpg
+holo2-detected-objects\hololens-1.jpg
 hololens  :  87.6643180847168  :  [23, 46, 90, 79]
 ---------------
 
-holo2-detected.jpg-objects\hololens-1.jpg
+holo2-detected-objects\hololens-1.jpg
 hololens  :  89.25175070762634  :  [191, 66, 243, 95]
 ---------------
 
-holo2-detected.jpg-objects\hololens-1.jpg
+holo2-detected-objects\hololens-1.jpg
 hololens  :  64.49641585350037  :  [437, 81, 514, 133]
 ---------------
 
-holo2-detected.jpg-objects\hololens-1.jpg
+holo2-detected-objects\hololens-1.jpg
 hololens  :  91.78624749183655  :  [380, 113, 423, 138]
 ---------------
 """

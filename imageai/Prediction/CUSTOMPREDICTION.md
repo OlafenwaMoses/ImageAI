@@ -4,16 +4,16 @@ A **DeepQuest AI** project <a href="https://deepquestai.com" >https://deepquesta
 ---
 
 ImageAI provides 4 different algorithms and model types to perform custom image prediction using your custom models.
-You will be able to use your model trained with <b>ImageAI</b> and the corresponding model_class JSON file to predict custom objects
+You will be able to use your model trained with **ImageAI** and the corresponding model_class JSON file to predict custom objects
 that you have trained the model on.
 
-<br>
-<h3><b><u>TABLE OF CONTENTS</u></b></h3>
-<a href="#customprediction" > &#9635 Custom Model Prediction</a><br>
-<a href="#custompredictionfullmodel" > &#9635 Custom Model Prediction with Full Model (NEW)</a><br>
-<a href="#custompredictionmultiple" > &#9635 Custom Prediction with multiple models (NEW)</a><br>
-<a href="#converttensorflow" > &#9635 Convert custom model to Tensorflow's format (NEW)</a><br>
-<a href="#convertdeepstack" > &#9635 Convert custom model to DeepStack's format (NEW)</a><br>
+### TABLE OF CONTENTS
+
+- <a href="#customprediction" > &#9635 Custom Model Prediction</a>
+- <a href="#custompredictionfullmodel" > &#9635 Custom Model Prediction with Full Model (NEW)</a>
+- <a href="#custompredictionmultiple" > &#9635 Custom Prediction with multiple models (NEW)</a>
+- <a href="#converttensorflow" > &#9635 Convert custom model to Tensorflow's format (NEW)</a>
+- <a href="#convertdeepstack" > &#9635 Convert custom model to DeepStack's format (NEW)</a>
 
 
 ### Custom Model Prediction
@@ -53,7 +53,7 @@ for eachPrediction, eachProbability in zip(predictions, probabilities):
 ```
 
 **Sample Result:**
-![Sample Result](../../images/4.jpg)
+![Sample Result](../../data-images/4.jpg)
 ```
 mechanic : 76.82620286941528
 chef : 10.106072574853897
@@ -68,7 +68,10 @@ from imageai.Prediction.Custom import CustomImagePrediction
 import os
 ```
 The code above imports the **ImageAI** library for custom image prediction and the python **os** class.
-`<pre>execution_path = os.getcwd()`
+
+```python
+execution_path = os.getcwd()
+```
 
 The above line obtains the path to the folder that contains your python file (in this example, your FirstCustomPrediction.py).
 
@@ -86,8 +89,9 @@ In the lines above, we created and instance of the `CustomImagePrediction()`
   in the third line, we set the path to  the model_class.json of the model, we load the model and parse the number of objected that can be predicted in the model.
 
 ```python
-predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "4.jpg"), result_count=5
+predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "4.jpg"), result_count=5)
 ```
+
 In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.predictImage()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 10 in this case) parsing `result_count=5`. The `.predictImage()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**percentage_probabilities**) being an array of the corresponding percentage probability for each prediction.
 
 ```python

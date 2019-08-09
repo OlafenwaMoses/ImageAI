@@ -1,0 +1,8 @@
+tensorflow
+keras
+numpy
+Pillow
+scipy
+h5py
+matplotlib
+opencv-python

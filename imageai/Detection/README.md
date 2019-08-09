@@ -4,13 +4,13 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 ### TABLE OF CONTENTS
 
-<a href="#firstdetection" > :white_square_button: First Object Detection</a><br>
-<a href="#objectextraction" > :white_square_button: Object Detection, Extraction and Fine-tune</a><br>
-<a href="#customdetection" > :white_square_button: Custom Object Detection</a><br>
-<a href="#detectionspeed" > :white_square_button: Detection Speed</a><br>
-<a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a><br>
-<a href="#inputoutputtype" > :white_square_button: Image Input & Output Types</a><br>
-<a href="#documentation" > :white_square_button: Documentation</a>
+- <a href="#firstdetection" > :white_square_button: First Object Detection</a>
+- <a href="#objectextraction" > :white_square_button: Object Detection, Extraction and Fine-tune</a>
+- <a href="#customdetection" > :white_square_button: Custom Object Detection</a>
+- <a href="#detectionspeed" > :white_square_button: Detection Speed</a>
+- <a href="#hidingdetails" > :white_square_button: Hiding/Showing Object Name and Probability</a>
+- <a href="#inputoutputtype" > :white_square_button: Image Input & Output Types</a>
+- <a href="#documentation" > :white_square_button: Documentation</a>
 
 
 ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class supports RetinaNet, YOLOv3 and TinyYOLOv3. To start performing object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: 
@@ -45,9 +45,9 @@ for eachObject in detections:
 
 Sample Result:
 Input Image
-![Input Image](../../images/image2.jpg)
+![Input Image](../../data-images/image2.jpg)
 Output Image
-![Output Image](../../images/yolo.jpg)
+![Output Image](../../data-images/yolo.jpg)
 
 ```
 laptop  :  87.32235431671143  :  (306, 238, 390, 284)
@@ -107,6 +107,7 @@ for eachObject in detections:
 In the 2 lines above, we ran the `detectObjectsFromImage()` function and parse in the path to our image, and the path to the new image which the function will save. Then the function returns an array of dictionaries with each dictionary corresponding to the number of objects detected in the image. Each dictionary has the properties `name` (name of the object), `percentage_probability` (percentage probability of the detection) and `box_points` (the x1,y1,x2 and y2 coordinates of the bounding box of the object).
 
 Should you want to use the RetinaNet which is appropriate for high-performance and high-accuracy demanding detection tasks, you will download the RetinaNet model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below:
+
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsRetinaNet()
@@ -115,6 +116,7 @@ detector.loadModel()
 ```
 
 However, if you desire TinyYOLOv3 which is optimized for speed and embedded devices, you will download the TinyYOLOv3 model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below:
+
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsTinyYOLOv3()
@@ -149,18 +151,18 @@ for eachObject, eachObjectPath in zip(detections, objects_path):
     print("--------------------------------")
 ```
 
-![Input Image](../../images/image3.jpg)
-![Output Images](../../images/image3new.jpg)
+![Input Image](../../data-images/image3.jpg)
+![Output Images](../../data-images/image3new.jpg)
 
-![dog](../../images/image3new.jpg-objects/dog-1.jpg)
-![motorcycle](../../images/image3new.jpg-objects/motorcycle-3.jpg)
-![car](../../images/image3new.jpg-objects/car-4.jpg)
-![bicycle](../../images/image3new.jpg-objects/bicycle-5.jpg)
-![person](../../images/image3new.jpg-objects/person-6.jpg)
-![person](../../images/image3new.jpg-objects/person-7.jpg)
-![person](../../images/image3new.jpg-objects/person-8.jpg)
-![person](../../images/image3new.jpg-objects/person-9.jpg)
-![person](../../images/image3new.jpg-objects/person-10.jpg)
+![dog](../../data-images/image3new-objects/dog-1.jpg)
+![motorcycle](../../data-images/image3new-objects/motorcycle-3.jpg)
+![car](../../data-images/image3new-objects/car-4.jpg)
+![bicycle](../../data-images/image3new-objects/bicycle-5.jpg)
+![person](../../data-images/image3new-objects/person-6.jpg)
+![person](../../data-images/image3new-objects/person-7.jpg)
+![person](../../data-images/image3new-objects/person-8.jpg)
+![person](../../data-images/image3new-objects/person-9.jpg)
+![person](../../data-images/image3new-objects/person-10.jpg)
 
 
 Let us review the part of the code that perform the object detection and extract the images:
@@ -220,7 +222,7 @@ for eachObject in detections:
     print("--------------------------------")
 ```
 
-![Result](../../images/image3custom.jpg)
+![Result](../../data-images/image3custom.jpg)
 
 
 Let us take a look at the part of the code that made this possible.
@@ -261,7 +263,7 @@ detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_
 
 In the above code, we specified that both the object name and percentage probability should not be shown. As you can see in the result below, both the names of the objects and their individual percentage probability is not shown in the detected image.
 
-![Result](../../images/nodetails.jpg)
+![Result](../../data-images/nodetails.jpg)
 
 
 ## Image Input & Output Types

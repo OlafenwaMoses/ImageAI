@@ -1,4 +1,4 @@
-# ImageAI (v2.1.3 )
+# ImageAI (v2.1.3)
 
 A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code.
@@ -34,23 +34,23 @@ What's new:
 
 
 ### TABLE OF CONTENTS
- <a href="#dependencies" > :white_square_button: Dependencies</a> <br>
- <a href="#installation" > :white_square_button: Installation</a><br>
- <a href="#prediction" > :white_square_button: Image Prediction</a><br>
- <a href="#detection" > :white_square_button: Object Detection</a><br>
- <a href="#videodetection" > :white_square_button: Video Object Detection, Tracking & Analysis</a><br>
- <a href="#customtraining" > :white_square_button: Custom Model Training</a><br>
- <a href="#customprediction" > :white_square_button: Custom Image Prediction</a><br>
- <a href="#customdetectiontraining" > :white_square_button: Custom Detection Model Training</a><br>
- <a href="#customdetection" > :white_square_button: Custom Object Detection</a><br>
- <a href="#customvideodetection" > :white_square_button: Custom Video Object Detection & Analysis</a><br>
- <a href="#documentation" > :white_square_button: Documentation</a><br>
- <a href="#sample" > :white_square_button: Projects Built on ImageAI</a><br>
- <a href="#real-time-and-high-performance-implementation" > :white_square_button: High Performance Implementation</a><br>
- <a href="#recommendation" > :white_square_button: AI Practice Recommendations</a><br>
- <a href="#contact" > :white_square_button: Contact Developers</a><br>
- <a href="#contributors" > :white_square_button: Contributors</a><br>
- <a href="#ref" > :white_square_button: References</a>
+- <a href="#dependencies" > :white_square_button: Dependencies</a>
+- <a href="#installation" > :white_square_button: Installation</a>
+- <a href="#prediction" > :white_square_button: Image Prediction</a>
+- <a href="#detection" > :white_square_button: Object Detection</a><br>
+- <a href="#videodetection" > :white_square_button: Video Object Detection, Tracking & Analysis</a>
+- <a href="#customtraining" > :white_square_button: Custom Model Training</a>
+- <a href="#customprediction" > :white_square_button: Custom Image Prediction</a>
+- <a href="#customdetectiontraining" > :white_square_button: Custom Detection Model Training</a>
+- <a href="#customdetection" > :white_square_button: Custom Object Detection</a>
+- <a href="#customvideodetection" > :white_square_button: Custom Video Object Detection & Analysis</a>
+- <a href="#documentation" > :white_square_button: Documentation</a>
+- <a href="#sample" > :white_square_button: Projects Built on ImageAI</a>
+- <a href="#real-time-and-high-performance-implementation" > :white_square_button: High Performance Implementation</a>
+- <a href="#recommendation" > :white_square_button: AI Practice Recommendations</a>
+- <a href="#contact" > :white_square_button: Contact Developers</a>
+- <a href="#contributors" > :white_square_button: Contributors</a>
+- <a href="#ref" > :white_square_button: References</a>
 
 
 
@@ -66,7 +66,7 @@ To use **ImageAI** in your application developments, you must have installed the
  - Keras 2.x 
  
  ```bash
-pip install tensorflow keras opencv-python
+pip install -U tensorflow keras opencv-python
 ```
 
 ### Installation
@@ -81,7 +81,7 @@ pip3 install imageai --upgrade
 ### Image Prediction
 <div id="prediction"></div>
 
-![](images/1.jpg)
+![](./data-images/1.jpg)
  
 ```
 convertible : 52.459555864334106
@@ -102,9 +102,8 @@ Click the link below to see the full sample codes, explanations and best practic
 ### Object Detection
 <div id="detection"></div>
 
-![Input Image](images/image2.jpg)
-
-![Output Image](images/image2new.jpg)
+![Input Image](./data-images/image2.jpg)
+![Output Image](./data-images/image2new.jpg)
 
 ```
 person : 91.946941614151
@@ -127,7 +126,7 @@ The object detection class provides support for RetinaNet, YOLOv3 and TinyYOLOv3
 Click the link below to see the full sample codes, explanations and best practices guide.
 
 
-[ >>> Tutorial & Guide](imageai/Detection/README.md)
+[>>> Tutorial & Guide](imageai/Detection/README.md)
 
 
 ### Video Object Detection and Tracking
@@ -137,19 +136,19 @@ Click the link below to see the full sample codes, explanations and best practic
 
 _Below is a snapshot of a video with objects detected._
 
-![](images/video1.jpg)
+![](./data-images/video1.jpg)
           
 **Video Custom Object Detection (Object Tracking)**
 
 _Below is a snapshot of a video with only person, bicycle and motorcyle detected._
 
-![](images/video2.jpg)
+![](./data-images/video2.jpg)
 
 **Video Analysis Visualization**
 
 _Below is a visualization of video analysis returned by **ImageAI** into a 'per_second' function._
 
-![](images/video_analysis_visualization.jpg)
+![](./data-images/video_analysis_visualization.jpg)
 
 **ImageAI** provides very convenient and powerful methods to perform object detection in videos and track specific object(s).
 The video object detection class provided only supports  the current state-of-the-art RetinaNet, but with options to adjust for state of the art performance or real time processing.
@@ -163,7 +162,7 @@ Click the link to see the full videos, sample codes, explanations and best pract
 
 _A sample from the IdenProf Dataset used to train a Model for predicting professionals._
 
-![](images/idenprof.jpg)
+![](./data-images/idenprof.jpg)
 
 
 **ImageAI** provides classes and methods for you to train a new model that can be used to perform prediction on your own custom objects.
@@ -178,7 +177,7 @@ Click the link below to see the guide to preparing training images, sample train
 
 _Prediction from a sample model trained on IdenProf, for predicting professionals_
 
-![](images/4.jpg)
+![](./data-images/4.jpg)
 
 ```
 mechanic : 76.82620286941528
@@ -202,7 +201,7 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 _Training detection models to detect and recognize new objects._
 
-![](images/headsets.jpg)
+![](./data-images/headsets.jpg)
 
 **ImageAI** provides classes and methods for you to train new **YOLOv3** object detection models on your **custom dataset**.
 This means you can train a model to detect literally any object of interest by providing the images, the annotations and training with ImageAI.
@@ -217,7 +216,7 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 _Detection result from a custom YOLOv3 model trained to detect the Hololens headset._
 
-![](images/holo2-detected.jpg)
+![](./data-images/holo2-detected.jpg)
 
 ```
 hololens  :  39.69653248786926  :  [611, 74, 751, 154]
@@ -243,7 +242,7 @@ Click the link below to see the guide to sample training codes, explanations, an
 
 _Video Detection result from a custom YOLOv3 model trained to detect the Hololens headset in a video._
 
-![](images/customvideodetection.gif)
+![](./data-images/customvideodetection.gif)
       
     
 
@@ -319,8 +318,6 @@ Kindly follow the link below to download the publication.
     * _Facebook:_ [olafenwajohn](https://facebook.com/olafenwajohn)
 
 
-
-
 ### Contributors
 <div id="contact"></div>
 
@@ -367,8 +364,3 @@ We give special thanks to **[Kang vcar](https://github.com/kangvcar/)** for his 
 [https://arxiv.org/abs/1804.02767](https://arxiv.org/abs/1804.02767)
  14. Experiencor, Training and Detecting Objects with YOLO3
 [https://github.com/experiencor/keras-yolo3](https://github.com/experiencor/keras-yolo3)
- 
- 
- 
- 
- 
