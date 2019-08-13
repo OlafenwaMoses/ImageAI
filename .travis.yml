@@ -10,8 +10,8 @@ install:
   - pip install pytest
 script:
   - cd test
-  - mkdir test/data-models
-  - mkdir test/data-temp
+  - mkdir data-models
+  - mkdir data-temp
   - cd test
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
@@ -20,7 +20,7 @@ script:
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
-  - pytest
+  - pytest -v
 
 
 
