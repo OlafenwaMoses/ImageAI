@@ -1,0 +1,71 @@
+version: 2.0
+
+references:
+
+  install_pips: &install_pips
+    run:
+      name: Install PyPI dependences
+      command: |
+        sudo apt-get update
+        pip install Cython  # required by pycocotools
+        pip install -r requirements.txt --user
+        pip install -r tests/requirements.txt
+        pip list
+
+  download_models: &download_models
+    run:
+      name: Download models
+      command: |
+        wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
+        wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
+        wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
+        wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5
+        wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
+        wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
+        wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
+
+  test_coverage: &test_coverage
+    run:
+      name: Testing and Formating
+      command: |
+        check-manifest
+        python setup.py check -m -s
+        coverage run --source imageai -m py.test imageai tests -v --doctest-modules
+        # flake8 . --ignore=E402,E731 --max-line-length=100
+
+jobs:
+  Py35:
+    docker:
+      - image: circleci/python:3.5
+    steps: &steps
+      - checkout
+      # INSTALLATION
+      - *install_pips
+      # BUILDING
+      - *download_models
+      # TESTING
+      - *test_coverage
+
+      # PASSING
+      - run:
+          name: Finalise
+          command: |
+            python setup.py install --user
+            coverage report && coverage xml -o test-reports/coverage.xml
+
+      - store_test_results:
+          path: test-reports
+      - store_artifacts:
+          path: test-reports
+
+  Py33:
+    docker:
+      - image: circleci/python:3.6
+    steps: *steps
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - Py35
+      - Py36

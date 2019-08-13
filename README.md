@@ -1,6 +1,7 @@
 # ImageAI (v2.1.3)
 
 [![Build Status](https://travis-ci.org/Borda/ImageAI.svg?branch=master)](https://travis-ci.org/Borda/ImageAI)
+[![CircleCI](https://circleci.com/gh/Borda/ImageAI.svg?style=svg)](https://circleci.com/gh/Borda/ImageAI)
 [![codecov](https://codecov.io/gh/Borda/ImageAI/branch/master/graph/badge.svg)](https://codecov.io/gh/Borda/ImageAI)
 [![CodeFactor](https://www.codefactor.io/repository/github/borda/imageai/badge)](https://www.codefactor.io/repository/github/borda/imageai)
 
