@@ -18,13 +18,13 @@ def images_to_image_array():
 
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
-def test_custom_recognition_model_resnet():
+def mytest_custom_recognition_model_resnet():
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsResNet()
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_resnet.h5"))
     predictor.setJsonPath(model_json=os.path.join(TEST_FOLDER, "data-json", "idenprof.json"))
     predictor.loadModel(num_objects=10)
-    predictions, probabilities = predictor.predictImage(image_input=os.path.join(TEST_FOLDER, TEST_FOLDER, "data-images", "9.jpg"))
+    predictions, probabilities = predictor.predictImage(image_input=os.path.join(TEST_FOLDER, "data-images", "9.jpg"))
 
     assert isinstance(predictions, list)
     assert isinstance(probabilities, list)
@@ -34,12 +34,12 @@ def test_custom_recognition_model_resnet():
 
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
-def test_custom_recognition_full_model_resnet():
+def mytest_custom_recognition_full_model_resnet():
     predictor = CustomImagePrediction()
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_full_resnet_ex-001_acc-0.119792.h5"))
     predictor.setJsonPath(model_json=os.path.join(TEST_FOLDER, "data-json", "idenprof.json"))
     predictor.loadFullModel(num_objects=10)
-    predictions, probabilities = predictor.predictImage(image_input=os.path.join(TEST_FOLDER, TEST_FOLDER, "data-images", "9.jpg"))
+    predictions, probabilities = predictor.predictImage(image_input=os.path.join(TEST_FOLDER, "data-images", "9.jpg"))
 
     assert isinstance(predictions, list)
     assert isinstance(probabilities, list)
@@ -49,13 +49,13 @@ def test_custom_recognition_full_model_resnet():
 
 @pytest.mark.densenet
 @pytest.mark.recognition_custom
-def test_custom_recognition_model_densenet():
+def mytest_custom_recognition_model_densenet():
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsDenseNet()
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_densenet-0.763500.h5"))
     predictor.setJsonPath(model_json=os.path.join(TEST_FOLDER, "data-json", "idenprof.json"))
     predictor.loadModel(num_objects=10)
-    predictions, probabilities = predictor.predictImage(image_input=os.path.join(TEST_FOLDER, TEST_FOLDER, "data-images", "9.jpg"))
+    predictions, probabilities = predictor.predictImage(image_input=os.path.join(TEST_FOLDER, "data-images", "9.jpg"))
 
     assert isinstance(predictions, list)
     assert isinstance(probabilities, list)
@@ -68,7 +68,7 @@ def test_custom_recognition_model_densenet():
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
-def test_custom_recognition_model_resnet_multi():
+def mytest_custom_recognition_model_resnet_multi():
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsResNet()
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_resnet.h5"))
@@ -90,7 +90,7 @@ def test_custom_recognition_model_resnet_multi():
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
-def test_custom_recognition_full_model_resnet_multi():
+def mytest_custom_recognition_full_model_resnet_multi():
     predictor = CustomImagePrediction()
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_full_resnet_ex-001_acc-0.119792.h5"))
     predictor.setJsonPath(model_json=os.path.join(TEST_FOLDER, "data-json", "idenprof.json"))
@@ -111,7 +111,7 @@ def test_custom_recognition_full_model_resnet_multi():
 @pytest.mark.densenet
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
-def test_custom_recognition_model_densenet_multi():
+def mytest_custom_recognition_model_densenet_multi():
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsDenseNet()
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_densenet-0.763500.h5"))

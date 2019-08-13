@@ -15,8 +15,8 @@ results/
 temp/
 runner/
 temporary/
-test/data-models/
-test/data-temp/
+tests/data-models/
+tests/data-temp/
 *.db
 
 # PyCharm
