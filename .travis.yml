@@ -44,7 +44,7 @@ before_script:
   - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
 
 script:
-  - coverage run --source imageai -m py.test imageai -v --doctest-modules
+  - coverage run --source imageai -m py.test imageai tests -v --doctest-modules
   # - flake8 . --ignore=E402,E731 --max-line-length=100
   - python setup.py install
 
