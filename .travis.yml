@@ -9,16 +9,17 @@ install:
   - pip install -r requirements.txt
   - pip install pytest
 script:
-  - sudo mkdir tests/data-models
-  - sudo mkdir tests/data-temp
-  - sudo wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
-  - sudo wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
-  - sudo wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
-  - sudo wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5
-  - sudo wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
-  - sudo wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
-  - sudo wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
+  - mkdir test/data-models
+  - mkdir test/data-temp
+  - wget /test/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
+  - wget /test/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
+  - wget /test/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
+  - wget /test/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5
+  - wget /test/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
+  - wget /test/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
+  - wget /test/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
   - python setup.py
+  - cd test
   - pytest
 
 
