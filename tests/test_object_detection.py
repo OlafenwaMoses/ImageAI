@@ -6,10 +6,10 @@ from os.path import dirname
 import shutil
 from numpy import ndarray
 
-main_folder = os.getcwd()
+TEST_FOLDER = os.path.dirname(__file__)
 
-image_input = os.path.join(main_folder, "data-images", "11.jpg")
-image_output = os.path.join(main_folder, "data-temp", "11-detected.jpg")
+image_input = os.path.join(TEST_FOLDER, "data-images", "11.jpg")
+image_output = os.path.join(TEST_FOLDER, "data-temp", "11-detected.jpg")
 
 
 
@@ -18,7 +18,7 @@ image_output = os.path.join(main_folder, "data-temp", "11-detected.jpg")
 def test_object_detection_retinanet():
     detector = ObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(os.path.join(TEST_FOLDER, "data-models", "resnet50_coco_best_v2.0.1.h5"))
     detector.loadModel()
     results = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40)
 
@@ -54,7 +54,7 @@ def test_object_detection_retinanet():
 def test_object_detection_yolov3():
     detector = ObjectDetection()
     detector.setModelTypeAsYOLOv3()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "yolo.h5"))
+    detector.setModelPath(os.path.join(TEST_FOLDER, "data-models", "yolo.h5"))
     detector.loadModel()
     results = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40)
 
@@ -90,7 +90,7 @@ def test_object_detection_yolov3():
 def test_object_detection_tiny_yolov3():
     detector = ObjectDetection()
     detector.setModelTypeAsTinyYOLOv3()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "yolo-tiny.h5"))
+    detector.setModelPath(os.path.join(TEST_FOLDER, "data-models", "yolo-tiny.h5"))
     detector.loadModel()
     results = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40)
 
@@ -133,7 +133,7 @@ def test_object_detection_retinanet_array_io():
 
     detector = ObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(os.path.join(TEST_FOLDER, "data-models", "resnet50_coco_best_v2.0.1.h5"))
     detector.loadModel()
     detected_array, results = detector.detectObjectsFromImage(input_image=image_input_array, input_type="array", minimum_percentage_probability=40, output_type="array")
 
@@ -168,7 +168,7 @@ def test_object_detection_yolov3_array_io():
 
     detector = ObjectDetection()
     detector.setModelTypeAsYOLOv3()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "yolo.h5"))
+    detector.setModelPath(os.path.join(TEST_FOLDER, "data-models", "yolo.h5"))
     detector.loadModel()
     detected_array, results = detector.detectObjectsFromImage(input_image=image_input_array, input_type="array", minimum_percentage_probability=40, output_type="array")
 
@@ -201,7 +201,7 @@ def test_object_detection_tiny_yolov3_array_io():
 
     detector = ObjectDetection()
     detector.setModelTypeAsTinyYOLOv3()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "yolo-tiny.h5"))
+    detector.setModelPath(os.path.join(TEST_FOLDER, "data-models", "yolo-tiny.h5"))
     detector.loadModel()
     detected_array, results = detector.detectObjectsFromImage(input_image=image_input_array, input_type="array", minimum_percentage_probability=40, output_type="array")
 

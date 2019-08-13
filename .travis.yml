@@ -33,8 +33,8 @@ before_script:
   - gcc --version ; python --version ; pip --version ; pwd ; ls -l
   - check-manifest
   - python setup.py check -m -s
-  - mkdir -p ./tests/data-models
-  - mkdir -p ./tests/data-temp
+  # - mkdir -p ./tests/data-models
+  # - mkdir -p ./tests/data-temp
   - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
   - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
   - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5

@@ -5,9 +5,9 @@ import os
 from os.path import dirname
 from numpy import ndarray
 
-main_folder = os.getcwd()
-video_file = os.path.join(main_folder, "data-videos", "traffic-micro.mp4")
-video_file_output = os.path.join(main_folder, "data-temp", "traffic-micro-detected")
+TEST_FOLDER = os.path.dirname(__file__)
+video_file = os.path.join(TEST_FOLDER, "data-videos", "traffic-micro.mp4")
+video_file_output = os.path.join(TEST_FOLDER, "data-temp", "traffic-micro-detected")
 
 
 @pytest.mark.detection
@@ -17,7 +17,7 @@ def test_video_detection_retinanet():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(model_path=os.path.join(TEST_FOLDER, "data-models", "resnet50_coco_best_v2.0.1.h5"))
     detector.loadModel(detection_speed="fastest")
     video_path = detector.detectObjectsFromVideo(input_file_path=video_file, output_file_path=video_file_output, save_detected_video=True, frames_per_second=30, log_progress=True)
 
@@ -34,7 +34,7 @@ def test_video_detection_yolov3():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsYOLOv3()
-    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "yolo.h5"))
+    detector.setModelPath(model_path=os.path.join(TEST_FOLDER, "data-models", "yolo.h5"))
     detector.loadModel(detection_speed="faster")
     video_path = detector.detectObjectsFromVideo(input_file_path=video_file, output_file_path=video_file_output, save_detected_video=True, frames_per_second=30, log_progress=True)
 
@@ -50,7 +50,7 @@ def test_video_detection_tiny_yolov3():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsTinyYOLOv3()
-    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "yolo-tiny.h5"))
+    detector.setModelPath(model_path=os.path.join(TEST_FOLDER, "data-models", "yolo-tiny.h5"))
     detector.loadModel(detection_speed="fast")
     video_path = detector.detectObjectsFromVideo(input_file_path=video_file, output_file_path=video_file_output, save_detected_video=True, frames_per_second=30, log_progress=True)
 
@@ -69,7 +69,7 @@ def test_video_detection_retinanet_analysis():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(model_path=os.path.join(TEST_FOLDER, "data-models", "resnet50_coco_best_v2.0.1.h5"))
     detector.loadModel(detection_speed="fastest")
     video_path = detector.detectObjectsFromVideo(input_file_path=video_file, output_file_path=video_file_output, save_detected_video=True, frames_per_second=30, log_progress=True, per_frame_function=forFrame, per_second_function=forSecond, return_detected_frame=True)
 
