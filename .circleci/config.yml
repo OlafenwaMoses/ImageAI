@@ -7,9 +7,9 @@ references:
       name: Install PyPI dependences
       command: |
         sudo apt-get update
-        pip install Cython  # required by pycocotools
+        sudo pip install Cython numpy  # required by pycocotools
         pip install -r requirements.txt --user
-        pip install -r tests/requirements.txt
+        sudo pip install -r tests/requirements.txt
         pip list
 
   download_models: &download_models
@@ -58,7 +58,7 @@ jobs:
       - store_artifacts:
           path: test-reports
 
-  Py33:
+  Py36:
     docker:
       - image: circleci/python:3.6
     steps: *steps

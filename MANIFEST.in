@@ -31,3 +31,4 @@ prune test*
 prune data-images
 prune data-videos
 prune imageai.egg*
+prune .circleci
