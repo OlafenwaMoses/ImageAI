@@ -17,10 +17,13 @@ script:
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/models-v3/idenprof_densenet-0.763500.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/models-v3/idenprof_full_resnet_ex-001_acc-0.119792.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/models-v3/idenprof_resnet.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
-  - pytest -v
+  - travis_wait 30 pytest -v
 
 
 

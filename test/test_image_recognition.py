@@ -3,15 +3,18 @@ import os
 import cv2
 import pytest
 from os.path import dirname
-# wget /data-models/ model_file.h5
+import keras
 
 main_folder = os.getcwd()
 
 @pytest.mark.squeezenet
 @pytest.mark.recognition
 def test_recognition_model_squeezenet():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
-    print("TOP FOLDER: ", main_folder)
     predictor = ImagePrediction()
     predictor.setModelTypeAsSqueezeNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "squeezenet_weights_tf_dim_ordering_tf_kernels.h5"))
@@ -26,6 +29,10 @@ def test_recognition_model_squeezenet():
 @pytest.mark.resnet
 @pytest.mark.recognition
 def test_recognition_model_resnet():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = ImagePrediction()
     predictor.setModelTypeAsResNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
@@ -40,6 +47,10 @@ def test_recognition_model_resnet():
 @pytest.mark.inceptionv3
 @pytest.mark.recognition
 def test_recognition_model_inceptionv3():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = ImagePrediction()
     predictor.setModelTypeAsInceptionV3()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "inception_v3_weights_tf_dim_ordering_tf_kernels.h5"))
@@ -54,6 +65,10 @@ def test_recognition_model_inceptionv3():
 @pytest.mark.densenet
 @pytest.mark.recognition
 def test_recognition_model_densenet():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = ImagePrediction()
     predictor.setModelTypeAsDenseNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "DenseNet-BC-121-32.h5"))
@@ -70,6 +85,10 @@ def test_recognition_model_densenet():
 @pytest.mark.recognition
 def test_recognition_model_squeezenet_array_input():
 
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
     predictor = ImagePrediction()
     predictor.setModelTypeAsSqueezeNet()
@@ -86,6 +105,10 @@ def test_recognition_model_squeezenet_array_input():
 @pytest.mark.resnet
 @pytest.mark.recognition
 def test_recognition_model_resnet_array_input():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = ImagePrediction()
     predictor.setModelTypeAsResNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
@@ -101,6 +124,10 @@ def test_recognition_model_resnet_array_input():
 @pytest.mark.inceptionv3
 @pytest.mark.recognition
 def test_recognition_model_inceptionv3_array_input():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = ImagePrediction()
     predictor.setModelTypeAsInceptionV3()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "inception_v3_weights_tf_dim_ordering_tf_kernels.h5"))
@@ -116,6 +143,10 @@ def test_recognition_model_inceptionv3_array_input():
 @pytest.mark.densenet
 @pytest.mark.recognition
 def test_recognition_model_densenet_array_input():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = ImagePrediction()
     predictor.setModelTypeAsDenseNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "DenseNet-BC-121-32.h5"))

@@ -5,6 +5,7 @@ import cv2
 from os.path import dirname
 import shutil
 from numpy import ndarray
+import keras
 
 main_folder = os.getcwd()
 
@@ -16,6 +17,10 @@ image_output = os.path.join(main_folder, "data-temp", "11-detected.jpg")
 @pytest.mark.detection
 @pytest.mark.retinanet
 def test_object_detection_retinanet():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     detector = ObjectDetection()
     detector.setModelTypeAsRetinaNet()
     detector.setModelPath(os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
@@ -52,6 +57,10 @@ def test_object_detection_retinanet():
 @pytest.mark.detection
 @pytest.mark.yolov3
 def test_object_detection_yolov3():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     detector = ObjectDetection()
     detector.setModelTypeAsYOLOv3()
     detector.setModelPath(os.path.join(main_folder, "data-models", "yolo.h5"))
@@ -88,6 +97,10 @@ def test_object_detection_yolov3():
 @pytest.mark.detection
 @pytest.mark.tiny_yolov3
 def test_object_detection_tiny_yolov3():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     detector = ObjectDetection()
     detector.setModelTypeAsTinyYOLOv3()
     detector.setModelPath(os.path.join(main_folder, "data-models", "yolo-tiny.h5"))
@@ -128,6 +141,10 @@ def test_object_detection_tiny_yolov3():
 @pytest.mark.retinanet
 @pytest.mark.array_io
 def test_object_detection_retinanet_array_io():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
     image_input_array = cv2.imread(image_input)
 
@@ -163,6 +180,10 @@ def test_object_detection_retinanet_array_io():
 @pytest.mark.yolov3
 @pytest.mark.array_io
 def test_object_detection_yolov3_array_io():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
     image_input_array = cv2.imread(image_input)
 
@@ -196,6 +217,11 @@ def test_object_detection_yolov3_array_io():
 @pytest.mark.tiny_yolov3
 @pytest.mark.array_io
 def test_object_detection_tiny_yolov3_array_io():
+
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
     image_input_array = cv2.imread(image_input)
 

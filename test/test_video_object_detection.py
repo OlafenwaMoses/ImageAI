@@ -4,6 +4,7 @@ import pytest
 import os
 from os.path import dirname
 from numpy import ndarray
+import keras
 
 main_folder = os.getcwd()
 video_file = os.path.join(main_folder, "data-videos", "traffic-micro.mp4")
@@ -14,6 +15,11 @@ video_file_output = os.path.join(main_folder, "data-temp", "traffic-micro-detect
 @pytest.mark.video_detection
 @pytest.mark.retinanet
 def test_video_detection_retinanet():
+
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsRetinaNet()
@@ -32,6 +38,11 @@ def test_video_detection_retinanet():
 @pytest.mark.yolov3
 def test_video_detection_yolov3():
 
+    try:
+        keras.backend.clear_session()
+    except:
+        None
+
     detector = VideoObjectDetection()
     detector.setModelTypeAsYOLOv3()
     detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "yolo.h5"))
@@ -47,6 +58,11 @@ def test_video_detection_yolov3():
 @pytest.mark.video_detection
 @pytest.mark.tiny_yolov3
 def test_video_detection_tiny_yolov3():
+
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsTinyYOLOv3()
@@ -66,6 +82,11 @@ def test_video_detection_tiny_yolov3():
 @pytest.mark.retinanet
 @pytest.mark.video_analysis
 def test_video_detection_retinanet_analysis():
+
+    try:
+        keras.backend.clear_session()
+    except:
+        None
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsRetinaNet()

@@ -2,6 +2,7 @@ from imageai.Prediction.Custom import CustomImagePrediction
 import os
 import pytest
 from os.path import dirname
+import keras
 
 
 main_folder = os.getcwd()
@@ -19,6 +20,12 @@ def images_to_image_array():
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 def test_custom_recognition_model_resnet():
+
+    try:
+        keras.backend.clear_session()
+    except:
+        None
+
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsResNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "idenprof_resnet.h5"))
@@ -35,6 +42,10 @@ def test_custom_recognition_model_resnet():
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 def test_custom_recognition_full_model_resnet():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = CustomImagePrediction()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "idenprof_full_resnet_ex-001_acc-0.119792.h5"))
     predictor.setJsonPath(model_json=os.path.join(main_folder, "data-json", "idenprof.json"))
@@ -50,6 +61,10 @@ def test_custom_recognition_full_model_resnet():
 @pytest.mark.densenet
 @pytest.mark.recognition_custom
 def test_custom_recognition_model_densenet():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsDenseNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "idenprof_densenet-0.763500.h5"))
@@ -69,6 +84,10 @@ def test_custom_recognition_model_densenet():
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
 def test_custom_recognition_model_resnet_multi():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsResNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "idenprof_resnet.h5"))
@@ -91,6 +110,10 @@ def test_custom_recognition_model_resnet_multi():
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
 def test_custom_recognition_full_model_resnet_multi():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = CustomImagePrediction()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "idenprof_full_resnet_ex-001_acc-0.119792.h5"))
     predictor.setJsonPath(model_json=os.path.join(main_folder, "data-json", "idenprof.json"))
@@ -112,6 +135,10 @@ def test_custom_recognition_full_model_resnet_multi():
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
 def test_custom_recognition_model_densenet_multi():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
     predictor = CustomImagePrediction()
     predictor.setModelTypeAsDenseNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "idenprof_densenet-0.763500.h5"))
