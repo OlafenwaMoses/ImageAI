@@ -23,7 +23,7 @@ script:
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
-  - travis_wait 30 pytest -v
+  - pytest -v
 
 
 
