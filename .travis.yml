@@ -9,6 +9,7 @@ install:
   - pip install -r requirements.txt
   - pip install pytest
 script:
+  - python setup.py
   - cd test
   - mkdir data-models
   - mkdir data-temp
