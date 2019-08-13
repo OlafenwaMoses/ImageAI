@@ -33,16 +33,15 @@ before_script:
   - gcc --version ; python --version ; pip --version ; pwd ; ls -l
   - check-manifest
   - python setup.py check -m -s
-  - mkdir tests/data-models
-  - mkdir tests/data-temp
-  - wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
-  - wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
-  - wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
-  - wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5
-  - wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
-  - wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
-  - wget /tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
-
+  - mkdir -p ./tests/data-models
+  - mkdir -p ./tests/data-temp
+  - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
+  - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
+  - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
+  - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5
+  - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
+  - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
+  - wget --directory-prefix=./tests/data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
 
 script:
   - coverage run --source imageai -m py.test imageai -v --doctest-modules

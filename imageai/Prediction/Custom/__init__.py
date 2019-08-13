@@ -79,16 +79,16 @@ class ModelTraining:
         """
         self.__modelType = "inceptionv3"
 
-    def setDataDirectory(self, data_directory="", train_subdirectory="train", test_subdirectory="test",
+    def setDataDirectory(self, data_directory="", train_subdirectory="train", test_subdirectory="tests",
                          models_subdirectory="models", json_subdirectory="json"):
         """
         'setDataDirectory()'
 
         - data_directory , is required to set the path to which the data/dataset to be used for
-                 training is kept. The directory can have any name, but it must have 'train' and 'test'
-                 sub-directory. In the 'train' and 'test' sub-directories, there must be sub-directories
+                 training is kept. The directory can have any name, but it must have 'train' and 'tests'
+                 sub-directory. In the 'train' and 'tests' sub-directories, there must be sub-directories
                  with each having it's name corresponds to the name/label of the object whose images are
-                to be kept. The structure of the 'test' and 'train' folder must be as follows:
+                to be kept. The structure of the 'tests' and 'train' folder must be as follows:
 
                 >> train >> class1 >> class1_train_images
                          >> class2 >> class2_train_images
@@ -96,14 +96,14 @@ class ModelTraining:
                          >> class4 >> class4_train_images
                          >> class5 >> class5_train_images
 
-                >> test >> class1 >> class1_test_images
+                >> tests >> class1 >> class1_test_images
                         >> class2 >> class2_test_images
                         >> class3 >> class3_test_images
                         >> class4 >> class4_test_images
                         >> class5 >> class5_test_images
 
         - train_subdirectory (optional), subdirectory within 'data_directory' where the training set is. Defaults to 'train'.
-        - test_subdirectory (optional), subdirectory within 'data_directory' where the testing set is. Defaults to 'test'.
+        - test_subdirectory (optional), subdirectory within 'data_directory' where the testing set is. Defaults to 'tests'.
         - models_subdirectory (optional), subdirectory within 'data_directory' where the output models will be saved. Defaults to 'models'.
         - json_subdirectory (optional), subdirectory within 'data_directory' where the model classes json file will be saved. Defaults to 'json'.
 

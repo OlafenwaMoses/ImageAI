@@ -547,7 +547,7 @@ TEST_ZIP = os.path.join(execution_path, "idenprof-test.zip")
 
 DATASET_DIR = os.path.join(execution_path, "idenprof")
 DATASET_TRAIN_DIR = os.path.join(DATASET_DIR, "train")
-DATASET_TEST_DIR = os.path.join(DATASET_DIR, "test")
+DATASET_TEST_DIR = os.path.join(DATASET_DIR, "tests")
 
 if(os.path.exists(DATASET_DIR) == False):
     os.mkdir(DATASET_DIR)
