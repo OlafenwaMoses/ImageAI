@@ -7,13 +7,8 @@ from os.path import dirname
 TEST_FOLDER = os.path.dirname(__file__)
 
 all_images = os.listdir(os.path.join(TEST_FOLDER, "data-images"))
-all_images_array = []
-
-
-def images_to_image_array():
-    for image in all_images:
-        all_images_array.append(os.path.join(TEST_FOLDER, "data-images", image))
-
+all_images_array = [os.path.join(TEST_FOLDER, "data-images", image)
+                    for image in all_images]
 
 
 @pytest.mark.resnet
@@ -74,7 +69,6 @@ def mytest_custom_recognition_model_resnet_multi():
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_resnet.h5"))
     predictor.setJsonPath(model_json=os.path.join(TEST_FOLDER, "data-json", "idenprof.json"))
     predictor.loadModel(num_objects=10)
-    images_to_image_array()
     result_array = predictor.predictMultipleImages(sent_images_array=all_images_array)
 
     assert isinstance(result_array, list)
@@ -95,7 +89,6 @@ def mytest_custom_recognition_full_model_resnet_multi():
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_full_resnet_ex-001_acc-0.119792.h5"))
     predictor.setJsonPath(model_json=os.path.join(TEST_FOLDER, "data-json", "idenprof.json"))
     predictor.loadFullModel(num_objects=10)
-    images_to_image_array()
     result_array = predictor.predictMultipleImages(sent_images_array=all_images_array)
 
     assert isinstance(result_array, list)
@@ -117,7 +110,6 @@ def mytest_custom_recognition_model_densenet_multi():
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "idenprof_densenet-0.763500.h5"))
     predictor.setJsonPath(model_json=os.path.join(TEST_FOLDER, "data-json", "idenprof.json"))
     predictor.loadModel(num_objects=10)
-    images_to_image_array()
     result_array = predictor.predictMultipleImages(sent_images_array=all_images_array)
 
     assert isinstance(result_array, list)

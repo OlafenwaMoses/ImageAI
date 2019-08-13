@@ -6,12 +6,8 @@ from os.path import dirname
 
 TEST_FOLDER = os.path.dirname(__file__)
 all_images = os.listdir(os.path.join(TEST_FOLDER, "data-images"))
-all_images_array = []
-
-
-def images_to_image_array():
-    for image in all_images:
-        all_images_array.append(os.path.join(TEST_FOLDER, "data-images", image))
+all_images_array = [os.path.join(TEST_FOLDER, "data-images", image)
+                    for image in all_images]
 
 
 @pytest.mark.squeezenet
@@ -24,7 +20,6 @@ def test_recognition_model_squeezenet():
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "squeezenet_weights_tf_dim_ordering_tf_kernels.h5"))
     predictor.loadModel()
 
-    images_to_image_array()
     result_array = predictor.predictMultipleImages(sent_images_array=all_images_array)
 
     assert isinstance(result_array, list)
@@ -47,7 +42,6 @@ def test_recognition_model_resnet():
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
     predictor.loadModel()
 
-    images_to_image_array()
     result_array = predictor.predictMultipleImages(sent_images_array=all_images_array)
 
     assert isinstance(result_array, list)
@@ -68,7 +62,6 @@ def test_recognition_model_inceptionv3():
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "inception_v3_weights_tf_dim_ordering_tf_kernels.h5"))
     predictor.loadModel()
 
-    images_to_image_array()
     result_array = predictor.predictMultipleImages(sent_images_array=all_images_array)
 
     assert isinstance(result_array, list)
@@ -89,7 +82,6 @@ def test_recognition_model_densenet():
     predictor.setModelPath(os.path.join(TEST_FOLDER, "data-models", "DenseNet-BC-121-32.h5"))
     predictor.loadModel()
 
-    images_to_image_array()
     result_array = predictor.predictMultipleImages(sent_images_array=all_images_array)
 
     assert isinstance(result_array, list)
