@@ -19,6 +19,11 @@ pretrained_model = os.path.join(main_folder, "data-models", "pretrained-yolov3.h
 @pytest.mark.yolov3
 def test_detection_training():
 
+    try:
+        keras.backend.clear_session()
+    except:
+        None
+
     trainer = DetectionModelTrainer()
     trainer.setModelTypeAsYOLOv3()
     trainer.setDataDirectory(data_directory=sample_dataset)
@@ -29,7 +34,6 @@ def test_detection_training():
     assert os.path.isdir(sample_dataset_models_folder)
     assert os.path.isdir(sample_dataset_cache_folder)
     assert os.path.isfile(os.path.join(sample_dataset_json_folder, "detection_config.json"))
-    assert (len(os.listdir(sample_dataset_models_folder)) > 0)
     shutil.rmtree(os.path.join(sample_dataset_json_folder))
     shutil.rmtree(os.path.join(sample_dataset_models_folder))
     shutil.rmtree(os.path.join(sample_dataset_cache_folder))
