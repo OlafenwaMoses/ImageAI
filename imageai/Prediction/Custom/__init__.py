@@ -351,6 +351,13 @@ class CustomImagePrediction:
         self.__model_collection = []
         self.__input_image_size = 224
 
+    def getModels(self):
+        """
+        'getModels()' provides access to the internal model collection. Helpful if models are used down the line with tools like lime.
+        :return:
+        """
+        return self.__model_collection
+
     def setModelPath(self, model_path):
         """
         'setModelPath()' function is required and is used to set the file path to the model adopted from the list of the
