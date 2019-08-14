@@ -79,13 +79,6 @@ class ModelTraining:
         """
         self.__modelType = "inceptionv3"
 
-    def getModels(self):
-        """
-        'getModels()' provides access to the internal model collection. Helpful if models are used down the line with tools like lime.
-        :return:
-        """
-        return self.__model_collection
-
     def setDataDirectory(self, data_directory="", train_subdirectory="train", test_subdirectory="test",
                          models_subdirectory="models", json_subdirectory="json"):
         """
@@ -357,6 +350,13 @@ class CustomImagePrediction:
         self.__modelLoaded = False
         self.__model_collection = []
         self.__input_image_size = 224
+
+    def getModels(self):
+        """
+        'getModels()' provides access to the internal model collection. Helpful if models are used down the line with tools like lime.
+        :return:
+        """
+        return self.__model_collection
 
     def setModelPath(self, model_path):
         """
