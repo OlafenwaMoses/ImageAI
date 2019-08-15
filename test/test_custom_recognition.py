@@ -17,7 +17,7 @@ def images_to_image_array():
 
 
 
-
+@pytest.mark.recognition
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 def test_custom_recognition_model_resnet():
@@ -35,7 +35,7 @@ def test_custom_recognition_model_resnet():
     assert isinstance(predictions[0], str)
     assert isinstance(probabilities[0], str)
 
-
+@pytest.mark.recognition
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 def test_custom_recognition_full_model_resnet():
@@ -51,7 +51,7 @@ def test_custom_recognition_full_model_resnet():
     assert isinstance(predictions[0], str)
     assert isinstance(probabilities[0], str)
 
-
+@pytest.mark.recognition
 @pytest.mark.densenet
 @pytest.mark.recognition_custom
 def test_custom_recognition_model_densenet():
@@ -70,7 +70,7 @@ def test_custom_recognition_model_densenet():
 
 
 
-
+@pytest.mark.recognition
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
@@ -93,7 +93,7 @@ def test_custom_recognition_model_resnet_multi():
         assert isinstance(result["predictions"][0], str)
         assert isinstance(result["percentage_probabilities"][0], str)
 
-
+@pytest.mark.recognition
 @pytest.mark.resnet
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi
@@ -115,7 +115,7 @@ def test_custom_recognition_full_model_resnet_multi():
         assert isinstance(result["predictions"][0], str)
         assert isinstance(result["percentage_probabilities"][0], str)
 
-
+@pytest.mark.recognition
 @pytest.mark.densenet
 @pytest.mark.recognition_custom
 @pytest.mark.recognition_multi

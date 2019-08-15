@@ -21,6 +21,7 @@ def clear_keras_session():
 @pytest.mark.training
 @pytest.mark.training_resnet
 @pytest.mark.resnet
+@pytest.mark.recognition
 def test_resnet_training(clear_keras_session):
 
     trainer = ModelTraining()
@@ -39,6 +40,7 @@ def test_resnet_training(clear_keras_session):
 @pytest.mark.training
 @pytest.mark.training_squeezenet
 @pytest.mark.squeezenet
+@pytest.mark.recognition
 def test_squeezenet_training(clear_keras_session):
 
     trainer = ModelTraining()
@@ -57,6 +59,7 @@ def test_squeezenet_training(clear_keras_session):
 @pytest.mark.training
 @pytest.mark.training_inception_v3
 @pytest.mark.inception_v3
+@pytest.mark.recognition
 def test_inception_v3_training(clear_keras_session):
 
     trainer = ModelTraining()
@@ -75,6 +78,7 @@ def test_inception_v3_training(clear_keras_session):
 @pytest.mark.training
 @pytest.mark.training_densenet
 @pytest.mark.densenet
+@pytest.mark.recognition
 def test_densenet_training(clear_keras_session):
 
     trainer = ModelTraining()
