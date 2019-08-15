@@ -73,6 +73,7 @@ def test_inception_v3_training(clear_keras_session):
     assert (len(os.listdir(sample_dataset_models_folder)) > 0)
     shutil.rmtree(os.path.join(sample_dataset_json_folder))
     shutil.rmtree(os.path.join(sample_dataset_models_folder))
+    
 
 
 
