@@ -14,15 +14,20 @@ model_path = os.path.join(main_folder, "data-models", "hololens-ex-60--loss-2.76
 model_json = os.path.join(main_folder, "data-json", "detection_config.json")
 
 
-
-@pytest.mark.detection
-@pytest.mark.yolov3
-@pytest.mark.custom_detection
-def test_object_detection_yolov3():
+@pytest.fixture
+def clear_keras_session():
     try:
         keras.backend.clear_session()
     except:
         None
+
+
+
+@pytest.mark.detection
+@pytest.mark.yolov3
+@pytest.mark.custom_detection
+def test_object_detection_yolov3(clear_keras_session):
+
     detector = CustomObjectDetection()
     detector.setModelTypeAsYOLOv3()
     detector.setModelPath(model_path)
@@ -61,11 +66,7 @@ def test_object_detection_yolov3():
 @pytest.mark.yolov3
 @pytest.mark.custom_detection
 @pytest.mark.array_io
-def test_object_detection_yolov3_array_io():
-    try:
-        keras.backend.clear_session()
-    except:
-        None
+def test_object_detection_yolov3_array_io(clear_keras_session):
 
     image_input_array = cv2.imread(image_input)
 

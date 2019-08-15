@@ -11,8 +11,13 @@ all_images_array = []
 
 
 def images_to_image_array():
+
+    all_images_array.clear()
+
     for image in all_images:
         all_images_array.append(os.path.join(main_folder, "data-images", image))
+
+
 
 
 @pytest.mark.squeezenet
@@ -20,10 +25,6 @@ def images_to_image_array():
 @pytest.mark.recognition_multi
 def test_recognition_model_squeezenet():
 
-    try:
-        keras.backend.clear_session()
-    except:
-        None
 
     predictor = ImagePrediction()
     predictor.setModelTypeAsSqueezeNet()
@@ -48,10 +49,7 @@ def test_recognition_model_squeezenet():
 @pytest.mark.recognition
 @pytest.mark.recognition_multi
 def test_recognition_model_resnet():
-    try:
-        keras.backend.clear_session()
-    except:
-        None
+
     predictor = ImagePrediction()
     predictor.setModelTypeAsResNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
@@ -73,10 +71,7 @@ def test_recognition_model_resnet():
 @pytest.mark.recognition
 @pytest.mark.recognition_multi
 def test_recognition_model_inceptionv3():
-    try:
-        keras.backend.clear_session()
-    except:
-        None
+
     predictor = ImagePrediction()
     predictor.setModelTypeAsInceptionV3()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "inception_v3_weights_tf_dim_ordering_tf_kernels.h5"))
@@ -98,10 +93,7 @@ def test_recognition_model_inceptionv3():
 @pytest.mark.recognition
 @pytest.mark.recognition_multi
 def test_recognition_model_densenet():
-    try:
-        keras.backend.clear_session()
-    except:
-        None
+
     predictor = ImagePrediction()
     predictor.setModelTypeAsDenseNet()
     predictor.setModelPath(os.path.join(main_folder, "data-models", "DenseNet-BC-121-32.h5"))

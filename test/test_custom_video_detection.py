@@ -14,18 +14,21 @@ model_path = os.path.join(main_folder, "data-models", "hololens-ex-60--loss-2.76
 model_json = os.path.join(main_folder, "data-json", "detection_config.json")
 
 
+@pytest.fixture
+def clear_keras_session():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
+
 
 @pytest.mark.detection
 @pytest.mark.custom_detection
 @pytest.mark.video_detection
 @pytest.mark.custom_video_detection
 @pytest.mark.yolov3
-def test_custom_video_detection_yolov3():
+def test_custom_video_detection_yolov3(clear_keras_session):
 
-    try:
-        keras.backend.clear_session()
-    except:
-        None
 
     detector = CustomVideoObjectDetection()
     detector.setModelTypeAsYOLOv3()
@@ -46,12 +49,8 @@ def test_custom_video_detection_yolov3():
 @pytest.mark.custom_video_detection
 @pytest.mark.yolov3
 @pytest.mark.custom_video_detection_analysis
-def test_custom_video_detection_yolov3_analysis():
+def test_custom_video_detection_yolov3_analysis(clear_keras_session):
 
-    try:
-        keras.backend.clear_session()
-    except:
-        None
 
     detector = CustomVideoObjectDetection()
     detector.setModelTypeAsYOLOv3()

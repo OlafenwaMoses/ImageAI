@@ -10,10 +10,18 @@ sample_dataset_json_folder = os.path.join(sample_dataset, "json")
 sample_dataset_models_folder = os.path.join(sample_dataset, "models")
 
 
+@pytest.fixture
+def clear_keras_session():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
+
+
 @pytest.mark.training
 @pytest.mark.training_resnet
 @pytest.mark.resnet
-def test_resnet_training():
+def test_resnet_training(clear_keras_session):
 
     trainer = ModelTraining()
     trainer.setModelTypeAsResNet()
@@ -31,7 +39,7 @@ def test_resnet_training():
 @pytest.mark.training
 @pytest.mark.training_squeezenet
 @pytest.mark.squeezenet
-def test_squeezenet_training():
+def test_squeezenet_training(clear_keras_session):
 
     trainer = ModelTraining()
     trainer.setModelTypeAsSqueezeNet()
@@ -49,7 +57,7 @@ def test_squeezenet_training():
 @pytest.mark.training
 @pytest.mark.training_inception_v3
 @pytest.mark.inception_v3
-def test_inception_v3_training():
+def test_inception_v3_training(clear_keras_session):
 
     trainer = ModelTraining()
     trainer.setModelTypeAsInceptionV3()
@@ -67,7 +75,7 @@ def test_inception_v3_training():
 @pytest.mark.training
 @pytest.mark.training_densenet
 @pytest.mark.densenet
-def test_densenet_training():
+def test_densenet_training(clear_keras_session):
 
     trainer = ModelTraining()
     trainer.setModelTypeAsDenseNet()

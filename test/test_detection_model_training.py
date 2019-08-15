@@ -12,17 +12,21 @@ sample_dataset_cache_folder = os.path.join(sample_dataset, "cache")
 pretrained_model = os.path.join(main_folder, "data-models", "pretrained-yolov3.h5")
 
 
+@pytest.fixture
+def clear_keras_session():
+    try:
+        keras.backend.clear_session()
+    except:
+        None
+
+
 @pytest.mark.detection
 @pytest.mark.training
 @pytest.mark.detection_training
 @pytest.mark.detection_transfer_learning
 @pytest.mark.yolov3
-def test_detection_training():
+def test_detection_training(clear_keras_session):
 
-    try:
-        keras.backend.clear_session()
-    except:
-        None
 
     trainer = DetectionModelTrainer()
     trainer.setModelTypeAsYOLOv3()
