@@ -27,8 +27,7 @@ script:
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/hololens-ex-60--loss-2.76.h5
   - pytest -v
 after_success:
-  - codecov
-  - coverage
+  - bash <(curl -s https://codecov.io/bash)
 
 
 
