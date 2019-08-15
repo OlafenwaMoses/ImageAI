@@ -1,4 +1,4 @@
-tensorflow==1.13.1
+tensorflow
 keras
 numpy
 pillow
