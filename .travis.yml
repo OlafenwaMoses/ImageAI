@@ -8,6 +8,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install pytest
+  - pip install pytest-cov
 script:
   - python setup.py install
   - cd test
@@ -25,10 +26,9 @@ script:
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/pretrained-yolov3.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/hololens-ex-60--loss-2.76.h5
-  - pytest -m recognition -v
-after_success:
-  - codecov
-  - coverage
+  - pytest -v --cov
+after_script:
+  - bash <(curl -s https://codecov.io/bash)
 
 
 

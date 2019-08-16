@@ -73,25 +73,9 @@ def test_inception_v3_training(clear_keras_session):
     assert (len(os.listdir(sample_dataset_models_folder)) > 0)
     shutil.rmtree(os.path.join(sample_dataset_json_folder))
     shutil.rmtree(os.path.join(sample_dataset_models_folder))
+    
 
 
-@pytest.mark.training
-@pytest.mark.training_densenet
-@pytest.mark.densenet
-@pytest.mark.recognition
-def test_densenet_training(clear_keras_session):
-
-    trainer = ModelTraining()
-    trainer.setModelTypeAsDenseNet()
-    trainer.setDataDirectory(data_directory=sample_dataset)
-    trainer.trainModel(num_objects=10, num_experiments=1, enhance_data=True, batch_size=8, show_network_summary=True)
-
-    assert os.path.isdir(sample_dataset_json_folder)
-    assert os.path.isdir(sample_dataset_models_folder)
-    assert os.path.isfile(os.path.join(sample_dataset_json_folder, "model_class.json"))
-    assert (len(os.listdir(sample_dataset_models_folder)) > 0)
-    shutil.rmtree(os.path.join(sample_dataset_json_folder))
-    shutil.rmtree(os.path.join(sample_dataset_models_folder))
 
 
 
