@@ -8,6 +8,7 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install pytest
+  - pip install pytest-cov
 script:
   - python setup.py install
   - cd test
@@ -26,7 +27,7 @@ script:
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/pretrained-yolov3.h5
   - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/hololens-ex-60--loss-2.76.h5
   - pytest -v --cov
-after_success:
+after_script:
   - bash <(curl -s https://codecov.io/bash)
 
 
