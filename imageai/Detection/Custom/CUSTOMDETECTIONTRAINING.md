@@ -23,39 +23,26 @@ You will prepare the images as follows:
 
 1. Decide the type of object(s) you want to detect and collect about **200 (minimum recommendation)** or more picture of each of the object(s)
 2. Once you have collected the images, you need to annotate the object(s) in the images. **ImageAI** uses the **Pascal VOC format** for image annotation. You can generate this annotation for your images using the easy to use [**LabelImg**](https://github.com/tzutalin/labelImg) image annotation tool, available for Windows, Linux and MacOS systems. Open the link below to install the annotation tool. See: [https://github.com/tzutalin/labelImg](https://github.com/tzutalin/labelImg)
-3. When you are done annotating your images, **annotation XML** files will be generated for each image in your dataset. For example, if your image names are **object1_image(1).jpg**, **object1_image(2).jpg**, **object1_image(3).jpg** till **object1_image(z).jpg**; the corresponding annotation for each of the images will be **object1_image(1).xml**, **object1_image(2).xml**, **object1_image(3).xml** till **image(z).xml**. 
+3. When you are done annotating your images, **annotation XML** files will be generated for each image in your dataset. The **annotation XML** file describes each or **all** of the objects in the image. For example,  if each image your image names are **image(1).jpg**, **image(2).jpg**, **image(3).jpg** till **image(z).jpg**; the corresponding annotation for each of the images will be **image(1).xml**, **image(2).xml**, **image(3).xml** till **image(z).xml**. 
 4. Once you have the annotations for all your images, create a folder for your dataset (E.g headsets) and in this parent folder, create child folders **train** and **validation**
 5. In the train folder, create **images** and **annotations**
  sub-folders. Put about 70-80% of your dataset of each object's images in the **images** folder and put the corresponding annotations for these images in the **annotations** folder.  
 6. In the validation folder, create **images** and **annotations** sub-folders. Put the rest of your dataset images in the **images** folder and put the corresponding annotations for these images in the **annotations** folder.
 7. Once you have done this, the structure of your image dataset folder should look like below: 
     ```
-    >> train    >> images       >> object1_img_1.jpg
-                >> images       >> object1_img_2.jpg
-                >> images       >> object1_img_3.jpg
-                >> images       >> object2_img_1.jpg
-                >> images       >> object2_img_2.jpg
-                >> images       >> object2_img_3.jpg
-                >> annotations  >> object1_img_1.xml
-                >> annotations  >> object1_img_2.xml
-                >> annotations  >> object1_img_3.xml
-                >> annotations  >> object2_img_1.xml
-                >> annotations  >> object2_img_2.xml
-                >> annotations  >> object2_img_3.xml
-     
-    >> validation   >> images       >> object1_img_151.jpg
-                    >> images       >> object1_img_152.jpg
-                    >> images       >> object1_img_153.jpg
-                    >> images       >> object2_img_161.jpg
-                    >> images       >> object2_img_162.jpg
-                    >> images       >> object2_img_163.jpg
-                    >> annotations  >> object1_img_151.xml
-                    >> annotations  >> object1_img_152.xml
-                    >> annotations  >> object1_img_153.xml
-                    >> annotations  >> object2_img_161.xml
-                    >> annotations  >> object2_img_162.xml
-                    >> annotations  >> object2_img_163.xml
-
+    >> train    >> images       >> img_1.jpg  (shows Object_1)
+                >> images       >> img_2.jpg  (shows Object_2)
+                >> images       >> img_3.jpg  (shows Object_1, Object_3 and Object_n)
+                >> annotations  >> img_1.xml  (describes Object_1)
+                >> annotations  >> img_2.xml  (describes Object_2)
+                >> annotations  >> img_3.xml  (describes Object_1, Object_3 and Object_n)
+    
+    >> validation   >> images       >> img_151.jpg (shows Object_1, Object_3 and Object_n)
+                    >> images       >> img_152.jpg (shows Object_2)
+                    >> images       >> img_153.jpg (shows Object_1)
+                    >> annotations  >> img_151.xml (describes Object_1, Object_3 and Object_n)
+                    >> annotations  >> img_152.xml (describes Object_2)
+                    >> annotations  >> img_153.xml (describes Object_1)
      ```
 8. You can train your custom detection model completely from scratch or use transfer learning (recommended for better accuracy) from a pre-trained YOLOv3 model. Also, we have provided a sample annotated Hololens and Headsets (Hololens and Oculus) dataset for you to train with. Download the pre-trained YOLOv3 model and the sample datasets in the link below.  
 
