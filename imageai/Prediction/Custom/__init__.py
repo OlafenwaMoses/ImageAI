@@ -13,7 +13,8 @@ import tensorflow as tf
 from tensorflow.python.keras import backend as K
 from PIL import Image
 import os
-from tensorflow.python.keras.callbacks import ModelCheckpoint
+import time
+from tensorflow.python.keras.callbacks import ModelCheckpoint, TensorBoard
 from io import open
 import json
 import numpy as np
@@ -38,6 +39,7 @@ class ModelTraining:
         self.__data_dir = ""
         self.__train_dir = ""
         self.__test_dir = ""
+        self.__logs_dir = ""
         self.__num_epochs = 10
         self.__trained_model_dir = ""
         self.__model_class_dir = ""
@@ -116,10 +118,12 @@ class ModelTraining:
         """
 
         self.__data_dir = data_directory
+
         self.__train_dir = os.path.join(self.__data_dir, train_subdirectory)
         self.__test_dir = os.path.join(self.__data_dir, test_subdirectory)
         self.__trained_model_dir = os.path.join(self.__data_dir, models_subdirectory)
         self.__model_class_dir = os.path.join(self.__data_dir, json_subdirectory)
+        self.__logs_dir = os.path.join(self.__data_dir, "logs")
 
     def lr_schedule(self, epoch):
 
@@ -256,13 +260,21 @@ class ModelTraining:
 
         model_name = 'model_ex-{epoch:03d}_acc-{val_acc:03f}.h5'
 
+        log_name = '{}_lr-{}_{}'.format(self.__modelType, initial_learning_rate, time.strftime("%Y-%m-%d-%H-%M-%S"))
+
         if not os.path.isdir(self.__trained_model_dir):
             os.makedirs(self.__trained_model_dir)
 
         if not os.path.isdir(self.__model_class_dir):
             os.makedirs(self.__model_class_dir)
 
+        if not os.path.isdir(self.__logs_dir):
+            os.makedirs(self.__logs_dir)
+
         model_path = os.path.join(self.__trained_model_dir, model_name)
+
+
+        logs_path = os.path.join(self.__logs_dir, log_name)
 
         save_weights_condition = True
 
@@ -271,12 +283,20 @@ class ModelTraining:
         elif(save_full_model == False):
             save_weights_condition = True
 
+
         checkpoint = ModelCheckpoint(filepath=model_path,
                                      monitor='val_acc',
                                      verbose=1,
                                      save_weights_only=save_weights_condition,
                                      save_best_only=True,
                                      period=1)
+
+
+        tensorboard = TensorBoard(log_dir=logs_path, 
+                                  histogram_freq=0, 
+                                  write_graph=False, 
+                                  write_images=False)
+        
 
         if (enhance_data == True):
             print("Using Enhanced Data Generation")
@@ -319,7 +339,7 @@ class ModelTraining:
         #
         model.fit_generator(train_generator, steps_per_epoch=int(num_train / batch_size), epochs=self.__num_epochs,
                             validation_data=test_generator,
-                            validation_steps=int(num_test / batch_size), callbacks=[checkpoint, lr_scheduler])
+                            validation_steps=int(num_test / batch_size), callbacks=[checkpoint, lr_scheduler, tensorboard])
 
 
 
