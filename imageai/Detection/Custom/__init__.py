@@ -558,7 +558,7 @@ class DetectionModelTrainer:
                     anchors=anchors,
                     max_box_per_image=max_box_per_image,
                     max_grid=max_grid,
-                    batch_size=batch_size // multi_gpu,
+                    batch_size=batch_size // len(multi_gpu),
                     warmup_batches=warmup_batches,
                     ignore_thresh=ignore_thresh,
                     grid_scales=grid_scales,
