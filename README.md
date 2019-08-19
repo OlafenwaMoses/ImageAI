@@ -23,7 +23,7 @@ Eventually, **ImageAI** will provide support for a wider
     recognition in special environments and special fields.
 
 
-**New Release : ImageAI 2.1.0**
+**New Release : ImageAI 2.1.3**
 
 What's new:
 
