@@ -1,31 +1,36 @@
-# ImageAI : Image Prediction <br>
-<p>An <b>AI Commons</b> project <a href="https://commons.specpal.science" >https://commons.specpal.science </a></p>
-<hr>
-<br>
-<h3><b><u>TABLE OF CONTENTS</u></b></h3>
-<a href="#firstprediction" >&#9635 First Prediction</a><br>
-<a href="#predictionspeed" >&#9635 Prediction Speed</a><br>
-<a href="#inputtype" >&#9635 Image Input Types</a><br>
-<a href="#multiprediction" >&#9635 Multiple Images Prediction</a><br>
-<a href="#threadprediction" >&#9635 Prediction in MultiThreading</a><br>
-<a href="#documentation" >&#9635 Documentation</a><br>
-<br>
-      ImageAI provides 4 different algorithms and model types to perform image prediction.
+# ImageAI : Image Prediction
+A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
+
+---
+
+### TABLE OF CONTENTS
+- <a href="#firstprediction" > :white_square_button: First Prediction</a>
+- <a href="#predictionspeed" > :white_square_button: Prediction Speed</a>
+- <a href="#inputtype" > :white_square_button: Image Input Types</a>
+- <a href="#multiprediction" > :white_square_button: Multiple Images Prediction</a>
+- <a href="#threadprediction" > :white_square_button: Prediction in MultiThreading</a>
+- <a href="#documentation" > :white_square_button: Documentation</a>
+
+ImageAI provides 4 different algorithms and model types to perform image prediction.
 To perform image prediction on any picture, take the following simple steps.  The 4 algorithms provided for
- image prediction include <b>SqueezeNet</b>, <b>ResNet</b>, <b>InceptionV3</b> and <b>DenseNet</b>. Each of these
+ image prediction include **SqueezeNet**, **ResNet**, **InceptionV3** and **DenseNet**. Each of these
   algorithms have individual model files which you must use depending on the choice of your algorithm. To download the
-   model file for your choice of algorithm, click on any of the links below: <br> <br>
-       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >SqueezeNet</a> (Size = 4.82 mb, fastest prediction time and moderate accuracy) </b></span> <br>
-       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >ResNet50</a></b> by Microsoft Research <b>(Size = 98 mb, fast prediction time and high accuracy) </b></span> <br>
-       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5" style="text-decoration: none;" >InceptionV3</a></b> by Google Brain team <b>(Size = 91.6 mb, slow prediction time and higher accuracy) </b></span> <br>
-       <span><b>- <a href="https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5" style="text-decoration: none;" >DenseNet121</a></b> by Facebook AI Research <b>(Size = 31.6 mb, slower prediction time and highest accuracy) </b></span> <br><br>
+   model file for your choice of algorithm, click on any of the links below:
+   
+- **[SqueezeNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5)** _(Size = 4.82 mb, fastest prediction time and moderate accuracy)_
+- **[ResNet50](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5)** by Microsoft Research _(Size = 98 mb, fast prediction time and high accuracy)_
+ - **[InceptionV3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5)** by Google Brain team _(Size = 91.6 mb, slow prediction time and higher accuracy)_
+ - **[DenseNet121](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5)** by Facebook AI Research _(Size = 31.6 mb, slower prediction time and highest accuracy)_
+
  Great! Once you have downloaded this model file, start a new python project, and then copy the model file to your project
      folder where your python files (.py files) will be . Download the image below, or take any image on your computer
- and copy it to your python project's folder. Then create a python file and give it a name; an example is <b>FirstPrediction.py</b>.
-      Then write the code below into the python file: <br><br>
+ and copy it to your python project's folder. Then create a python file and give it a name; an example is `FirstPrediction.py`.
+      Then write the code below into the python file:
+      
+### FirstPrediction.py
 <div id="firstprediction" ></div>
-<h3><b>FirstPrediction.py</b></h3>
-<b><pre>
+
+```python
 from imageai.Prediction import ImagePrediction
 import os
 
@@ -39,67 +44,63 @@ prediction.loadModel()
 predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "1.jpg"), result_count=5 )
 for eachPrediction, eachProbability in zip(predictions, probabilities):
     print(eachPrediction , " : " , eachProbability)
+```
 
-</pre></b>
+Sample Result:
+![](../../data-images/1.jpg)
 
-<p>Sample Result: <br><img src="../../images/1.jpg" style="width: 400px; height: auto;" />
-    <pre>convertible : 52.459555864334106
+```
+convertible : 52.459555864334106
 sports_car : 37.61284649372101
 pickup : 3.1751200556755066
 car_wheel : 1.817505806684494
-minivan : 1.7487050965428352</pre>
-</p>
+minivan : 1.7487050965428352
+```
 
-<br>
-<span>
-          The code above works as follows: <br>
-     <b><pre>from imageai.Prediction import ImagePrediction
-import os</pre></b>
-<br>
-      The code above imports the <b>ImageAI</b> library
- and the python <b>os</b> class. <br>
-<b><pre>execution_path = os.getcwd()</pre></b>
-<br> The above line obtains the path to the folder that contains
-your python file (in this example, your FirstPrediction.py) . <br>
+The code above works as follows:
+```python
+from imageai.Prediction import ImagePrediction
+import os
+```
+The code above imports the `ImageAI` library and the python `os` class.
+```python
+execution_path = os.getcwd()
+```
+The above line obtains the path to the folder that contains your python file (in this example, your FirstPrediction.py).
 
-<b><pre>prediction = ImagePrediction()
+```python
+prediction = ImagePrediction()
 prediction.setModelTypeAsResNet()
-prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))</pre></b>
-      In the lines above, we created and instance of the <b>ImagePrediction()</b>
- class in the first line, then we set the model type of the prediction object to ResNet by caling the <b>.setModelTypeAsResNet()</b>
-  in the second line and then we set the model path of the prediction object to the path of the model file (<b>resnet50_weights_tf_dim_ordering_tf_kernels.h5</b>) we copied to the python file folder
-   in the third line.
+prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
+```
+In the lines above, we created and instance of the `ImagePrediction()` class in the first line, then we set the model type of the prediction object to ResNet by caling the `.setModelTypeAsResNet()` in the second line and then we set the model path of the prediction object to the path of the model file (`resnet50_weights_tf_dim_ordering_tf_kernels.h5`) we copied to the python file folder in the third line.
 
-<b><pre>predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "1.jpg"), result_count=5 )</pre></b> In the above line, we defined 2 variables to be equal to the function
- called to predict an image, which is the <b>.predictImage()</b> function, into which we parsed the path to
- our image and also state the number of prediction results we want to have (values from 1 to 1000) parsing
- <b> result_count=5 </b>. The <b>.predictImage()</b> function will return 2 array objects with the first (<b>predictions</b>) being
-  an array of predictions and the second (<b>percentage_probabilities</b>) being an array of the corresponding percentage probability for each
-  prediction.
+```python
+predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "1.jpg"), result_count=5 )
+```
 
-  <b><pre>for eachPrediction, eachProbability in zip(predictions, probabilities):
-    print(eachPrediction, " : " , eachProbability)</pre></b> The above line obtains each object in the <b>predictions</b> array, and also
-obtains the corresponding percentage probability from the <b>percentage_probabilities</b>, and finally prints
-the result of both to console.
+In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.predictImage()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 1000) parsing `result_count=5`. The `.predictImage()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**percentage_probabilities**) being an array of the corresponding percentage probability for each prediction.
 
-</span>
+```python
+for eachPrediction, eachProbability in zip(predictions, probabilities):
+    print(eachPrediction, " : " , eachProbability)
+```
+The above line obtains each object in the **predictions** array, and also obtains the corresponding percentage probability from the **percentage_probabilities**, and finally prints the result of both to console.
 
 
-<br><br>
-
+### Multiple Images Prediction
 <div id="multiprediction"></div>
-<h3><b><u>  >> Multiple Images Prediction</u></b></h3>
- You can run image prediction on more than one image using a single function, which is the <b>.predictMultipleImages()</b>
-  function. It works by doing the following: <br>
-  - Define your normal <b>ImagePrediction</b> instance <br>
-  - Set the model type and model path <br>
-  - Call the <b>.loadModel()</b> function <br>
-  - Create an array and add all the string path to each of the images you want to predict to the array. <br>
-  - You then perform prediction by calling the <b>.predictMultipleImages()</b> function and parse in the array of images, and also set the number
-   predictions you want per image by parsing <b>result_count_per_image=5</b> (default value is 2) <br><br>
 
-  Find the sample code below: <br>
-  <b><pre>
+ You can run image prediction on more than one image using a single function, which is the `.predictMultipleImages()` function. It works by doing the following:
+- Define your normal `ImagePrediction` instance
+- Set the model type and model path
+- Call the `.loadModel()` function
+- Create an array and add all the string path to each of the images you want to predict to the array.
+- You then perform prediction by calling the `.predictMultipleImages()` function and parse in the array of images, and also set the number predictions you want per image by parsing `result_count_per_image=5` (default value is 2)
+
+Find the sample code below:
+
+```python
 from imageai.Prediction import ImagePrediction
 import os
 
@@ -123,17 +124,18 @@ for each_result in results_array:
     predictions, percentage_probabilities = each_result["predictions"], each_result["percentage_probabilities"]
     for index in range(len(predictions)):
         print(predictions[index] , " : " , percentage_probabilities[index])
-    print("-----------------------")</pre></b> <br>
-    In the above code, the <b>.predictMultipleImages()</b> function will return an array which contains a dictionary per image.
- Each dictionary contains the arrays for predictions and percentage probability for each prediction. <br>
-    <p>Sample Result:</p>
-    <br>
-    <div style="width: 800px;" >
-          <img src="../../images/1.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
-          <img src="../../images/2.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
-          <img src="../../images/3.jpg" style="width: 200px; height: auto; margin-left: 30px; " />
-    </div>
-<pre>
+    print("-----------------------")
+```
+
+In the above code, the `.predictMultipleImages()` function will return an array which contains a dictionary per image.
+Each dictionary contains the arrays for predictions and percentage probability for each prediction.
+
+Sample Result:
+![](../../data-images/1.jpg)
+![](../../data-images/2.jpg)
+![](../../data-images/3.jpg)
+
+```
 convertible : 52.459555864334106
 sports_car : 37.61284649372101
 pickup : 3.1751200556755066
@@ -151,27 +153,24 @@ vulture : 20.936034619808197
 crane : 10.620515048503876
 kite : 10.20539253950119
 white_stork : 1.6472270712256432
------------------------</pre>
+-----------------------
+```
 
 
-<br><br>
-
-
+### Prediction Speed
 <div id="predictionspeed"></div>
-<h3><b><u> >> Prediction Speed</u></b></h3>
-<b> ImageAI </b> now provides prediction speeds for all image prediction tasks. The prediction speeds allow you to reduce
- the time of prediction at a rate between 20% - 60%, and yet having just slight changes but accurate prediction
- results. The available prediction speeds are <b>"normal"</b>(default), <b>"fast"</b>, <b>"faster"</b> and <b>"fastest"</b>.
+
+**ImageAI** now provides prediction speeds for all image prediction tasks. The prediction speeds allow you to reduce the time of prediction at a rate between 20% - 60%, and yet having just slight changes but accurate prediction results. The available prediction speeds are **"normal"**(default), **"fast"**, **"faster"** and **"fastest"**.
 All you need to do is to state the speed mode you desire when loading the model as seen below.
 
-<b><pre>prediction.loadModel(prediction_speed="fast")</pre></b> <br>
+```python
+prediction.loadModel(prediction_speed="fast")
+```
 
-To observe the differences in the prediction speeds, look below for each speed applied to multiple prediction with
-time taken to predict and predictions given. The results below are obtained from predictions performed
- on a Windows 8 laptop with Intel Celeron N2820 CPU, with processor speed of 2.13GHz<br> <br>
+To observe the differences in the prediction speeds, look below for each speed applied to multiple prediction with time taken to predict and predictions given. The results below are obtained from predictions performed on a Windows 8 laptop with Intel Celeron N2820 CPU, with processor speed of 2.13GHz
 
-<b><i>Prediction Speed = "normal" , Prediction Time = 5.9 seconds </i></b>
-<pre>
+**Prediction Speed = "normal" , Prediction Time = 5.9 seconds**
+```
 convertible : 52.459555864334106
 sports_car : 37.61284649372101
 pickup : 3.1751200556755066
@@ -189,12 +188,11 @@ vulture : 20.936034619808197
 crane : 10.620515048503876
 kite : 10.20539253950119
 white_stork : 1.6472270712256432
------------------------</pre>
+-----------------------
+```
 
-<br> <br>
-
-<b><i>Prediction Speed = "fast" , Prediction Time = 3.4 seconds </i></b>
-<pre>
+**Prediction Speed = "fast" , Prediction Time = 3.4 seconds**
+```
 sports_car : 55.5136501789093
 pickup : 19.860029220581055
 convertible : 17.88402795791626
@@ -212,12 +210,11 @@ bustard : 45.628002285957336
 kite : 0.8065823465585709
 goose : 0.3629807382822037
 crane : 0.21266008261591196
------------------------</pre>
+-----------------------
+```
 
-<br> <br>
-
-<b><i>Prediction Speed = "faster" , Prediction Time = 2.7 seconds </i></b>
-<pre>
+**Prediction Speed = "faster" , Prediction Time = 2.7 seconds**
+```
 sports_car : 79.90474104881287
 tow_truck : 9.751049429178238
 convertible : 7.056044787168503
@@ -235,13 +232,11 @@ bustard : 6.636220961809158
 kite : 0.15161558985710144
 bald_eagle : 0.10513027664273977
 crane : 0.05982434959150851
------------------------</pre>
+-----------------------
+```
 
-
-<br> <br>
-
-<b><i>Prediction Speed = "fastest" , Prediction Time = 2.2 seconds </i></b>
-<pre>
+**Prediction Speed = "fastest" , Prediction Time = 2.2 seconds**
+```
 tow_truck : 62.5033438205719
 sports_car : 31.26143217086792
 racer : 2.2139860317111015
@@ -259,39 +254,40 @@ vulture : 0.7469987496733665
 bustard : 0.36855682265013456
 bald_eagle : 0.2437378279864788
 great_grey_owl : 0.0699841941241175
------------------------</pre>
+-----------------------
+```
 
-<h3>PLEASE NOTE:</h3>  When adjusting speed modes, it is best to use models that have higher accuracies
- like the DenseNet or InceptionV3 models, or use it in case scenarios where the images predicted are iconic.
-
-<br><br>
+**PLEASE NOTE:**  When adjusting speed modes, it is best to use models that have higher accuracies like the DenseNet or InceptionV3 models, or use it in case scenarios where the images predicted are iconic.
 
 
+### Image Input Types
 <div id="inputtype"></div>
-<h3><b><u> >> Image Input Types</u></b></h3>
-Previous version of <b>ImageAI</b> supported only file inputs and accepts file paths to an image for image prediction.
-Now, <b>ImageAI</b> supports 3 input types which are <b>file path to image file</b>(default), <b>numpy array of image</b> and <b>image file stream</b>.
+
+Previous version of **ImageAI** supported only file inputs and accepts file paths to an image for image prediction.
+Now, **ImageAI** supports 3 input types which are **file path to image file**(default), **numpy array of image** and **image file stream**.
 This means you can now perform image prediction in production applications such as on a web server and system
  that returns file in any of the above stated formats.
-<br> To perform image prediction with numpy array or file stream input, you just need to state the input type
-in the <b>.predictImage()</b> function or the <b>.predictMultipleImages()</b> function. See example below.
 
-<pre>predictions, probabilities = prediction.predictImage(image_array, result_count=5 , input_type="array" ) # For numpy array input type
-predictions, probabilities = prediction.predictImage(image_stream, result_count=5 , input_type="stream" ) # For file stream input type</pre>
+To perform image prediction with numpy array or file stream input, you just need to state the input type
+in the `.predictImage()` function or the `.predictMultipleImages()` function. See example below.
 
+```python
+predictions, probabilities = prediction.predictImage(image_array, result_count=5 , input_type="array" ) # For numpy array input type
+predictions, probabilities = prediction.predictImage(image_stream, result_count=5 , input_type="stream" ) # For file stream input type
+```
 
-<br><br>
-
+### Prediction in MultiThreading
 <div id="threadprediction"></div>
-<h3><b><u> >> Prediction in MultiThreading</u></b></h3> When developing programs that run heavy task on the deafult thread like User Interfaces (UI),
+
+When developing programs that run heavy task on the deafult thread like User Interfaces (UI),
  you should consider running your predictions in a new thread. When running image prediction using ImageAI in
- a new thread, you must take note the following: <br>
-         - You can create your prediction object, set its model type, set model path and json path
-outside the new thread. <br>
-          - The <b>.loadModel()</b> must be in the new thread and image prediction (<b>predictImage()</b>) must take place in th new thread.
-<br>
-      Take a look of a sample code below on image prediction using multithreading:
-<pre><b>
+ a new thread, you must take note the following:
+- You can create your prediction object, set its model type, set model path and json path
+outside the new thread.
+- The `.loadModel()` must be in the new thread and image prediction (`predictImage()`) must take place in th new thread.
+
+Take a look of a sample code below on image prediction using multithreading:
+```python
 from imageai.Prediction import ImagePrediction
 import os
 import threading
@@ -318,15 +314,15 @@ class PredictionThread(threading.Thread):
 
 predictionThread = PredictionThread ()
 predictionThread.start()
-    </b></pre><br><br>
+
+```
 
 
+### Documentation
 
+We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:**
 
-<div id="documentation" ></div>
-<h3><b><u>  >> Documentation</u></b></h3>
-We have provided full documentation for all <b>ImageAI</b> classes and functions in 2 major languages. Find links below: <br>
-
-<b> >> Documentation - English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)</b> <br>
-<b> >> Documentation - Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)</b>
+* Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
+* Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
+* Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
 

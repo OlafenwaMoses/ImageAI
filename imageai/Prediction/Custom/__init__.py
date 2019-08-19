@@ -8,6 +8,9 @@ from tensorflow.python.keras.callbacks import LearningRateScheduler
 from tensorflow.python.keras.layers import Flatten, Dense, Input, Conv2D, GlobalAvgPool2D, Activation
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.preprocessing import image
+from tensorflow.python.keras.models import load_model, save_model
+import tensorflow as tf
+from tensorflow.python.keras import backend as K
 from PIL import Image
 import os
 import time
@@ -78,9 +81,12 @@ class ModelTraining:
         """
         self.__modelType = "inceptionv3"
 
-    def setDataDirectory(self, data_directory=""):
+    def setDataDirectory(self, data_directory="", train_subdirectory="train", test_subdirectory="test",
+                         models_subdirectory="models", json_subdirectory="json"):
         """
-                 'setDataDirectory()' is required to set the path to which the data/dataset to be used for
+        'setDataDirectory()'
+
+        - data_directory , is required to set the path to which the data/dataset to be used for
                  training is kept. The directory can have any name, but it must have 'train' and 'test'
                  sub-directory. In the 'train' and 'test' sub-directories, there must be sub-directories
                  with each having it's name corresponds to the name/label of the object whose images are
@@ -98,14 +104,25 @@ class ModelTraining:
                         >> class4 >> class4_test_images
                         >> class5 >> class5_test_images
 
-                :return:
-                """
+        - train_subdirectory (optional), subdirectory within 'data_directory' where the training set is. Defaults to 'train'.
+        - test_subdirectory (optional), subdirectory within 'data_directory' where the testing set is. Defaults to 'test'.
+        - models_subdirectory (optional), subdirectory within 'data_directory' where the output models will be saved. Defaults to 'models'.
+        - json_subdirectory (optional), subdirectory within 'data_directory' where the model classes json file will be saved. Defaults to 'json'.
+
+        :param data_directory:
+        :param train_subdirectory:
+        :param test_subdirectory:
+        :param models_subdirectory:
+        :param json_subdirectory:
+        :return:
+        """
 
         self.__data_dir = data_directory
-        self.__train_dir = os.path.join(self.__data_dir, "train")
-        self.__test_dir = os.path.join(self.__data_dir, "test")
-        self.__trained_model_dir = os.path.join(self.__data_dir, "models")
-        self.__model_class_dir = os.path.join(self.__data_dir, "json")
+
+        self.__train_dir = os.path.join(self.__data_dir, train_subdirectory)
+        self.__test_dir = os.path.join(self.__data_dir, test_subdirectory)
+        self.__trained_model_dir = os.path.join(self.__data_dir, models_subdirectory)
+        self.__model_class_dir = os.path.join(self.__data_dir, json_subdirectory)
         self.__logs_dir = os.path.join(self.__data_dir, "logs")
 
     def lr_schedule(self, epoch):
@@ -136,22 +153,22 @@ class ModelTraining:
 
 
 
-    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224):
+    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224, continue_from_model=None, transfer_from_model=None, transfer_with_full_training=True, initial_num_objects = None, save_full_model = False):
 
         """
-                 'trainModel()' function starts the actual training. It accepts the following values:
+                 'trainModel()' function starts the model actual training. It accepts the following values:
                  - num_objects , which is the number of classes present in the dataset that is to be used for training
                  - num_experiments , also known as epochs, it is the number of times the network will train on all the training dataset
                  - enhance_data (optional) , this is used to modify the dataset and create more instance of the training set to enhance the training result
-                 - batch_size (optional) , due to memory constraints, the network trains on a batch at once, until all the training set is exhausted.
-                                            The value is set to 32 by default, but can be increased or decreased depending on the meormory of the
-                                            compute used for training. The batch_size is conventionally set to 16, 32, 64, 128.
-                 - initial_learning_rate(optional) , this value is used to adjust the weights generated in the network. You rae advised
-                                                     to keep this value as it is if you don't have deep understanding of this concept.
-                 - show_network_summary(optional) , this value is used to show the structure of the network should you desire to see it.
-                                                    Itis set to False by default
-                 - training_image_size(optional) , this value is used to define the image size on which the model will be trained. The
-                                            value is 224 by default and is kept at a minimum of 100.
+                 - batch_size (optional) , due to memory constraints, the network trains on a batch at once, until all the training set is exhausted. The value is set to 32 by default, but can be increased or decreased depending on the meormory of the compute used for training. The batch_size is conventionally set to 16, 32, 64, 128.
+                 - initial_learning_rate(optional) , this value is used to adjust the weights generated in the network. You rae advised to keep this value as it is if you don't have deep understanding of this concept.
+                 - show_network_summary(optional) , this value is used to show the structure of the network should you desire to see it. It is set to False by default
+                 - training_image_size(optional) , this value is used to define the image size on which the model will be trained. The value is 224 by default and is kept at a minimum of 100.
+                - continue_from_model (optional) , this is used to set the path to a model file trained on the same dataset. It is primarily for continuos training from a previously saved model.
+                - transfer_from_model (optional) , this is used to set the path to a model file trained on another dataset. It is primarily used to perform tramsfer learning.
+                - transfer_with_full_training (optional) , this is used to set the pre-trained model to be re-trained across all the layers or only at the top layers.
+                - initial_num_objects (required if 'transfer_from_model' is set ), this is used to set the number of objects the model used for transfer learning is trained on. If 'transfer_from_model' is set, this must be set as well.
+                - save_full_model ( optional ), this is used to save the trained models with their network types. Any model saved by this specification can be loaded without specifying the network type.
 
                  *
 
@@ -162,6 +179,10 @@ class ModelTraining:
                 :param initial_learning_rate:
                 :param show_network_summary:
                 :param training_image_size:
+                :param continue_from_model:
+                :param transfer_from_model:
+                :param initial_num_objects:
+                :param save_full_model:
                 :return:
                 """
         self.__num_epochs = num_experiments
@@ -179,13 +200,58 @@ class ModelTraining:
 
         image_input = Input(shape=(training_image_size, training_image_size, 3))
         if (self.__modelType == "squeezenet"):
-            model = SqueezeNet(weights="custom", num_classes=num_classes, model_input=image_input)
+            if (continue_from_model != None):
+                model = SqueezeNet(weights="continued", num_classes=num_classes, model_input=image_input, model_path=continue_from_model)
+                if (show_network_summary == True):
+                    print("Resuming training with weights loaded from a previous model")
+
+            elif (transfer_from_model != None):
+                model = SqueezeNet(weights="transfer", num_classes=num_classes, model_input=image_input,
+                                   model_path=transfer_from_model, initial_num_classes=initial_num_objects,transfer_with_full_training=transfer_with_full_training)
+                if (show_network_summary == True):
+                    print("Training using weights from a pre-trained model")
+            else:
+                model = SqueezeNet(weights="custom", num_classes=num_classes, model_input=image_input)
         elif (self.__modelType == "resnet"):
-            model = ResNet50(weights="custom", num_classes=num_classes, model_input=image_input)
+            if(continue_from_model != None):
+                model = ResNet50(weights="continued", num_classes=num_classes, model_input=image_input, model_path=continue_from_model)
+                if (show_network_summary == True):
+                    print("Resuming training with weights loaded from a previous model")
+            elif(transfer_from_model != None):
+                model = ResNet50(weights="transfer", num_classes=num_classes, model_input=image_input, model_path=transfer_from_model, initial_num_classes=initial_num_objects, transfer_with_full_training=transfer_with_full_training)
+                if (show_network_summary == True):
+                    print("Training using weights from a pre-trained model")
+            else:
+                model = ResNet50(weights="custom", num_classes=num_classes, model_input=image_input)
+
         elif (self.__modelType == "inceptionv3"):
-            model = InceptionV3(weights="custom", classes=num_classes, model_input=image_input)
+            if (continue_from_model != None):
+                model = InceptionV3(weights="continued", classes=num_classes, model_input=image_input, model_path=continue_from_model)
+                if (show_network_summary == True):
+                    print("Resuming training with weights loaded from a previous model")
+            elif (transfer_from_model != None):
+                model = InceptionV3(weights="transfer", classes=num_classes, model_input=image_input,
+                                    model_path=transfer_from_model, initial_classes=initial_num_objects,
+                                 transfer_with_full_training=transfer_with_full_training)
+                if (show_network_summary == True):
+                    print("Training using weights from a pre-trained model")
+            else:
+                model = InceptionV3(weights="custom", classes=num_classes, model_input=image_input)
+
         elif (self.__modelType == "densenet"):
-            model = DenseNetImageNet121(weights="custom", classes=num_classes, model_input=image_input)
+            if (continue_from_model != None):
+                model = DenseNetImageNet121(weights="continued", classes=num_classes, model_input=image_input, model_path=continue_from_model)
+                if (show_network_summary == True):
+                    print("Resuming training with weights loaded from a previous model")
+            elif (transfer_from_model != None):
+                model = DenseNetImageNet121(weights="transfer", classes=num_classes, model_input=image_input,
+                                    model_path=transfer_from_model, initial_num_classes=initial_num_objects,
+                                 transfer_with_full_training=transfer_with_full_training)
+                if (show_network_summary == True):
+                    print("Training using weights from a pre-trained model")
+            else:
+                model = DenseNetImageNet121(weights="custom", classes=num_classes, model_input=image_input)
+
 
         optimizer = Adam(lr=self.__initial_learning_rate, decay=1e-4)
         model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
@@ -207,12 +273,22 @@ class ModelTraining:
 
         model_path = os.path.join(self.__trained_model_dir, model_name)
 
+
         logs_path = os.path.join(self.__logs_dir, log_name)
+
+        save_weights_condition = True
+
+        if(save_full_model == True ):
+            save_weights_condition = False
+        elif(save_full_model == False):
+            save_weights_condition = True
+
 
         checkpoint = ModelCheckpoint(filepath=model_path,
                                      monitor='val_acc',
                                      verbose=1,
-                                     save_weights_only=True,
+                                     save_weights_only=save_weights_condition,
+                                     save_best_only=True,
                                      period=1)
 
 
@@ -295,6 +371,13 @@ class CustomImagePrediction:
         self.__model_collection = []
         self.__input_image_size = 224
 
+    def getModels(self):
+        """
+        'getModels()' provides access to the internal model collection. Helpful if models are used down the line with tools like lime.
+        :return:
+        """
+        return self.__model_collection
+
     def setModelPath(self, model_path):
         """
         'setModelPath()' function is required and is used to set the file path to the model adopted from the list of the
@@ -352,9 +435,11 @@ class CustomImagePrediction:
         in the setModelPath() function. This function receives an optional value which is "prediction_speed".
         The value is used to reduce the time it takes to predict an image, down to about 50% of the normal time,
         with just slight changes or drop in prediction accuracy, depending on the nature of the image.
-        * prediction_speed (optional); Acceptable values are "normal", "fast", "faster" and "fastest"
+        - prediction_speed (optional), acceptable values are "normal", "fast", "faster" and "fastest"
+        - num_objects (required), the number of objects the model is trained to recognize
 
-        :param prediction_speed :
+        :param prediction_speed:
+        :param num_objects:
         :return:
         """
 
@@ -433,6 +518,130 @@ class CustomImagePrediction:
                     self.__modelLoaded = True
                 except:
                     raise ValueError("You have specified an incorrect path to the InceptionV3 model file.")
+
+    def loadFullModel(self, prediction_speed="normal", num_objects=10):
+        """
+        'loadFullModel()' function is used to load the model structure into the program from the file path defined
+        in the setModelPath() function. As opposed to the 'loadModel()' function, you don't need to specify the model type. This means you can load any Keras model trained with or without ImageAI and perform image prediction.
+        - prediction_speed (optional), Acceptable values are "normal", "fast", "faster" and "fastest"
+        - num_objects (required), the number of objects the model is trained to recognize
+
+        :param prediction_speed:
+        :param num_objects:
+        :return:
+        """
+
+        self.numObjects = num_objects
+
+        if (prediction_speed == "normal"):
+            self.__input_image_size = 224
+        elif (prediction_speed == "fast"):
+            self.__input_image_size = 160
+        elif (prediction_speed == "faster"):
+            self.__input_image_size = 120
+        elif (prediction_speed == "fastest"):
+            self.__input_image_size = 100
+
+        if (self.__modelLoaded == False):
+
+            image_input = Input(shape=(self.__input_image_size, self.__input_image_size, 3))
+
+
+            model = load_model(filepath=self.modelPath)
+            self.__model_collection.append(model)
+            self.__modelLoaded = True
+            self.__modelType = "full"
+
+    def save_model_to_tensorflow(self, new_model_folder, new_model_name=""):
+
+        """
+        'save_model_to_tensorflow' function allows you to save your loaded Keras (.h5) model and save it to the Tensorflow (.pb) model format.
+        - new_model_folder (required), the path to the folder you want the converted Tensorflow model to be saved
+        - new_model_name (required), the desired filename for your converted Tensorflow model e.g 'my_new_model.pb'
+
+        :param new_model_folder:
+        :param new_model_name:
+        :return:
+        """
+
+        if(self.__modelLoaded == True):
+            out_prefix = "output_"
+            output_dir = new_model_folder
+            if os.path.exists(output_dir) == False:
+                os.mkdir(output_dir)
+            model_name = os.path.join(output_dir, new_model_name)
+
+            keras_model = self.__model_collection[0]
+
+
+            out_nodes = []
+
+            for i in range(len(keras_model.outputs)):
+                out_nodes.append(out_prefix + str(i + 1))
+                tf.identity(keras_model.output[i], out_prefix + str(i + 1))
+
+            sess = K.get_session()
+
+            from tensorflow.python.framework import graph_util, graph_io
+
+            init_graph = sess.graph.as_graph_def()
+
+            main_graph = graph_util.convert_variables_to_constants(sess, init_graph, out_nodes)
+
+            graph_io.write_graph(main_graph, output_dir, name=model_name, as_text=False)
+            print("Tensorflow Model Saved")
+
+    def save_model_for_deepstack(self, new_model_folder, new_model_name=""):
+
+        """
+        'save_model_for_deepstack' function allows you to save your loaded Keras (.h5) model and save it to the deployment format of DeepStack custom API. This function will save the model and the JSON file you need for the deployment.
+        - new_model_folder (required), the path to the folder you want the model to be saved
+        - new_model_name (required), the desired filename for your model e.g 'my_new_model.h5'
+
+        :param new_model_folder:
+        :param new_model_name:
+        :return:
+
+        """
+
+        if(self.__modelLoaded == True):
+            print(self.jsonPath)
+            with open(self.jsonPath) as inputFile:
+                model_json = json.load(inputFile)
+
+                deepstack_json = {"sys-version": "1.0", "framework":"KERAS","mean":0.5,"std":255}
+                deepstack_json["width"] = self.__input_image_size
+                deepstack_json["height"] = self.__input_image_size
+
+                deepstack_classes_map = {}
+
+
+                for eachClass in model_json:
+                    deepstack_classes_map[eachClass] = model_json[eachClass]
+
+                deepstack_json["map"] = deepstack_classes_map
+
+                output_dir = new_model_folder
+                if os.path.exists(output_dir) == False:
+                    os.mkdir(output_dir)
+
+                with open(os.path.join(output_dir,"config.json"), "w+") as json_file:
+                    json.dump(deepstack_json, json_file, indent=4, separators=(",", " : "),
+                              ensure_ascii=True)
+                    json_file.close()
+                print("JSON Config file saved for DeepStack format in ",
+                      os.path.join(output_dir, "config.json"))
+
+                keras_model = self.__model_collection[0]
+                save_model(keras_model, os.path.join(new_model_folder, new_model_name))
+                print("Model saved for DeepStack format in",
+                      os.path.join(os.path.join(new_model_folder, new_model_name)))
+
+
+
+
+
+
 
     def predictImage(self, image_input, result_count=1, input_type="file"):
         """
@@ -615,6 +824,57 @@ class CustomImagePrediction:
 
                 return prediction_results, prediction_probabilities
             elif (self.__modelType == "inceptionv3"):
+
+                model = self.__model_collection[0]
+
+                from imageai.Prediction.InceptionV3.inceptionv3 import InceptionV3
+                from .custom_utils import decode_predictions, preprocess_input
+
+                if (input_type == "file"):
+                    try:
+                        image_to_predict = image.load_img(image_input, target_size=(
+                        self.__input_image_size, self.__input_image_size))
+                        image_to_predict = image.img_to_array(image_to_predict, data_format="channels_last")
+                        image_to_predict = np.expand_dims(image_to_predict, axis=0)
+
+                        image_to_predict = preprocess_input(image_to_predict)
+                    except:
+                        raise ValueError("You have set a path to an invalid image file.")
+                elif (input_type == "array"):
+                    try:
+                        image_input = Image.fromarray(np.uint8(image_input))
+                        image_input = image_input.resize((self.__input_image_size, self.__input_image_size))
+                        image_input = np.expand_dims(image_input, axis=0)
+                        image_to_predict = image_input.copy()
+                        image_to_predict = np.asarray(image_to_predict, dtype=np.float64)
+                        image_to_predict = preprocess_input(image_to_predict)
+                    except:
+                        raise ValueError("You have parsed in a wrong numpy array for the image")
+                elif (input_type == "stream"):
+                    try:
+                        image_input = Image.open(image_input)
+                        image_input = image_input.resize((self.__input_image_size, self.__input_image_size))
+                        image_input = np.expand_dims(image_input, axis=0)
+                        image_to_predict = image_input.copy()
+                        image_to_predict = np.asarray(image_to_predict, dtype=np.float64)
+                        image_to_predict = preprocess_input(image_to_predict)
+                    except:
+                        raise ValueError("You have parsed in a wrong stream for the image")
+
+                prediction = model.predict(x=image_to_predict, steps=1)
+
+                try:
+                    predictiondata = decode_predictions(prediction, top=int(result_count), model_json=self.jsonPath)
+
+                    for result in predictiondata:
+                        prediction_results.append(str(result[0]))
+                        prediction_probabilities.append(str(result[1] * 100))
+                except:
+                    raise ValueError("An error occured! Try again.")
+
+                return prediction_results, prediction_probabilities
+
+            elif (self.__modelType == "full"):
 
                 model = self.__model_collection[0]
 

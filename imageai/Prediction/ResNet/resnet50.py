@@ -64,7 +64,7 @@ def resnet_block(input, channel_depth, num_layers, strided_pool_first = False ):
 
     return input
 
-def ResNet50(include_top=True, non_top_pooling=None, model_input=None, num_classes=1000, weights='imagenet', model_path=""):
+def ResNet50(include_top=True, non_top_pooling=None, model_input=None, num_classes=1000, weights='imagenet', model_path="", initial_num_classes=None, transfer_with_full_training = True):
     layers = [3,4,6,3]
     channel_depths = [256, 512, 1024, 2048]
 
@@ -89,9 +89,15 @@ def ResNet50(include_top=True, non_top_pooling=None, model_input=None, num_class
             num_layers = num_layers - 1
         output = resnet_block(output, channel_depth=channel_depth, num_layers=num_layers, strided_pool_first=strided_pool_first)
 
+
     if(include_top):
         output = GlobalAvgPool2D(name="global_avg_pooling")(output)
-        output = Dense(num_classes)(output)
+
+
+        if(initial_num_classes != None):
+            output = Dense(initial_num_classes)(output)
+        else:
+            output = Dense(num_classes)(output)
         output = Activation("softmax")(output)
     else:
         if (non_top_pooling == "Average"):
@@ -103,14 +109,44 @@ def ResNet50(include_top=True, non_top_pooling=None, model_input=None, num_class
 
     model = Model(inputs=input_object, outputs=output)
 
+
     if(weights == "imagenet"):
         weights_path = model_path
         model.load_weights(weights_path)
-    elif (weights == "trained"):
+        return model
+    elif(weights == "trained"):
+        weights_path = model_path
+        model.load_weights(weights_path)
+        return model
+    elif(weights == "continued"):
+        weights_path = model_path
+        model.load_weights(weights_path)
+        return model
+    elif(weights == "transfer"):
         weights_path = model_path
         model.load_weights(weights_path)
 
-    return model
+        if(transfer_with_full_training == False):
+            for eachlayer in model.layers:
+                eachlayer.trainable = False
+            print("Training with top layers of the Model")
+        else:
+            print("Training with all layers of the Model")
+
+
+        output2 = model.layers[-3].output
+        output2 = Dense(num_classes)(output2)
+        output2 = Activation("softmax")(output2)
+
+        new_model = Model(inputs=model.input, outputs = output2)
+
+        return new_model
+    elif(weights == "custom"):
+        return model
+
+
+
+
 
 
 

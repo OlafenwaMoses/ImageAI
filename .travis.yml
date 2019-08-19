@@ -1,0 +1,35 @@
+dist: xenial
+sudo: required
+language: python
+python:
+  - '3.5'
+  - '3.6'
+  - '3.7'
+install:
+  - pip install -r requirements.txt
+  - pip install pytest
+  - pip install pytest-cov
+script:
+  - python setup.py install
+  - cd test
+  - mkdir data-models
+  - mkdir data-temp
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/models-v3/idenprof_densenet-0.763500.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/models-v3/idenprof_full_resnet_ex-001_acc-0.119792.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/models-v3/idenprof_resnet.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/pretrained-yolov3.h5
+  - wget -P data-models/ https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/hololens-ex-60--loss-2.76.h5
+  - pytest -v --cov
+after_script:
+  - bash <(curl -s https://codecov.io/bash)
+
+
+
+

@@ -81,7 +81,7 @@ def InceptionV3(include_top=True,
                 input_tensor=None,
                 model_input=None,
                 pooling=None,
-                classes=1000, model_path=""):
+                classes=1000, model_path="", initial_classes=None, transfer_with_full_training = True):
     """Instantiates the Inception v3 architecture.
 
     Optionally loads weights pre-trained
@@ -318,7 +318,10 @@ def InceptionV3(include_top=True,
     if include_top:
         # Classification block
         x = GlobalAveragePooling2D(name='avg_pool')(x)
-        x = Dense(classes, activation='softmax', name='predictions')(x)
+        if(initial_classes != None):
+            x = Dense(initial_classes, activation='softmax', name='predictions')(x)
+        else:
+            x = Dense(classes, activation='softmax', name='predictions')(x)
     else:
         if pooling == 'avg':
             x = GlobalAveragePooling2D()(x)
@@ -335,26 +338,40 @@ def InceptionV3(include_top=True,
 
     # load weights
     if weights == 'imagenet':
-        if K.image_data_format() == 'channels_first':
-            if K.backend() == 'tensorflow':
-                warnings.warn('You are using the TensorFlow backend, yet you '
-                              'are using the Theano '
-                              'image data format convention '
-                              '(`image_data_format="channels_first"`). '
-                              'For best performance, set '
-                              '`image_data_format="channels_last"` in '
-                              'your Keras config '
-                              'at ~/.keras/keras.json.')
-        if include_top:
-            weights_path = model_path
-            model.load_weights(weights_path)
-        else:
-            weights_path = ""
+        weights_path = model_path
+        model.load_weights(weights_path)
+        return model
     elif (weights == "trained"):
         weights_path = model_path
         model.load_weights(weights_path)
+        return model
+    elif (weights == "continued"):
+        weights_path = model_path
+        model.load_weights(weights_path)
+        return model
+    elif (weights == "transfer"):
+        weights_path = model_path
+        model.load_weights(weights_path)
 
-    return model
+        print(model.layers[-2])
+
+        if (transfer_with_full_training == False):
+            for eachlayer in model.layers:
+                eachlayer.trainable = False
+            print("Training with top layers of the Model")
+        else:
+            print("Training with all layers of the Model")
+
+        x2 = model.layers[-2].output
+        x2 = Dense(classes, activation='softmax', name='predictions')(x2)
+
+        new_model = Model(inputs=model.input, outputs=x2)
+
+        return new_model
+    elif (weights == "custom"):
+        return model
+
+
 
 
 def preprocess_input(x):

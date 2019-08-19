@@ -21,7 +21,7 @@ def squeezenet_fire_module(input, input_channel_small=16, input_channel_large=64
     return input
 
 def SqueezeNet(include_top = True, weights="imagenet", model_input=None, non_top_pooling=None,
-               num_classes=1000, model_path = ""):
+               num_classes=1000, model_path="", initial_num_classes=None, transfer_with_full_training=True):
 
     if(weights == "imagenet" and num_classes != 1000):
         raise ValueError("You must parse in SqueezeNet model trained on the 1000 class ImageNet")
@@ -52,7 +52,10 @@ def SqueezeNet(include_top = True, weights="imagenet", model_input=None, non_top
     if(include_top):
         network = Dropout(0.5)(network)
 
-        network = Conv2D(num_classes, kernel_size=(1,1), padding="valid", name="last_conv")(network)
+        if(initial_num_classes != None):
+            network = Conv2D(initial_num_classes, kernel_size=(1, 1), padding="valid", name="last_conv")(network)
+        else:
+            network = Conv2D(num_classes, kernel_size=(1, 1), padding="valid", name="last_conv")(network)
         network = Activation("relu")(network)
 
         network = GlobalAvgPool2D()(network)
@@ -72,15 +75,36 @@ def SqueezeNet(include_top = True, weights="imagenet", model_input=None, non_top
     if(weights =="imagenet"):
         weights_path = model_path
         model.load_weights(weights_path)
+        return model
     elif(weights =="trained"):
         weights_path = model_path
         model.load_weights(weights_path)
+        return model
+    elif (weights == "continued"):
+        weights_path = model_path
+        model.load_weights(weights_path)
+        return model
+    elif (weights == "transfer"):
+        weights_path = model_path
+        model.load_weights(weights_path)
 
-    return model
+        if (transfer_with_full_training == False):
+            for eachlayer in model.layers:
+                eachlayer.trainable = False
+            print("Training with top layers of the Model")
+        else:
+            print("Training with all layers of the Model")
 
+        network2 = model.layers[-5].output
 
+        network2 = Conv2D(num_classes, kernel_size=(1, 1), padding="valid", name="last_conv")(network2)
+        network2 = Activation("relu")(network2)
 
+        network2 = GlobalAvgPool2D()(network2)
+        network2 = Activation("softmax")(network2)
 
+        new_model = Model(inputs=model.input, outputs=network2)
 
-
-
+        return new_model
+    elif (weights == "custom"):
+        return model

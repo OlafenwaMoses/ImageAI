@@ -8,7 +8,7 @@ camera = cv2.VideoCapture(0)
 
 detector = VideoObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath(os.path.join(execution_path , "yolo.h5"))
+detector.setModelPath(os.path.join(execution_path , "yolo.h5")) # Download the model via this link https://github.com/OlafenwaMoses/ImageAI/releases/tag/1.0
 detector.loadModel()
 
 video_path = detector.detectObjectsFromVideo(camera_input=camera,
