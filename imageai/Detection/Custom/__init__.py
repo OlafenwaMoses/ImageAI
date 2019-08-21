@@ -407,9 +407,13 @@ class DetectionModelTrainer:
         results = list()
 
         if os.path.isfile(model_path):
+            # model_files must be a list containing the complete path to the files,
+            # if a file is given, then the list contains just this file
             model_files = [model_path]
         elif os.path.isdir(model_path):
-            model_files = os.listdir(model_path)
+            # model_files must be a list containing the complete path to the files,
+            # if a folder is given, then the list contains the complete path to each file on that folder
+            model_files = [os.path.join(model_path, file_name) for file_name in os.listdir(model_path)]
         else:
             print('model_path must be the path to a .h5 file or a directory. Found {}'.format(model_path))
             return results
@@ -417,7 +421,7 @@ class DetectionModelTrainer:
         for model_file in model_files:
             if str(model_file).endswith(".h5"):
                 try:
-                    infer_model = load_model(os.path.join(model_path, model_file))
+                    infer_model = load_model(model_file)
 
                     ###############################
                     #   Run the evaluation
@@ -427,14 +431,14 @@ class DetectionModelTrainer:
                                                   obj_thresh=object_threshold, nms_thresh=nms_threshold)
 
                     result_dict = {
-                        'model_file': model_path,
+                        'model_file': model_file,
                         'using_iou': iou_threshold,
                         'using_object_threshold': object_threshold,
                         'using_non_maximum_suppression': nms_threshold,
                         'average_precision': dict()
                     }
                     # print the score
-                    print("Model File: ", model_path, '\n')
+                    print("Model File: ", model_file, '\n')
                     print("Using IoU : ", iou_threshold)
                     print("Using Object Threshold : ", object_threshold)
                     print("Using Non-Maximum Suppression : ", nms_threshold)
