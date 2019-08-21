@@ -413,7 +413,8 @@ class DetectionModelTrainer:
         elif os.path.isdir(model_path):
             # model_files must be a list containing the complete path to the files,
             # if a folder is given, then the list contains the complete path to each file on that folder
-            model_files = [os.path.join(model_path, file_name) for file_name in os.listdir(model_path)]
+            model_files = sorted([os.path.join(model_path, file_name) for file_name in os.listdir(model_path)])
+            # sort the files to make sure we're always evaluating them on same order
         else:
             print('model_path must be the path to a .h5 file or a directory. Found {}'.format(model_path))
             return results
@@ -507,7 +508,7 @@ class DetectionModelTrainer:
 
         checkpoint = CustomModelCheckpoint(
             model_to_save=model_to_save,
-            filepath=saved_weights_name + 'ex-{epoch:02d}--loss-{loss:.2f}.h5',
+            filepath=saved_weights_name + 'ex-{epoch:03d}--loss-{loss:8.3f}.h5',
             monitor='loss',
             verbose=0,
             save_best_only=True,
