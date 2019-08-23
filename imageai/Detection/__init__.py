@@ -337,7 +337,13 @@ class ObjectDetection:
                     image, scale = resize_image(image, min_side=self.__input_image_min, max_side=self.__input_image_max)
 
                     model = self.__model_collection[0]
-                    _, _, detections = model.predict_on_batch(np.expand_dims(image, axis=0))
+
+                    if thread_safe == True:
+                        with self.sess.graph.as_default():
+                            _, _, detections = model.predict_on_batch(np.expand_dims(image, axis=0))
+                    else:
+                        _, _, detections = model.predict_on_batch(np.expand_dims(image, axis=0))
+
                     predicted_numbers = np.argmax(detections[0, :, 4:], axis=1)
                     scores = detections[0, np.arange(detections.shape[1]), 4 + predicted_numbers]
 
@@ -436,7 +442,7 @@ class ObjectDetection:
 
                     model = self.__model_collection[0]
 
-                    if thread_safe:
+                    if thread_safe == True:
                         with self.sess.graph.as_default():
                             out_boxes, out_scores, out_classes = self.sess.run(
                                 [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
@@ -700,7 +706,13 @@ class ObjectDetection:
                     image, scale = resize_image(image, min_side=self.__input_image_min, max_side=self.__input_image_max)
 
                     model = self.__model_collection[0]
-                    _, _, detections = model.predict_on_batch(np.expand_dims(image, axis=0))
+
+                    if thread_safe == True:
+                        with self.sess.graph.as_default():
+                            _, _, detections = model.predict_on_batch(np.expand_dims(image, axis=0))
+                    else:
+                        _, _, detections = model.predict_on_batch(np.expand_dims(image, axis=0))
+
                     predicted_numbers = np.argmax(detections[0, :, 4:], axis=1)
                     scores = detections[0, np.arange(detections.shape[1]), 4 + predicted_numbers]
 
@@ -803,7 +815,7 @@ class ObjectDetection:
 
                     model = self.__model_collection[0]
 
-                    if thread_safe:
+                    if thread_safe == True:
                         with self.sess.graph.as_default():
                             out_boxes, out_scores, out_classes = self.sess.run(
                                 [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
