@@ -508,7 +508,7 @@ class DetectionModelTrainer:
 
         checkpoint = CustomModelCheckpoint(
             model_to_save=model_to_save,
-            filepath=saved_weights_name + 'ex-{epoch:03d}--loss-{loss:8.3f}.h5',
+            filepath=saved_weights_name + 'ex-{epoch:03d}--loss-{loss:08.3f}.h5',
             monitor='loss',
             verbose=0,
             save_best_only=True,
