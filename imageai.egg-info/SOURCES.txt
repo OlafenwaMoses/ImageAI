@@ -88,3 +88,11 @@ imageai/Prediction/ResNet/__init__.py
 imageai/Prediction/ResNet/resnet50.py
 imageai/Prediction/SqueezeNet/__init__.py
 imageai/Prediction/SqueezeNet/squeezenet.py
+test/test_custom_object_detection.py
+test/test_custom_recognition.py
+test/test_custom_video_detection.py
+test/test_detection_model_training.py
+test/test_image_recognition.py
+test/test_model_training.py
+test/test_object_detection.py
+test/test_video_object_detection.py
