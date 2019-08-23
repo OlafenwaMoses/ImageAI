@@ -245,7 +245,7 @@ class ObjectDetection:
 
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
                                extract_detected_objects=False, minimum_percentage_probability=50,
-                               display_percentage_probability=True, display_object_name=True):
+                               display_percentage_probability=True, display_object_name=True, thread_safe=False):
         """
             'detectObjectsFromImage()' function is used to detect objects observable in the given image path:
                     * input_image , which can be a filepath, image numpy array or image file stream
@@ -436,13 +436,23 @@ class ObjectDetection:
 
                     model = self.__model_collection[0]
 
-                    out_boxes, out_scores, out_classes = self.sess.run(
-                        [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
-                        feed_dict={
-                            model.input: image_data,
-                            self.__yolo_input_image_shape: [image.size[1], image.size[0]],
-                            K.learning_phase(): 0
-                        })
+                    if thread_safe:
+                        with self.sess.graph.as_default():
+                            out_boxes, out_scores, out_classes = self.sess.run(
+                                [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
+                                feed_dict={
+                                    model.input: image_data,
+                                    self.__yolo_input_image_shape: [image.size[1], image.size[0]],
+                                    K.learning_phase(): 0
+                                })
+                    else:
+                        out_boxes, out_scores, out_classes = self.sess.run(
+                            [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
+                            feed_dict={
+                                model.input: image_data,
+                                self.__yolo_input_image_shape: [image.size[1], image.size[0]],
+                                K.learning_phase(): 0
+                            })
 
                     min_probability = minimum_percentage_probability / 100
                     counting = 0
@@ -598,7 +608,7 @@ class ObjectDetection:
     def detectCustomObjectsFromImage(self, custom_objects=None, input_image="", output_image_path="", input_type="file",
                                      output_type="file", extract_detected_objects=False,
                                      minimum_percentage_probability=50, display_percentage_probability=True,
-                                     display_object_name=True):
+                                     display_object_name=True, thread_safe=False):
         """
                     'detectCustomObjectsFromImage()' function is used to detect predefined objects observable in the given image path:
                             * custom_objects , an instance of the CustomObject class to filter which objects to detect
@@ -793,13 +803,23 @@ class ObjectDetection:
 
                     model = self.__model_collection[0]
 
-                    out_boxes, out_scores, out_classes = self.sess.run(
-                        [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
-                        feed_dict={
-                            model.input: image_data,
-                            self.__yolo_input_image_shape: [image.size[1], image.size[0]],
-                            K.learning_phase(): 0
-                        })
+                    if thread_safe:
+                        with self.sess.graph.as_default():
+                            out_boxes, out_scores, out_classes = self.sess.run(
+                                [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
+                                feed_dict={
+                                    model.input: image_data,
+                                    self.__yolo_input_image_shape: [image.size[1], image.size[0]],
+                                    K.learning_phase(): 0
+                                })
+                    else:
+                        out_boxes, out_scores, out_classes = self.sess.run(
+                            [self.__yolo_boxes, self.__yolo_scores, self.__yolo_classes],
+                            feed_dict={
+                                model.input: image_data,
+                                self.__yolo_input_image_shape: [image.size[1], image.size[0]],
+                                K.learning_phase(): 0
+                            })
 
                     min_probability = minimum_percentage_probability / 100
                     counting = 0
