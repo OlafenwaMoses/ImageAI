@@ -187,8 +187,11 @@ After training on your custom dataset, you can evaluate the mAP of your saved mo
     trainer = DetectionModelTrainer()
     trainer.setModelTypeAsYOLOv3()
     trainer.setDataDirectory(data_directory="hololens")
-    trainer.evaluateModel(model_path="detection_model-ex-60--loss-2.76.h5", json_path="detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
+    metrics = trainer.evaluateModel(model_path="detection_model-ex-60--loss-2.76.h5", json_path="detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
     ```
+    Consider that `trainer.evaluateModel` method will show the metrics on standard output as shown below, 
+    but also returns a list of dicts containing all the information that is displayed. 
+    
     Sample Result:
     ```
     Model File:  hololens_detection_model-ex-09--loss-4.01.h5 
@@ -199,6 +202,17 @@ After training on your custom dataset, you can evaluate the mAP of your saved mo
     mAP: 0.9613
     ===============================
     ```
+    Let's see how those metrics looks like:
+    ```
+    [{
+        'average_precision': {'hololens': 0.9613334437735249},
+        'map': 0.9613334437735249,
+        'model_file': 'hololens_detection_model-ex-09--loss-4.01.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    }]
+    ```
 - **Multi Model Evaluation:** To evaluate all your saved models, simply parse in the path to the folder containing the models as the **model_path** as seen in the example below:
     ```python
     from imageai.Detection.Custom import DetectionModelTrainer
@@ -206,7 +220,7 @@ After training on your custom dataset, you can evaluate the mAP of your saved mo
     trainer = DetectionModelTrainer()
     trainer.setModelTypeAsYOLOv3()
     trainer.setDataDirectory(data_directory="hololens")
-    trainer.evaluateModel(model_path="hololens/models", json_path="hololens/json/detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
+    metrics = trainer.evaluateModel(model_path="hololens/models", json_path="hololens/json/detection_config.json", iou_threshold=0.5, object_threshold=0.3, nms_threshold=0.5)
     ```
     Sample Result:
     ```
@@ -259,6 +273,66 @@ After training on your custom dataset, you can evaluate the mAP of your saved mo
     hololens: 0.9725
     mAP: 0.9725
     ===============================
+    ```
+    Let's see how those metrics looks like:
+    ```
+    [{
+        'average_precision': {'hololens': 0.9231334437735249},
+        'map': 0.9231334437735249,
+        'model_file': 'hololens/models/detection_model-ex-07--loss-4.42.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    },
+    {
+        'average_precision': {'hololens': 0.9725334437735249},
+        'map': 0.97251334437735249,
+        'model_file': 'hololens/models/detection_model-ex-10--loss-3.95.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    },
+    {
+        'average_precision': {'hololens': 0.92041334437735249},
+        'map': 0.92041334437735249,
+        'model_file': 'hololens/models/detection_model-ex-05--loss-5.26.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    },
+    {
+        'average_precision': {'hololens': 0.81201334437735249},
+        'map': 0.81201334437735249,
+        'model_file': 'hololens/models/detection_model-ex-03--loss-6.44.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    },
+    {
+        'average_precision': {'hololens': 0.94311334437735249},
+        'map': 0.94311334437735249,
+        'model_file': 'hololens/models/detection_model-ex-18--loss-2.96.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    },
+    {
+        'average_precision': {'hololens': 0.94041334437735249},
+        'map': 0.94041334437735249,
+        'model_file': 'hololens/models/detection_model-ex-17--loss-3.10.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    },
+    {
+        'average_precision': {'hololens': 0.97251334437735249},
+        'map': 0.97251334437735249,
+        'model_file': 'hololens/models/detection_model-ex-08--loss-4.16.h5',
+        'using_iou': 0.5,
+        'using_non_maximum_suppression': 0.5,
+        'using_object_threshold': 0.3
+    }
+    ]
     ```
 
 

@@ -301,9 +301,7 @@ class DetectionModelTrainer:
             max_queue_size=8
         )
 
-
     def evaluateModel(self, model_path, json_path, batch_size=4, iou_threshold=0.5, object_threshold=0.2, nms_threshold=0.45):
-
         """
 
         'evaluateModel()' is used to obtain the mAP metrics for your model(s). It accepts the following values:
@@ -320,27 +318,23 @@ class DetectionModelTrainer:
         :param iou_threshold:
         :param object_threshold:
         :param nms_threshold:
-        :return:
+        :return: list of dictionaries, containing one dict per evaluated model.
+            Each dict contains exactly the same metrics that are printed on standard output
         """
 
         self.__training_mode = False
         detection_model_json = json.load(open(json_path))
 
-
         temp_anchor_array = []
         new_anchor_array = []
-
 
         temp_anchor_array.append(detection_model_json["anchors"][2])
         temp_anchor_array.append(detection_model_json["anchors"][1])
         temp_anchor_array.append(detection_model_json["anchors"][0])
 
-
-
         for aa in temp_anchor_array:
             for aaa in aa:
                 new_anchor_array.append(aaa)
-
 
         self.__model_anchors = new_anchor_array
         self.__model_labels = detection_model_json["labels"]
@@ -410,11 +404,25 @@ class DetectionModelTrainer:
             class_scale=self.__train_class_scale,
         )
 
-        if(os.path.isfile(model_path)):
-            if(str(model_path).endswith(".h5")):
-                try:
-                    infer_model = load_model(model_path)
+        results = list()
 
+        if os.path.isfile(model_path):
+            # model_files must be a list containing the complete path to the files,
+            # if a file is given, then the list contains just this file
+            model_files = [model_path]
+        elif os.path.isdir(model_path):
+            # model_files must be a list containing the complete path to the files,
+            # if a folder is given, then the list contains the complete path to each file on that folder
+            model_files = sorted([os.path.join(model_path, file_name) for file_name in os.listdir(model_path)])
+            # sort the files to make sure we're always evaluating them on same order
+        else:
+            print('model_path must be the path to a .h5 file or a directory. Found {}'.format(model_path))
+            return results
+
+        for model_file in model_files:
+            if str(model_file).endswith(".h5"):
+                try:
+                    infer_model = load_model(model_file)
 
                     ###############################
                     #   Run the evaluation
@@ -423,44 +431,31 @@ class DetectionModelTrainer:
                     average_precisions = evaluate(infer_model, valid_generator, iou_threshold=iou_threshold,
                                                   obj_thresh=object_threshold, nms_thresh=nms_threshold)
 
+                    result_dict = {
+                        'model_file': model_file,
+                        'using_iou': iou_threshold,
+                        'using_object_threshold': object_threshold,
+                        'using_non_maximum_suppression': nms_threshold,
+                        'average_precision': dict()
+                    }
                     # print the score
-                    print("Model File: ", model_path, '\n')
+                    print("Model File: ", model_file, '\n')
                     print("Using IoU : ", iou_threshold)
                     print("Using Object Threshold : ", object_threshold)
                     print("Using Non-Maximum Suppression : ", nms_threshold)
                     for label, average_precision in average_precisions.items():
                         print(labels[label] + ': {:.4f}'.format(average_precision))
+                        result_dict['average_precision'][labels[label]] = average_precision
                     print('mAP: {:.4f}'.format(sum(average_precisions.values()) / len(average_precisions)))
+                    result_dict['map'] = sum(average_precisions.values()) / len(average_precisions)
                     print("===============================")
-                except:
-                    None
-
-        elif(os.path.isdir(model_path)):
-            model_files = os.listdir(model_path)
-
-            for model_file in model_files:
-                if(str(model_file).endswith(".h5")):
-                    try:
-                        infer_model = load_model(os.path.join(model_path, model_file))
-
-                        ###############################
-                        #   Run the evaluation
-                        ###############################
-                        # compute mAP for all the classes
-                        average_precisions = evaluate(infer_model, valid_generator, iou_threshold=iou_threshold,
-                                                      obj_thresh=object_threshold, nms_thresh=nms_threshold)
-
-                        # print the score
-                        print("Model File: ", os.path.join(model_path, model_file), '\n')
-                        print("Using IoU : ", iou_threshold)
-                        print("Using Object Threshold : ", object_threshold)
-                        print("Using Non-Maximum Suppression : ", nms_threshold)
-                        for label, average_precision in average_precisions.items():
-                            print(labels[label] + ': {:.4f}'.format(average_precision))
-                        print('mAP: {:.4f}'.format(sum(average_precisions.values()) / len(average_precisions)))
-                        print("===============================")
-                    except:
-                        continue
+                    results.append(result_dict)
+                except Exception as e:
+                    print('skipping the evaluation of {} because following exception occurred: {}'.format(model_file, e))
+                    continue
+            else:
+                print('skipping the evaluation of {} since it\'s not a .h5 file'.format(model_file))
+        return results
 
     def _create_training_instances(self,
             train_annot_folder,
@@ -513,7 +508,7 @@ class DetectionModelTrainer:
 
         checkpoint = CustomModelCheckpoint(
             model_to_save=model_to_save,
-            filepath=saved_weights_name + 'ex-{epoch:02d}--loss-{loss:.2f}.h5',
+            filepath=saved_weights_name + 'ex-{epoch:03d}--loss-{loss:8.3f}.h5',
             monitor='loss',
             verbose=0,
             save_best_only=True,
