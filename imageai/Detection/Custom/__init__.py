@@ -295,7 +295,7 @@ class DetectionModelTrainer:
             validation_data=valid_generator,
             validation_steps=len(valid_generator) * self.__train_times,
             epochs=self.__train_epochs + self.__train_warmup_epochs,
-            verbose=2,
+            verbose=1,
             callbacks=callbacks,
             workers=4,
             max_queue_size=8
