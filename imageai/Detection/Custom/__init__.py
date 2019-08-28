@@ -295,7 +295,7 @@ class DetectionModelTrainer:
             validation_data=valid_generator,
             validation_steps=len(valid_generator) * self.__train_times,
             epochs=self.__train_epochs + self.__train_warmup_epochs,
-            verbose=2,
+            verbose=1,
             callbacks=callbacks,
             workers=4,
             max_queue_size=8
@@ -508,7 +508,7 @@ class DetectionModelTrainer:
 
         checkpoint = CustomModelCheckpoint(
             model_to_save=model_to_save,
-            filepath=saved_weights_name + 'ex-{epoch:03d}--loss-{loss:8.3f}.h5',
+            filepath=saved_weights_name + 'ex-{epoch:03d}--loss-{loss:08.3f}.h5',
             monitor='loss',
             verbose=0,
             save_best_only=True,
