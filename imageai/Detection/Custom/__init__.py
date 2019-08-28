@@ -1,4 +1,5 @@
 import os
+import re
 import numpy as np
 import json
 from imageai.Detection.Custom.voc import parse_voc_annotation
@@ -733,6 +734,25 @@ class CustomObjectDetection:
         if self.__model is None:
             raise ValueError("You must call the loadModel() function before making object detection.")
         else:
+            if output_type == "file":
+                # from the image file, lets keep the directory and the filename, but remove its  format
+                # if output_image_path is path/to/the/output/image.png
+                # then output_image_folder is  path/to/the/output/image
+                # let's check if it is in the appropriated format soon to fail early
+                output_image_folder, n_subs = re.subn(r'\.(?:jpe?g|png|tif|webp|PPM|PGM)$', '', output_image_path, flags=re.I)
+                if n_subs == 0:
+                    # if no substitution was done, the given output_image_path is not in a supported format,
+                    # raise an error
+                    raise ValueError("output_image_path must be the path where to write the image. "
+                                     "Therefore it must end as one the following: "
+                                     "'.jpg', '.png', '.tif', '.webp', '.PPM', '.PGM'. {} found".format(output_image_path))
+                elif extract_detected_objects:
+                    # Results must be written as files and need to extract detected objects as images,
+                    # let's create a folder to store the object's images
+                    objects_dir = output_image_folder + "-objects"
+
+                    os.makedirs(objects_dir, exist_ok=True)
+
             self.__object_threshold = minimum_percentage_probability / 100
             self.__nms_threshold = nms_treshold
 
@@ -796,15 +816,10 @@ class CustomObjectDetection:
 
                 if extract_detected_objects:
 
-                    objects_dir = output_image_path + "-objects"
-
-                    if not os.path.exists(objects_dir):
-                        os.mkdir(objects_dir)
-
                     for cnt, each_object in enumerate(output_objects_array):
 
                         splitted_image = image_frame[each_object["box_points"][1]:each_object["box_points"][3],
-                                                    each_object["box_points"][0]:each_object["box_points"][2]]
+                                                     each_object["box_points"][0]:each_object["box_points"][2]]
                         if output_type == "file":
                             splitted_image_path = os.path.join(objects_dir, "{}-{:05d}.jpg".format(each_object["name"],
                                                                                                    cnt))
@@ -815,6 +830,7 @@ class CustomObjectDetection:
                             detected_objects_image_array.append(splitted_image.copy())
 
                 if output_type == "file":
+                    # we already validated that the output_image_path is a supported by OpenCV one
                     cv2.imwrite(output_image_path, drawn_image)
 
                 if extract_detected_objects:
