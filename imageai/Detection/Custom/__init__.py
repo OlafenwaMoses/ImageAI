@@ -27,7 +27,7 @@ class DetectionModelTrainer:
     """
 
     def __init__(self):
-
+        print('running local version')
         self.__model_type = ""
         self.__training_mode = True
 
@@ -597,10 +597,6 @@ class DetectionModelTrainer:
         return train_model, infer_model
 
 
-
-
-
-
 class CustomObjectDetection:
 
     """
@@ -613,11 +609,10 @@ class CustomObjectDetection:
         self.__model_labels = []
         self.__model_anchors = []
         self.__detection_config_json_path = ""
-        self.__model_loaded = False
         self.__input_size = 416
         self.__object_threshold = 0.4
         self.__nms_threshold = 0.4
-        self.__model_collection = []
+        self.__model = None
         self.__detection_utils = CustomDetectionUtils(labels=[])
 
     def setModelTypeAsYOLOv3(self):
@@ -630,16 +625,17 @@ class CustomObjectDetection:
     def setModelPath(self, detection_model_path):
         """
         'setModelPath' is used to specify the filepath to your custom detection model
-        :param detection_model_path:
-        :return:
+        :param detection_model_path: path to the .h5 model file.
+            Usually is one of those under <data_directory>/models/detection_model-ex-ddd--loss-dddd.ddd.h5
+        :return: None
         """
         self.__model_path = detection_model_path
 
     def setJsonPath(self, configuration_json):
         """
         'setJsonPath' is used to set the filepath to the configuration JSON file for your custom detection model
-        :param configuration_json:
-        :return:
+        :param configuration_json: path to the .json file. Usually it is <data_directory>/json/detection_config.json
+        :return: None
         """
         self.__detection_config_json_path = configuration_json
 
@@ -647,24 +643,20 @@ class CustomObjectDetection:
 
         """
         'loadModel' is used to load the model into the CustomObjectDetection class
-        :return:
+        :return: None
         """
 
-        if (self.__model_loaded == False):
-            if(self.__model_type == "yolov3"):
-                detection_model_json = json.load(open(self.__detection_config_json_path))
+        if self.__model_type == "yolov3":
+            detection_model_json = json.load(open(self.__detection_config_json_path))
 
-                self.__model_labels = detection_model_json["labels"]
-                self.__model_anchors = detection_model_json["anchors"]
+            self.__model_labels = detection_model_json["labels"]
+            self.__model_anchors = detection_model_json["anchors"]
 
-                self.__detection_utils = CustomDetectionUtils(labels=self.__model_labels)
+            self.__detection_utils = CustomDetectionUtils(labels=self.__model_labels)
 
-                model = yolo_main(Input(shape=(None, None, 3)), 3,
-                                  len(self.__model_labels))
+            self.__model = yolo_main(Input(shape=(None, None, 3)), 3, len(self.__model_labels))
 
-                model.load_weights(self.__model_path)
-                self.__model_collection.append(model)
-                self.__model_loaded = True
+            self.__model.load_weights(self.__model_path)
 
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
                                extract_detected_objects=False, minimum_percentage_probability=30, nms_treshold=0.4,
@@ -738,7 +730,7 @@ class CustomObjectDetection:
         :return detected_objects_image_array:
         """
 
-        if not self.__model_loaded:
+        if self.__model is None:
             raise ValueError("You must call the loadModel() function before making object detection.")
         else:
             self.__object_threshold = minimum_percentage_probability / 100
@@ -746,8 +738,6 @@ class CustomObjectDetection:
 
             output_objects_array = []
             detected_objects_image_array = []
-
-            model = self.__model_collection[0]
 
             if input_type == "file":
                 image = cv2.imread(input_image)
@@ -757,7 +747,7 @@ class CustomObjectDetection:
                 raise ValueError("input_type must be 'file' or 'array'. {} found".format(input_type))
 
             image_frame = image.copy()
-            image_frame2 = image.copy()
+
             height, width, channels = image.shape
 
             image = cv2.resize(image, (self.__input_size, self.__input_size))
@@ -770,7 +760,7 @@ class CustomObjectDetection:
             image = np.expand_dims(image, 0)
 
             if self.__model_type == "yolov3":
-                yolo_results = model.predict(image)
+                yolo_results = self.__model.predict(image)
 
                 boxes = list()
 
@@ -800,47 +790,44 @@ class CustomObjectDetection:
                     each_object_details["box_points"] = [object_box.xmin, object_box.ymin, object_box.xmax, object_box.ymax]
                     output_objects_array.append(each_object_details)
 
-                image_frame = self.__detection_utils.draw_boxes_and_caption(image_frame, all_boxes, all_labels,
+                drawn_image = self.__detection_utils.draw_boxes_and_caption(image_frame.copy(), all_boxes, all_labels,
                                                                             all_scores, show_names=display_object_name,
                                                                             show_percentage=display_percentage_probability)
 
                 if extract_detected_objects:
 
                     objects_dir = output_image_path + "-objects"
+
                     if not os.path.exists(objects_dir):
                         os.mkdir(objects_dir)
 
                     for cnt, each_object in enumerate(output_objects_array):
 
-                        splitted_copy = image_frame2.copy()[each_object["box_points"][1]:each_object["box_points"][3],
-                                                            each_object["box_points"][0]:each_object["box_points"][2]]
+                        splitted_image = image_frame[each_object["box_points"][1]:each_object["box_points"][3],
+                                                    each_object["box_points"][0]:each_object["box_points"][2]]
                         if output_type == "file":
                             splitted_image_path = os.path.join(objects_dir, "{}-{:05d}.jpg".format(each_object["name"],
                                                                                                    cnt))
 
-                            cv2.imwrite(splitted_image_path, splitted_copy)
+                            cv2.imwrite(splitted_image_path, splitted_image)
                             detected_objects_image_array.append(splitted_image_path)
                         elif output_type == "array":
-                            detected_objects_image_array.append(splitted_copy)
+                            detected_objects_image_array.append(splitted_image.copy())
 
                 if output_type == "file":
-                    cv2.imwrite(output_image_path, image_frame)
+                    cv2.imwrite(output_image_path, drawn_image)
 
                 if extract_detected_objects:
                     if output_type == "file":
                         return output_objects_array, detected_objects_image_array
                     elif output_type == "array":
-                        return image_frame, output_objects_array, detected_objects_image_array
+                        return drawn_image, output_objects_array, detected_objects_image_array
 
                 else:
                     if output_type == "file":
                         return output_objects_array
                     elif output_type == "array":
                         return image_frame, output_objects_array
-
-
-
-
 
 
 class CustomVideoObjectDetection:
@@ -1218,7 +1205,6 @@ class BoundBox:
         return self.score
 
 
-
 class CustomDetectionUtils:
     def __init__(self, labels):
         self.__labels = labels
@@ -1349,7 +1335,6 @@ class CustomDetectionUtils:
 
     def draw_boxes_and_caption(self, image_frame, v_boxes, v_labels, v_scores, show_names=False, show_percentage=False):
 
-
         for i in range(len(v_boxes)):
             box = v_boxes[i]
             y1, x1, y2, x2 = box.ymin, box.xmin, box.ymax, box.xmax
@@ -1359,15 +1344,14 @@ class CustomDetectionUtils:
             image_frame = cv2.rectangle(image_frame, (x1, y1), (x2, y2), class_color, 2)
 
             label = ""
-            if(show_names == True and show_percentage == True):
+            if show_names and show_percentage:
                 label = "%s : %.3f" % (v_labels[i], v_scores[i])
-            elif(show_names == True):
+            elif show_names:
                 label = "%s" % (v_labels[i])
-            elif (show_percentage == True):
+            elif show_percentage:
                 label = "%.3f" % (v_scores[i])
 
-
-            if(show_names == True or show_percentage == True):
+            if show_names or show_percentage:
                 b = np.array([x1, y1, x2, y2]).astype(int)
                 cv2.putText(image_frame, label, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (200, 0, 0), 3)
                 cv2.putText(image_frame, label, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 2)
