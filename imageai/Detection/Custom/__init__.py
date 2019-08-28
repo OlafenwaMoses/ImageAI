@@ -12,10 +12,8 @@ from imageai.Detection.Custom.callbacks import CustomModelCheckpoint, CustomTens
 from imageai.Detection.Custom.utils.multi_gpu_model import multi_gpu_model
 from imageai.Detection.Custom.gen_anchors import generateAnchors
 import tensorflow as tf
-from keras.preprocessing.image import img_to_array
 from keras.models import load_model, Input
 from keras.callbacks import TensorBoard
-from PIL import Image
 import cv2
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
@@ -668,12 +666,6 @@ class CustomObjectDetection:
                 self.__model_collection.append(model)
                 self.__model_loaded = True
 
-
-
-
-
-
-
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
                                extract_detected_objects=False, minimum_percentage_probability=30, nms_treshold=0.4,
                                display_percentage_probability=True, display_object_name=True):
@@ -681,7 +673,7 @@ class CustomObjectDetection:
         """
 
         'detectObjectsFromImage()' function is used to detect objects observable in the given image:
-                    * input_image , which can be a filepath or image numpy array
+                    * input_image , which can be a filepath or image numpy array in BGR
                     * output_image_path (only if output_type = file) , file path to the output image that will contain the detection boxes and label, if output_type="file"
                     * input_type (optional) , filepath/numpy array of the image. Acceptable values are "file" and "array"
                     * output_type (optional) , file path/numpy array/image file stream of the image. Acceptable values are "file" and "array"
@@ -746,7 +738,7 @@ class CustomObjectDetection:
         :return detected_objects_image_array:
         """
 
-        if (self.__model_loaded == False):
+        if not self.__model_loaded:
             raise ValueError("You must call the loadModel() function before making object detection.")
         else:
             self.__object_threshold = minimum_percentage_probability / 100
@@ -757,13 +749,12 @@ class CustomObjectDetection:
 
             model = self.__model_collection[0]
 
-            image = []
-
-            if(input_type == "file"):
+            if input_type == "file":
                 image = cv2.imread(input_image)
-            elif(input_type == "array"):
+            elif input_type == "array":
                 image = input_image
-
+            else:
+                raise ValueError("input_type must be 'file' or 'array'. {} found".format(input_type))
 
             image_frame = image.copy()
             image_frame2 = image.copy()
@@ -772,23 +763,19 @@ class CustomObjectDetection:
             image = cv2.resize(image, (self.__input_size, self.__input_size))
 
             image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            image = Image.fromarray(image)
 
-            # pre-process image
-            image = img_to_array(image)
-            image = image.astype("float32") / 255
+            image = image.astype("float32") / 255.
 
             # expand the image to batch
             image = np.expand_dims(image, 0)
 
-            if(self.__model_type == "yolov3"):
-                yolo_result = model.predict(image)
+            if self.__model_type == "yolov3":
+                yolo_results = model.predict(image)
 
                 boxes = list()
 
-
-                for a in range(len(yolo_result)):
-                    box_set = self.__detection_utils.decode_netout(yolo_result[a][0], self.__model_anchors[a],
+                for idx, result in enumerate(yolo_results):
+                    box_set = self.__detection_utils.decode_netout(result[0], self.__model_anchors[idx],
                                                                    self.__object_threshold, self.__input_size,
                                                                    self.__input_size)
                     boxes += box_set
@@ -801,13 +788,13 @@ class CustomObjectDetection:
                                                                                      self.__object_threshold)
 
                 for object_box, object_label, object_score in zip(all_boxes, all_labels, all_scores):
-                    each_object_details = {}
+                    each_object_details = dict()
                     each_object_details["name"] = object_label
                     each_object_details["percentage_probability"] = object_score
 
-                    if(object_box.xmin < 0):
+                    if object_box.xmin < 0:
                         object_box.xmin = 0
-                    if (object_box.ymin < 0):
+                    if object_box.ymin < 0:
                         object_box.ymin = 0
 
                     each_object_details["box_points"] = [object_box.xmin, object_box.ymin, object_box.xmax, object_box.ymax]
@@ -817,38 +804,38 @@ class CustomObjectDetection:
                                                                             all_scores, show_names=display_object_name,
                                                                             show_percentage=display_percentage_probability)
 
-                if (extract_detected_objects == True):
-                    counting = 0
+                if extract_detected_objects:
 
                     objects_dir = output_image_path + "-objects"
-                    if (os.path.exists(objects_dir) == False):
+                    if not os.path.exists(objects_dir):
                         os.mkdir(objects_dir)
 
-                    for each_object in output_objects_array:
-                        counting += 1
+                    for cnt, each_object in enumerate(output_objects_array):
+
                         splitted_copy = image_frame2.copy()[each_object["box_points"][1]:each_object["box_points"][3],
-                                        each_object["box_points"][0]:each_object["box_points"][2]]
-                        if (output_type == "file"):
-                            splitted_image_path = os.path.join(objects_dir,
-                                                               each_object["name"] + "-" + str(counting) + ".jpg")
+                                                            each_object["box_points"][0]:each_object["box_points"][2]]
+                        if output_type == "file":
+                            splitted_image_path = os.path.join(objects_dir, "{}-{:05d}.jpg".format(each_object["name"],
+                                                                                                   cnt))
+
                             cv2.imwrite(splitted_image_path, splitted_copy)
                             detected_objects_image_array.append(splitted_image_path)
-                        elif (output_type == "array"):
+                        elif output_type == "array":
                             detected_objects_image_array.append(splitted_copy)
 
-                if (output_type == "file"):
+                if output_type == "file":
                     cv2.imwrite(output_image_path, image_frame)
 
-                if (extract_detected_objects == True):
-                    if (output_type == "file"):
+                if extract_detected_objects:
+                    if output_type == "file":
                         return output_objects_array, detected_objects_image_array
-                    elif (output_type == "array"):
+                    elif output_type == "array":
                         return image_frame, output_objects_array, detected_objects_image_array
 
                 else:
-                    if (output_type == "file"):
+                    if output_type == "file":
                         return output_objects_array
-                    elif (output_type == "array"):
+                    elif output_type == "array":
                         return image_frame, output_objects_array
 
 
