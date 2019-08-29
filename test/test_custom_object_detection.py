@@ -10,6 +10,7 @@ main_folder = os.getcwd()
 
 image_input = os.path.join(main_folder, "data-images", "14.jpg")
 image_output = os.path.join(main_folder, "data-temp", "14-detected.jpg")
+objects_output = os.path.join(main_folder, "data-temp", "14-detected-objects")
 model_path = os.path.join(main_folder, "data-models", "hololens-ex-60--loss-2.76.h5")
 model_json = os.path.join(main_folder, "data-json", "detection_config.json")
 
@@ -33,7 +34,8 @@ def test_object_detection_yolov3(clear_keras_session):
     detector.setModelPath(model_path)
     detector.setJsonPath(model_json)
     detector.loadModel()
-    results = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40)
+    results = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output,
+                                              minimum_percentage_probability=40)
 
     assert isinstance(results, list)
     for result in results:
@@ -49,7 +51,8 @@ def test_object_detection_yolov3(clear_keras_session):
 
     assert isinstance(results2, list)
     assert isinstance(extracted_paths, list)
-    assert os.path.isdir(os.path.join(image_output + "-objects"))
+    assert os.path.isdir(objects_output)
+    assert len(os.listdir(objects_output)) == len(results2)
     for result2 in results2:
         assert isinstance(result2["name"], str)
         assert isinstance(result2["percentage_probability"], float)
