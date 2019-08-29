@@ -61,7 +61,7 @@ def test_object_detection_yolov3(clear_keras_session):
     for extracted_path in extracted_paths:
         assert os.path.exists(extracted_path)
 
-    shutil.rmtree(os.path.join(image_output + "-objects"))
+    shutil.rmtree(objects_output)
 
 
 
