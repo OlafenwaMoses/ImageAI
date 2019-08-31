@@ -35,7 +35,7 @@ def test_object_detection_retinanet(clear_keras_session):
     for result in results:
         assert isinstance(result["name"], str)
         assert isinstance(result["percentage_probability"], float)
-        assert isinstance(result["box_points"], ndarray)
+        assert isinstance(result["box_points"], list)
     assert os.path.exists(image_output)
     os.remove(image_output)
 
@@ -48,7 +48,7 @@ def test_object_detection_retinanet(clear_keras_session):
     for result2 in results2:
         assert isinstance(result2["name"], str)
         assert isinstance(result2["percentage_probability"], float)
-        assert isinstance(result2["box_points"], ndarray)
+        assert isinstance(result2["box_points"], list)
 
     for extracted_path in extracted_paths:
         assert os.path.exists(extracted_path)
@@ -72,7 +72,7 @@ def test_object_detection_yolov3(clear_keras_session):
     for result in results:
         assert isinstance(result["name"], str)
         assert isinstance(result["percentage_probability"], float)
-        assert isinstance(result["box_points"], tuple)
+        assert isinstance(result["box_points"], list)
     assert os.path.exists(image_output)
     os.remove(image_output)
 
@@ -86,7 +86,7 @@ def test_object_detection_yolov3(clear_keras_session):
     for result2 in results2:
         assert isinstance(result2["name"], str)
         assert isinstance(result2["percentage_probability"], float)
-        assert isinstance(result2["box_points"], tuple)
+        assert isinstance(result2["box_points"], list)
 
     for extracted_path in extracted_paths:
         assert os.path.exists(extracted_path)
@@ -109,7 +109,7 @@ def test_object_detection_tiny_yolov3(clear_keras_session):
     for result in results:
         assert isinstance(result["name"], str)
         assert isinstance(result["percentage_probability"], float)
-        assert isinstance(result["box_points"], tuple)
+        assert isinstance(result["box_points"], list)
     assert os.path.exists(image_output)
     os.remove(image_output)
 
@@ -123,7 +123,7 @@ def test_object_detection_tiny_yolov3(clear_keras_session):
     for result2 in results2:
         assert isinstance(result2["name"], str)
         assert isinstance(result2["percentage_probability"], float)
-        assert isinstance(result2["box_points"], tuple)
+        assert isinstance(result2["box_points"], list)
 
     for extracted_path in extracted_paths:
         assert os.path.exists(extracted_path)
@@ -154,7 +154,7 @@ def test_object_detection_retinanet_array_io(clear_keras_session):
     for result in results:
         assert isinstance(result["name"], str)
         assert isinstance(result["percentage_probability"], float)
-        assert isinstance(result["box_points"], ndarray)
+        assert isinstance(result["box_points"], list)
 
     detected_array, results2, extracted_arrays = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40, extract_detected_objects=True, output_type="array")
 
@@ -163,7 +163,7 @@ def test_object_detection_retinanet_array_io(clear_keras_session):
     for result2 in results2:
         assert isinstance(result2["name"], str)
         assert isinstance(result2["percentage_probability"], float)
-        assert isinstance(result2["box_points"], ndarray)
+        assert isinstance(result2["box_points"], list)
 
     for extracted_array in extracted_arrays:
         assert isinstance(extracted_array, ndarray)
@@ -190,7 +190,7 @@ def test_object_detection_yolov3_array_io(clear_keras_session):
     for result in results:
         assert isinstance(result["name"], str)
         assert isinstance(result["percentage_probability"], float)
-        assert isinstance(result["box_points"], tuple)
+        assert isinstance(result["box_points"], list)
 
     detected_array, results2, extracted_arrays = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40, extract_detected_objects=True, output_type="array")
 
@@ -199,7 +199,7 @@ def test_object_detection_yolov3_array_io(clear_keras_session):
     for result2 in results2:
         assert isinstance(result2["name"], str)
         assert isinstance(result2["percentage_probability"], float)
-        assert isinstance(result2["box_points"], tuple)
+        assert isinstance(result2["box_points"], list)
 
     for extracted_array in extracted_arrays:
         assert isinstance(extracted_array, ndarray)
@@ -224,7 +224,7 @@ def test_object_detection_tiny_yolov3_array_io(clear_keras_session):
     for result in results:
         assert isinstance(result["name"], str)
         assert isinstance(result["percentage_probability"], float)
-        assert isinstance(result["box_points"], tuple)
+        assert isinstance(result["box_points"], list)
 
     detected_array, results2, extracted_arrays = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40, extract_detected_objects=True, output_type="array")
 
@@ -233,7 +233,7 @@ def test_object_detection_tiny_yolov3_array_io(clear_keras_session):
     for result2 in results2:
         assert isinstance(result2["name"], str)
         assert isinstance(result2["percentage_probability"], float)
-        assert isinstance(result2["box_points"], tuple)
+        assert isinstance(result2["box_points"], list)
 
     for extracted_array in extracted_arrays:
         assert isinstance(extracted_array, ndarray)

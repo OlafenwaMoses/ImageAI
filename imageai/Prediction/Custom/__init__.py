@@ -713,7 +713,7 @@ class CustomImagePrediction:
 
                     for result in predictiondata:
                         prediction_results.append(str(result[0]))
-                        prediction_probabilities.append(str(result[1] * 100))
+                        prediction_probabilities.append(result[1] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -766,7 +766,7 @@ class CustomImagePrediction:
 
                     for result in predictiondata:
                         prediction_results.append(str(result[0]))
-                        prediction_probabilities.append(str(result[1] * 100))
+                        prediction_probabilities.append(result[1] * 100)
 
 
                 except:
@@ -818,7 +818,7 @@ class CustomImagePrediction:
 
                     for result in predictiondata:
                         prediction_results.append(str(result[0]))
-                        prediction_probabilities.append(str(result[1] * 100))
+                        prediction_probabilities.append(result[1] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -868,7 +868,7 @@ class CustomImagePrediction:
 
                     for result in predictiondata:
                         prediction_results.append(str(result[0]))
-                        prediction_probabilities.append(str(result[1] * 100))
+                        prediction_probabilities.append(result[1] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -919,7 +919,7 @@ class CustomImagePrediction:
 
                     for result in predictiondata:
                         prediction_results.append(str(result[0]))
-                        prediction_probabilities.append(str(result[1] * 100))
+                        prediction_probabilities.append(result[1] * 100)
                 except:
                     raise ValueError("An error occured! Try again.")
 
@@ -1002,7 +1002,7 @@ class CustomImagePrediction:
 
                         for result in predictiondata:
                             prediction_results.append(str(result[0]))
-                            prediction_probabilities.append(str(result[1] * 100))
+                            prediction_probabilities.append(result[1] * 100)
                     except:
                         raise ValueError("An error occured! Try again.")
 
@@ -1056,7 +1056,7 @@ class CustomImagePrediction:
 
                         for result in predictiondata:
                             prediction_results.append(str(result[0]))
-                            prediction_probabilities.append(str(result[1] * 100))
+                            prediction_probabilities.append(result[1] * 100)
 
 
                     except:
@@ -1113,7 +1113,7 @@ class CustomImagePrediction:
 
                         for result in predictiondata:
                             prediction_results.append(str(result[0]))
-                            prediction_probabilities.append(str(result[1] * 100))
+                            prediction_probabilities.append(result[1] * 100)
                     except:
                         raise ValueError("An error occured! Try again.")
 
@@ -1168,7 +1168,7 @@ class CustomImagePrediction:
 
                         for result in predictiondata:
                             prediction_results.append(str(result[0]))
-                            prediction_probabilities.append(str(result[1] * 100))
+                            prediction_probabilities.append(result[1] * 100)
                     except:
                         raise ValueError("An error occured! Try again.")
 

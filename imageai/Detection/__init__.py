@@ -267,7 +267,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
 
             - If extract_detected_objects = False or at its default value and output_type = 'array' ,
               Then the function will return:
@@ -277,7 +277,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
 
             - If extract_detected_objects = True and output_type = 'file' or
                 at its default value, you must parse in the 'output_image_path' as a string to the path you want
@@ -286,7 +286,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
                 2. an array of string paths to the image of each object extracted from the image
 
             - If extract_detected_objects = True and output_type = 'array', the the function will return:
@@ -295,7 +295,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
                 3. an array of numpy arrays of each object detected in the image
 
 
@@ -375,7 +375,7 @@ class ObjectDetection:
                         each_object_details = {}
                         each_object_details["name"] = self.numbers_to_names[label]
                         each_object_details["percentage_probability"] = score * 100
-                        each_object_details["box_points"] = detection_details
+                        each_object_details["box_points"] = detection_details.tolist()
 
                         output_objects_array.append(each_object_details)
 
@@ -475,7 +475,7 @@ class ObjectDetection:
                         except:
                             color = (255, 0, 0)
 
-                        detection_details = (left, top, right, bottom)
+                        detection_details = [left, top, right, bottom]
                         draw_box(detected_copy, detection_details, color=color)
 
                         if (display_object_name == True and display_percentage_probability == True):
@@ -620,7 +620,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
 
             - If extract_detected_objects = False or at its default value and output_type = 'array' ,
               Then the function will return:
@@ -630,7 +630,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
 
             - If extract_detected_objects = True and output_type = 'file' or
                 at its default value, you must parse in the 'output_image_path' as a string to the path you want
@@ -639,7 +639,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
                 2. an array of string paths to the image of each object extracted from the image
 
             - If extract_detected_objects = True and output_type = 'array', the the function will return:
@@ -648,7 +648,7 @@ class ObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
                 3. an array of numpy arrays of each object detected in the image
 
 
@@ -733,7 +733,7 @@ class ObjectDetection:
                         each_object_details = {}
                         each_object_details["name"] = self.numbers_to_names[label]
                         each_object_details["percentage_probability"] = score * 100
-                        each_object_details["box_points"] = detection_details
+                        each_object_details["box_points"] = detection_details.tolist()
 
                         output_objects_array.append(each_object_details)
 
@@ -836,7 +836,7 @@ class ObjectDetection:
                         except:
                             color = (255, 0, 0)
 
-                        detection_details = (left, top, right, bottom)
+                        detection_details = [left, top, right, bottom]
                         draw_box(detected_copy, detection_details, color=color)
 
                         if (display_object_name == True and display_percentage_probability == True):
@@ -1284,7 +1284,7 @@ class VideoObjectDetection:
                                 each_object_details = {}
                                 each_object_details["name"] = self.numbers_to_names[label]
                                 each_object_details["percentage_probability"] = score * 100
-                                each_object_details["box_points"] = detection_details
+                                each_object_details["box_points"] = detection_details.tolist()
                                 output_objects_array.append(each_object_details)
 
                             output_frames_dict[counting] = output_objects_array
@@ -1513,7 +1513,7 @@ class VideoObjectDetection:
                                 except:
                                     color = (255, 0, 0)
 
-                                detection_details = (left, top, right, bottom)
+                                detection_details = [left, top, right, bottom]
                                 draw_box(detected_copy, detection_details, color=color)
 
                                 if (display_object_name == True and display_percentage_probability == True):
@@ -1945,7 +1945,7 @@ class VideoObjectDetection:
                                 each_object_details = {}
                                 each_object_details["name"] = self.numbers_to_names[label]
                                 each_object_details["percentage_probability"] = score * 100
-                                each_object_details["box_points"] = detection_details
+                                each_object_details["box_points"] = detection_details.tolist()
                                 output_objects_array.append(each_object_details)
 
                             output_frames_dict[counting] = output_objects_array
@@ -2177,7 +2177,7 @@ class VideoObjectDetection:
                                 except:
                                     color = (255, 0, 0)
 
-                                detection_details = (left, top, right, bottom)
+                                detection_details = [left, top, right, bottom]
                                 draw_box(detected_copy, detection_details, color=color)
 
                                 if (display_object_name == True and display_percentage_probability == True):
