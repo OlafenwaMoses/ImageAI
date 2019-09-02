@@ -51,6 +51,7 @@ What's new:
 - <a href="#real-time-and-high-performance-implementation" > :white_square_button: High Performance Implementation</a>
 - <a href="#recommendation" > :white_square_button: AI Practice Recommendations</a>
 - <a href="#contact" > :white_square_button: Contact Developers</a>
+- <a href="#citation" > :white_square_button: Citation</a>
 - <a href="#contributors" > :white_square_button: Contributors</a>
 - <a href="#ref" > :white_square_button: References</a>
 
@@ -333,6 +334,22 @@ We give special thanks to **[Kang vcar](https://github.com/kangvcar/)** for his 
     * _Twitter:_ [@kangvcar](https://twitter.com/kangvcar)
  
 
+
+
+### Citation
+<div id="citation"></div>
+
+You can cite **ImageAI** in your projects and research papers via the **BibTeX** entry below.  
+  
+```
+@misc {ImageAI,
+    author = "Moses and John Olafenwa",
+    title  = "ImageAI, open source library for in-built computer vision capabilities",
+    url    = "https://github.com/OlafenwaMoses/ImageAI",
+    month  = "mar",
+    year   = "2018--"
+}
+```
 
 
  ### References
