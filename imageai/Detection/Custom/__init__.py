@@ -520,7 +520,7 @@ class DetectionModelTrainer:
             patience=2,
             verbose=0,
             mode='min',
-            epsilon=0.01,
+            min_delta=0.01,
             cooldown=0,
             min_lr=0
         )
