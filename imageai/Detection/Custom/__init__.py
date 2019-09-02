@@ -28,7 +28,6 @@ class DetectionModelTrainer:
     """
 
     def __init__(self):
-        print('running local version')
         self.__model_type = ""
         self.__training_mode = True
 
