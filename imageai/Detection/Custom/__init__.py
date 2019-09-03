@@ -1083,12 +1083,13 @@ class CustomVideoObjectDetection:
                     if (save_detected_video == True):
                         output_video.write(detected_frame)
 
-                    if (per_frame_function != None):
-                        if (return_detected_frame == True):
-                            per_frame_function(counting, output_objects_array, output_objects_count,
-                                               detected_frame)
-                        elif (return_detected_frame == False):
-                            per_frame_function(counting, output_objects_array, output_objects_count)
+                    if (counting == 1 or check_frame_interval == 0):
+                        if (per_frame_function != None):
+                            if (return_detected_frame == True):
+                                per_frame_function(counting, output_objects_array, output_objects_count,
+                                                   detected_frame)
+                            elif (return_detected_frame == False):
+                                per_frame_function(counting, output_objects_array, output_objects_count)
 
                     if (per_second_function != None):
                         if (counting != 1 and (counting % frames_per_second) == 0):
