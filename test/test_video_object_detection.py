@@ -97,7 +97,7 @@ def forFrame(frame_number, output_array, output_count, detected_frame):
     assert isinstance(output_array[0], dict)
     assert isinstance(output_array[0]["name"], str)
     assert isinstance(output_array[0]["percentage_probability"], float)
-    assert isinstance(output_array[0]["box_points"], ndarray)
+    assert isinstance(output_array[0]["box_points"], list)
 
     assert isinstance(output_count, dict)
     for a_key in dict(output_count).keys():
@@ -113,7 +113,7 @@ def forSecond(second_number, output_arrays, count_arrays, average_output_count, 
     assert isinstance(output_arrays[0][0], dict)
     assert isinstance(output_arrays[0][0]["name"], str)
     assert isinstance(output_arrays[0][0]["percentage_probability"], float)
-    assert isinstance(output_arrays[0][0]["box_points"], ndarray)
+    assert isinstance(output_arrays[0][0]["box_points"], list)
 
     assert isinstance(count_arrays, list)
     assert isinstance(count_arrays[0], dict)

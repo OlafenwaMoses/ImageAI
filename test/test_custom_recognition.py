@@ -33,7 +33,7 @@ def test_custom_recognition_model_resnet():
     assert isinstance(predictions, list)
     assert isinstance(probabilities, list)
     assert isinstance(predictions[0], str)
-    assert isinstance(probabilities[0], str)
+    assert isinstance(probabilities[0], float)
 
 @pytest.mark.recognition
 @pytest.mark.resnet
@@ -49,7 +49,7 @@ def test_custom_recognition_full_model_resnet():
     assert isinstance(predictions, list)
     assert isinstance(probabilities, list)
     assert isinstance(predictions[0], str)
-    assert isinstance(probabilities[0], str)
+    assert isinstance(probabilities[0], float)
 
 @pytest.mark.recognition
 @pytest.mark.densenet
@@ -66,5 +66,5 @@ def test_custom_recognition_model_densenet():
     assert isinstance(predictions, list)
     assert isinstance(probabilities, list)
     assert isinstance(predictions[0], str)
-    assert isinstance(probabilities[0], str)
+    assert isinstance(probabilities[0], float)
 

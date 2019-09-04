@@ -28,7 +28,6 @@ class DetectionModelTrainer:
     """
 
     def __init__(self):
-        print('running local version')
         self.__model_type = ""
         self.__training_mode = True
 
@@ -660,7 +659,7 @@ class CustomObjectDetection:
             self.__model.load_weights(self.__model_path)
 
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
-                               extract_detected_objects=False, minimum_percentage_probability=30, nms_treshold=0.4,
+                               extract_detected_objects=False, minimum_percentage_probability=50, nms_treshold=0.4,
                                display_percentage_probability=True, display_object_name=True):
 
         """
@@ -686,7 +685,7 @@ class CustomObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
 
             - If extract_detected_objects = False or at its default value and output_type = 'array' ,
               Then the function will return:
@@ -696,7 +695,7 @@ class CustomObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
 
             - If extract_detected_objects = True and output_type = 'file' or
                 at its default value, you must parse in the 'output_image_path' as a string to the path you want
@@ -705,7 +704,7 @@ class CustomObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
                 2. an array of string paths to the image of each object extracted from the image
 
             - If extract_detected_objects = True and output_type = 'array', the the function will return:
@@ -714,7 +713,7 @@ class CustomObjectDetection:
                     detected in the image. Each dictionary contains the following property:
                     * name (string)
                     * percentage_probability (float)
-                    * box_points (tuple of x1,y1,x2 and y2 coordinates)
+                    * box_points (list of x1,y1,x2 and y2 coordinates)
                 3. an array of numpy arrays of each object detected in the image
 
         :param input_image:
@@ -1084,12 +1083,13 @@ class CustomVideoObjectDetection:
                     if (save_detected_video == True):
                         output_video.write(detected_frame)
 
-                    if (per_frame_function != None):
-                        if (return_detected_frame == True):
-                            per_frame_function(counting, output_objects_array, output_objects_count,
-                                               detected_frame)
-                        elif (return_detected_frame == False):
-                            per_frame_function(counting, output_objects_array, output_objects_count)
+                    if (counting == 1 or check_frame_interval == 0):
+                        if (per_frame_function != None):
+                            if (return_detected_frame == True):
+                                per_frame_function(counting, output_objects_array, output_objects_count,
+                                                   detected_frame)
+                            elif (return_detected_frame == False):
+                                per_frame_function(counting, output_objects_array, output_objects_count)
 
                     if (per_second_function != None):
                         if (counting != 1 and (counting % frames_per_second) == 0):
