@@ -912,6 +912,7 @@ class CustomVideoObjectDetection:
                 detector.loadModel()
 
                 self.__detector = detector
+                self.__model_loaded = True
 
 
     def detectObjectsFromVideo(self, input_file_path="", camera_input=None, output_file_path="", frames_per_second=20,
