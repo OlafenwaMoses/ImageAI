@@ -1253,8 +1253,7 @@ class VideoObjectDetection:
                                             this_second_counting[eachItem] = eachCountingDict[eachItem]
 
                                 for eachCountingItem in this_second_counting:
-                                    this_second_counting[eachCountingItem] = this_second_counting[
-                                                                                 eachCountingItem] / frames_per_second
+                                    this_second_counting[eachCountingItem] = int(this_second_counting[eachCountingItem] / frames_per_second)
 
                                 if (return_detected_frame == True):
                                     per_second_function(int(counting / frames_per_second),
@@ -1288,9 +1287,7 @@ class VideoObjectDetection:
                                             this_minute_counting[eachItem] = eachCountingDict[eachItem]
 
                                 for eachCountingItem in this_minute_counting:
-                                    this_minute_counting[eachCountingItem] = this_minute_counting[
-                                                                                 eachCountingItem] / (
-                                                                                     frames_per_second * 60)
+                                    this_minute_counting[eachCountingItem] = int(this_minute_counting[eachCountingItem] / (frames_per_second * 60))
 
                                 if (return_detected_frame == True):
                                     per_minute_function(int(counting / (frames_per_second * 60)),
@@ -1325,8 +1322,7 @@ class VideoObjectDetection:
                                 this_video_counting[eachItem] = eachCountingDict[eachItem]
 
                     for eachCountingItem in this_video_counting:
-                        this_video_counting[eachCountingItem] = this_video_counting[
-                                                                    eachCountingItem] / counting
+                        this_video_counting[eachCountingItem] = int(this_video_counting[eachCountingItem] / counting)
 
                     video_complete_function(this_video_output_object_array, this_video_counting_array,
                                             this_video_counting)
@@ -1636,8 +1632,7 @@ class VideoObjectDetection:
                                             this_second_counting[eachItem] = eachCountingDict[eachItem]
 
                                 for eachCountingItem in this_second_counting:
-                                    this_second_counting[eachCountingItem] = this_second_counting[
-                                                                                 eachCountingItem] / frames_per_second
+                                    this_second_counting[eachCountingItem] = int(this_second_counting[eachCountingItem] / frames_per_second)
 
                                 if (return_detected_frame == True):
                                     per_second_function(int(counting / frames_per_second),
@@ -1671,9 +1666,7 @@ class VideoObjectDetection:
                                             this_minute_counting[eachItem] = eachCountingDict[eachItem]
 
                                 for eachCountingItem in this_minute_counting:
-                                    this_minute_counting[eachCountingItem] = this_minute_counting[
-                                                                                 eachCountingItem] / (
-                                                                                     frames_per_second * 60)
+                                    this_minute_counting[eachCountingItem] = int(this_minute_counting[eachCountingItem] / (frames_per_second * 60))
 
                                 if (return_detected_frame == True):
                                     per_minute_function(int(counting / (frames_per_second * 60)),
@@ -1708,8 +1701,7 @@ class VideoObjectDetection:
                                 this_video_counting[eachItem] = eachCountingDict[eachItem]
 
                     for eachCountingItem in this_video_counting:
-                        this_video_counting[eachCountingItem] = this_video_counting[
-                                                                    eachCountingItem] / counting
+                        this_video_counting[eachCountingItem] = int(this_video_counting[eachCountingItem] / counting)
 
                     video_complete_function(this_video_output_object_array, this_video_counting_array,
                                             this_video_counting)
