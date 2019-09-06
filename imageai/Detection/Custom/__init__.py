@@ -1086,10 +1086,12 @@ class CustomVideoObjectDetection:
                     if (counting == 1 or check_frame_interval == 0):
                         if (per_frame_function != None):
                             if (return_detected_frame == True):
-                                per_frame_function(counting, output_objects_array, output_objects_count,
-                                                   detected_frame)
+                                if(per_frame_function(counting, output_objects_array, output_objects_count,
+                                                   detected_frame)):
+                                  break
                             elif (return_detected_frame == False):
-                                per_frame_function(counting, output_objects_array, output_objects_count)
+                                if(per_frame_function(counting, output_objects_array, output_objects_count)):
+                                  break
 
                     if (per_second_function != None):
                         if (counting != 1 and (counting % frames_per_second) == 0):
@@ -1116,14 +1118,16 @@ class CustomVideoObjectDetection:
                                                                              eachCountingItem] / frames_per_second
 
                             if (return_detected_frame == True):
-                                per_second_function(int(counting / frames_per_second),
+                                if(per_second_function(int(counting / frames_per_second),
                                                     this_second_output_object_array, this_second_counting_array,
-                                                    this_second_counting, detected_frame)
+                                                    this_second_counting, detected_frame)):
+                                  break
 
                             elif (return_detected_frame == False):
-                                per_second_function(int(counting / frames_per_second),
+                                if(per_second_function(int(counting / frames_per_second),
                                                     this_second_output_object_array, this_second_counting_array,
-                                                    this_second_counting)
+                                                    this_second_counting)):
+                                  break
 
                     if (per_minute_function != None):
 
@@ -1152,14 +1156,16 @@ class CustomVideoObjectDetection:
                                                                                  frames_per_second * 60)
 
                             if (return_detected_frame == True):
-                                per_minute_function(int(counting / (frames_per_second * 60)),
+                                if(per_minute_function(int(counting / (frames_per_second * 60)),
                                                     this_minute_output_object_array, this_minute_counting_array,
-                                                    this_minute_counting, detected_frame)
+                                                    this_minute_counting, detected_frame)):
+                                  break
 
                             elif (return_detected_frame == False):
-                                per_minute_function(int(counting / (frames_per_second * 60)),
+                                if(per_minute_function(int(counting / (frames_per_second * 60)),
                                                     this_minute_output_object_array, this_minute_counting_array,
-                                                    this_minute_counting)
+                                                    this_minute_counting)):
+                                  break
 
 
                 else:
