@@ -110,24 +110,20 @@ class DetectionModelTrainer:
         :return:
         """
 
-        self.__train_images_folder = os.path.join(data_directory, "train/images/")
-        self.__train_annotations_folder = os.path.join(data_directory, "train/annotations/")
-        self.__validation_images_folder = os.path.join(data_directory, "validation/images/")
-        self.__validation_annotations_folder = os.path.join(data_directory, "validation/annotations/")
+        self.__train_images_folder = os.path.join(data_directory, "train", "images")
+        self.__train_annotations_folder = os.path.join(data_directory, "train", "annotations")
+        self.__validation_images_folder = os.path.join(data_directory, "validation", "images")
+        self.__validation_annotations_folder = os.path.join(data_directory, "validation", "annotations")
 
-        if os.path.exists(os.path.join(data_directory, "cache")) == False:
-            os.makedirs(os.path.join(data_directory, "cache"))
+        os.makedirs(os.path.join(data_directory, "cache"), exist_ok=True)
         self.__train_cache_file = os.path.join(data_directory, "cache", "detection_train_data.pkl")
         self.__validation_cache_file = os.path.join(data_directory, "cache", "detection_test_data.pkl")
 
-        if os.path.exists(os.path.join(data_directory, "models")) == False:
-            os.makedirs(os.path.join(data_directory, "models"))
+        os.makedirs(os.path.join(data_directory, "models"), exist_ok=True)
 
-        if os.path.exists(os.path.join(data_directory, "json")) == False:
-            os.makedirs(os.path.join(data_directory, "json"))
+        os.makedirs(os.path.join(data_directory, "json"), exist_ok=True)
 
-        if os.path.exists(os.path.join(data_directory, "logs")) == False:
-            os.makedirs(os.path.join(data_directory, "logs"))
+        os.makedirs(os.path.join(data_directory, "logs"), exist_ok=True)
 
         self.__model_directory = os.path.join(data_directory, "models")
         self.__train_weights_name = os.path.join(self.__model_directory, "detection_model-")
@@ -152,7 +148,7 @@ class DetectionModelTrainer:
         # let it as a string separated by commas
         self.__train_gpus = ','.join([str(gpu) for gpu in train_gpus])
 
-    def setTrainConfig(self,  object_names_array, batch_size= 4, num_experiments=100, train_from_pretrained_model=""):
+    def setTrainConfig(self,  object_names_array, batch_size=4, num_experiments=100, train_from_pretrained_model=""):
 
         """
 
@@ -174,8 +170,6 @@ class DetectionModelTrainer:
                                                                           self.__train_images_folder,
                                                                           self.__train_cache_file, self.__model_labels)
 
-
-
         self.__model_labels = sorted(object_names_array)
         self.__num_objects = len(object_names_array)
 
@@ -183,11 +177,9 @@ class DetectionModelTrainer:
         self.__train_epochs = num_experiments
         self.__pre_trained_model = train_from_pretrained_model
 
-
-        json_data = {}
+        json_data = dict()
         json_data["labels"] = self.__model_labels
         json_data["anchors"] = self.__inference_anchors
-
 
         with open(os.path.join(self.__json_directory, "detection_config.json"), "w+") as json_file:
             json.dump(json_data, json_file, indent=4, separators=(",", " : "),
@@ -219,7 +211,7 @@ class DetectionModelTrainer:
             self.__model_labels
 
         )
-        if(self.__training_mode):
+        if self.__training_mode:
             print('Training on: \t' + str(labels) + '')
             print("Training with Batch Size: ", self.__train_batch_size)
             print("Number of Experiments: ", self.__train_epochs)
@@ -286,7 +278,6 @@ class DetectionModelTrainer:
         #   Kick off the training
         ###############################
         callbacks = self._create_callbacks(self.__train_weights_name, infer_model)
-
 
         train_model.fit_generator(
             generator=train_generator,
