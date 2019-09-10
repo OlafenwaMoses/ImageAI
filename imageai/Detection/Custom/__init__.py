@@ -841,7 +841,7 @@ class CustomObjectDetection:
                     if output_type == "file":
                         return output_objects_array
                     elif output_type == "array":
-                        return image_frame, output_objects_array
+                        return drawn_image, output_objects_array
 
 
 class CustomVideoObjectDetection:
