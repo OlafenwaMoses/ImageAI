@@ -1,10 +1,14 @@
-# ImageAI (v2.1.4)
+# ImageAI (v2.1.5)
 
 ![Discourse status](https://img.shields.io/discourse/https/forum.imageai.org/status) [![Build Status](https://travis-ci.com/OlafenwaMoses/ImageAI.svg?branch=master)](https://travis-ci.com/OlafenwaMoses/ImageAI)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/OlafenwaMoses/ImageAI/blob/master/LICENSE) [![PyPI version](https://badge.fury.io/py/imageai.svg)](https://badge.fury.io/py/imageai)   [![Downloads](https://pepy.tech/badge/imageai/month)](https://pepy.tech/project/imageai/month) [![Downloads](https://pepy.tech/badge/imageai/week)](https://pepy.tech/project/imageai/week) [![codecov](https://codecov.io/gh/TechnionYP5777/project-name/branch/master/graph/badge.svg)](https://codecov.io/gh/OlafenwaMoses/ImageAI) 
 
-A python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
+An open-source python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code.
-
+ 
+ If you will like to back this project, kindly visit the <strong>Patreon</strong> page by clicking the badge below.
+ 
+ <span class="badge-patreon"><a href="https://patreon.com/OlafenwaMoses" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span> 
+ 
 ![](logo1.png)
 
 An **DeepQuest AI** project [deepquestai.com](https://deepquestai.com).
@@ -23,16 +27,16 @@ Eventually, **ImageAI** will provide support for a wider
     recognition in special environments and special fields.
 
 
-**New Release : ImageAI 2.1.3**
+**New Release : ImageAI 2.1.5**
 
 What's new:
 
-- Training of **custom YOLOv3** models on custom image datasets annotated in Pascal VOC format
-- Single and multi-model **mAP evaluation** of saved custom detection models  
-- Object detection in images using **custom YOLOv3 models** 
-- Video Object detection in using **custom YOLOv3 models** 
-- Video Detection analysis in using **custom YOLOv3 models**
-- Support for **file** and **Numpy array** inputs/outputs for all custom image and video detections**
+- **Tensorboard** logging for all prediction and detection model training.
+- **Progress bar** for detection training
+- Allow prediction and detection in multi-threaded code
+- Automatic **Multi-GPU** utilization for detection training
+- Custom detection model **metrics** retrieval
+- Bug fix: change custom model probability from **string to float**
 
 
 ### TABLE OF CONTENTS

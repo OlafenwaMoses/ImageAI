@@ -117,17 +117,17 @@ Training with Batch Size:  4
 Number of Experiments:  200
 
 Epoch 1/200
- - 733s - loss: 34.8253 - yolo_layer_1_loss: 6.0920 - yolo_layer_2_loss: 11.1064 - yolo_layer_3_loss: 17.6269 - val_loss: 20.5028 - val_yolo_layer_1_loss: 4.0171 - val_yolo_layer_2_loss: 7.5175 - val_yolo_layer_3_loss: 8.9683
+480/480 [==============================] - 395s 823ms/step - loss: 36.9000 - yolo_layer_1_loss: 3.2970 - yolo_layer_2_loss: 9.4923 - yolo_layer_3_loss: 24.1107 - val_loss: 15.6321 - val_yolo_layer_1_loss: 2.0275 - val_yolo_layer_2_loss: 6.4191 - val_yolo_layer_3_loss: 7.1856
 Epoch 2/200
- - 648s - loss: 11.1396 - yolo_layer_1_loss: 2.1209 - yolo_layer_2_loss: 4.0063 - yolo_layer_3_loss: 5.0124 - val_loss: 7.6188 - val_yolo_layer_1_loss: 1.8513 - val_yolo_layer_2_loss: 2.2446 - val_yolo_layer_3_loss: 3.5229
+480/480 [==============================] - 293s 610ms/step - loss: 11.9330 - yolo_layer_1_loss: 1.3968 - yolo_layer_2_loss: 4.2894 - yolo_layer_3_loss: 6.2468 - val_loss: 7.9868 - val_yolo_layer_1_loss: 1.7054 - val_yolo_layer_2_loss: 2.9156 - val_yolo_layer_3_loss: 3.3657
 Epoch 3/200
- - 674s - loss: 6.4360 - yolo_layer_1_loss: 1.3500 - yolo_layer_2_loss: 2.2343 - yolo_layer_3_loss: 2.8518 - val_loss: 7.2326 - val_yolo_layer_1_loss: 1.8762 - val_yolo_layer_2_loss: 2.3802 - val_yolo_layer_3_loss: 2.9762
+480/480 [==============================] - 293s 610ms/step - loss: 7.1228 - yolo_layer_1_loss: 1.0583 - yolo_layer_2_loss: 2.2863 - yolo_layer_3_loss: 3.7782 - val_loss: 6.4964 - val_yolo_layer_1_loss: 1.1391 - val_yolo_layer_2_loss: 2.2058 - val_yolo_layer_3_loss: 3.1514
 Epoch 4/200
- - 634s - loss: 5.3801 - yolo_layer_1_loss: 1.0323 - yolo_layer_2_loss: 1.7854 - yolo_layer_3_loss: 2.5624 - val_loss: 6.3730 - val_yolo_layer_1_loss: 1.4272 - val_yolo_layer_2_loss: 2.0534 - val_yolo_layer_3_loss: 2.8924
+480/480 [==============================] - 297s 618ms/step - loss: 5.5802 - yolo_layer_1_loss: 0.9742 - yolo_layer_2_loss: 1.8916 - yolo_layer_3_loss: 2.7144 - val_loss: 6.4275 - val_yolo_layer_1_loss: 1.6153 - val_yolo_layer_2_loss: 2.1203 - val_yolo_layer_3_loss: 2.6919
 Epoch 5/200
- - 645s - loss: 5.2569 - yolo_layer_1_loss: 0.9953 - yolo_layer_2_loss: 1.8611 - yolo_layer_3_loss: 2.4005 - val_loss: 6.0458 - val_yolo_layer_1_loss: 1.7037 - val_yolo_layer_2_loss: 1.9754 - val_yolo_layer_3_loss: 2.3667
+480/480 [==============================] - 295s 615ms/step - loss: 4.8717 - yolo_layer_1_loss: 0.7568 - yolo_layer_2_loss: 1.6641 - yolo_layer_3_loss: 2.4508 - val_loss: 6.3723 - val_yolo_layer_1_loss: 1.6434 - val_yolo_layer_2_loss: 2.1188 - val_yolo_layer_3_loss: 2.6101
 Epoch 6/200
- - 655s - loss: 4.7582 - yolo_layer_1_loss: 0.9959 - yolo_layer_2_loss: 1.5986 - yolo_layer_3_loss: 2.1637 - val_loss: 5.8313 - val_yolo_layer_1_loss: 1.1880 - val_yolo_layer_2_loss: 1.9962 - val_yolo_layer_3_loss: 2.6471
+480/480 [==============================] - 300s 624ms/step - loss: 4.7989 - yolo_layer_1_loss: 0.8708 - yolo_layer_2_loss: 1.6683 - yolo_layer_3_loss: 2.2598 - val_loss: 5.8672 - val_yolo_layer_1_loss: 1.2349 - val_yolo_layer_2_loss: 2.0504 - val_yolo_layer_3_loss: 2.5820
 Epoch 7/200
 ```
 
@@ -151,23 +151,24 @@ The above details signifies the following:
 
 ```
 Epoch 1/200
- - 733s - loss: 34.8253 - yolo_layer_1_loss: 6.0920 - yolo_layer_2_loss: 11.1064 - yolo_layer_3_loss: 17.6269 - val_loss: 20.5028 - val_yolo_layer_1_loss: 4.0171 - val_yolo_layer_2_loss: 7.5175 - val_yolo_layer_3_loss: 8.9683
+480/480 [==============================] - 395s 823ms/step - loss: 36.9000 - yolo_layer_1_loss: 3.2970 - yolo_layer_2_loss: 9.4923 - yolo_layer_3_loss: 24.1107 - val_loss: 15.6321 - val_yolo_layer_1_loss: 2.0275 - val_yolo_layer_2_loss: 6.4191 - val_yolo_layer_3_loss: 7.1856
 Epoch 2/200
- - 648s - loss: 11.1396 - yolo_layer_1_loss: 2.1209 - yolo_layer_2_loss: 4.0063 - yolo_layer_3_loss: 5.0124 - val_loss: 7.6188 - val_yolo_layer_1_loss: 1.8513 - val_yolo_layer_2_loss: 2.2446 - val_yolo_layer_3_loss: 3.5229
+480/480 [==============================] - 293s 610ms/step - loss: 11.9330 - yolo_layer_1_loss: 1.3968 - yolo_layer_2_loss: 4.2894 - yolo_layer_3_loss: 6.2468 - val_loss: 7.9868 - val_yolo_layer_1_loss: 1.7054 - val_yolo_layer_2_loss: 2.9156 - val_yolo_layer_3_loss: 3.3657
 Epoch 3/200
- - 674s - loss: 6.4360 - yolo_layer_1_loss: 1.3500 - yolo_layer_2_loss: 2.2343 - yolo_layer_3_loss: 2.8518 - val_loss: 7.2326 - val_yolo_layer_1_loss: 1.8762 - val_yolo_layer_2_loss: 2.3802 - val_yolo_layer_3_loss: 2.9762
+480/480 [==============================] - 293s 610ms/step - loss: 7.1228 - yolo_layer_1_loss: 1.0583 - yolo_layer_2_loss: 2.2863 - yolo_layer_3_loss: 3.7782 - val_loss: 6.4964 - val_yolo_layer_1_loss: 1.1391 - val_yolo_layer_2_loss: 2.2058 - val_yolo_layer_3_loss: 3.1514
 Epoch 4/200
- - 634s - loss: 5.3801 - yolo_layer_1_loss: 1.0323 - yolo_layer_2_loss: 1.7854 - yolo_layer_3_loss: 2.5624 - val_loss: 6.3730 - val_yolo_layer_1_loss: 1.4272 - val_yolo_layer_2_loss: 2.0534 - val_yolo_layer_3_loss: 2.8924
+480/480 [==============================] - 297s 618ms/step - loss: 5.5802 - yolo_layer_1_loss: 0.9742 - yolo_layer_2_loss: 1.8916 - yolo_layer_3_loss: 2.7144 - val_loss: 6.4275 - val_yolo_layer_1_loss: 1.6153 - val_yolo_layer_2_loss: 2.1203 - val_yolo_layer_3_loss: 2.6919
 Epoch 5/200
- - 645s - loss: 5.2569 - yolo_layer_1_loss: 0.9953 - yolo_layer_2_loss: 1.8611 - yolo_layer_3_loss: 2.4005 - val_loss: 6.0458 - val_yolo_layer_1_loss: 1.7037 - val_yolo_layer_2_loss: 1.9754 - val_yolo_layer_3_loss: 2.3667
+480/480 [==============================] - 295s 615ms/step - loss: 4.8717 - yolo_layer_1_loss: 0.7568 - yolo_layer_2_loss: 1.6641 - yolo_layer_3_loss: 2.4508 - val_loss: 6.3723 - val_yolo_layer_1_loss: 1.6434 - val_yolo_layer_2_loss: 2.1188 - val_yolo_layer_3_loss: 2.6101
 Epoch 6/200
- - 655s - loss: 4.7582 - yolo_layer_1_loss: 0.9959 - yolo_layer_2_loss: 1.5986 - yolo_layer_3_loss: 2.1637 - val_loss: 5.8313 - val_yolo_layer_1_loss: 1.1880 - val_yolo_layer_2_loss: 1.9962 - val_yolo_layer_3_loss: 2.6471
+480/480 [==============================] - 300s 624ms/step - loss: 4.7989 - yolo_layer_1_loss: 0.8708 - yolo_layer_2_loss: 1.6683 - yolo_layer_3_loss: 2.2598 - val_loss: 5.8672 - val_yolo_layer_1_loss: 1.2349 - val_yolo_layer_2_loss: 2.0504 - val_yolo_layer_3_loss: 2.5820
 Epoch 7/200
 ```
 
 - The above signifies the progress of the training. 
 - For each experiment (Epoch), the general  total validation loss (E.g - loss: 4.7582) is reported. 
 - For each drop in the loss after an experiment, a model is saved in the **hololens/models** folder. The lower the loss, the better the model. 
+- **Tensorboard** report file for the training will be saved in the **hololens/logs** folder.
 
 Once you are done training, you can visit the link below for performing object detection with your **custom detection model** and **detection_config.json** file.
 
@@ -341,9 +342,9 @@ After training on your custom dataset, you can evaluate the mAP of your saved mo
 
 We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below: 
 
-* Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)** 
-* Documentation - **Chinese Version**  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-* Documentation - **French Version**  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
+* Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io) 
+* Documentation - **Chinese Version**  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)
+* Documentation - **French Version**  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)
 
 
 
