@@ -15,6 +15,7 @@ from imageai.Detection.Custom.gen_anchors import generateAnchors
 import tensorflow as tf
 from keras.models import load_model, Input
 from keras.callbacks import TensorBoard
+import keras.backend as K
 import cv2
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
@@ -109,24 +110,20 @@ class DetectionModelTrainer:
         :return:
         """
 
-        self.__train_images_folder = os.path.join(data_directory, "train/images/")
-        self.__train_annotations_folder = os.path.join(data_directory, "train/annotations/")
-        self.__validation_images_folder = os.path.join(data_directory, "validation/images/")
-        self.__validation_annotations_folder = os.path.join(data_directory, "validation/annotations/")
+        self.__train_images_folder = os.path.join(data_directory, "train", "images")
+        self.__train_annotations_folder = os.path.join(data_directory, "train", "annotations")
+        self.__validation_images_folder = os.path.join(data_directory, "validation", "images")
+        self.__validation_annotations_folder = os.path.join(data_directory, "validation", "annotations")
 
-        if os.path.exists(os.path.join(data_directory, "cache")) == False:
-            os.makedirs(os.path.join(data_directory, "cache"))
+        os.makedirs(os.path.join(data_directory, "cache"), exist_ok=True)
         self.__train_cache_file = os.path.join(data_directory, "cache", "detection_train_data.pkl")
         self.__validation_cache_file = os.path.join(data_directory, "cache", "detection_test_data.pkl")
 
-        if os.path.exists(os.path.join(data_directory, "models")) == False:
-            os.makedirs(os.path.join(data_directory, "models"))
+        os.makedirs(os.path.join(data_directory, "models"), exist_ok=True)
 
-        if os.path.exists(os.path.join(data_directory, "json")) == False:
-            os.makedirs(os.path.join(data_directory, "json"))
+        os.makedirs(os.path.join(data_directory, "json"), exist_ok=True)
 
-        if os.path.exists(os.path.join(data_directory, "logs")) == False:
-            os.makedirs(os.path.join(data_directory, "logs"))
+        os.makedirs(os.path.join(data_directory, "logs"), exist_ok=True)
 
         self.__model_directory = os.path.join(data_directory, "models")
         self.__train_weights_name = os.path.join(self.__model_directory, "detection_model-")
@@ -151,7 +148,7 @@ class DetectionModelTrainer:
         # let it as a string separated by commas
         self.__train_gpus = ','.join([str(gpu) for gpu in train_gpus])
 
-    def setTrainConfig(self,  object_names_array, batch_size= 4, num_experiments=100, train_from_pretrained_model=""):
+    def setTrainConfig(self,  object_names_array, batch_size=4, num_experiments=100, train_from_pretrained_model=""):
 
         """
 
@@ -173,8 +170,6 @@ class DetectionModelTrainer:
                                                                           self.__train_images_folder,
                                                                           self.__train_cache_file, self.__model_labels)
 
-
-
         self.__model_labels = sorted(object_names_array)
         self.__num_objects = len(object_names_array)
 
@@ -182,11 +177,9 @@ class DetectionModelTrainer:
         self.__train_epochs = num_experiments
         self.__pre_trained_model = train_from_pretrained_model
 
-
-        json_data = {}
+        json_data = dict()
         json_data["labels"] = self.__model_labels
         json_data["anchors"] = self.__inference_anchors
-
 
         with open(os.path.join(self.__json_directory, "detection_config.json"), "w+") as json_file:
             json.dump(json_data, json_file, indent=4, separators=(",", " : "),
@@ -218,7 +211,7 @@ class DetectionModelTrainer:
             self.__model_labels
 
         )
-        if(self.__training_mode):
+        if self.__training_mode:
             print('Training on: \t' + str(labels) + '')
             print("Training with Batch Size: ", self.__train_batch_size)
             print("Number of Experiments: ", self.__train_epochs)
@@ -285,7 +278,6 @@ class DetectionModelTrainer:
         #   Kick off the training
         ###############################
         callbacks = self._create_callbacks(self.__train_weights_name, infer_model)
-
 
         train_model.fit_generator(
             generator=train_generator,
@@ -660,7 +652,7 @@ class CustomObjectDetection:
 
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
                                extract_detected_objects=False, minimum_percentage_probability=50, nms_treshold=0.4,
-                               display_percentage_probability=True, display_object_name=True):
+                               display_percentage_probability=True, display_object_name=True, thread_safe=False):
 
         """
 
@@ -674,6 +666,7 @@ class CustomObjectDetection:
                     * nms_threshold (optional, o.45 by default) , option to set the Non-maximum suppression for the detection
                     * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
                     * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
+                    * thread_safe (optional, False by default), enforce the loaded detection model works across all threads if set to true, made possible by forcing all Keras inference to run on the default graph
 
 
             The values returned by this function depends on the parameters parsed. The possible values returnable
@@ -725,6 +718,7 @@ class CustomObjectDetection:
         :param nms_treshold:
         :param display_percentage_probability:
         :param display_object_name:
+        :param thread_safe:
         :return image_frame:
         :return output_objects_array:
         :return detected_objects_image_array:
@@ -779,7 +773,12 @@ class CustomObjectDetection:
             image = np.expand_dims(image, 0)
 
             if self.__model_type == "yolov3":
-                yolo_results = self.__model.predict(image)
+                if thread_safe == True:
+                    with K.get_session().graph.as_default():
+                        yolo_results = self.__model.predict(image)
+                else:
+                    yolo_results = self.__model.predict(image)
+
 
                 boxes = list()
 
@@ -842,7 +841,7 @@ class CustomObjectDetection:
                     if output_type == "file":
                         return output_objects_array
                     elif output_type == "array":
-                        return image_frame, output_objects_array
+                        return drawn_image, output_objects_array
 
 
 class CustomVideoObjectDetection:
@@ -912,6 +911,7 @@ class CustomVideoObjectDetection:
                 detector.loadModel()
 
                 self.__detector = detector
+                self.__model_loaded = True
 
 
     def detectObjectsFromVideo(self, input_file_path="", camera_input=None, output_file_path="", frames_per_second=20,
@@ -1112,8 +1112,7 @@ class CustomVideoObjectDetection:
                                         this_second_counting[eachItem] = eachCountingDict[eachItem]
 
                             for eachCountingItem in this_second_counting:
-                                this_second_counting[eachCountingItem] = this_second_counting[
-                                                                             eachCountingItem] / frames_per_second
+                                this_second_counting[eachCountingItem] = int(this_second_counting[eachCountingItem] / frames_per_second)
 
                             if (return_detected_frame == True):
                                 per_second_function(int(counting / frames_per_second),
@@ -1147,9 +1146,7 @@ class CustomVideoObjectDetection:
                                         this_minute_counting[eachItem] = eachCountingDict[eachItem]
 
                             for eachCountingItem in this_minute_counting:
-                                this_minute_counting[eachCountingItem] = this_minute_counting[
-                                                                             eachCountingItem] / (
-                                                                                 frames_per_second * 60)
+                                this_minute_counting[eachCountingItem] = int(this_minute_counting[eachCountingItem] / (frames_per_second * 60))
 
                             if (return_detected_frame == True):
                                 per_minute_function(int(counting / (frames_per_second * 60)),
@@ -1232,8 +1229,8 @@ class CustomDetectionUtils:
             red, green, blue = int(red), int(green), int(blue)
             self.__colors.append([red, green, blue])
 
-
-    def _sigmoid(self, x):
+    @staticmethod
+    def _sigmoid(x):
         return 1. / (1. + np.exp(-x))
 
     def decode_netout(self, netout, anchors, obj_thresh, net_h, net_w):
@@ -1247,26 +1244,30 @@ class CustomDetectionUtils:
         netout[..., 5:] = netout[..., 4][..., np.newaxis] * netout[..., 5:]
         netout[..., 5:] *= netout[..., 5:] > obj_thresh
 
-        for i in range(grid_h * grid_w):
-            row = i / grid_w
-            col = i % grid_w
-            for b in range(nb_box):
-                # 4th element is objectness score
-                objectness = netout[int(row)][int(col)][b][4]
-                if (objectness.all() <= obj_thresh): continue
-                # first 4 elements are x, y, w, and h
-                x, y, w, h = netout[int(row)][int(col)][b][:4]
-                x = (col + x) / grid_w  # center position, unit: image width
-                y = (row + y) / grid_h  # center position, unit: image height
-                w = anchors[2 * b + 0] * np.exp(w) / net_w  # unit: image width
-                h = anchors[2 * b + 1] * np.exp(h) / net_h  # unit: image height
-                # last elements are class probabilities
-                classes = netout[int(row)][col][b][5:]
-                box = BoundBox(x - w / 2, y - h / 2, x + w / 2, y + h / 2, objectness, classes)
-                boxes.append(box)
+        for row in range(grid_h):
+            for col in range(grid_w):
+                for b in range(nb_box):
+                    # 4th element is objectness score
+                    objectness = netout[row, col, b, 4]
+
+                    if objectness <= obj_thresh:
+                        continue
+
+                    # first 4 elements are x, y, w, and h
+                    x, y, w, h = netout[row, col, b, :4]
+                    x = (col + x) / grid_w  # center position, unit: image width
+                    y = (row + y) / grid_h  # center position, unit: image height
+                    w = anchors[2 * b + 0] * np.exp(w) / net_w  # unit: image width
+                    h = anchors[2 * b + 1] * np.exp(h) / net_h  # unit: image height
+                    # last elements are class probabilities
+                    classes = netout[row, col, b, 5:]
+                    box = BoundBox(x - w / 2, y - h / 2, x + w / 2, y + h / 2, objectness, classes)
+                    boxes.append(box)
+
         return boxes
 
-    def correct_yolo_boxes(self, boxes, image_h, image_w, net_h, net_w):
+    @staticmethod
+    def correct_yolo_boxes(boxes, image_h, image_w, net_h, net_w):
         new_w, new_h = net_w, net_h
         for i in range(len(boxes)):
             x_offset, x_scale = (net_w - new_w) / 2. / net_w, float(new_w) / net_w
@@ -1309,13 +1310,18 @@ class CustomDetectionUtils:
             nb_class = len(boxes[0].classes)
         else:
             return
+
         for c in range(nb_class):
             sorted_indices = np.argsort([-box.classes[c] for box in boxes])
+
             for i in range(len(sorted_indices)):
                 index_i = sorted_indices[i]
+
                 if boxes[index_i].classes[c] == 0: continue
+
                 for j in range(i + 1, len(sorted_indices)):
                     index_j = sorted_indices[j]
+
                     if self.bbox_iou(boxes[index_i], boxes[index_j]) >= nms_thresh:
                         boxes[index_j].classes[c] = 0
 

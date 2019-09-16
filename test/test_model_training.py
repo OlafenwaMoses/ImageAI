@@ -22,7 +22,7 @@ def clear_keras_session():
 @pytest.mark.training_resnet
 @pytest.mark.resnet
 @pytest.mark.recognition
-def test_resnet_training(clear_keras_session):
+def test_resnet_training():
 
     trainer = ModelTraining()
     trainer.setModelTypeAsResNet()
@@ -41,7 +41,7 @@ def test_resnet_training(clear_keras_session):
 @pytest.mark.training_squeezenet
 @pytest.mark.squeezenet
 @pytest.mark.recognition
-def test_squeezenet_training(clear_keras_session):
+def test_squeezenet_training():
 
     trainer = ModelTraining()
     trainer.setModelTypeAsSqueezeNet()
@@ -60,7 +60,7 @@ def test_squeezenet_training(clear_keras_session):
 @pytest.mark.training_inception_v3
 @pytest.mark.inception_v3
 @pytest.mark.recognition
-def test_inception_v3_training(clear_keras_session):
+def test_inception_v3_training():
 
     trainer = ModelTraining()
     trainer.setModelTypeAsInceptionV3()

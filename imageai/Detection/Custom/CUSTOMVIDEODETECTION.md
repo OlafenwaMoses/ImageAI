@@ -99,7 +99,7 @@ In the code above, we ran the `detectObjectsFromVideo()` function and parse in t
 **ImageAI** now allows live-video detection with support for camera inputs. Using **OpenCV**'s **VideoCapture()** function, you can load live-video streams from a device camera, cameras connected by cable or IP cameras, and parse it into **ImageAI**'s **detectObjectsFromVideo()** function. All features that are supported for detecting objects in a video file is also available for detecting objects in a camera's live-video feed. Find below an example of detecting live-video feed from the device camera. 
 
 ```python
-from imageai.Detection import VideoObjectDetection
+from imageai.Detection.Custom import CustomVideoObjectDetection
 import os
 import cv2
 
@@ -220,7 +220,7 @@ If your output video **frames_per_second** is set to 20, that means the object d
 
 
 ```python
-from imageai.Detection import VideoObjectDetection
+from imageai.Detection.Custom import CustomVideoObjectDetection
 import os
 import cv2
 

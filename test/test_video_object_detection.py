@@ -119,12 +119,9 @@ def forSecond(second_number, output_arrays, count_arrays, average_output_count, 
     assert isinstance(count_arrays[0], dict)
     for a_key in dict(count_arrays[0]).keys():
         assert isinstance(a_key, str)
-        assert isinstance(average_output_count[a_key], float)
+        assert isinstance(count_arrays[0][a_key], int)
 
     assert isinstance(average_output_count, dict)
     for a_key2 in dict(average_output_count).keys():
         assert isinstance(a_key2, str)
-        assert isinstance(average_output_count[a_key2], float)
-
-
-
+        assert isinstance(average_output_count[a_key2], int)

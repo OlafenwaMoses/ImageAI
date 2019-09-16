@@ -2,15 +2,12 @@
 
 import argparse
 import os
-import numpy as np
 import json
 from imageai.Detection.Custom.voc import parse_voc_annotation
-from imageai.Detection.Custom.yolo import create_yolov3_model
 from imageai.Detection.Custom.generator import BatchGenerator
 from imageai.Detection.Custom.utils.utils import normalize, evaluate
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-from keras.optimizers import Adam
 from keras.models import load_model
+
 
 def _main_(args):
     config_path = args.conf
@@ -59,6 +56,7 @@ def _main_(args):
     for label, average_precision in average_precisions.items():
         print(labels[label] + ': {:.4f}'.format(average_precision))
     print('mAP: {:.4f}'.format(sum(average_precisions.values()) / len(average_precisions)))           
+
 
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser(description='Evaluate YOLO_v3 model on any dataset')

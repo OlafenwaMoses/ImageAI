@@ -643,13 +643,14 @@ class CustomImagePrediction:
 
 
 
-    def predictImage(self, image_input, result_count=1, input_type="file"):
+    def predictImage(self, image_input, result_count=1, input_type="file", thread_safe=False):
         """
         'predictImage()' function is used to predict a given image by receiving the following arguments:
             * input_type (optional) , the type of input to be parsed. Acceptable values are "file", "array" and "stream"
             * image_input , file path/numpy array/image file stream of the image.
             * result_count (optional) , the number of predictions to be sent which must be whole numbers between
                 1 and the number of classes present in the model
+            * thread_safe (optional, False by default), enforce the loaded detection model works across all threads if set to true, made possible by forcing all Keras inference to run on the default graph
 
         This function returns 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results'
         contains possible objects classes arranged in descending of their percentage probabilities. The 'prediction_probabilities'
@@ -660,6 +661,7 @@ class CustomImagePrediction:
         :param input_type:
         :param image_input:
         :param result_count:
+        :param thread_safe:
         :return prediction_results, prediction_probabilities:
         """
         prediction_results = []
@@ -706,7 +708,11 @@ class CustomImagePrediction:
 
                 model = self.__model_collection[0]
 
-                prediction = model.predict(image_to_predict, steps=1)
+                if(thread_safe == True):
+                    with K.get_session().graph.as_default():
+                        prediction = model.predict(image_to_predict, steps=1)
+                else:
+                    prediction = model.predict(image_to_predict, steps=1)
 
                 try:
                     predictiondata = decode_predictions(prediction, top=int(result_count), model_json=self.jsonPath)
@@ -755,7 +761,11 @@ class CustomImagePrediction:
                     except:
                         raise ValueError("You have parsed in a wrong stream for the image")
 
-                prediction = model.predict(x=image_to_predict, steps=1)
+                if (thread_safe == True):
+                    with K.get_session().graph.as_default():
+                        prediction = model.predict(x=image_to_predict, steps=1)
+                else:
+                    prediction = model.predict(x=image_to_predict, steps=1)
 
 
 
@@ -811,7 +821,11 @@ class CustomImagePrediction:
                     except:
                         raise ValueError("You have parsed in a wrong stream for the image")
 
-                prediction = model.predict(x=image_to_predict, steps=1)
+                if(thread_safe == True):
+                    with K.get_session().graph.as_default():
+                        prediction = model.predict(x=image_to_predict, steps=1)
+                else:
+                    prediction = model.predict(x=image_to_predict, steps=1)
 
                 try:
                     predictiondata = decode_predictions(prediction, top=int(result_count), model_json=self.jsonPath)
@@ -861,7 +875,11 @@ class CustomImagePrediction:
                     except:
                         raise ValueError("You have parsed in a wrong stream for the image")
 
-                prediction = model.predict(x=image_to_predict, steps=1)
+                if(thread_safe == True):
+                    with K.get_session().graph.as_default():
+                        prediction = model.predict(x=image_to_predict, steps=1)
+                else:
+                    prediction = model.predict(x=image_to_predict, steps=1)
 
                 try:
                     predictiondata = decode_predictions(prediction, top=int(result_count), model_json=self.jsonPath)
@@ -912,7 +930,12 @@ class CustomImagePrediction:
                     except:
                         raise ValueError("You have parsed in a wrong stream for the image")
 
-                prediction = model.predict(x=image_to_predict, steps=1)
+                if(thread_safe == True):
+                    with K.get_session().graph.as_default():
+                        prediction = model.predict(x=image_to_predict, steps=1)
+                else:
+                    prediction = model.predict(x=image_to_predict, steps=1)
+
 
                 try:
                     predictiondata = decode_predictions(prediction, top=int(result_count), model_json=self.jsonPath)
@@ -928,13 +951,13 @@ class CustomImagePrediction:
 
 
 
-    def predictMultipleImages(self, sent_images_array, result_count_per_image=1, input_type="file"):
+    def predictMultipleImages(self, sent_images_array, result_count_per_image=1, input_type="file", thread_safe=False):
         """
                 'predictMultipleImages()' function is used to predict more than one image by receiving the following arguments:
                     * input_type , the type of inputs contained in the parsed array. Acceptable values are "file", "array" and "stream"
                     * sent_images_array , an array of image file paths, image numpy array or image file stream
-                    * result_count_per_image (optionally) , the number of predictions to be sent per image, which must be whole numbers between
-                        1 and the number of classes present in the model
+                    * result_count_per_image (optionally) , the number of predictions to be sent per image, which must be whole numbers between 1 and the number of classes present in the model
+                    * thread_safe (optional, False by default), enforce the loaded detection model works across all threads if set to true, made possible by forcing all Keras inference to run on the default graph
 
                 This function returns an array of dictionaries, with each dictionary containing 2 arrays namely 'prediction_results' and 'prediction_probabilities'. The 'prediction_results'
                 contains possible objects classes arranged in descending of their percentage probabilities. The 'prediction_probabilities'
@@ -995,7 +1018,11 @@ class CustomImagePrediction:
 
                     model = self.__model_collection[0]
 
-                    prediction = model.predict(image_to_predict, steps=1)
+                    if (thread_safe == True):
+                        with K.get_session().graph.as_default():
+                            prediction = model.predict(x=image_to_predict, steps=1)
+                    else:
+                        prediction = model.predict(x=image_to_predict, steps=1)
 
                     try:
                         predictiondata = decode_predictions(prediction, top=int(result_count_per_image), model_json=self.jsonPath)
@@ -1048,7 +1075,11 @@ class CustomImagePrediction:
                         except:
                             raise ValueError("You have parsed in a wrong stream for the image")
 
-                    prediction = model.predict(x=image_to_predict, steps=1)
+                    if (thread_safe == True):
+                        with K.get_session().graph.as_default():
+                            prediction = model.predict(x=image_to_predict, steps=1)
+                    else:
+                        prediction = model.predict(x=image_to_predict, steps=1)
 
                     try:
 
@@ -1106,7 +1137,11 @@ class CustomImagePrediction:
                         except:
                             raise ValueError("You have parsed in a wrong stream for the image")
 
-                    prediction = model.predict(x=image_to_predict, steps=1)
+                    if (thread_safe == True):
+                        with K.get_session().graph.as_default():
+                            prediction = model.predict(x=image_to_predict, steps=1)
+                    else:
+                        prediction = model.predict(x=image_to_predict, steps=1)
 
                     try:
                         predictiondata = decode_predictions(prediction, top=int(result_count_per_image), model_json=self.jsonPath)
@@ -1161,7 +1196,11 @@ class CustomImagePrediction:
                         except:
                             raise ValueError("You have parsed in a wrong stream for the image")
 
-                    prediction = model.predict(x=image_to_predict, steps=1)
+                    if (thread_safe == True):
+                        with K.get_session().graph.as_default():
+                            prediction = model.predict(x=image_to_predict, steps=1)
+                    else:
+                        prediction = model.predict(x=image_to_predict, steps=1)
 
                     try:
                         predictiondata = decode_predictions(prediction, top=int(result_count_per_image), model_json=self.jsonPath)

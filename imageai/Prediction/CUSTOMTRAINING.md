@@ -12,10 +12,10 @@ image prediction using the model and the JSON file generated.
 
 ### TABLE OF CONTENTS
 - <a href="#customtraining" > :white_square_button: Custom Model Training Prediction</a> 
-- <a href="#savefullmodel" > :white_square_button: Saving Full Custom Model (NEW)</a> 
+- <a href="#savefullmodel" > :white_square_button: Saving Full Custom Model </a> 
 - <a href="#idenproftraining" > :white_square_button: Training on the IdenProf Dataset</a> 
-- <a href="#continuoustraining" > :white_square_button: Continuous Model Training (NEW)</a> 
-- <a href="#transferlearning" > :white_square_button: Transfer Learning (Training from a pre-trained model) (NEW)</a>
+- <a href="#continuoustraining" > :white_square_button: Continuous Model Training </a> 
+- <a href="#transferlearning" > :white_square_button: Transfer Learning (Training from a pre-trained model)</a>
 
 
 ### Custom Model Training
