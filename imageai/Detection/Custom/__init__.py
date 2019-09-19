@@ -596,7 +596,6 @@ class CustomObjectDetection:
         self.__nms_threshold = 0.4
         self.__model = None
         self.__detection_utils = CustomDetectionUtils(labels=[])
-        print('Running local version')
 
     def setModelTypeAsYOLOv3(self):
         """
