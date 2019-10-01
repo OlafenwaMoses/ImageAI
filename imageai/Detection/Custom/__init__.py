@@ -769,7 +769,6 @@ class CustomObjectDetection:
                 else:
                     yolo_results = self.__model.predict(image)
 
-
                 boxes = list()
 
                 for idx, result in enumerate(yolo_results):
@@ -1343,7 +1342,7 @@ class CustomDetectionUtils:
         if label < len(self.__colors):
             return self.__colors[label]
         else:
-            return (0, 255, 0)
+            return 0, 255, 0
 
     def draw_boxes_and_caption(self, image_frame, v_boxes, v_labels, v_scores, show_names=False, show_percentage=False):
 
