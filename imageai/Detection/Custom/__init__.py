@@ -50,7 +50,7 @@ class DetectionModelTrainer:
         self.__train_epochs = 100
         self.__train_warmup_epochs = 3
         self.__train_ignore_treshold = 0.5
-        self.__train_gpus = "0,1"
+        self.__train_gpus = "0"
         self.__train_grid_scales = [1, 1, 1]
         self.__train_obj_scale = 5
         self.__train_noobj_scale = 1
@@ -167,8 +167,8 @@ class DetectionModelTrainer:
         """
 
         self.__model_anchors, self.__inference_anchors = generateAnchors(self.__train_annotations_folder,
-                                                                          self.__train_images_folder,
-                                                                          self.__train_cache_file, self.__model_labels)
+                                                                         self.__train_images_folder,
+                                                                         self.__train_cache_file, self.__model_labels)
 
         self.__model_labels = sorted(object_names_array)
         self.__num_objects = len(object_names_array)
@@ -184,7 +184,6 @@ class DetectionModelTrainer:
         with open(os.path.join(self.__json_directory, "detection_config.json"), "w+") as json_file:
             json.dump(json_data, json_file, indent=4, separators=(",", " : "),
                       ensure_ascii=True)
-            json_file.close()
 
         print("Detection configuration saved in ", os.path.join(self.__json_directory, "detection_config.json"))
 
@@ -214,6 +213,8 @@ class DetectionModelTrainer:
         if self.__training_mode:
             print('Training on: \t' + str(labels) + '')
             print("Training with Batch Size: ", self.__train_batch_size)
+            print("Number of Training Samples: ", len(train_ints))
+            print("Number of Validation Samples: ", len(valid_ints))
             print("Number of Experiments: ", self.__train_epochs)
 
         ###############################
@@ -313,7 +314,9 @@ class DetectionModelTrainer:
         """
 
         self.__training_mode = False
-        detection_model_json = json.load(open(json_path))
+
+        with open(json_path, 'r') as json_file:
+            detection_model_json = json.load(json_file)
 
         temp_anchor_array = []
         new_anchor_array = []
@@ -335,7 +338,7 @@ class DetectionModelTrainer:
 
         print("Starting Model evaluation....")
 
-        train_ints, valid_ints, labels, max_box_per_image = self._create_training_instances(
+        _, valid_ints, labels, max_box_per_image = self._create_training_instances(
             self.__train_annotations_folder,
             self.__train_images_folder,
             self.__train_cache_file,
@@ -345,6 +348,12 @@ class DetectionModelTrainer:
             self.__model_labels
 
         )
+
+        if len(valid_ints) == 0:
+            print('Validation samples were not provided.')
+            print('Please, check your validation samples are correctly provided:')
+            print('\tAnnotations: {}\n\tImages: {}'.format(self.__validation_annotations_folder,
+                                                           self.__validation_images_folder))
 
         valid_generator = BatchGenerator(
             instances=valid_ints,
@@ -358,40 +367,6 @@ class DetectionModelTrainer:
             shuffle=True,
             jitter=0.0,
             norm=normalize
-        )
-
-        train_generator = BatchGenerator(
-            instances=train_ints,
-            anchors=self.__model_anchors,
-            labels=labels,
-            downsample=32,  # ratio between network input's size and network output's size, 32 for YOLOv3
-            max_box_per_image=max_box_per_image,
-            batch_size=self.__train_batch_size,
-            min_net_size=self.__model_min_input_size,
-            max_net_size=self.__model_max_input_size,
-            shuffle=True,
-            jitter=0.3,
-            norm=normalize
-        )
-
-        multi_gpu = [int(gpu) for gpu in self.__train_gpus.split(',')]
-        warmup_batches = self.__train_warmup_epochs * (self.__train_times * len(train_generator))
-
-        train_model, infer_model = self._create_model(
-            nb_class=len(labels),
-            anchors=self.__model_anchors,
-            max_box_per_image=max_box_per_image,
-            max_grid=[self.__model_max_input_size, self.__model_max_input_size],
-            batch_size=self.__train_batch_size,
-            warmup_batches=warmup_batches,
-            ignore_thresh=self.__train_ignore_treshold,
-            multi_gpu=multi_gpu,
-            lr=self.__train_learning_rate,
-            grid_scales=self.__train_grid_scales,
-            obj_scale=self.__train_obj_scale,
-            noobj_scale=self.__train_noobj_scale,
-            xywh_scale=self.__train_xywh_scale,
-            class_scale=self.__train_class_scale,
         )
 
         results = list()
@@ -426,25 +401,31 @@ class DetectionModelTrainer:
                         'using_iou': iou_threshold,
                         'using_object_threshold': object_threshold,
                         'using_non_maximum_suppression': nms_threshold,
-                        'average_precision': dict()
+                        'average_precision': dict(),
+                        'evaluation_samples': len(valid_ints)
                     }
                     # print the score
                     print("Model File: ", model_file, '\n')
-                    print("Using IoU : ", iou_threshold)
-                    print("Using Object Threshold : ", object_threshold)
-                    print("Using Non-Maximum Suppression : ", nms_threshold)
+                    print("Evaluation samples: ", len(valid_ints))
+                    print("Using IoU: ", iou_threshold)
+                    print("Using Object Threshold: ", object_threshold)
+                    print("Using Non-Maximum Suppression: ", nms_threshold)
+
                     for label, average_precision in average_precisions.items():
                         print(labels[label] + ': {:.4f}'.format(average_precision))
                         result_dict['average_precision'][labels[label]] = average_precision
+
                     print('mAP: {:.4f}'.format(sum(average_precisions.values()) / len(average_precisions)))
                     result_dict['map'] = sum(average_precisions.values()) / len(average_precisions)
                     print("===============================")
+
                     results.append(result_dict)
                 except Exception as e:
                     print('skipping the evaluation of {} because following exception occurred: {}'.format(model_file, e))
                     continue
             else:
                 print('skipping the evaluation of {} since it\'s not a .h5 file'.format(model_file))
+
         return results
 
     def _create_training_instances(self,
@@ -464,15 +445,23 @@ class DetectionModelTrainer:
 
         if os.path.exists(valid_annot_folder):
             valid_ints, valid_labels = parse_voc_annotation(valid_annot_folder, valid_image_folder, valid_cache, labels)
+            print('Evaluating over {} samples taken from {}'.format(len(valid_ints),
+                                                                    os.path.dirname(valid_annot_folder)))
         else:
 
-            train_valid_split = int(0.8 * len(train_ints))
+            train_portion = 0.8  # use 80% to train and the remaining 20% to evaluate
+            train_valid_split = int(round(train_portion * len(train_ints)))
             np.random.seed(0)
             np.random.shuffle(train_ints)
-            np.random.seed()
 
             valid_ints = train_ints[train_valid_split:]
             train_ints = train_ints[:train_valid_split]
+            print('Evaluating over {} samples taken as {:5.2f}% of the training set '
+                  'given at {}'.format(len(valid_ints),
+                                       (1 - train_portion)*100,
+                                       os.path.dirname(train_annot_folder)))
+
+        print('Training over {} samples  given at {}'.format(len(train_ints), os.path.dirname(train_annot_folder)))
 
         # compare the seen labels with the given labels in config.json
         if len(labels) > 0:
@@ -480,11 +469,11 @@ class DetectionModelTrainer:
 
             # return None, None, None if some given label is not in the dataset
             if len(overlap_labels) < len(labels):
-                if(self.__training_mode):
+                if self.__training_mode:
                     print('Some labels have no annotations! Please revise the list of labels in your configuration.')
                 return None, None, None, None
         else:
-            if(self.__training_mode):
+            if self.__training_mode:
                 print('No labels are provided. Train on all seen labels.')
                 print(train_labels)
 
@@ -569,12 +558,13 @@ class DetectionModelTrainer:
             )
 
             # load the pretrained weight if exists, otherwise load the backend weight only
-        if(len(self.__pre_trained_model) > 3):
-            if(self.__training_mode):
+
+        if len(self.__pre_trained_model) > 3:
+            if self.__training_mode:
                 print("Training with transfer learning from pretrained Model")
             template_model.load_weights(self.__pre_trained_model, by_name=True)
         else:
-            if(self.__training_mode):
+            if self.__training_mode:
                 print("Pre-trained Model not provided. Transfer learning not in use.")
                 print("Training will start with 3 warmup experiments")
 
@@ -778,7 +768,6 @@ class CustomObjectDetection:
                         yolo_results = self.__model.predict(image)
                 else:
                     yolo_results = self.__model.predict(image)
-
 
                 boxes = list()
 
@@ -1353,7 +1342,7 @@ class CustomDetectionUtils:
         if label < len(self.__colors):
             return self.__colors[label]
         else:
-            return (0, 255, 0)
+            return 0, 255, 0
 
     def draw_boxes_and_caption(self, image_frame, v_boxes, v_labels, v_scores, show_names=False, show_percentage=False):
 

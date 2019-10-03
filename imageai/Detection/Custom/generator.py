@@ -44,8 +44,8 @@ class BatchGenerator(Sequence):
         base_grid_h, base_grid_w = net_h//self.downsample, net_w//self.downsample
 
         # determine the first and the last indices of the batch
-        l_bound = idx*self.batch_size
-        r_bound = (idx+1)*self.batch_size
+        l_bound = idx * self.batch_size
+        r_bound = (idx+1) * self.batch_size
 
         if r_bound > len(self.instances):
             r_bound = len(self.instances)
@@ -61,8 +61,8 @@ class BatchGenerator(Sequence):
         yolos = [yolo_3, yolo_2, yolo_1]
 
         dummy_yolo_1 = np.zeros((r_bound - l_bound, 1))
-        dummy_yolo_2 = np.zeros((r_bound - l_bound, 1))
-        dummy_yolo_3 = np.zeros((r_bound - l_bound, 1))
+        dummy_yolo_2 = np.zeros_like(dummy_yolo_1)
+        dummy_yolo_3 = np.zeros_like(dummy_yolo_1)
         
         instance_count = 0
         true_box_index = 0
@@ -148,7 +148,7 @@ class BatchGenerator(Sequence):
         return [x_batch, t_batch, yolo_1, yolo_2, yolo_3], [dummy_yolo_1, dummy_yolo_2, dummy_yolo_3]
 
     def _get_net_size(self, idx):
-        if idx%10 == 0:
+        if idx % 10 == 0:
             net_size = self.downsample*np.random.randint(self.min_net_size/self.downsample, \
                                                          self.max_net_size/self.downsample+1)
 
@@ -157,29 +157,31 @@ class BatchGenerator(Sequence):
     
     def _aug_image(self, instance, net_h, net_w):
         image_name = instance['filename']
-        image = cv2.imread(image_name) # RGB image
+        image = cv2.imread(image_name)  # BGR image
         
-        if image is None: print('Cannot find ', image_name)
-        image = image[:,:,::-1] # RGB image
+        if image is None:
+            print('Cannot find ', image_name)
+
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)  # RGB image
             
         image_h, image_w, _ = image.shape
         
         # determine the amount of scaling and cropping
-        dw = self.jitter * image_w;
-        dh = self.jitter * image_h;
+        dw = self.jitter * image_w
+        dh = self.jitter * image_h
 
-        new_ar = (image_w + np.random.uniform(-dw, dw)) / (image_h + np.random.uniform(-dh, dh));
-        scale = np.random.uniform(0.25, 2);
+        new_ar = (image_w + np.random.uniform(-dw, dw)) / (image_h + np.random.uniform(-dh, dh))
+        scale = np.random.uniform(0.25, 2)
 
-        if (new_ar < 1):
-            new_h = int(scale * net_h);
-            new_w = int(net_h * new_ar);
+        if new_ar < 1:
+            new_h = int(scale * net_h)
+            new_w = int(net_h * new_ar)
         else:
-            new_w = int(scale * net_w);
-            new_h = int(net_w / new_ar);
+            new_w = int(scale * net_w)
+            new_h = int(net_w / new_ar)
             
-        dx = int(np.random.uniform(0, net_w - new_w));
-        dy = int(np.random.uniform(0, net_h - new_h));
+        dx = int(np.random.uniform(0, net_w - new_w))
+        dy = int(np.random.uniform(0, net_h - new_h))
         
         # apply scaling and cropping
         im_sized = apply_random_scale_and_crop(image, new_w, new_h, net_w, net_h, dx, dy)
@@ -197,7 +199,8 @@ class BatchGenerator(Sequence):
         return im_sized, all_objs   
 
     def on_epoch_end(self):
-        if self.shuffle: np.random.shuffle(self.instances)
+        if self.shuffle:
+            np.random.shuffle(self.instances)
             
     def num_classes(self):
         return len(self.labels)
@@ -220,9 +223,10 @@ class BatchGenerator(Sequence):
             annot = [obj['xmin'], obj['ymin'], obj['xmax'], obj['ymax'], self.labels.index(obj['name'])]
             annots += [annot]
 
-        if len(annots) == 0: annots = [[]]
+        if len(annots) == 0:
+            annots = [[]]
 
         return np.array(annots)
 
     def load_image(self, i):
-        return cv2.imread(self.instances[i]['filename'])     
+        return cv2.imread(self.instances[i]['filename'])  # BGR image
