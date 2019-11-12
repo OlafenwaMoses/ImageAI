@@ -88,8 +88,8 @@ def generateAnchors(train_annotation_folder, train_image_folder, train_cache_fil
 
         for obj in image['object']:
             relative_w = (float(obj['xmax']) - float(obj['xmin']))/image['width']
-            relatice_h = (float(obj["ymax"]) - float(obj['ymin']))/image['height']
-            annotation_dims.append(tuple(map(float, (relative_w,relatice_h))))
+            relative_h = (float(obj["ymax"]) - float(obj['ymin']))/image['height']
+            annotation_dims.append(tuple(map(float, (relative_w,relative_h))))
 
     annotation_dims = np.array(annotation_dims)
     centroids = run_kmeans(annotation_dims, num_anchors)
