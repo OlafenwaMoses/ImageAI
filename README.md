@@ -288,10 +288,12 @@ We have provided full documentation for all **ImageAI** classes and functions in
 
 ### Projects Built on ImageAI
 <div id="sample"></div>
- 
-As a demonstration of  what you can do with ImageAI, we have 
- built a complete AI powered Photo gallery for Windows called **IntelliP** ,  using **ImageAI** and UI framework **Kivy**.
-Follow this [IntelliP](https://github.com/OlafenwaMoses/IntelliP) to download page of the application and its source code.
+
+<hr>
+- **[BatBot](https://github.com/LeeHounshell/BatBot) :** BatBot is an open source Intelligent Research Robot with image and speech recognition. It comes with an Android App which allows you to speak voice commands and instruct the robot to find objects using its camera and an AI engine powered by **ImageAI**. It also allows you to re-train and improve the AI capabilities from new images captured by the robot. Learn more about the incredible capabilities and components of **BatBot** via the [GitHub repository](https://github.com/LeeHounshell/BatBot) . It is developed and maintained by [Lee Hounshell](https://github.com/LeeHounshell)
+
+<hr>
+
 
  We also welcome submissions of applications and systems built by you and powered by ImageAI for listings here.
  Should you want your ImageAI powered developments listed here, you can reach to us via our <a href="#contact" >Contacts</a> below.
