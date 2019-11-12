@@ -289,10 +289,9 @@ We have provided full documentation for all **ImageAI** classes and functions in
 ### Projects Built on ImageAI
 <div id="sample"></div>
 
-<hr>
-- **[BatBot](https://github.com/LeeHounshell/BatBot) :** BatBot is an open source Intelligent Research Robot with image and speech recognition. It comes with an Android App which allows you to speak voice commands and instruct the robot to find objects using its camera and an AI engine powered by **ImageAI**. It also allows you to re-train and improve the AI capabilities from new images captured by the robot. Learn more about the incredible capabilities and components of **BatBot** via the [GitHub repository](https://github.com/LeeHounshell/BatBot) . It is developed and maintained by [Lee Hounshell](https://github.com/LeeHounshell)
 
-<hr>
+<u> [BatBot](https://github.com/LeeHounshell/BatBot) :</u> BatBot is an open source Intelligent Research Robot with image and speech recognition. It comes with an Android App which allows you to speak voice commands and instruct the robot to find objects using its camera and an AI engine powered by **ImageAI**. It also allows you to re-train and improve the AI capabilities from new images captured by the robot. Learn more about the incredible capabilities and components of **BatBot** via the [GitHub repository](https://github.com/LeeHounshell/BatBot) . It is developed and maintained by [Lee Hounshell](https://github.com/LeeHounshell)
+
 
 
  We also welcome submissions of applications and systems built by you and powered by ImageAI for listings here.
