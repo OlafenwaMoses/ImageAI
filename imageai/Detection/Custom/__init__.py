@@ -13,6 +13,7 @@ from imageai.Detection.Custom.callbacks import CustomModelCheckpoint, CustomTens
 from imageai.Detection.Custom.utils.multi_gpu_model import multi_gpu_model
 from imageai.Detection.Custom.gen_anchors import generateAnchors
 import tensorflow as tf
+from tensorflow.python.keras.backend import set_session
 from keras.models import load_model, Input
 from keras.callbacks import TensorBoard
 import keras.backend as K
@@ -594,6 +595,8 @@ class CustomObjectDetection:
         self.__input_size = 416
         self.__object_threshold = 0.4
         self.__nms_threshold = 0.4
+        self.__session = None
+        self.__graph = None
         self.__model = None
         self.__detection_utils = CustomDetectionUtils(labels=[])
 
@@ -621,7 +624,7 @@ class CustomObjectDetection:
         """
         self.__detection_config_json_path = configuration_json
 
-    def loadModel(self):
+    def loadModel(self, session_config=None):
 
         """
         'loadModel' is used to load the model into the CustomObjectDetection class
@@ -636,13 +639,18 @@ class CustomObjectDetection:
 
             self.__detection_utils = CustomDetectionUtils(labels=self.__model_labels)
 
+            self.__session = tf.compat.v1.Session(config=session_config)
+
+            self.__graph = tf.compat.v1.get_default_graph()
+
             self.__model = yolo_main(Input(shape=(None, None, 3)), 3, len(self.__model_labels))
 
+            set_session(self.__session)
             self.__model.load_weights(self.__model_path)
 
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
                                extract_detected_objects=False, minimum_percentage_probability=50, nms_treshold=0.4,
-                               display_percentage_probability=True, display_object_name=True, thread_safe=False):
+                               display_percentage_probability=True, display_object_name=True):
 
         """
 
@@ -656,7 +664,6 @@ class CustomObjectDetection:
                     * nms_threshold (optional, o.45 by default) , option to set the Non-maximum suppression for the detection
                     * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
                     * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
-                    * thread_safe (optional, False by default), enforce the loaded detection model works across all threads if set to true, made possible by forcing all Keras inference to run on the default graph
 
 
             The values returned by this function depends on the parameters parsed. The possible values returnable
@@ -708,7 +715,6 @@ class CustomObjectDetection:
         :param nms_treshold:
         :param display_percentage_probability:
         :param display_object_name:
-        :param thread_safe:
         :return image_frame:
         :return output_objects_array:
         :return detected_objects_image_array:
@@ -763,10 +769,8 @@ class CustomObjectDetection:
             image = np.expand_dims(image, 0)
 
             if self.__model_type == "yolov3":
-                if thread_safe == True:
-                    with K.get_session().graph.as_default():
-                        yolo_results = self.__model.predict(image)
-                else:
+                with self.__graph.as_default():
+                    set_session(self.__session)
                     yolo_results = self.__model.predict(image)
 
                 boxes = list()
