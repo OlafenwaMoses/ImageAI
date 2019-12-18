@@ -368,6 +368,7 @@ class ObjectDetection:
                         color = label_color(label)
 
                         detection_details = detections[0, index, :4].astype(int)
+                        detection_details = np.maximum(detection_details, 0)
                         draw_box(detected_copy, detection_details, color=color)
 
                         if (display_object_name == True and display_percentage_probability == True):
@@ -743,6 +744,7 @@ class ObjectDetection:
                         color = label_color(label)
 
                         detection_details = detections[0, index, :4].astype(int)
+                        detection_details = np.maximum(detection_details, 0)
                         draw_box(detected_copy, detection_details, color=color)
 
                         if (display_object_name == True and display_percentage_probability == True):
