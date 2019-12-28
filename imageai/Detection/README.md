@@ -17,7 +17,6 @@ ImageAI provides very convenient and powerful methods to perform object detectio
 * **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5)** _(Size = 145 mb, high performance and accuracy, with longer detection time)_
 * **[YOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5)** _(Size = 237 mb, moderate performance and accuracy, with a moderate detection time)_
 * **[TinyYOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5)** _(Size = 34 mb, optimized for speed and moderate performance, with fast detection time)_
-* **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5)** _(Size = 145 mb, high performance and accuracy, with longer detection time)_
 
 
  Once you download the object detection model file, you should copy the model file to the your project folder where your .py files will be.
