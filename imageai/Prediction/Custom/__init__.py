@@ -258,7 +258,7 @@ class ModelTraining:
         if (show_network_summary == True):
             model.summary()
 
-        model_name = 'model_ex-{epoch:03d}_acc-{val_acc:03f}.h5'
+        model_name = 'model_ex-{epoch:03d}_acc-{val_accuracy:03f}.h5'
 
         log_name = '{}_lr-{}_{}'.format(self.__modelType, initial_learning_rate, time.strftime("%Y-%m-%d-%H-%M-%S"))
 
@@ -285,7 +285,7 @@ class ModelTraining:
 
 
         checkpoint = ModelCheckpoint(filepath=model_path,
-                                     monitor='val_acc',
+                                     monitor='val_accuracy',
                                      verbose=1,
                                      save_weights_only=save_weights_condition,
                                      save_best_only=True,
