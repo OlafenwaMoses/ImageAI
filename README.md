@@ -321,7 +321,7 @@ Kindly follow the link below to download the publication.
     * _Twitter:_ [@OlafenwaMoses](https://twitter.com/OlafenwaMoses)
     * _Medium:_ [@guymodscientist](https://medium.com/@guymodscientist)
     * _Facebook:_ [moses.olafenwa](https://facebook.com/moses.olafenwa)
-- **Moses Olafenwa**
+- **John Olafenwa**
     * _Email:_ johnolafenwa@gmail.com
     * _Website:_ [https://john.aicommons.science](https://john.aicommons.science)
     * _Twitter:_ [@johnolafenwa](https://twitter.com/johnolafenwa)
