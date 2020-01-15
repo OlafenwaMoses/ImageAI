@@ -1,8 +1,5 @@
 import json
 
-CLASS_INDEX = None
-
-
 
 def preprocess_input(x):
     """Preprocesses a tensor encoding a batch of images.
@@ -22,13 +19,9 @@ def preprocess_input(x):
     return x
 
 
-def decode_predictions(preds, top=5, model_json=""):
+def decode_predictions(preds, top=5, model_json):
 
-
-    global CLASS_INDEX
-
-    if CLASS_INDEX is None:
-        CLASS_INDEX = json.load(open(model_json))
+    CLASS_INDEX = json.load(open(model_json))
     results = []
     for pred in preds:
         top_indices = pred.argsort()[-top:][::-1]
