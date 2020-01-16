@@ -8,7 +8,13 @@ setup(name="imageai",
       author_email='guymodscientist@gmail.com',
       license='MIT',
       packages= find_packages(),
-      install_requires=['numpy','scipy','pillow',"matplotlib", "h5py"],
+      install_requires=['numpy',
+                        'scipy',
+                        'pillow',
+                        'matplotlib',
+                        'h5py',
+                        'tensorflow==1.14.0',
+                        'keras==2.2.5'],
       zip_safe=False
 
       )
