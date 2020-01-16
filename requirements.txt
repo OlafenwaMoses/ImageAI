@@ -1,5 +1,5 @@
-tensorflow
-keras
+tensorflow==1.14
+keras==2.3
 numpy
 pillow
 scipy
