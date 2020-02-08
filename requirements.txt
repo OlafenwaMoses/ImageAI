@@ -1,7 +1,7 @@
 tensorflow
 keras
 numpy
-pillow
+pillow<7.0.0
 scipy
 h5py
 matplotlib
