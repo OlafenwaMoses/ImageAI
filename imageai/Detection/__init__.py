@@ -1220,10 +1220,7 @@ class VideoObjectDetection:
                         output_frames_count_dict[counting] = output_objects_count
 
                         detected_copy = cv2.cvtColor(detected_copy, cv2.COLOR_BGR2RGB)
-
-                        if (save_detected_video == True):
-                            output_video.write(detected_copy)
-
+                        
                         if (counting == 1 or check_frame_interval == 0):
                             if (per_frame_function != None):
                                 if (return_detected_frame == True):
@@ -1231,6 +1228,9 @@ class VideoObjectDetection:
                                                        detected_copy)
                                 elif (return_detected_frame == False):
                                     per_frame_function(counting, output_objects_array, output_objects_count)
+                        
+                        if (save_detected_video == True):
+                            output_video.write(detected_copy)
 
                         if (per_second_function != None):
                             if (counting != 1 and (counting % frames_per_second) == 0):
@@ -1600,9 +1600,6 @@ class VideoObjectDetection:
 
                         detected_copy = cv2.cvtColor(detected_copy, cv2.COLOR_BGR2RGB)
 
-                        if (save_detected_video == True):
-                            output_video.write(detected_copy)
-
                         if (counting == 1 or check_frame_interval == 0):
                             if (per_frame_function != None):
                                 if (return_detected_frame == True):
@@ -1610,6 +1607,9 @@ class VideoObjectDetection:
                                                        detected_copy)
                                 elif (return_detected_frame == False):
                                     per_frame_function(counting, output_objects_array, output_objects_count)
+
+                        if (save_detected_video == True):
+                            output_video.write(detected_copy)                    
 
                         if (per_second_function != None):
                             if (counting != 1 and (counting % frames_per_second) == 0):
