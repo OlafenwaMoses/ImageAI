@@ -177,7 +177,7 @@ class YoloLayer(Layer):
         loss = loss_xy + loss_wh + loss_conf + loss_class
 
 
-        return loss*self.grid_scale
+        return loss*self.grid_scale + 1e-20
 
     def compute_output_shape(self, input_shape):
         return [(None, 1)]
