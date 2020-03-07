@@ -187,7 +187,7 @@ class DetectionModelTrainer:
 
         print("Detection configuration saved in ", os.path.join(self.__json_directory, "detection_config.json"))
 
-    def trainModel(self):
+    def trainModel(self, mode='min', monitor='loss'):
 
         """
         'trainModel()' function starts the actual model training. Once the training starts, the training instance
@@ -278,7 +278,7 @@ class DetectionModelTrainer:
         ###############################
         #   Kick off the training
         ###############################
-        callbacks = self._create_callbacks(self.__train_weights_name, infer_model)
+        callbacks = self._create_callbacks(self.__train_weights_name, infer_model,  mode=mode, monitor=monitor)
 
         train_model.fit_generator(
             generator=train_generator,
@@ -483,15 +483,15 @@ class DetectionModelTrainer:
 
         return train_ints, valid_ints, sorted(labels), max_box_per_image
 
-    def _create_callbacks(self, saved_weights_name, model_to_save):
+    def _create_callbacks(self, saved_weights_name, model_to_save, mode='min', monitor='loss'):
 
         checkpoint = CustomModelCheckpoint(
             model_to_save=model_to_save,
             filepath=saved_weights_name + 'ex-{epoch:03d}--loss-{loss:08.3f}.h5',
-            monitor='loss',
+            monitor= monitor,
             verbose=0,
             save_best_only=True,
-            mode='min',
+            mode= mode,
             period=1
         )
         reduce_on_plateau = ReduceLROnPlateau(
