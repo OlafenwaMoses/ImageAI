@@ -9,7 +9,7 @@ An open-source python library built to empower developers to build applications 
  
  <span class="badge-patreon"><a href="https://patreon.com/OlafenwaMoses" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span> 
  
-[ Click here](#sponsors) to see all [sponsors](#sponsors) for the **ImageAI** project!
+[Click here](#sponsors) to see all sponsors for the **ImageAI** project!
  
 ![](logo1.png)
 
