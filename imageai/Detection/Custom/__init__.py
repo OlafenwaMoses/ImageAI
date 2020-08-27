@@ -752,6 +752,8 @@ class CustomObjectDetection:
             image_frame = image.copy()
 
             height, width, channels = image.shape
+            height_scale = height/self.__input_size
+            width_scale = width/self.__input_size
 
             image = cv2.resize(image, (self.__input_size, self.__input_size))
 
@@ -797,9 +799,11 @@ class CustomObjectDetection:
                     each_object_details["box_points"] = [object_box.xmin, object_box.ymin, object_box.xmax, object_box.ymax]
                     output_objects_array.append(each_object_details)
 
-                drawn_image = self.__detection_utils.draw_boxes_and_caption(image_frame.copy(), all_boxes, all_labels,
+                drawn_image = self.__detection_utils.draw_boxes_and_caption(image.copy(), all_boxes, all_labels,
                                                                             all_scores, show_names=display_object_name,
-                                                                            show_percentage=display_percentage_probability)
+                                                                            show_percentage=display_percentage_probability,
+                                                                            width_scale=width_scale,
+                                                                            height_scale=height_scale)
 
                 if extract_detected_objects:
 
@@ -1344,11 +1348,11 @@ class CustomDetectionUtils:
         else:
             return 0, 255, 0
 
-    def draw_boxes_and_caption(self, image_frame, v_boxes, v_labels, v_scores, show_names=False, show_percentage=False):
+    def draw_boxes_and_caption(self, image_frame, v_boxes, v_labels, v_scores, show_names=False, show_percentage=False, width_scale=1, height_scale=1):
 
         for i in range(len(v_boxes)):
             box = v_boxes[i]
-            y1, x1, y2, x2 = box.ymin, box.xmin, box.ymax, box.xmax
+            y1, x1, y2, x2 = round(box.ymin*height_scale), round(box.xmin*width_scale), round(box.ymax*height_scale), round(box.xmax*width_scale)
             width, height = x2 - x1, y2 - y1
             class_color = self.label_color(self.__labels.index(v_labels[i]))
 
