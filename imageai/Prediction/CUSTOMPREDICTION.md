@@ -97,7 +97,7 @@ In the above line, we defined 2 variables to be equal to the function called to 
 
 ```python
 for eachPrediction, eachProbability in zip(predictions, probabilities):
-    print(eachPrediction + " : " + eachProbability)
+    print(str(eachPrediction) + " : " + str(eachProbability))
 ```
 
 The above line obtains each object in the **predictions** array, and also obtains the corresponding percentage probability from the **percentage_probabilities**, and finally prints the result of both to console.
