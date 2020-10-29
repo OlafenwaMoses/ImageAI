@@ -1,7 +1,7 @@
-from keras.layers import Conv2D, Input, BatchNormalization, LeakyReLU, ZeroPadding2D, UpSampling2D, Lambda
-from keras.layers.merge import add, concatenate
-from keras.models import Model
-from keras.engine.topology import Layer
+from tensorflow.keras.layers import Conv2D, Input, BatchNormalization, LeakyReLU, ZeroPadding2D, UpSampling2D, Lambda
+from tensorflow.keras.layers import add, concatenate
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Layer
 import tensorflow as tf
 
 class YoloLayer(Layer):
@@ -21,7 +21,7 @@ class YoloLayer(Layer):
         # make a persistent mesh grid
         max_grid_h, max_grid_w = max_grid
 
-        cell_x = tf.to_float(tf.reshape(tf.tile(tf.range(max_grid_w), [max_grid_h]), (1, max_grid_h, max_grid_w, 1, 1)))
+        cell_x = tf.cast(tf.reshape(tf.tile(tf.range(max_grid_w), [max_grid_h]), (1, max_grid_h, max_grid_w, 1, 1)), dtype=tf.float32)
         cell_y = tf.transpose(cell_x, (0,2,1,3,4))
         self.cell_grid = tf.tile(tf.concat([cell_x,cell_y],-1), [batch_size, 1, 1, 3, 1])
 
@@ -101,7 +101,7 @@ class YoloLayer(Layer):
         iou_scores  = tf.truediv(intersect_areas, union_areas)
 
         best_ious   = tf.reduce_max(iou_scores, axis=4)        
-        conf_delta *= tf.expand_dims(tf.to_float(best_ious < self.ignore_thresh), 4)
+        conf_delta *= tf.expand_dims(tf.cast((best_ious < self.ignore_thresh), dtype=tf.float32), 4)
 
         """
         Compute some online statistics
@@ -134,10 +134,10 @@ class YoloLayer(Layer):
         
         count       = tf.reduce_sum(object_mask)
         count_noobj = tf.reduce_sum(1 - object_mask)
-        detect_mask = tf.to_float((pred_box_conf*object_mask) >= 0.5)
-        class_mask  = tf.expand_dims(tf.to_float(tf.equal(tf.argmax(pred_box_class, -1), true_box_class)), 4)
-        recall50    = tf.reduce_sum(tf.to_float(iou_scores >= 0.5 ) * detect_mask  * class_mask) / (count + 1e-3)
-        recall75    = tf.reduce_sum(tf.to_float(iou_scores >= 0.75) * detect_mask  * class_mask) / (count + 1e-3)    
+        detect_mask = tf.cast((pred_box_conf*object_mask >= 0.5), dtype=tf.float32)
+        class_mask  = tf.expand_dims(tf.cast(tf.equal(tf.argmax(pred_box_class, -1), true_box_class), dtype=tf.float32), 4)
+        recall50    = tf.reduce_sum(tf.cast((iou_scores >= 0.5), dtype=tf.float32) * detect_mask  * class_mask) / (count + 1e-3)
+        recall75    = tf.reduce_sum(tf.cast((iou_scores >= 0.75), dtype=tf.float32) * detect_mask  * class_mask) / (count + 1e-3)    
         avg_iou     = tf.reduce_sum(iou_scores) / (count + 1e-3)
         avg_obj     = tf.reduce_sum(pred_box_conf  * object_mask)  / (count + 1e-3)
         avg_noobj   = tf.reduce_sum(pred_box_conf  * (1-object_mask))  / (count_noobj + 1e-3)
@@ -146,7 +146,7 @@ class YoloLayer(Layer):
         """
         Warm-up training
         """
-        batch_seen = tf.assign_add(batch_seen, 1.)
+        batch_seen = tf.compat.v1.assign_add(batch_seen, 1.)
         
         true_box_xy, true_box_wh, xywh_mask = tf.cond(tf.less(batch_seen, self.warmup_batches+1), 
                               lambda: [true_box_xy + (0.5 + self.cell_grid[:,:grid_h,:grid_w,:,:]) * (1-object_mask), 
