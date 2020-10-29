@@ -7,6 +7,8 @@ imageai.egg-info/dependency_links.txt
 imageai.egg-info/not-zip-safe
 imageai.egg-info/requires.txt
 imageai.egg-info/top_level.txt
+imageai/Classification/__init__.py
+imageai/Classification/Custom/__init__.py
 imageai/Detection/__init__.py
 imageai/Detection/Custom/__init__.py
 imageai/Detection/Custom/callbacks.py
@@ -21,9 +23,6 @@ imageai/Detection/Custom/utils/colors.py
 imageai/Detection/Custom/utils/image.py
 imageai/Detection/Custom/utils/multi_gpu_model.py
 imageai/Detection/Custom/utils/utils.py
-imageai/Detection/YOLOv3/__init__.py
-imageai/Detection/YOLOv3/models.py
-imageai/Detection/YOLOv3/utils.py
 imageai/Detection/keras_resnet/__init__.py
 imageai/Detection/keras_resnet/benchmarks/__init__.py
 imageai/Detection/keras_resnet/blocks/_1d.py
