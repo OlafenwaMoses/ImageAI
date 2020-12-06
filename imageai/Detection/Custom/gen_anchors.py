@@ -70,10 +70,10 @@ def run_kmeans(ann_dims, anchor_num):
         old_distances = distances.copy()
 
 
-def generateAnchors(train_annotation_folder, train_image_folder, train_cache_file, model_labels):
+def generateAnchors(train_annotation_folder, train_image_folder, train_cache_file, model_labels,
+                    num_anchors=9):
 
     print("Generating anchor boxes for training images and annotation...")
-    num_anchors = 9
 
     train_imgs, train_labels = parse_voc_annotation(
         train_annotation_folder,
