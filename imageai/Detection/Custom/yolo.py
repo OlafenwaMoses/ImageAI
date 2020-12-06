@@ -357,10 +357,11 @@ def create_tinyyolov3_model(
     xywh_scale,
     class_scale
 ):
+    print('test hello\n\n\n\n\n\n', len(anchors), len(anchors)//4)
     input_image = Input(shape=(None, None, 3)) # net_h, net_w, 3
     true_boxes  = Input(shape=(1, 1, 1, max_box_per_image, 4))
-    true_yolo_1 = Input(shape=(None, None, len(anchors)//6, 4+1+nb_class)) # grid_h, grid_w, nb_anchor, 5+nb_class
-    true_yolo_2 = Input(shape=(None, None, len(anchors)//6, 4+1+nb_class)) # grid_h, grid_w, nb_anchor, 5+nb_class
+    true_yolo_1 = Input(shape=(None, None, len(anchors)//4, 4+1+nb_class)) # grid_h, grid_w, nb_anchor, 5+nb_class
+    true_yolo_2 = Input(shape=(None, None, len(anchors)//4, 4+1+nb_class)) # grid_h, grid_w, nb_anchor, 5+nb_class
 
     # Layer  0 => 5
     network1 = _conv_block(input_image, [{'filter': 16, 'kernel': 3, 'stride': 1, 'bnorm': True, 'leaky': True, 'layer_idx': 0},
@@ -381,7 +382,7 @@ def create_tinyyolov3_model(
     pred_yolo_1 = _conv_block(network2, [{'filter':  512, 'kernel': 3, 'stride': 1, 'bnorm': True, 'leaky': True, 'layer_idx': 9},
                                          {'filter': (3*(5+nb_class)), 'kernel': 1, 'stride': 1, 'bnorm': False, 'leaky': False, 'layer_idx': 10}], do_skip=False)
     # check this layer
-    loss_yolo_1 = YoloLayer(anchors[12:],
+    loss_yolo_1 = YoloLayer(anchors[6:],
                             [1*num for num in max_grid],
                             batch_size,
                             warmup_batches,

@@ -57,8 +57,8 @@ class TinyYOLOv3BatchGenerator(Sequence):
         t_batch = np.zeros((r_bound - l_bound, 1, 1, 1,  self.max_box_per_image, 4))   # list of groundtruth boxes
 
         # initialize the inputs and the outputs
-        yolo_1 = np.zeros((r_bound - l_bound, 1*base_grid_h,  1*base_grid_w, len(self.anchors)//3, 4+1+len(self.labels))) # desired network output 1
-        yolo_2 = np.zeros((r_bound - l_bound, 2*base_grid_h,  2*base_grid_w, len(self.anchors)//3, 4+1+len(self.labels))) # desired network output 2
+        yolo_1 = np.zeros((r_bound - l_bound, 1*base_grid_h,  1*base_grid_w, len(self.anchors)//2, 4+1+len(self.labels))) # desired network output 1
+        yolo_2 = np.zeros((r_bound - l_bound, 2*base_grid_h,  2*base_grid_w, len(self.anchors)//2, 4+1+len(self.labels))) # desired network output 2
         yolos = [yolo_2, yolo_1]
 
         dummy_yolo_1 = np.zeros((r_bound - l_bound, 1))
@@ -93,8 +93,7 @@ class TinyYOLOv3BatchGenerator(Sequence):
                         max_iou    = iou
 
                 # determine the yolo to be responsible for this bounding box
-
-                yolo = yolos[max_index // 2]
+                yolo = yolos[max_index // 4]
                 grid_h, grid_w = yolo.shape[1:3]
 
                 # determine the position of the bounding box on the grid
@@ -117,10 +116,10 @@ class TinyYOLOv3BatchGenerator(Sequence):
                 grid_y = int(np.floor(center_y))
 
                 # assign ground truth x, y, w, h, confidence and class probs to y_batch
-                yolo[instance_count, grid_y, grid_x, max_index%3]      = 0
-                yolo[instance_count, grid_y, grid_x, max_index%3, 0:4] = box
-                yolo[instance_count, grid_y, grid_x, max_index%3, 4  ] = 1.
-                yolo[instance_count, grid_y, grid_x, max_index%3, 5+obj_indx] = 1
+                yolo[instance_count, grid_y, grid_x, max_index%1]      = 0
+                yolo[instance_count, grid_y, grid_x, max_index%1, 0:4] = box
+                yolo[instance_count, grid_y, grid_x, max_index%1, 4  ] = 1.
+                yolo[instance_count, grid_y, grid_x, max_index%1, 5+obj_indx] = 1
 
                 # assign the true box to t_batch
                 true_box = [center_x, center_y, obj['xmax'] - obj['xmin'], obj['ymax'] - obj['ymin']]

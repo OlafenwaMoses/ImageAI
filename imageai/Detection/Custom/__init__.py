@@ -175,9 +175,16 @@ class DetectionModelTrainer:
         :return:
         """
 
+        if self.__model_type == "tinyyolov3":
+            num_anchors = 6
+        elif self.__model_type == "yolov3":
+            num_anchors = 9
+        else:
+            raise ValueError(f'Unsupported model type: {self.__model_type}')
         self.__model_anchors, self.__inference_anchors = generateAnchors(self.__train_annotations_folder,
                                                                          self.__train_images_folder,
-                                                                         self.__train_cache_file, self.__model_labels)
+                                                                         self.__train_cache_file, self.__model_labels,
+                                                                         num_anchors)
 
         self.__model_labels = sorted(object_names_array)
         self.__num_objects = len(object_names_array)
