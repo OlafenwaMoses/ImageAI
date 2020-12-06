@@ -3,9 +3,10 @@ import re
 import numpy as np
 import json
 from imageai.Detection.Custom.voc import parse_voc_annotation
-from imageai.Detection.Custom.yolo import create_yolov3_model, dummy_loss
-from imageai.Detection.YOLOv3.models import yolo_main
+from imageai.Detection.Custom.yolo import create_yolov3_model, create_tinyyolov3_model, dummy_loss
+from imageai.Detection.YOLOv3.models import yolo_main, tiny_yolo_main
 from imageai.Detection.Custom.generator import BatchGenerator
+from imageai.Detection.Custom.tinyyolov3_generator import TinyYOLOv3BatchGenerator
 from imageai.Detection.Custom.utils.utils import normalize, evaluate, makedirs
 from keras.callbacks import ReduceLROnPlateau
 from keras.optimizers import Adam
@@ -73,6 +74,14 @@ class DetectionModelTrainer:
         :return:
         """
         self.__model_type = "yolov3"
+
+    def setModelTypeAsTinyYOLOv3(self):
+        """
+        'setModelTypeAsTinyYOLOv3()' is used to set the model type to the TinyYOLOv3 model
+        for the training instance object .
+        :return:
+        """
+        self.__model_type = "tinyyolov3"
 
     def setDataDirectory(self, data_directory):
 
@@ -220,6 +229,8 @@ class DetectionModelTrainer:
         ###############################
         #   Create the generators
         ###############################
+        if self.__model_type == "tinyyolov3":
+            BatchGenerator = TinyYOLOv3BatchGenerator
         train_generator = BatchGenerator(
             instances=train_ints,
             anchors=self.__model_anchors,
@@ -527,12 +538,47 @@ class DetectionModelTrainer:
     ):
         if len(multi_gpu) > 1:
             with tf.device('/cpu:0'):
+                if self.__model_type == "yolov3":
+                    template_model, infer_model = create_yolov3_model(
+                        nb_class=nb_class,
+                        anchors=anchors,
+                        max_box_per_image=max_box_per_image,
+                        max_grid=max_grid,
+                        batch_size=batch_size // len(multi_gpu),
+                        warmup_batches=warmup_batches,
+                        ignore_thresh=ignore_thresh,
+                        grid_scales=grid_scales,
+                        obj_scale=obj_scale,
+                        noobj_scale=noobj_scale,
+                        xywh_scale=xywh_scale,
+                        class_scale=class_scale
+                    )
+                elif self.__model_type == "tinyyolov3":
+                    template_model, infer_model = create_tinyyolov3_model(
+                        nb_class=nb_class,
+                        anchors=anchors,
+                        max_box_per_image=max_box_per_image,
+                        max_grid=max_grid,
+                        batch_size=batch_size // len(multi_gpu),
+                        warmup_batches=warmup_batches,
+                        ignore_thresh=ignore_thresh,
+                        grid_scales=grid_scales,
+                        obj_scale=obj_scale,
+                        noobj_scale=noobj_scale,
+                        xywh_scale=xywh_scale,
+                        class_scale=class_scale
+                    )
+                else:
+                    raise ValueError(f'Unsupported model type: {self.__model_type}')
+        else:
+            print('Hello world\n\n\n\n\n', self.__model_type)
+            if self.__model_type == "yolov3":
                 template_model, infer_model = create_yolov3_model(
                     nb_class=nb_class,
                     anchors=anchors,
                     max_box_per_image=max_box_per_image,
                     max_grid=max_grid,
-                    batch_size=batch_size // len(multi_gpu),
+                    batch_size=batch_size,
                     warmup_batches=warmup_batches,
                     ignore_thresh=ignore_thresh,
                     grid_scales=grid_scales,
@@ -541,21 +587,23 @@ class DetectionModelTrainer:
                     xywh_scale=xywh_scale,
                     class_scale=class_scale
                 )
-        else:
-            template_model, infer_model = create_yolov3_model(
-                nb_class=nb_class,
-                anchors=anchors,
-                max_box_per_image=max_box_per_image,
-                max_grid=max_grid,
-                batch_size=batch_size,
-                warmup_batches=warmup_batches,
-                ignore_thresh=ignore_thresh,
-                grid_scales=grid_scales,
-                obj_scale=obj_scale,
-                noobj_scale=noobj_scale,
-                xywh_scale=xywh_scale,
-                class_scale=class_scale
-            )
+            elif self.__model_type == "tinyyolov3":
+                template_model, infer_model = create_tinyyolov3_model(
+                    nb_class=nb_class,
+                    anchors=anchors,
+                    max_box_per_image=max_box_per_image,
+                    max_grid=max_grid,
+                    batch_size=batch_size,
+                    warmup_batches=warmup_batches,
+                    ignore_thresh=ignore_thresh,
+                    grid_scales=grid_scales,
+                    obj_scale=obj_scale,
+                    noobj_scale=noobj_scale,
+                    xywh_scale=xywh_scale,
+                    class_scale=class_scale
+                )
+            else:
+                raise ValueError(f'Unsupported model type: {self.__model_type}')
 
             # load the pretrained weight if exists, otherwise load the backend weight only
 
@@ -639,6 +687,18 @@ class CustomObjectDetection:
             self.__model = yolo_main(Input(shape=(None, None, 3)), 3, len(self.__model_labels))
 
             self.__model.load_weights(self.__model_path)
+        elif self.__model_type == "tinyyolov3":
+            detection_model_json = json.load(open(self.__detection_config_json_path))
+
+            self.__model_labels = detection_model_json["labels"]
+            self.__model_anchors = detection_model_json["anchors"]
+
+            self.__detection_utils = CustomDetectionUtils(labels=self.__model_labels)
+
+            self.__model = tiny_yolo_main(Input(shape=(None, None, 3)), 3, len(self.__model_labels))
+
+            self.__model.load_weights(self.__model_path)
+
 
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
                                extract_detected_objects=False, minimum_percentage_probability=50, nms_treshold=0.4,
@@ -762,7 +822,7 @@ class CustomObjectDetection:
             # expand the image to batch
             image = np.expand_dims(image, 0)
 
-            if self.__model_type == "yolov3":
+            if self.__model_type == "yolov3" or self.__model_type == "tinyyolov3":
                 if thread_safe == True:
                     with K.get_session().graph.as_default():
                         yolo_results = self.__model.predict(image)
@@ -901,6 +961,15 @@ class CustomVideoObjectDetection:
 
                 self.__detector = detector
                 self.__model_loaded = True
+            elif(self.__model_type == "tinyyolov3"):
+                detector = CustomObjectDetection()
+                detector.setModelTypeAsTinyYOLOv3()
+                detector.setModelPath(self.__model_path)
+                detector.setJsonPath(self.__detection_config_json_path)
+                detector.loadModel()
+
+                self.__detector = detector
+                self.__model_loaded = True
 
 
     def detectObjectsFromVideo(self, input_file_path="", camera_input=None, output_file_path="", frames_per_second=20,
@@ -1015,7 +1084,7 @@ class CustomVideoObjectDetection:
         video_frames_count = 0
 
 
-        if(self.__model_type == "yolov3"):
+        if(self.__model_type == "yolov3" or self.__model_type == "tinyyolov3"):
 
 
 
