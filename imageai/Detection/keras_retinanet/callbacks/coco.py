@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import keras
+import tensorflow.compat.v1.keras as keras
+# import keras
 from ..utils.coco_eval import evaluate_coco
 
 
