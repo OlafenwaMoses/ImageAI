@@ -14,7 +14,7 @@ import os
 # from keras import backend as K
 
 import tensorflow.compat.v1.keras.backend as K
-from keras.layers import Input
+from tensorflow.compat.v1.keras.layers import Input
 from PIL import Image
 import colorsys
 
