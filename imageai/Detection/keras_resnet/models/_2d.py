@@ -6,11 +6,11 @@ keras_resnet.models._2d
 
 This module implements popular two-dimensional residual models.
 """
-
-import keras.backend
-import keras.layers
-import keras.models
-import keras.regularizers
+import tensorflow.compat.v1.keras as keras
+# import keras.backend
+# import keras.layers
+# import keras.models
+# import keras.regularizers
 
 from imageai.Detection import keras_resnet as keras_resnet
 
