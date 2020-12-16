@@ -19,7 +19,8 @@ import keras
 
 
 def resize_images(*args, **kwargs):
-    return tensorflow.image.resize_images(*args, **kwargs)
+    # return tensorflow.image.resize_images(*args, **kwargs)
+    return tensorflow.compat.v1.image.resize_images(*args, **kwargs)
 
 
 def non_max_suppression(*args, **kwargs):
