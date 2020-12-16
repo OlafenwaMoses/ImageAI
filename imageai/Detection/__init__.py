@@ -7,9 +7,13 @@ from imageai.Detection.keras_retinanet.utils.colors import label_color
 import matplotlib.pyplot as plt
 import matplotlib.image as pltimage
 import numpy as np
-import tensorflow as tf
+# import tensorflow as tf
+
+import tensorflow.compat.v1 as tf
 import os
-from keras import backend as K
+# from keras import backend as K
+
+import tensorflow.compat.v1.keras.backend as K
 from keras.layers import Input
 from PIL import Image
 import colorsys
