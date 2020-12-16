@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import keras
+# import keras
+import tensorflow.compat.v1.keras as keras
 from .. import initializers
 from .. import layers
 from .. import losses
