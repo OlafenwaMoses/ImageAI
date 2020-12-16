@@ -1,13 +1,14 @@
 import os.path
 
 import click
-import keras
-import keras.preprocessing.image
+# import keras
+import tensorflow.compat.v1.keras as keras
+# import keras.preprocessing.image
 import numpy
 import pkg_resources
 import sklearn.model_selection
-import tensorflow
-
+# import tensorflow
+import tensorflow.compat.v1 as tensorflow
 import keras_resnet.classifiers
 
 _benchmarks = {
