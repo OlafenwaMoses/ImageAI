@@ -6,11 +6,12 @@ keras_resnet.classifiers
 
 This module implements popular residual two-dimensional classifiers.
 """
+import tensorflow.compat.v1.keras as keras
+# import keras.backend
+# import keras.layers
+# import keras.models
+# import keras.regularizers
 
-import keras.backend
-import keras.layers
-import keras.models
-import keras.regularizers
 from imageai.Detection import keras_resnet
 from imageai.Detection.keras_resnet import models
 
