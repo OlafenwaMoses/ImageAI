@@ -3,21 +3,22 @@ import re
 import numpy as np
 import json
 from imageai.Detection.Custom.voc import parse_voc_annotation
-from imageai.Detection.Custom.yolo import create_yolov3_model, dummy_loss
-from imageai.Detection.YOLOv3.models import yolo_main
+from imageai.Detection.YOLO.yolov3 import yolov3_main, yolov3_train, dummy_loss
 from imageai.Detection.Custom.generator import BatchGenerator
 from imageai.Detection.Custom.utils.utils import normalize, evaluate, makedirs
-from keras.callbacks import ReduceLROnPlateau
-from keras.optimizers import Adam
-from imageai.Detection.Custom.callbacks import CustomModelCheckpoint, CustomTensorBoard
+from tensorflow.keras.callbacks import ReduceLROnPlateau
+from tensorflow.keras.optimizers import Adam
+from imageai.Detection.Custom.callbacks import CustomModelCheckpoint
 from imageai.Detection.Custom.utils.multi_gpu_model import multi_gpu_model
 from imageai.Detection.Custom.gen_anchors import generateAnchors
 import tensorflow as tf
-from keras.models import load_model, Input
-from keras.callbacks import TensorBoard
-import keras.backend as K
+from tensorflow.keras.models import load_model
+from tensorflow.keras import Input
+from tensorflow.keras.callbacks import TensorBoard
+import tensorflow.keras.backend as K
 import cv2
 
+tf.config.run_functions_eagerly(True)
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
 
@@ -165,6 +166,13 @@ class DetectionModelTrainer:
         :param train_from_pretrained_model:
         :return:
         """
+
+        # Remove cache files
+        if os.path.isfile(self.__train_cache_file) == True:
+            os.remove(self.__train_cache_file)
+
+        if os.path.isfile(self.__validation_cache_file) == True:
+            os.remove(self.__validation_cache_file)
 
         self.__model_anchors, self.__inference_anchors = generateAnchors(self.__train_annotations_folder,
                                                                          self.__train_images_folder,
@@ -527,8 +535,8 @@ class DetectionModelTrainer:
     ):
         if len(multi_gpu) > 1:
             with tf.device('/cpu:0'):
-                template_model, infer_model = create_yolov3_model(
-                    nb_class=nb_class,
+                template_model, infer_model = yolov3_train(
+                    num_classes=nb_class,
                     anchors=anchors,
                     max_box_per_image=max_box_per_image,
                     max_grid=max_grid,
@@ -542,8 +550,8 @@ class DetectionModelTrainer:
                     class_scale=class_scale
                 )
         else:
-            template_model, infer_model = create_yolov3_model(
-                nb_class=nb_class,
+            template_model, infer_model = yolov3_train(
+                num_classes=nb_class,
                 anchors=anchors,
                 max_box_per_image=max_box_per_image,
                 max_grid=max_grid,
@@ -636,7 +644,7 @@ class CustomObjectDetection:
 
             self.__detection_utils = CustomDetectionUtils(labels=self.__model_labels)
 
-            self.__model = yolo_main(Input(shape=(None, None, 3)), 3, len(self.__model_labels))
+            self.__model = yolov3_main(Input(shape=(None, None, 3)), 3, len(self.__model_labels))
 
             self.__model.load_weights(self.__model_path)
 
