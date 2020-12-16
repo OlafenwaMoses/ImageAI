@@ -20,7 +20,8 @@ import threading
 import time
 import warnings
 
-import keras
+import tensorflow.compat.v1.keras as keras
+# import keras
 
 from ..utils.anchors import anchor_targets_bbox, bbox_transform
 from ..utils.image import (
