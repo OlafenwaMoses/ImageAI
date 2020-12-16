@@ -16,7 +16,8 @@ limitations under the License.
 
 import warnings
 
-import keras
+# import keras
+import tensorflow.compat.v1.keras as keras
 from imageai.Detection import keras_resnet
 from imageai.Detection.keras_resnet import models
 from ..models import retinanet
