@@ -14,13 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-import tensorflow
-import keras
+# import tensorflow
+# import keras
+import tensorflow.compat.v1 as tensorflow
+import tensorflow.compat.v1.keras as keras
 
 
 def resize_images(*args, **kwargs):
-    # return tensorflow.image.resize_images(*args, **kwargs)
-    return tensorflow.compat.v1.image.resize_images(*args, **kwargs)
+    return tensorflow.image.resize_images(*args, **kwargs)
 
 
 def non_max_suppression(*args, **kwargs):
