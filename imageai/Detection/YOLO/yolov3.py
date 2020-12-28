@@ -356,3 +356,6 @@ def tiny_yolov3_main(input, num_anchors, num_classes):
     network_4 = Conv2D(num_anchors * (num_classes + 5), kernel_size=(1,1))(network_4)
 
     return Model(input, [network_3, network_4])
+
+def dummy_loss(y_true, y_pred):
+    return tf.sqrt(tf.reduce_sum(y_pred))

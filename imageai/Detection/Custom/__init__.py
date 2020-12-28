@@ -266,6 +266,23 @@ class DetectionModelTrainer:
         os.environ['CUDA_VISIBLE_DEVICES'] = self.__train_gpus
         multi_gpu = [int(gpu) for gpu in self.__train_gpus.split(',')]
 
+        """train_model, infer_model = self._create_model(
+            nb_class=len(labels),
+            anchors=self.__model_anchors,
+            max_box_per_image=max_box_per_image,
+            max_grid=[self.__model_max_input_size, self.__model_max_input_size],
+            batch_size=self.__train_batch_size,
+            warmup_batches=warmup_batches,
+            ignore_thresh=self.__train_ignore_treshold,
+            multi_gpu=multi_gpu,
+            lr=self.__train_learning_rate,
+            grid_scales=self.__train_grid_scales,
+            obj_scale=self.__train_obj_scale,
+            noobj_scale=self.__train_noobj_scale,
+            xywh_scale=self.__train_xywh_scale,
+            class_scale=self.__train_class_scale,
+        )"""
+
         train_model, infer_model = self._create_model(
             nb_class=len(labels),
             anchors=self.__model_anchors,
