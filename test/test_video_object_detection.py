@@ -12,18 +12,8 @@ video_file_output = os.path.join(main_folder, "data-temp", "traffic-micro-detect
 
 
 
-@pytest.fixture
-def clear_keras_session():
-    try:
-        keras.backend.clear_session()
-    except:
-        None
 
-
-@pytest.mark.detection
-@pytest.mark.video_detection
-@pytest.mark.retinanet
-def test_video_detection_retinanet(clear_keras_session):
+def test_video_detection_retinanet():
 
 
     detector = VideoObjectDetection()
@@ -38,10 +28,8 @@ def test_video_detection_retinanet(clear_keras_session):
 
 
 
-@pytest.mark.detection
-@pytest.mark.video_detection
-@pytest.mark.yolov3
-def test_video_detection_yolov3(clear_keras_session):
+
+def test_video_detection_yolov3():
 
 
     detector = VideoObjectDetection()
@@ -55,10 +43,8 @@ def test_video_detection_yolov3(clear_keras_session):
     os.remove(video_file_output + ".avi")
 
 
-@pytest.mark.detection
-@pytest.mark.video_detection
-@pytest.mark.tiny_yolov3
-def test_video_detection_tiny_yolov3(clear_keras_session):
+
+def test_video_detection_tiny_yolov3():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsTinyYOLOv3()
@@ -73,11 +59,8 @@ def test_video_detection_tiny_yolov3(clear_keras_session):
 
 
 
-@pytest.mark.detection
-@pytest.mark.video_detection
-@pytest.mark.retinanet
-@pytest.mark.video_analysis
-def test_video_detection_retinanet_analysis(clear_keras_session):
+
+def test_video_detection_retinanet_analysis():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsRetinaNet()

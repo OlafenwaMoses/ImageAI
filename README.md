@@ -202,7 +202,7 @@ You can use your custom models trained with SqueezeNet, ResNet50, InceptionV3 an
 Click the link below to see the guide to sample training codes, explanations, and best practices guide.
 
 
-[>>> Tutorials & Documentation](imageai/Prediction/CUSTOMPREDICTION.md)
+[>>> Tutorials & Documentation](imageai/Classification/CUSTOMCLASSIFICATION.md)
 
 
 

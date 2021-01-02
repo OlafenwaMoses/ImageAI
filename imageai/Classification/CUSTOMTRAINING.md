@@ -505,7 +505,7 @@ Let us explain the details shown above:
 3. The line  `Epoch 00000: saving model to C:\Users\User\PycharmProjects\ImageAITest\pets\models\model_ex-000_acc-0.100000.h5` refers to the model saved after the present experiment. The **ex_000** represents the experiment at this stage while the **acc_0.100000** and **val_acc: 0.1000** represents the accuracy of the model on the test images after the present experiment (maximum value value of accuracy is 1.0).  This result helps to know the best performed model you can use for custom image prediction.  
  
  Once you are done training your custom model, you can use the "CustomImagePrediction" class to perform image prediction with your model. Simply follow the link below.
-[imageai/Prediction/CUSTOMPREDICTION.md](https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Prediction/CUSTOMPREDICTION.md)
+[imageai/Classification/CUSTOMCLASSIFICATION.md](https://github.com/OlafenwaMoses/ImageAI/blob/master/imageai/Classification/CUSTOMCLASSIFICATION.md)
 
 ### Saving Full Custom Model
 <div id="savefullmodel"></div>

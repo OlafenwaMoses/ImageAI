@@ -13,17 +13,9 @@ image_input = os.path.join(main_folder, "data-images", "11.jpg")
 image_output = os.path.join(main_folder, "data-temp", "11-detected.jpg")
 
 
-@pytest.fixture
-def clear_keras_session():
-    try:
-        keras.backend.clear_session()
-    except:
-        None
 
 
-@pytest.mark.detection
-@pytest.mark.retinanet
-def test_object_detection_retinanet(clear_keras_session):
+def test_object_detection_retinanet():
 
     detector = ObjectDetection()
     detector.setModelTypeAsRetinaNet()
@@ -58,9 +50,8 @@ def test_object_detection_retinanet(clear_keras_session):
 
 
 
-@pytest.mark.detection
-@pytest.mark.yolov3
-def test_object_detection_yolov3(clear_keras_session):
+
+def test_object_detection_yolov3():
 
     detector = ObjectDetection()
     detector.setModelTypeAsYOLOv3()
@@ -95,9 +86,8 @@ def test_object_detection_yolov3(clear_keras_session):
 
 
 
-@pytest.mark.detection
-@pytest.mark.tiny_yolov3
-def test_object_detection_tiny_yolov3(clear_keras_session):
+
+def test_object_detection_tiny_yolov3():
 
     detector = ObjectDetection()
     detector.setModelTypeAsTinyYOLOv3()
@@ -135,10 +125,8 @@ def test_object_detection_tiny_yolov3(clear_keras_session):
 
 
 
-@pytest.mark.detection
-@pytest.mark.retinanet
-@pytest.mark.array_io
-def test_object_detection_retinanet_array_io(clear_keras_session):
+
+def test_object_detection_retinanet_array_io():
 
 
     image_input_array = cv2.imread(image_input)
@@ -171,10 +159,8 @@ def test_object_detection_retinanet_array_io(clear_keras_session):
 
 
 
-@pytest.mark.detection
-@pytest.mark.yolov3
-@pytest.mark.array_io
-def test_object_detection_yolov3_array_io(clear_keras_session):
+
+def test_object_detection_yolov3_array_io():
 
 
     image_input_array = cv2.imread(image_input)
@@ -205,10 +191,8 @@ def test_object_detection_yolov3_array_io(clear_keras_session):
         assert isinstance(extracted_array, ndarray)
 
 
-@pytest.mark.detection
-@pytest.mark.tiny_yolov3
-@pytest.mark.array_io
-def test_object_detection_tiny_yolov3_array_io(clear_keras_session):
+
+def test_object_detection_tiny_yolov3_array_io():
 
 
     image_input_array = cv2.imread(image_input)
