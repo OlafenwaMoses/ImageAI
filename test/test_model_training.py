@@ -1,4 +1,4 @@
-from imageai.Prediction.Custom import ModelTraining
+from imageai.Prediction.Custom import ClassificationModelTrainer
 import os
 import pytest
 import shutil
@@ -14,7 +14,7 @@ sample_dataset_models_folder = os.path.join(sample_dataset, "models")
 
 def test_resnet_training():
 
-    trainer = ModelTraining()
+    trainer = ClassificationModelTrainer()
     trainer.setModelTypeAsResNet50()
     trainer.setDataDirectory(data_directory=sample_dataset)
     trainer.trainModel(num_objects=10, num_experiments=1, enhance_data=True, batch_size=16, show_network_summary=True)
@@ -32,7 +32,7 @@ def test_resnet_training():
 
 def test_inception_v3_training():
 
-    trainer = ModelTraining()
+    trainer = ClassificationModelTrainer()
     trainer.setModelTypeAsInceptionV3()
     trainer.setDataDirectory(data_directory=sample_dataset)
     trainer.trainModel(num_objects=10, num_experiments=1, enhance_data=True, batch_size=4, show_network_summary=True)

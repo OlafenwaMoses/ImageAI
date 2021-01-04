@@ -1,3 +1,19 @@
+"""
+Copyright 2017-2018 Fizyr (https://fizyr.com)
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+"""
+
 import numpy as np
 
 DEFAULT_PRNG = np.random
@@ -14,13 +30,13 @@ def transform_aabb(transform, aabb):
     The result is a new AABB in the same coordinate system as the original AABB.
     The new AABB contains all corner points of the original AABB after applying the given transformation.
 
-    # Arguments
-        transform: The transormation to apply.
-        x1:        The minimum X value of the AABB.
+    Args
+        transform: The transformation to apply.
+        x1:        The minimum x value of the AABB.
         y1:        The minimum y value of the AABB.
-        x2:        The maximum X value of the AABB.
+        x2:        The maximum x value of the AABB.
         y2:        The maximum y value of the AABB.
-    # Returns
+    Returns
         The new AABB as tuple (x1, y1, x2, y2)
     """
     x1, y1, x2, y2 = aabb
@@ -40,7 +56,7 @@ def transform_aabb(transform, aabb):
 
 def _random_vector(min, max, prng=DEFAULT_PRNG):
     """ Construct a random vector between min and max.
-    # Arguments
+    Args
         min: the minimum value for each component
         max: the maximum value for each component
     """
@@ -53,9 +69,9 @@ def _random_vector(min, max, prng=DEFAULT_PRNG):
 
 def rotation(angle):
     """ Construct a homogeneous 2D rotation matrix.
-    # Arguments
+    Args
         angle: the angle in radians
-    # Returns
+    Returns
         the rotation matrix as 3 by 3 numpy array
     """
     return np.array([
@@ -67,11 +83,11 @@ def rotation(angle):
 
 def random_rotation(min, max, prng=DEFAULT_PRNG):
     """ Construct a random rotation between -max and max.
-    # Arguments
-        min:  a scalar for the minumum absolute angle in radians
+    Args
+        min:  a scalar for the minimum absolute angle in radians
         max:  a scalar for the maximum absolute angle in radians
         prng: the pseudo-random number generator to use.
-    # Returns
+    Returns
         a homogeneous 3 by 3 rotation matrix
     """
     return rotation(prng.uniform(min, max))
@@ -93,11 +109,11 @@ def translation(translation):
 
 def random_translation(min, max, prng=DEFAULT_PRNG):
     """ Construct a random 2D translation between min and max.
-    # Arguments
-        min:  a 2D vector with the minumum translation for each dimension
+    Args
+        min:  a 2D vector with the minimum translation for each dimension
         max:  a 2D vector with the maximum translation for each dimension
         prng: the pseudo-random number generator to use.
-    # Returns
+    Returns
         a homogeneous 3 by 3 translation matrix
     """
     return translation(_random_vector(min, max, prng))
@@ -105,9 +121,9 @@ def random_translation(min, max, prng=DEFAULT_PRNG):
 
 def shear(angle):
     """ Construct a homogeneous 2D shear matrix.
-    # Arguments
+    Args
         angle: the shear angle in radians
-    # Returns
+    Returns
         the shear matrix as 3 by 3 numpy array
     """
     return np.array([
@@ -119,11 +135,11 @@ def shear(angle):
 
 def random_shear(min, max, prng=DEFAULT_PRNG):
     """ Construct a random 2D shear matrix with shear angle between -max and max.
-    # Arguments
-        min:  the minumum shear angle in radians.
+    Args
+        min:  the minimum shear angle in radians.
         max:  the maximum shear angle in radians.
         prng: the pseudo-random number generator to use.
-    # Returns
+    Returns
         a homogeneous 3 by 3 shear matrix
     """
     return shear(prng.uniform(min, max))
@@ -131,9 +147,9 @@ def random_shear(min, max, prng=DEFAULT_PRNG):
 
 def scaling(factor):
     """ Construct a homogeneous 2D scaling matrix.
-    # Arguments
+    Args
         factor: a 2D vector for X and Y scaling
-    # Returns
+    Returns
         the zoom matrix as 3 by 3 numpy array
     """
     return np.array([
@@ -145,11 +161,11 @@ def scaling(factor):
 
 def random_scaling(min, max, prng=DEFAULT_PRNG):
     """ Construct a random 2D scale matrix between -max and max.
-    # Arguments
+    Args
         min:  a 2D vector containing the minimum scaling factor for X and Y.
         min:  a 2D vector containing The maximum scaling factor for X and Y.
         prng: the pseudo-random number generator to use.
-    # Returns
+    Returns
         a homogeneous 3 by 3 scaling matrix
     """
     return scaling(_random_vector(min, max, prng))
@@ -157,11 +173,11 @@ def random_scaling(min, max, prng=DEFAULT_PRNG):
 
 def random_flip(flip_x_chance, flip_y_chance, prng=DEFAULT_PRNG):
     """ Construct a transformation randomly containing X/Y flips (or not).
-    # Arguments
+    Args
         flip_x_chance: The chance that the result will contain a flip along the X axis.
         flip_y_chance: The chance that the result will contain a flip along the Y axis.
         prng:          The pseudo-random number generator to use.
-    # Returns
+    Returns
         a homogeneous 3 by 3 transformation matrix
     """
     flip_x = prng.uniform(0, 1) < flip_x_chance
@@ -173,10 +189,10 @@ def random_flip(flip_x_chance, flip_y_chance, prng=DEFAULT_PRNG):
 def change_transform_origin(transform, center):
     """ Create a new transform representing the same transformation,
         only with the origin of the linear part changed.
-    # Arguments:
+    Args
         transform: the transformation matrix
         center: the new origin of the transformation
-    # Return:
+    Returns
         translate(center) * transform * translate(-center)
     """
     center = np.array(center)
@@ -211,7 +227,7 @@ def random_transform(
     Set `relative_translation` to `False` in the `TransformParameters` of a data generator to have it interpret
     the translation directly as pixel distances instead.
 
-    # Arguments
+    Args
         min_rotation:    The minimum rotation in radians for the transform as scalar.
         max_rotation:    The maximum rotation in radians for the transform as scalar.
         min_translation: The minimum translation for the transform as 2D column vector.
@@ -251,7 +267,7 @@ def random_transform_generator(prng=None, **kwargs):
     Set `relative_translation` to `False` in the `TransformParameters` of a data generator to have it interpret
     the translation directly as pixel distances instead.
 
-    # Arguments
+    Args
         min_rotation:    The minimum rotation in radians for the transform as scalar.
         max_rotation:    The maximum rotation in radians for the transform as scalar.
         min_translation: The minimum translation for the transform as 2D column vector.

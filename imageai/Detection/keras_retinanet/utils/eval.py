@@ -14,16 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 
-from __future__ import print_function
-
 from .anchors import compute_overlap
 from .visualization import draw_detections, draw_annotations
 
+from tensorflow import keras
 import numpy as np
 import os
+import time
 
 import cv2
-import pickle
+import progressbar
+assert(callable(progressbar.progressbar)), "Using wrong progressbar module, install 'progressbar2' instead."
 
 
 def _compute_ap(recall, precision):
@@ -70,56 +71,56 @@ def _get_detections(generator, model, score_threshold=0.05, max_detections=100, 
     # Returns
         A list of lists containing the detections for each image in the generator.
     """
-    all_detections = [[None for i in range(generator.num_classes())] for j in range(generator.size())]
+    all_detections = [[None for i in range(generator.num_classes()) if generator.has_label(i)] for j in range(generator.size())]
+    all_inferences = [None for i in range(generator.size())]
 
-    for i in range(generator.size()):
+    for i in progressbar.progressbar(range(generator.size()), prefix='Running network: '):
         raw_image    = generator.load_image(i)
-        image        = generator.preprocess_image(raw_image.copy())
-        image, scale = generator.resize_image(image)
+        image, scale = generator.resize_image(raw_image.copy())
+        image = generator.preprocess_image(image)
+
+        if keras.backend.image_data_format() == 'channels_first':
+            image = image.transpose((2, 0, 1))
 
         # run network
-        _, _, detections = model.predict_on_batch(np.expand_dims(image, axis=0))
-
-        # clip to image shape
-        detections[:, :, 0] = np.maximum(0, detections[:, :, 0])
-        detections[:, :, 1] = np.maximum(0, detections[:, :, 1])
-        detections[:, :, 2] = np.minimum(image.shape[1], detections[:, :, 2])
-        detections[:, :, 3] = np.minimum(image.shape[0], detections[:, :, 3])
+        start = time.time()
+        boxes, scores, labels = model.predict_on_batch(np.expand_dims(image, axis=0))[:3]
+        inference_time = time.time() - start
 
         # correct boxes for image scale
-        detections[0, :, :4] /= scale
-
-        # select scores from detections
-        scores = detections[0, :, 4:]
+        boxes /= scale
 
         # select indices which have a score above the threshold
-        indices = np.where(detections[0, :, 4:] > score_threshold)
+        indices = np.where(scores[0, :] > score_threshold)[0]
 
         # select those scores
-        scores = scores[indices]
+        scores = scores[0][indices]
 
         # find the order with which to sort the scores
         scores_sort = np.argsort(-scores)[:max_detections]
 
         # select detections
-        image_boxes      = detections[0, indices[0][scores_sort], :4]
-        image_scores     = np.expand_dims(detections[0, indices[0][scores_sort], 4 + indices[1][scores_sort]], axis=1)
-        image_detections = np.append(image_boxes, image_scores, axis=1)
-        image_predicted_labels = indices[1][scores_sort]
+        image_boxes      = boxes[0, indices[scores_sort], :]
+        image_scores     = scores[scores_sort]
+        image_labels     = labels[0, indices[scores_sort]]
+        image_detections = np.concatenate([image_boxes, np.expand_dims(image_scores, axis=1), np.expand_dims(image_labels, axis=1)], axis=1)
 
         if save_path is not None:
-            draw_annotations(raw_image, generator.load_annotations(i), generator=generator)
-            draw_detections(raw_image, detections[0, indices[0][scores_sort], :], generator=generator)
+            draw_annotations(raw_image, generator.load_annotations(i), label_to_name=generator.label_to_name)
+            draw_detections(raw_image, image_boxes, image_scores, image_labels, label_to_name=generator.label_to_name, score_threshold=score_threshold)
 
             cv2.imwrite(os.path.join(save_path, '{}.png'.format(i)), raw_image)
 
         # copy detections to all_detections
         for label in range(generator.num_classes()):
-            all_detections[i][label] = image_detections[image_predicted_labels == label, :]
+            if not generator.has_label(label):
+                continue
 
-        print('{}/{}'.format(i, generator.size()), end='\r')
+            all_detections[i][label] = image_detections[image_detections[:, -1] == label, :-1]
 
-    return all_detections
+        all_inferences[i] = inference_time
+
+    return all_detections, all_inferences
 
 
 def _get_annotations(generator):
@@ -135,15 +136,16 @@ def _get_annotations(generator):
     """
     all_annotations = [[None for i in range(generator.num_classes())] for j in range(generator.size())]
 
-    for i in range(generator.size()):
+    for i in progressbar.progressbar(range(generator.size()), prefix='Parsing annotations: '):
         # load the annotations
         annotations = generator.load_annotations(i)
 
         # copy detections to all_annotations
         for label in range(generator.num_classes()):
-            all_annotations[i][label] = annotations[annotations[:, 4] == label, :4].copy()
+            if not generator.has_label(label):
+                continue
 
-        print('{}/{}'.format(i, generator.size()), end='\r')
+            all_annotations[i][label] = annotations['bboxes'][annotations['labels'] == label, :].copy()
 
     return all_annotations
 
@@ -169,9 +171,9 @@ def evaluate(
         A dict mapping class names to mAP scores.
     """
     # gather all detections and annotations
-    all_detections     = _get_detections(generator, model, score_threshold=score_threshold, max_detections=max_detections, save_path=save_path)
+    all_detections, all_inferences = _get_detections(generator, model, score_threshold=score_threshold, max_detections=max_detections, save_path=save_path)
     all_annotations    = _get_annotations(generator)
-    average_precisions = dict()
+    average_precisions = {}
 
     # all_detections = pickle.load(open('all_detections.pkl', 'rb'))
     # all_annotations = pickle.load(open('all_annotations.pkl', 'rb'))
@@ -180,6 +182,9 @@ def evaluate(
 
     # process detections and annotations
     for label in range(generator.num_classes()):
+        if not generator.has_label(label):
+            continue
+
         false_positives = np.zeros((0,))
         true_positives  = np.zeros((0,))
         scores          = np.zeros((0,))
@@ -213,7 +218,7 @@ def evaluate(
 
         # no annotations -> AP for this class is 0 (is this correct?)
         if num_annotations == 0:
-            average_precisions[label] = 0
+            average_precisions[label] = 0, 0
             continue
 
         # sort by score
@@ -231,6 +236,9 @@ def evaluate(
 
         # compute average precision
         average_precision  = _compute_ap(recall, precision)
-        average_precisions[label] = average_precision
+        average_precisions[label] = average_precision, num_annotations
 
-    return average_precisions
+    # inference time
+    inference_time = np.sum(all_inferences) / generator.size()
+
+    return average_precisions, inference_time

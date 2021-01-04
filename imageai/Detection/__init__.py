@@ -1,9 +1,7 @@
 import cv2
-from imageai.Detection.keras_retinanet.models.resnet import resnet50_retinanet
-from imageai.Detection.keras_retinanet.utils.image import read_image_bgr, read_image_array, read_image_stream, \
-    preprocess_image, resize_image
+from imageai.Detection.keras_retinanet import models as retinanet_models
+from imageai.Detection.keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image
 from imageai.Detection.keras_retinanet.utils.visualization import draw_box, draw_caption
-from imageai.Detection.keras_retinanet.utils.colors import label_color
 import matplotlib.pyplot as plt
 import matplotlib.image as pltimage
 import numpy as np
@@ -19,26 +17,21 @@ from imageai.Detection.YOLO.yolov3 import tiny_yolov3_main, yolov3_main
 from imageai.Detection.YOLO.utils import letterbox_image, yolo_eval, preprocess_input, retrieve_yolo_detections, draw_boxes
 
 
-def get_session():
-    config = tf.ConfigProto()
-    config.gpu_options.allow_growth = True
-    return tf.Session(config=config)
-
 
 class ObjectDetection:
     """
-                    This is the object detection class for images in the ImageAI library. It provides support for RetinaNet
-                     , YOLOv3 and TinyYOLOv3 object detection networks . After instantiating this class, you can set it's properties and
-                     make object detections using it's pre-defined functions.
+    This is the object detection class for images in the ImageAI library. It provides support for RetinaNet
+        , YOLOv3 and TinyYOLOv3 object detection networks . After instantiating this class, you can set it's properties and
+    make object detections using it's pre-defined functions.
 
-                     The following functions are required to be called before object detection can be made
-                     * setModelPath()
-                     * At least of of the following and it must correspond to the model set in the setModelPath()
-                      [setModelTypeAsRetinaNet(), setModelTypeAsYOLOv3(), setModelTypeAsTinyYOLOv3()]
-                     * loadModel() [This must be called once only before performing object detection]
+    The following functions are required to be called before object detection can be made
+    * setModelPath()
+    * At least of of the following and it must correspond to the model set in the setModelPath()
+    [setModelTypeAsRetinaNet(), setModelTypeAsYOLOv3(), setModelTypeAsTinyYOLOv3()]
+    * loadModel() [This must be called once only before performing object detection]
 
-                     Once the above functions have been called, you can call the detectObjectsFromImage() function of
-                     the object detection instance object at anytime to obtain observable objects in any image.
+    Once the above functions have been called, you can call the detectObjectsFromImage() function of
+    the object detection instance object at anytime to obtain observable objects in any image.
     """
 
     def __init__(self):
@@ -185,8 +178,7 @@ class ObjectDetection:
             if (self.__modelType == ""):
                 raise ValueError("You must set a valid model type before loading the model.")
             elif (self.__modelType == "retinanet"):
-                model = resnet50_retinanet(num_classes=80)
-                model.load_weights(self.modelPath)
+                model = retinanet_models.load_model(self.modelPath, backbone_name='resnet50')
                 self.__model_collection.append(model)
                 self.__modelLoaded = True
             elif (self.__modelType == "yolov3" or self.__modelType == "tinyyolov3"):
@@ -287,24 +279,23 @@ class ObjectDetection:
                 image_copy = None
 
                 detected_objects_image_array = []
+                min_probability = minimum_percentage_probability / 100
+
+                if (input_type == "file"):
+                    input_image = cv2.imread(input_image)
+                elif (input_type == "array"):
+                    input_image = np.array(input_image)
+
+                detected_copy = input_image
+                image_copy = input_image
 
                 if (self.__modelType == "yolov3" or self.__modelType == "tinyyolov3"):
-
-                    if (input_type == "file"):
-                        input_image = cv2.imread(input_image)
-                    elif (input_type == "array"):
-                        input_image = np.array(input_image)
-
-                    detected_copy = input_image
-                    image_copy = input_image
 
                     image_h, image_w, _ = detected_copy.shape
                     detected_copy = preprocess_input(detected_copy, self.__yolo_model_image_size)
 
                     model = self.__model_collection[0]
                     yolo_result = model.predict(detected_copy)
-                    
-                    min_probability = minimum_percentage_probability / 100
 
                     model_detections = retrieve_yolo_detections(yolo_result,
                             self.__yolo_anchors,
@@ -313,10 +304,30 @@ class ObjectDetection:
                             self.__yolo_model_image_size,
                             (image_w, image_h),
                             self.numbers_to_names)
+                            
+                elif (self.__modelType == "retinanet"):
+                    detected_copy = preprocess_image(detected_copy)
+                    detected_copy, scale = resize_image(detected_copy)
+
+                    model = self.__model_collection[0]
+                    boxes, scores, labels = model.predict_on_batch(np.expand_dims(detected_copy, axis=0))
+
+                    
+                    boxes /= scale
+
+                    for box, score, label in zip(boxes[0], scores[0], labels[0]):
+                        # scores are sorted so we can break
+                        if score < min_probability:
+                            break
+
+                        detection_dict = dict()
+                        detection_dict["name"] = self.numbers_to_names[label]
+                        detection_dict["percentage_probability"] = score * 100
+                        detection_dict["box_points"] = box.astype(int).tolist()
+                        model_detections.append(detection_dict)
 
                 counting = 0
                 objects_dir = output_image_path + "-objects"
-
 
                 for detection in model_detections:
                     counting += 1
@@ -469,8 +480,7 @@ class ObjectDetection:
                                             display_box=display_box, 
                                             thread_safe=thread_safe, 
                                             custom_objects=custom_objects)
-        """
-        """
+        
 
 class VideoObjectDetection:
     """

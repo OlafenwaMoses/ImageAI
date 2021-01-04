@@ -29,14 +29,7 @@ def test_custom_video_detection_yolov3():
 
 
 
-@pytest.mark.detection
-@pytest.mark.custom_detection
-@pytest.mark.video_detection
-@pytest.mark.custom_video_detection
-@pytest.mark.yolov3
-@pytest.mark.custom_video_detection_analysis
 def test_custom_video_detection_yolov3_analysis():
-
 
     detector = CustomVideoObjectDetection()
     detector.setModelTypeAsYOLOv3()

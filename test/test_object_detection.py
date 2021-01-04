@@ -19,7 +19,7 @@ def test_object_detection_retinanet():
 
     detector = ObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.1.0.h5"))
     detector.loadModel()
     results = detector.detectObjectsFromImage(input_image=image_input, output_image_path=image_output, minimum_percentage_probability=40)
 
@@ -133,7 +133,7 @@ def test_object_detection_retinanet_array_io():
 
     detector = ObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.1.0.h5"))
     detector.loadModel()
     detected_array, results = detector.detectObjectsFromImage(input_image=image_input_array, input_type="array", minimum_percentage_probability=40, output_type="array")
 

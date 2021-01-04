@@ -634,9 +634,9 @@ class CustomImageClassification:
             elif (self.__modelType == "full"):
                 image_to_predict = tf.keras.applications.mobilenet_v2.preprocess_input(image_to_predict)
             elif (self.__modelType == "inceptionv3"):
-                image_to_predict = tf.keras.applications.mobilenet_v2.preprocess_input(image_to_predict)
+                image_to_predict = tf.keras.applications.inception_v3.preprocess_input(image_to_predict)
             elif (self.__modelType == "densenet121"):
-                image_to_predict = tf.keras.applications.mobilenet_v2.preprocess_input(image_to_predict)
+                image_to_predict = tf.keras.applications.densenet.preprocess_input(image_to_predict)
             try:
                 model = self.__model_collection[0]
                 prediction = model.predict(image_to_predict, steps=1)

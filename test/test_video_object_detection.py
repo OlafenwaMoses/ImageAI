@@ -18,7 +18,7 @@ def test_video_detection_retinanet():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.1.0.h5"))
     detector.loadModel(detection_speed="fastest")
     video_path = detector.detectObjectsFromVideo(input_file_path=video_file, output_file_path=video_file_output, save_detected_video=True, frames_per_second=30, log_progress=True)
 
@@ -64,7 +64,7 @@ def test_video_detection_retinanet_analysis():
 
     detector = VideoObjectDetection()
     detector.setModelTypeAsRetinaNet()
-    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.0.1.h5"))
+    detector.setModelPath(model_path=os.path.join(main_folder, "data-models", "resnet50_coco_best_v2.1.0.h5"))
     detector.loadModel(detection_speed="fastest")
     video_path = detector.detectObjectsFromVideo(input_file_path=video_file, output_file_path=video_file_output, save_detected_video=True, frames_per_second=30, log_progress=True, per_frame_function=forFrame, per_second_function=forSecond, return_detected_frame=True)
 
