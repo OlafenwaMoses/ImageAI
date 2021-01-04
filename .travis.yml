@@ -2,7 +2,7 @@ dist: xenial
 sudo: required
 language: python
 python:
-  - '3.5'
+  - '3.7.6'
 install:
   - pip install -r requirements.txt
   - pip install pytest
