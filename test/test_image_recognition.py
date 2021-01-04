@@ -3,7 +3,6 @@ import os
 import cv2
 import pytest
 from os.path import dirname
-import keras
 
 main_folder = os.getcwd()
 

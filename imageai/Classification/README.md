@@ -7,18 +7,17 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 - <a href="#firstprediction" > :white_square_button: First Prediction</a>
 - <a href="#predictionspeed" > :white_square_button: Prediction Speed</a>
 - <a href="#inputtype" > :white_square_button: Image Input Types</a>
-- <a href="#multiprediction" > :white_square_button: Multiple Images Prediction</a>
 - <a href="#threadprediction" > :white_square_button: Prediction in MultiThreading</a>
 - <a href="#documentation" > :white_square_button: Documentation</a>
 
 ImageAI provides 4 different algorithms and model types to perform image prediction.
 To perform image prediction on any picture, take the following simple steps.  The 4 algorithms provided for
- image prediction include **SqueezeNet**, **ResNet**, **InceptionV3** and **DenseNet**. Each of these
+ image prediction include **MobileNetV2**, **ResNet50**, **InceptionV3** and **DenseNet121**. Each of these
   algorithms have individual model files which you must use depending on the choice of your algorithm. To download the
    model file for your choice of algorithm, click on any of the links below:
    
-- **[SqueezeNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/squeezenet_weights_tf_dim_ordering_tf_kernels.h5)** _(Size = 4.82 mb, fastest prediction time and moderate accuracy)_
-- **[ResNet50](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5)** by Microsoft Research _(Size = 98 mb, fast prediction time and high accuracy)_
+- **[MobileNetV2](https://github.com/OlafenwaMoses/ImageAI/releases/download/essentials-v5/mobilenet_v2.h5)** _(Size = 4.82 mb, fastest prediction time and moderate accuracy)_
+- **[ResNet50](https://github.com/OlafenwaMoses/ImageAI/releases/download/essentials-v5/resnet50_imagenet_tf.2.0.h5)** by Microsoft Research _(Size = 98 mb, fast prediction time and high accuracy)_
  - **[InceptionV3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/inception_v3_weights_tf_dim_ordering_tf_kernels.h5)** by Google Brain team _(Size = 91.6 mb, slow prediction time and higher accuracy)_
  - **[DenseNet121](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/DenseNet-BC-121-32.h5)** by Facebook AI Research _(Size = 31.6 mb, slower prediction time and highest accuracy)_
 
@@ -31,17 +30,17 @@ To perform image prediction on any picture, take the following simple steps.  Th
 <div id="firstprediction" ></div>
 
 ```python
-from imageai.Prediction import ImagePrediction
+from imageai.Classification import ImageClassification
 import os
 
 execution_path = os.getcwd()
 
-prediction = ImagePrediction()
-prediction.setModelTypeAsResNet()
-prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
+prediction = ImageClassification()
+prediction.setModelTypeAsResNet50()
+prediction.setModelPath(os.path.join(execution_path, "resnet50_imagenet_tf.2.0.h5"))
 prediction.loadModel()
 
-predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "1.jpg"), result_count=5 )
+predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "1.jpg"), result_count=5 )
 for eachPrediction, eachProbability in zip(predictions, probabilities):
     print(eachPrediction , " : " , eachProbability)
 ```
@@ -59,7 +58,7 @@ minivan : 1.7487050965428352
 
 The code above works as follows:
 ```python
-from imageai.Prediction import ImagePrediction
+from imageai.Classification import ImageClassification
 import os
 ```
 The code above imports the `ImageAI` library and the python `os` class.
@@ -69,92 +68,23 @@ execution_path = os.getcwd()
 The above line obtains the path to the folder that contains your python file (in this example, your FirstPrediction.py).
 
 ```python
-prediction = ImagePrediction()
-prediction.setModelTypeAsResNet()
-prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
+prediction = ImageClassification()
+prediction.setModelTypeAsResNet50()
+prediction.setModelPath(os.path.join(execution_path, "resnet50_imagenet_tf.2.0.h5"))
 ```
-In the lines above, we created and instance of the `ImagePrediction()` class in the first line, then we set the model type of the prediction object to ResNet by caling the `.setModelTypeAsResNet()` in the second line and then we set the model path of the prediction object to the path of the model file (`resnet50_weights_tf_dim_ordering_tf_kernels.h5`) we copied to the python file folder in the third line.
+In the lines above, we created and instance of the `ImagePrediction()` class in the first line, then we set the model type of the prediction object to ResNet by caling the `.setModelTypeAsResNet50()` in the second line and then we set the model path of the prediction object to the path of the model file (`resnet50_imagenet_tf.2.0.h5`) we copied to the python file folder in the third line.
 
 ```python
-predictions, probabilities = prediction.predictImage(os.path.join(execution_path, "1.jpg"), result_count=5 )
+predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "1.jpg"), result_count=5 )
 ```
 
-In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.predictImage()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 1000) parsing `result_count=5`. The `.predictImage()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**percentage_probabilities**) being an array of the corresponding percentage probability for each prediction.
+In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.classifyImage()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 1000) parsing `result_count=5`. The `.classifyImage()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**percentage_probabilities**) being an array of the corresponding percentage probability for each prediction.
 
 ```python
 for eachPrediction, eachProbability in zip(predictions, probabilities):
     print(eachPrediction, " : " , eachProbability)
 ```
 The above line obtains each object in the **predictions** array, and also obtains the corresponding percentage probability from the **percentage_probabilities**, and finally prints the result of both to console.
-
-
-### Multiple Images Prediction
-<div id="multiprediction"></div>
-
- You can run image prediction on more than one image using a single function, which is the `.predictMultipleImages()` function. It works by doing the following:
-- Define your normal `ImagePrediction` instance
-- Set the model type and model path
-- Call the `.loadModel()` function
-- Create an array and add all the string path to each of the images you want to predict to the array.
-- You then perform prediction by calling the `.predictMultipleImages()` function and parse in the array of images, and also set the number predictions you want per image by parsing `result_count_per_image=5` (default value is 2)
-
-Find the sample code below:
-
-```python
-from imageai.Prediction import ImagePrediction
-import os
-
-execution_path = os.getcwd()
-
-multiple_prediction = ImagePrediction()
-multiple_prediction.setModelTypeAsResNet()
-multiple_prediction.setModelPath(os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
-multiple_prediction.loadModel()
-
-all_images_array = []
-
-all_files = os.listdir(execution_path)
-for each_file in all_files:
-    if(each_file.endswith(".jpg") or each_file.endswith(".png")):
-        all_images_array.append(each_file)
-
-results_array = multiple_prediction.predictMultipleImages(all_images_array, result_count_per_image=5)
-
-for each_result in results_array:
-    predictions, percentage_probabilities = each_result["predictions"], each_result["percentage_probabilities"]
-    for index in range(len(predictions)):
-        print(predictions[index] , " : " , percentage_probabilities[index])
-    print("-----------------------")
-```
-
-In the above code, the `.predictMultipleImages()` function will return an array which contains a dictionary per image.
-Each dictionary contains the arrays for predictions and percentage probability for each prediction.
-
-Sample Result:
-![](../../data-images/1.jpg)
-![](../../data-images/2.jpg)
-![](../../data-images/3.jpg)
-
-```
-convertible : 52.459555864334106
-sports_car : 37.61284649372101
-pickup : 3.1751200556755066
-car_wheel : 1.817505806684494
-minivan : 1.7487050965428352
------------------------
-toilet_tissue : 13.99008333683014
-jeep : 6.842949986457825
-car_wheel : 6.71963095664978
-seat_belt : 6.704962253570557
-minivan : 5.861184373497963
------------------------
-bustard : 52.03368067741394
-vulture : 20.936034619808197
-crane : 10.620515048503876
-kite : 10.20539253950119
-white_stork : 1.6472270712256432
------------------------
-```
 
 
 ### Prediction Speed
@@ -269,11 +199,11 @@ This means you can now perform image prediction in production applications such 
  that returns file in any of the above stated formats.
 
 To perform image prediction with numpy array or file stream input, you just need to state the input type
-in the `.predictImage()` function or the `.predictMultipleImages()` function. See example below.
+in the `.classifyImage()` function. See example below.
 
 ```python
-predictions, probabilities = prediction.predictImage(image_array, result_count=5 , input_type="array" ) # For numpy array input type
-predictions, probabilities = prediction.predictImage(image_stream, result_count=5 , input_type="stream" ) # For file stream input type
+predictions, probabilities = prediction.classifyImage(image_array, result_count=5 , input_type="array" ) # For numpy array input type
+predictions, probabilities = prediction.classifyImage(image_stream, result_count=5 , input_type="stream" ) # For file stream input type
 ```
 
 ### Prediction in MultiThreading
@@ -284,19 +214,19 @@ When developing programs that run heavy task on the deafult thread like User Int
  a new thread, you must take note the following:
 - You can create your prediction object, set its model type, set model path and json path
 outside the new thread.
-- The `.loadModel()` must be in the new thread and image prediction (`predictImage()`) must take place in th new thread.
+- The `.loadModel()` must be in the new thread and image prediction (`classifyImage()`) must take place in th new thread.
 
 Take a look of a sample code below on image prediction using multithreading:
 ```python
-from imageai.Prediction import ImagePrediction
+from imageai.Prediction import ImageClassification
 import os
 import threading
 
 execution_path = os.getcwd()
 
-prediction = ImagePrediction()
+prediction = ImageClassification()
 prediction.setModelTypeAsResNet()
-prediction.setModelPath( os.path.join(execution_path, "resnet50_weights_tf_dim_ordering_tf_kernels.h5"))
+prediction.setModelPath( os.path.join(execution_path, "resnet50_imagenet_tf.2.0.h5"))
 
 picturesfolder = os.environ["USERPROFILE"] + "\\Pictures\\"
 allfiles = os.listdir(picturesfolder)
