@@ -1,4 +1,4 @@
-from imageai.Prediction.Custom import CustomImageClassification
+from imageai.Classification.Custom import CustomImageClassification
 import pytest
 from os.path import dirname
 import os

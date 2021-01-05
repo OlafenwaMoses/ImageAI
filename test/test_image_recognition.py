@@ -1,4 +1,4 @@
-from imageai.Prediction import ImageClassification
+from imageai.Classification import ImageClassification
 import os
 import cv2
 import pytest

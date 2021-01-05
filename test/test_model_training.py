@@ -1,4 +1,4 @@
-from imageai.Prediction.Custom import ClassificationModelTrainer
+from imageai.Classification.Custom import ClassificationModelTrainer
 import os
 import pytest
 import shutil
