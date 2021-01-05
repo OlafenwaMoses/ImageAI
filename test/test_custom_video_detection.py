@@ -2,7 +2,6 @@ from imageai.Detection.Custom import CustomVideoObjectDetection
 import os
 from numpy import ndarray
 import pytest
-import keras
 
 
 
@@ -14,20 +13,7 @@ model_path = os.path.join(main_folder, "data-models", "hololens-ex-60--loss-2.76
 model_json = os.path.join(main_folder, "data-json", "detection_config.json")
 
 
-@pytest.fixture
-def clear_keras_session():
-    try:
-        keras.backend.clear_session()
-    except:
-        None
-
-
-@pytest.mark.detection
-@pytest.mark.custom_detection
-@pytest.mark.video_detection
-@pytest.mark.custom_video_detection
-@pytest.mark.yolov3
-def test_custom_video_detection_yolov3(clear_keras_session):
+def test_custom_video_detection_yolov3():
 
 
     detector = CustomVideoObjectDetection()
@@ -43,14 +29,7 @@ def test_custom_video_detection_yolov3(clear_keras_session):
 
 
 
-@pytest.mark.detection
-@pytest.mark.custom_detection
-@pytest.mark.video_detection
-@pytest.mark.custom_video_detection
-@pytest.mark.yolov3
-@pytest.mark.custom_video_detection_analysis
-def test_custom_video_detection_yolov3_analysis(clear_keras_session):
-
+def test_custom_video_detection_yolov3_analysis():
 
     detector = CustomVideoObjectDetection()
     detector.setModelTypeAsYOLOv3()

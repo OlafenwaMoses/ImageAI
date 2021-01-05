@@ -42,8 +42,8 @@ def draw_caption(image, box, caption):
         caption : String containing the text to draw.
     """
     b = np.array(box).astype(int)
-    cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 3)
-    cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 2)
+    cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 0, 0), 2)
+    cv2.putText(image, caption, (b[0], b[1] - 10), cv2.FONT_HERSHEY_PLAIN, 1, (255, 255, 255), 1)
 
 
 def draw_boxes(image, boxes, color, thickness=2):
@@ -59,38 +59,48 @@ def draw_boxes(image, boxes, color, thickness=2):
         draw_box(image, b, color, thickness=thickness)
 
 
-def draw_detections(image, detections, color=None, generator=None):
+def draw_detections(image, boxes, scores, labels, color=None, label_to_name=None, score_threshold=0.5):
     """ Draws detections in an image.
 
     # Arguments
-        image      : The image to draw on.
-        detections : A [N, 4 + num_classes] matrix (x1, y1, x2, y2, cls_1, cls_2, ...).
-        color      : The color of the boxes. By default the color from keras_retinanet.utils.colors.label_color will be used.
-        generator  : (optional) Generator which can map label to class name.
+        image           : The image to draw on.
+        boxes           : A [N, 4] matrix (x1, y1, x2, y2).
+        scores          : A list of N classification scores.
+        labels          : A list of N labels.
+        color           : The color of the boxes. By default the color from keras_retinanet.utils.colors.label_color will be used.
+        label_to_name   : (optional) Functor for mapping a label to a name.
+        score_threshold : Threshold used for determining what detections to draw.
     """
-    for d in detections:
-        label   = np.argmax(d[4:])
-        c       = color if color is not None else label_color(label)
-        score   = d[4 + label]
-        caption = (generator.label_to_name(label) if generator else str(label)) + ': {0:.2f}'.format(score)
-        draw_caption(image, d, caption)
+    selection = np.where(scores > score_threshold)[0]
 
-        draw_box(image, d, color=c)
+    for i in selection:
+        c = color if color is not None else label_color(labels[i])
+        draw_box(image, boxes[i, :], color=c)
+
+        # draw labels
+        caption = (label_to_name(labels[i]) if label_to_name else labels[i]) + ': {0:.2f}'.format(scores[i])
+        draw_caption(image, boxes[i, :], caption)
 
 
-def draw_annotations(image, annotations, color=(0, 255, 0), generator=None):
+def draw_annotations(image, annotations, color=(0, 255, 0), label_to_name=None):
     """ Draws annotations in an image.
 
     # Arguments
-        image       : The image to draw on.
-        annotations : A [N, 5] matrix (x1, y1, x2, y2, label).
-        color       : The color of the boxes. By default the color from keras_retinanet.utils.colors.label_color will be used.
-        generator   : (optional) Generator which can map label to class name.
+        image         : The image to draw on.
+        annotations   : A [N, 5] matrix (x1, y1, x2, y2, label) or dictionary containing bboxes (shaped [N, 4]) and labels (shaped [N]).
+        color         : The color of the boxes. By default the color from keras_retinanet.utils.colors.label_color will be used.
+        label_to_name : (optional) Functor for mapping a label to a name.
     """
-    for a in annotations:
-        label   = a[4]
-        c       = color if color is not None else label_color(label)
-        caption = '{}'.format(generator.label_to_name(label) if generator else label)
-        draw_caption(image, a, caption)
+    if isinstance(annotations, np.ndarray):
+        annotations = {'bboxes': annotations[:, :4], 'labels': annotations[:, 4]}
 
-        draw_box(image, a, color=c)
+    assert('bboxes' in annotations)
+    assert('labels' in annotations)
+    assert(annotations['bboxes'].shape[0] == annotations['labels'].shape[0])
+
+    for i in range(annotations['bboxes'].shape[0]):
+        label   = annotations['labels'][i]
+        c       = color if color is not None else label_color(label)
+        caption = '{}'.format(label_to_name(label) if label_to_name else label)
+        draw_caption(image, annotations['bboxes'][i], caption)
+        draw_box(image, annotations['bboxes'][i], color=c)

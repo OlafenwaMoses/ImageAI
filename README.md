@@ -1,6 +1,8 @@
-# ImageAI (v2.1.5)
+# ImageAI (v2.1.6)
 
-![Discourse status](https://img.shields.io/discourse/https/forum.imageai.org/status) [![Build Status](https://travis-ci.com/OlafenwaMoses/ImageAI.svg?branch=master)](https://travis-ci.com/OlafenwaMoses/ImageAI)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/OlafenwaMoses/ImageAI/blob/master/LICENSE) [![PyPI version](https://badge.fury.io/py/imageai.svg)](https://badge.fury.io/py/imageai)   [![Downloads](https://pepy.tech/badge/imageai/month)](https://pepy.tech/project/imageai/month) [![Downloads](https://pepy.tech/badge/imageai/week)](https://pepy.tech/project/imageai/week) [![codecov](https://codecov.io/gh/TechnionYP5777/project-name/branch/master/graph/badge.svg)](https://codecov.io/gh/OlafenwaMoses/ImageAI) 
+
+
+[![Build Status](https://travis-ci.com/OlafenwaMoses/ImageAI.svg?branch=master)](https://travis-ci.com/OlafenwaMoses/ImageAI)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/OlafenwaMoses/ImageAI/blob/master/LICENSE) [![PyPI version](https://badge.fury.io/py/imageai.svg)](https://badge.fury.io/py/imageai)   [![Downloads](https://pepy.tech/badge/imageai/month)](https://pepy.tech/project/imageai) [![Downloads](https://pepy.tech/badge/imageai/week)](https://pepy.tech/project/imageai)
 
 An open-source python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple
  and few lines of code.
@@ -9,7 +11,9 @@ An open-source python library built to empower developers to build applications 
  
  <span class="badge-patreon"><a href="https://patreon.com/OlafenwaMoses" title="Donate to this project using Patreon"><img src="https://img.shields.io/badge/patreon-donate-yellow.svg" alt="Patreon donate button" /></a></span> 
  
-[ Click here](#sponsors) to see all [sponsors](#sponsors) for the **ImageAI** project!
+## ---------------------------------------------------
+## ImageAI will switch to PyTorch backend starting from June, 2021.
+## ---------------------------------------------------
  
 ![](logo1.png)
 
@@ -29,16 +33,18 @@ Eventually, **ImageAI** will provide support for a wider
     recognition in special environments and special fields.
 
 
-**New Release : ImageAI 2.1.5**
+**New Release : ImageAI 2.1.6**
 
 What's new:
 
-- **Tensorboard** logging for all prediction and detection model training.
-- **Progress bar** for detection training
-- Allow prediction and detection in multi-threaded code
-- Automatic **Multi-GPU** utilization for detection training
-- Custom detection model **metrics** retrieval
-- Bug fix: change custom model probability from **string to float**
+- **Support Tensorflow 2.4.0** 
+- **SqueezeNet replaced with MobileNetV2** 
+- **Added TF 2.x compatible pre-trained models for ResNet recognition and RetinaNet detection**
+- **Deprecates '.predictImage()' function for '.classifyImage()'**
+- **Renames Model types as below:**
+    - ResNet >> ResNet50
+    - DenseNet >> DenseNet121
+- 
 
 
 ### TABLE OF CONTENTS
@@ -70,13 +76,26 @@ What's new:
 To use **ImageAI** in your application developments, you must have installed the following 
  dependencies before you install **ImageAI** : 
  
- - Python 3.5.1 (and later versions)
- - Tensorflow 1.4.0 (and later versions) **(Tensorflow 2.0 coming soon)**
+ - Python 3.7.6
+ - Tensorflow 2.4.0
  - OpenCV 
- - Keras 2.x 
- 
- ```bash
-pip install -U tensorflow keras opencv-python
+ - Keras 2.4.3 
+
+You can install all the dependencies by running the commands below 
+
+**Tensorflow**
+```bash
+pip install tensorflow==2.4.0
+```
+
+or **Tensorflow GPU** if you have NVIDIA GPU with CUDA and cuDNN installed.
+```bash
+pip install tensorflow-gpu==2.4.0
+```
+
+**Other Dependencies**
+```bash
+pip install keras==2.4.3 numpy==1.19.3 pillow==7.0.0 scipy==1.4.1 h5py==2.10.0 matplotlib==3.3.2 opencv-python keras-resnet==0.2.0
 ```
 
 ### Installation
@@ -85,7 +104,7 @@ pip install -U tensorflow keras opencv-python
 To install ImageAI, run the python installation instruction below in the command line:
 
 ```bash
-pip3 install imageai --upgrade
+pip install imageai --upgrade
 ```
 
 ### Image Prediction
@@ -102,11 +121,11 @@ minivan : 1.7487050965428352
 ```
 
 **ImageAI** provides 4 different algorithms and model types to perform image prediction, trained on the ImageNet-1000 dataset.
-The 4 algorithms provided for image prediction include **SqueezeNet**, **ResNet**, **InceptionV3** and **DenseNet**. 
+The 4 algorithms provided for image prediction include **MobileNetV2**, **ResNet50**, **InceptionV3** and **DenseNet121**. 
 
 Click the link below to see the full sample codes, explanations and best practices guide.
 
-[>>> Tutorial & Guide](imageai/Prediction/README.md)
+[>>> Tutorial & Guide](imageai/Classification/README.md)
 
 
 ### Object Detection
@@ -179,7 +198,7 @@ _A sample from the IdenProf Dataset used to train a Model for predicting profess
 You can train your custom models using SqueezeNet, ResNet50, InceptionV3 and DenseNet in  **5** lines of code.
 Click the link below to see the guide to preparing training images, sample training codes, explanations and best practices.
 
-[>>> Tutorials & Documentation](imageai/Prediction/CUSTOMTRAINING.md)
+[>>> Tutorials & Documentation](imageai/Classification/CUSTOMTRAINING.md)
 
 
 ### Custom Image Prediction
@@ -202,7 +221,7 @@ You can use your custom models trained with SqueezeNet, ResNet50, InceptionV3 an
 Click the link below to see the guide to sample training codes, explanations, and best practices guide.
 
 
-[>>> Tutorials & Documentation](imageai/Prediction/CUSTOMPREDICTION.md)
+[>>> Tutorials & Documentation](imageai/Classification/CUSTOMCLASSIFICATION.md)
 
 
 
@@ -360,12 +379,6 @@ You can cite **ImageAI** in your projects and research papers via the **BibTeX**
 ```
 
 
-<div id="sponsors"></div>
-
-### >>> Basic Sponsors
-
-[<img src="https://avatars1.githubusercontent.com/u/46119184?s=460&v=" alt="David Lopez" style="width:50px;"/>](https://github.com/daviddbarrero)
-
 
  ### References
  <div id="ref"></div>
@@ -398,3 +411,5 @@ You can cite **ImageAI** in your projects and research papers via the **BibTeX**
 [https://arxiv.org/abs/1804.02767](https://arxiv.org/abs/1804.02767)
  14. Experiencor, Training and Detecting Objects with YOLO3
 [https://github.com/experiencor/keras-yolo3](https://github.com/experiencor/keras-yolo3)
+ 15. MobileNetV2: Inverted Residuals and Linear Bottlenecks
+[https://arxiv.org/abs/1801.04381](https://arxiv.org/abs/1801.04381)

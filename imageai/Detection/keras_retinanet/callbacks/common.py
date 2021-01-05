@@ -1,18 +1,19 @@
-import keras.callbacks
+from tensorflow import keras
 
 
 class RedirectModel(keras.callbacks.Callback):
     """Callback which wraps another callback, but executed on a different model.
-    # Arguments
-        callback: callback to wrap.
-        model: model to use when executing callbacks.
-    # Example
-        ```python
-        model = keras.models.load_model('model.h5')
-        model_checkpoint = ModelCheckpoint(filepath='snapshot.h5')
-        parallel_model = multi_gpu_model(model, gpus=2)
-        parallel_model.fit(X_train, Y_train, callbacks=[RedirectModel(model_checkpoint, model)])
-        ```
+
+    ```python
+    model = keras.models.load_model('model.h5')
+    model_checkpoint = ModelCheckpoint(filepath='snapshot.h5')
+    parallel_model = multi_gpu_model(model, gpus=2)
+    parallel_model.fit(X_train, Y_train, callbacks=[RedirectModel(model_checkpoint, model)])
+    ```
+
+    Args
+        callback : callback to wrap.
+        model    : model to use when executing callbacks.
     """
 
     def __init__(self,
