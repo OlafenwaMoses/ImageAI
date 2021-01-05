@@ -30,7 +30,7 @@ def forFrame(frame_number, output_array, output_count, returned_frame):
 
     if (resized == False):
         manager = plt.get_current_fig_manager()
-        manager.resize(width=1000, height=500)
+        manager.resize(1000, 500)
         resized = True
 
     plt.subplot(1, 2, 1)
