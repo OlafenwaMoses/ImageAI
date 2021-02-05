@@ -357,7 +357,7 @@ def draw_boxes(image, box_points, draw_box, label, percentage_probability, color
         label = "{:.2f}".format(percentage_probability)
     
     if label is not None or percentage_probability is not None:
-        cv2.putText(image, label, (xmin, ymin - 13), cv2.FONT_HERSHEY_SIMPLEX, 1e-3 * image.shape[0], (255, 0, 0), 2)
+        cv2.putText(image, label, (xmin, ymin - 13), cv2.FONT_HERSHEY_SIMPLEX, 1e-3 * image.shape[0], color, 2)
         cv2.putText(image, label, (xmin, ymin - 13), cv2.FONT_HERSHEY_SIMPLEX, 1e-3 * image.shape[0], (255, 255, 255), 1)
         
     return image 
