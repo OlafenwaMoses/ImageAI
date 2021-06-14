@@ -210,7 +210,8 @@ class ObjectDetection:
                     * extract_detected_objects (optional) , option to save each object detected individually as an image and return an array of the objects' image path.
                     * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
                     * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
-                    * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
+                    * display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
+                    * display_box (optional, True by default), option to show or hide the bounding boxes of each object in the saved/returned detected image
                     * thread_safe (optional, False by default), enforce the loaded detection model works across all threads if set to true, made possible by forcing all Tensorflow inference to run on the default graph.
 
 
