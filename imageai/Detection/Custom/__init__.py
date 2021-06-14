@@ -667,7 +667,8 @@ class CustomObjectDetection:
 
     def detectObjectsFromImage(self, input_image="", output_image_path="", input_type="file", output_type="file",
                                extract_detected_objects=False, minimum_percentage_probability=50, nms_treshold=0.4,
-                               display_percentage_probability=True, display_object_name=True, thread_safe=False):
+                               display_percentage_probability=True, display_object_name=True, display_box=True,
+                               thread_safe=False):
 
         """
 
@@ -681,6 +682,7 @@ class CustomObjectDetection:
                     * nms_threshold (optional, o.45 by default) , option to set the Non-maximum suppression for the detection
                     * display_percentage_probability (optional, True by default), option to show or hide the percentage probability of each object in the saved/returned detected image
                     * display_display_object_name (optional, True by default), option to show or hide the name of each object in the saved/returned detected image
+                    * display_box (optional, True by default), option to show or hide the bounding boxes of each object in the saved/returned detected image
                     * thread_safe (optional, False by default), enforce the loaded detection model works across all threads if set to true, made possible by forcing all Keras inference to run on the default graph
 
 
@@ -733,6 +735,7 @@ class CustomObjectDetection:
         :param nms_treshold:
         :param display_percentage_probability:
         :param display_object_name:
+        :param display_box:
         :param thread_safe:
         :return image_frame:
         :return output_objects_array:
@@ -824,7 +827,8 @@ class CustomObjectDetection:
 
                 drawn_image = self.__detection_utils.draw_boxes_and_caption(image_frame.copy(), all_boxes, all_labels,
                                                                             all_scores, show_names=display_object_name,
-                                                                            show_percentage=display_percentage_probability)
+                                                                            show_percentage=display_percentage_probability,
+                                                                            show_boxes=display_box)
 
                 if extract_detected_objects:
 
@@ -1369,7 +1373,7 @@ class CustomDetectionUtils:
         else:
             return 0, 255, 0
 
-    def draw_boxes_and_caption(self, image_frame, v_boxes, v_labels, v_scores, show_names=False, show_percentage=False):
+    def draw_boxes_and_caption(self, image_frame, v_boxes, v_labels, v_scores, show_names=False, show_percentage=False, show_boxes=False):
 
         for i in range(len(v_boxes)):
             box = v_boxes[i]
@@ -1377,7 +1381,8 @@ class CustomDetectionUtils:
             width, height = x2 - x1, y2 - y1
             class_color = self.label_color(self.__labels.index(v_labels[i]))
 
-            image_frame = cv2.rectangle(image_frame, (x1, y1), (x2, y2), class_color, 2)
+            if show_boxes:
+                image_frame = cv2.rectangle(image_frame, (x1, y1), (x2, y2), class_color, 2)
 
             label = ""
             if show_names and show_percentage:
