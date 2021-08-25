@@ -1,4 +1,4 @@
-tensorflow==2.4.0
+tensorflow==2.5.1
 keras==2.4.3
 numpy==1.19.3
 pillow==8.1.1
