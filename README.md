@@ -17,7 +17,7 @@ An open-source python library built to empower developers to build applications 
  
 ![](logo1.png)
 
-An **DeepQuest AI** (A Brand of AI Commons Global Limited)  project [deepquestai.com](https://deepquestai.com).
+A **DeepQuest AI** (A Brand of AI Commons Global Limited)  project [deepquestai.com](https://deepquestai.com).
 
 Developed and Maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses) and [John Olafenwa](https://twitter.com/johnolafenwa), brothers, creators of [TorchFusion](https://github.com/johnolafenwa/TorchFusion), Authors of [Introduction to Deep Computer Vision](https://john.aicommons.science/deepvision) and creators of [DeepStack AI Server](https://deepstack.cc).
 
