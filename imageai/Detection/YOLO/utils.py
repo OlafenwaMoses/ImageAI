@@ -1,8 +1,9 @@
+from tensorflow.compat.v1.keras import backend as K
 import tensorflow as tf
-from keras import backend as K
 import numpy as np
 from PIL import Image
 import cv2
+tf.compat.v1.disable_eager_execution()
 
 
 def yolo_head(feats, anchors, num_classes, input_shape, calc_loss=False):
