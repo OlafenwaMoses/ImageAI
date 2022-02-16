@@ -94,7 +94,7 @@ The above line obtains each object in the **predictions** array, and also obtain
 All you need to do is to state the speed mode you desire when loading the model as seen below.
 
 ```python
-prediction.loadModel(prediction_speed="fast")
+prediction.loadModel(classification_speed="fast")
 ```
 
 To observe the differences in the prediction speeds, look below for each speed applied to multiple prediction with time taken to predict and predictions given. The results below are obtained from predictions performed on a Windows 8 laptop with Intel Celeron N2820 CPU, with processor speed of 2.13GHz
