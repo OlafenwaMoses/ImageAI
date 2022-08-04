@@ -42,6 +42,7 @@ Model training:
 - Removed 'transfer_with_full_learning' from trainModel() as it wasn't being used
 - Removed 'continue_from_model' as it does the same thing as 'transfer_from_model' now
 - Changed 'enhance_data' to 'preprocess_layers' in trainModel() to be more fitting to the process happening
+- Added 'show_training_graph' to trainModel() which is set to False by default. When set to True a graph plotting accuracy with validation accuracy as well as loss with validation loss at the end of training
 - Moved preprocessing to before the selected model as this is what is recommended in official tensorflow and keras documentation and should improve accuracy when training
 - Added RandomZoom() and RanbdomRotation() to preprocessing to further eliminate overfitting during training
 - Removed ImageDataGenerator() as this is depreciated, proprocessing will take the place of this along with rescaling before each model
@@ -49,7 +50,21 @@ Model training:
 - Removed flow_from_directory() as this has been depreceated and image_dataset_from_directory will take its place (this also has the functionality of automatically splitting a single dataset into training and validation datasets automatically)
 - Added caching and prefetching of datasets to speed up the training process
 - Setting up the chosen model has been simplified and updated to match current best practices in TensorFlow
-- 
+- Load weights has been updated to accept weights from models that might not be exactly the same
+- Saved weight now also contain the nome of the model used during training as well as validation accuracy along with training accuracy still
+- Removed tensorboard callback as it wasn't being used
+
+Custom Image Classification:
+- setJsonPath() is no longer required as long as the json file for the corresponding model is located in the 'json' folder and is named 'model_class.json' 
+- Added getJson() which will check if json path is set, if not set will check for 'json/model_class.json' and raise and error if neither are found
+
+Loading Model:
+- Simplified code when setting up the model for prediction
+
+Classify Image:
+- Changed all keras.preprocessing.image or keras.utils as keras.preprocessing is deprecated
+- Added extra processing of the prediction with tf.nn.softmax() as raw data was unreadable
+
 
 ### Custom Model Prediction
 <div id="customprediction"></div>
