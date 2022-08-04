@@ -28,13 +28,16 @@ NOTE: The custom image classification has been updated quite a bit with changes 
 
 ImageAI Custom Classification Version 2.2.0 Changes:
 
+Setting models:
 - The four model types included with ImageAI are currently still the same as in v2.1.6 however to streamline the package code, make the end user process more simple, and future proof ImageAI, models will no longer be set with setModelTypeAsResNet50(), etc. Models will now be set using setModelType() with the model you'd like to use ex: trainer.setModelTypeAs('ResNet50')
 - On top of changing how the model type is set, setting a model type is no longer required. In almost every case that I've seen, people tend to use ResNet50 so that is now the default model that will be set if setModelType() is not called
 
+Setting dataset directories:
 - Added 'single_dataset_directory' to setDataDirectory() which is set to False by default. Setting this to True will cause the program to only look for a dataset in a single directory set by 'dataset_directory' and will split the dataset according to 'validation_split'. Note: Using this option is good for starting out with image classification but will be significantly less accurate as you have no no longer have control over how you want to test your model to see if it 'understands' what it's actually looking for in each class
 - Added 'dataset_directory' which defaults to 'data'. This is the directory that ImageAI will look for if 'single_dataset_directory' is set to True and will pull classes and image data from
 - Added 'validation_split' which is set to 0.2 by default. This is how ImageAI will split the dataset if 'single_dataset_directory' is set to True and will make the number set the validation dataset and the remainder the training dataset. Ex: when this is set to 0.2 20% of the data will be used for validation and 80% will be used for training
 
+Model training:
 - Removed 'num_objects' from trainModel(), this will get calculate based on how many class folders you have in your dataset directory/directories
 - Removed 'transfer_with_full_learning' from trainModel() as it wasn't being used
 - Removed 'continue_from_model' as it does the same thing as 'transfer_from_model' now
