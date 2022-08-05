@@ -475,31 +475,18 @@ class CustomImageClassification:
                     case 'ResNet50':
                         outputs = tf.keras.applications.resnet50.ResNet50(input_shape=input_shape, 
                                                                  weights=None, classes=num_classes, include_top=False, pooling='avg')
-                        weights = {}
+                        keys = None
                         with h5py.File(self.modelPath, 'r') as f: # open file
                             if 'resnet50' in f.keys():
                                 print('Has resnet')
                                 keys = f.get('resnet50')
-                                print('Keys', len(keys))
-                                for key in keys:
-                                    weights[key] = keys.get(key)
-                                    for weight in weights[key]:
-                                        print(weights[key].get(weight))
-                                    print('')
-                                print('')
-                                    # print(key, f['resnet50/{}'.format(key)])
-                                    # weights[f['resnet50/{}'.format(key)].name] = f['resnet50/{}'.format(key)].values
 
-                        for layer in outputs.layers:
-                            # print(layer.weights)
-                            for weight in layer.weights:
-                                print(weight)
-                            print('')
-                            # if 'resnet50/' + layer.name in weights:
-                            #     layer.weights = weights['resnet50/' + layer.name]
-                            # else:
-                            #     print('{} did not have weights'.format(layer.name))
-                        # outputs.load_weights(self.modelPath, by_name=True, skip_mismatch=True)
+                        if keys != None:
+                            with h5py.File('tempWeights.h5', 'w') as f:
+                                for key in keys:
+                                    f.create_dataset(key, data=keys[key])
+                            outputs.load_weights('tempWeights.h5', by_name=True, skip_mismatch=True)
+                        
                         outputs = outputs(rescaled)
                     case 'DenseNet121':
                         outputs = tf.keras.applications.densenet.DenseNet121(input_shape=(self.__input_image_size, self.__input_image_size, 3), weights=None, classes=num_classes, include_top=False, pooling='avg')(rescaled)
