@@ -29,20 +29,16 @@ NOTE: The custom image classification has been updated quite a bit with changes 
 ImageAI Custom Classification Version 2.2.0 Changes:
 
 Setting models:
-- The four model types included with ImageAI are currently still the same as in v2.1.6 however to streamline the package code, make the end user process more simple, and future proof ImageAI, models will no longer be set with setModelTypeAsResNet50(), etc. Models will now be set using setModelType() with the model you'd like to use ex: trainer.setModelTypeAs('ResNet50')
-- On top of changing how the model type is set, setting a model type is no longer required. In almost every case that I've seen, people tend to use ResNet50 so that is now the default model that will be set if setModelType() is not called
-
-Setting dataset directories:
-- Added 'single_dataset_directory' to setDataDirectory() which is set to False by default. Setting this to True will cause the program to only look for a dataset in a single directory set by 'dataset_directory' and will split the dataset according to 'validation_split'. Note: Using this option is good for starting out with image classification but will be significantly less accurate as you have no no longer have control over how you want to test your model to see if it 'understands' what it's actually looking for in each class
-- Added 'dataset_directory' which defaults to 'data'. This is the directory that ImageAI will look for if 'single_dataset_directory' is set to True and will pull classes and image data from
-- Added 'validation_split' which is set to 0.2 by default. This is how ImageAI will split the dataset if 'single_dataset_directory' is set to True and will make the number set the validation dataset and the remainder the training dataset. Ex: when this is set to 0.2 20% of the data will be used for validation and 80% will be used for training
+- The four model types included with ImageAI are currently still the same as in v2.1.6 however to streamline the package code, make the end user process more simple, and future proof ImageAI, models will no longer be set with setModelTypeAsResNet50(), etc. Models will now be set using set_model_type() with the model you'd like to use ex: trainer.setModelTypeAs('ResNet50')
+- On top of changing how the model type is set, setting a model type is no longer required. In almost every case that I've seen, people tend to use ResNet50 so that is now the default model that will be set if set_model_type() is not called. Note: This is mostly to make the experience easier for beginner users
 
 Model training:
 - Removed 'num_objects' from trainModel(), this will get calculate based on how many class folders you have in your dataset directory/directories
 - Removed 'transfer_with_full_learning' from trainModel() as it wasn't being used
-- Removed 'continue_from_model' as it does the same thing as 'transfer_from_model' now
+- 'continue_from_model' now loads a full model which isn't a problem since all models are now saved as full models
+- Removed 'save_full_model' because HDF5 format will be depreceated in the future and the full model actually takes up less space in my findings than just the weights. This will also allow for pruning and compression to be added in the future to make files even smaller.
 - Changed 'enhance_data' to 'preprocess_layers' in trainModel() to be more fitting to the process happening
-- Added 'show_training_graph' to trainModel() which is set to False by default. When set to True a graph plotting accuracy with validation accuracy as well as loss with validation loss at the end of training
+- Added 'show_training_graph' to trainModel() which is set to False by default. When set to True a graph plotting accuracy with validation accuracy as well as loss with validation loss will show at the end of training
 - Moved preprocessing to before the selected model as this is what is recommended in official tensorflow and keras documentation and should improve accuracy when training
 - Added RandomZoom() and RanbdomRotation() to preprocessing to further eliminate overfitting during training
 - Removed ImageDataGenerator() as this is depreciated, proprocessing will take the place of this along with rescaling before each model
@@ -50,13 +46,14 @@ Model training:
 - Removed flow_from_directory() as this has been depreceated and image_dataset_from_directory will take its place (this also has the functionality of automatically splitting a single dataset into training and validation datasets automatically)
 - Added caching and prefetching of datasets to speed up the training process
 - Setting up the chosen model has been simplified and updated to match current best practices in TensorFlow
+- On all models 'include_top' has been set to false because of errors when it was set to True
 - Load weights has been updated to accept weights from models that might not be exactly the same
-- Saved weight now also contain the nome of the model used during training as well as validation accuracy along with training accuracy still
+- Saved weight now also contain the name of the model used during training as well as validation accuracy along with training accuracy still
 - Removed tensorboard callback as it wasn't being used
 
 Custom Image Classification:
-- setJsonPath() is no longer required as long as the json file for the corresponding model is located in the 'json' folder and is named 'model_class.json' 
-- Added getJson() which will check if json path is set, if not set will check for 'json/model_class.json' and raise and error if neither are found
+- set_json_path() is no longer required as long as the json file for the corresponding model is located in the 'json' folder and is named 'model_class.json' 
+- Added get_json() which will check if json path is set, if not set will check for 'json/model_class.json' and raise and error if neither are found
 
 Loading Model:
 - Simplified code when setting up the model for prediction
@@ -64,6 +61,7 @@ Loading Model:
 Classify Image:
 - Changed all keras.preprocessing.image or keras.utils as keras.preprocessing is deprecated
 - Added extra processing of the prediction with tf.nn.softmax() as raw data was unreadable
+- Unfortunantly due to updates in Tensorflow models from previous generations of ImageAI are no longer going to be supported as the specific model used during training needs to be used during prediction. If you have a Tensorflow SavedModel, it can now be used for prediction regardless of if the model was trained in ImageAI or not. If you do not have the 'save_full_model' set to true on models you'd like to continue using, run a few epochs of transfer learning with that model and the 'save_full_model' set to True and it can be carried over to ImageAI V2.2.0
 
 
 ### Custom Model Prediction
@@ -91,10 +89,9 @@ import os
 execution_path = os.getcwd()
 
 prediction = CustomImageClassification()
-prediction.setModelTypeAsResNet50()
 prediction.setModelPath(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
 prediction.setJsonPath(os.path.join(execution_path, "idenprof.json"))
-prediction.loadModel(num_objects=10)
+prediction.loadModel()
 
 predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "4.jpg"), result_count=5)
 
