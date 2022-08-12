@@ -9,7 +9,7 @@ that you have trained the model on.
 
 ### TABLE OF CONTENTS
 
-- <a href="#2.2.0changes">Changes in ImageAI V2.2.0</a>
+- <a href="#customchanges">Changes in ImageAI V2.2.0</a>
 - <a href="#customprediction">Custom Model Prediction</a>
 - <a href="#custompredictionfullmodel">Custom Model Prediction with Full Model (NEW)</a>
 - <a href="#custompredictionmultiple">Custom Prediction with multiple models (NEW)</a>
@@ -89,9 +89,10 @@ import os
 execution_path = os.getcwd()
 
 prediction = CustomImageClassification()
-prediction.setModelPath(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
-prediction.setJsonPath(os.path.join(execution_path, "idenprof.json"))
-prediction.loadModel()
+prediction.set_model_type('ResNet50')
+prediction.set_model_path(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
+prediction.set_json_path(os.path.join(execution_path, "idenprof.json"))
+prediction.load_model()
 
 predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "4.jpg"), result_count=5)
 
@@ -101,7 +102,7 @@ for eachPrediction, eachProbability in zip(predictions, probabilities):
 
 **Sample Result:**
 
-![Sample Result](../../data-images/4.jpg)
+![Sample Result](../../../data-images/4.jpg)
 ```
 mechanic : 76.82620286941528
 chef : 10.106072574853897
@@ -121,26 +122,24 @@ The code above imports the **ImageAI** library for custom image prediction and t
 execution_path = os.getcwd()
 ```
 
-The above line obtains the path to the folder that contains your python file (in this example, your FirstCustomPrediction.py).
+The above line obtains the path to the folder that contains your python file (in this example, your FirstCustomPrediction.py). Do note that this step is not completely necessary as the relative path to your root project folder will be used, however it is good practice to eliminate confusion.
 
 ```python
 prediction = CustomImageClassification()
-prediction.setModelTypeAsResNet50()
-prediction.setModelPath(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
-prediction.setJsonPath(os.path.join(execution_path, "idenprof.json"))
-prediction.loadModel(num_objects=10)
+preiction.set_model_type('ResNet50')
+prediction.set_model_path(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
+prediction.set_json_path(os.path.join(execution_path, "idenprof.json"))
+prediction.load_model()
 ```
 
 In the lines above, we created and instance of the `CustomImageClassification()`
- class in the first line, then we set the model type of the prediction object to ResNet by caling the `.setModelTypeAsResNet50()`
-  in the second line, we set the model path of the prediction object to the path of the custom model file (`idenprof_resnet_ex-056_acc-0.993062.h5`) we copied to the python file folder
-  in the third line, we set the path to  the model_class.json of the model, we load the model and parse the number of objected that can be predicted in the model.
+ class in the first line, then we set the model type of the prediction object to ResNet by caling the `.set_model_type('ResNet50')` (if `.set_model_type() was not called it would default to ResNet50`) in the second line, we set the model path of the prediction object to the path of the custom model file (`idenprof_resnet_ex-056_acc-0.993062.h5`) we copied to the python file folder in the third line, we set the path to  the model_class.json of the model, and then we load the model.
 
 ```python
-predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "4.jpg"), result_count=5)
+predictions, probabilities = prediction.classify_image(os.path.join(execution_path, "4.jpg"), result_count=5)
 ```
 
-In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.classifyImage()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 10 in this case) parsing `result_count=5`. The `.classifyImage()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**percentage_probabilities**) being an array of the corresponding percentage probability for each prediction.
+In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.classify_image()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 10 in this case) parsing `result_count=5`. The `.classify_image()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**percentage_probabilities**) being an array of the corresponding percentage probability for each prediction.
 
 ```python
 for eachPrediction, eachProbability in zip(predictions, probabilities):
@@ -169,23 +168,23 @@ import os
 execution_path = os.getcwd()
 
 predictor = CustomImageClassification()
-predictor.setModelPath(model_path=os.path.join(execution_path, "idenprof_resnet.h5"))
-predictor.setJsonPath(model_json=os.path.join(execution_path, "idenprof.json"))
-predictor.setModelTypeAsResNet50()
-predictor.loadModel(num_objects=10)
+predictor.set_model_path(model_path=os.path.join(execution_path, "idenprof_resnet.h5"))
+predictor.set_json_path(model_json=os.path.join(execution_path, "idenprof.json"))
+predictor.set_model_type('ResNet50')
+predictor.load_model()
 
 predictor2 = CustomImageClassification()
-predictor2.setModelPath(model_path=os.path.join(execution_path, "idenprof_inception_0.719500.h5"))
-predictor2.setJsonPath(model_json=os.path.join(execution_path, "idenprof.json"))
+predictor2.set_model_path(model_path=os.path.join(execution_path, "idenprof_inception_0.719500.h5"))
+predictor2.set_json_path(model_json=os.path.join(execution_path, "idenprof.json"))
 predictor2.setModelTypeAsInceptionV3()
-predictor2.loadModel(num_objects=10)
+predictor2.load_model(num_objects=10)
 
-results, probabilities = predictor.classifyImage(image_input=os.path.join(execution_path, "9.jpg"), result_count=5)
+results, probabilities = predictor.classify_image(image_input=os.path.join(execution_path, "9.jpg"), result_count=5)
 print(results)
 print(probabilities)
 
 
-results2, probabilities2 = predictor3.classifyImage(image_input=os.path.join(execution_path, "9.jpg"),
+results2, probabilities2 = predictor3.classify_image(image_input=os.path.join(execution_path, "9.jpg"),
                                                        result_count=5)
 print(results2)
 print(probabilities2)
