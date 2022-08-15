@@ -70,7 +70,7 @@ In this example, we will be using the model trained for 20 experiments on **Iden
 (You can use your own trained model and generated JSON file. This 'class' is provided mainly for the purpose to use your own custom models.)
 Download the ResNet model of the model and JSON files in links below:
 
-- [**ResNet50**](../../../examples/idenprof/idenprof_resnet50_ex-019_acc-0.773_vacc0.743) _(Size = 275 mb)_
+- [**ResNet50**](../../../examples/idenprof/model_resnet50_ex-017_acc-0.787_vacc0.747.h5) _(Size = 90.2 mb)_
 - [**IdenProf model_class.json file**](../../../examples/idenprof/idenprof.json)
 
 Great!
@@ -103,11 +103,11 @@ for eachPrediction, eachProbability in zip(predictions, probabilities):
 
 ![Sample Result](../../../data-images/4.jpg)
 ```
-mechanic : 14.703840017318726
-waiter : 12.162463366985321
-chef : 10.105694830417633
-pilot : 9.323549270629883
-doctor : 9.005088359117508
+mechanic : 18.120427429676056
+waiter : 9.952791035175323
+chef : 9.288407862186432
+pilot : 9.214989095926285
+doctor : 9.11235511302948
 ```
 
 You will notice that the probabilities of each prediction are fairly low, this is due to the number of training cycles being only 20. We call these training cycles epochs and when training a new model from scratch 50 epochs is the minimum recommended with 100 epochs being a good place to start and 200 epochs being what you should strive for if you have the computing resources and time.
