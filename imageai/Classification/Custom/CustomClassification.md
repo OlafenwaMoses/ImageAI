@@ -35,20 +35,18 @@ Setting models:
 Model training:
 - Removed 'num_objects' from trainModel(), this will get calculate based on how many class folders you have in your dataset directory/directories
 - Removed 'transfer_with_full_learning' from trainModel() as it wasn't being used
-- 'continue_from_model' now loads a full model which isn't a problem since all models are now saved as full models
-- Removed 'save_full_model' because HDF5 format will be depreceated in the future and the full model actually takes up less space in my findings than just the weights. This will also allow for pruning and compression to be added in the future to make files even smaller.
+- 'continue_from_model' now loads a full model and trains from that
 - Changed 'enhance_data' to 'preprocess_layers' in trainModel() to be more fitting to the process happening
 - Added 'show_training_graph' to trainModel() which is set to False by default. When set to True a graph plotting accuracy with validation accuracy as well as loss with validation loss will show at the end of training
 - Moved preprocessing to before the selected model as this is what is recommended in official tensorflow and keras documentation and should improve accuracy when training
-- Added RandomZoom() and RanbdomRotation() to preprocessing to further eliminate overfitting during training
+- Added RandomZoom() and RandomRotation() to preprocessing to further eliminate overfitting during training
 - Removed ImageDataGenerator() as this is depreciated, proprocessing will take the place of this along with rescaling before each model
 - Rescaling has been used instead of each models build in preprocessing function as there were issues with training and prediction when using them
 - Removed flow_from_directory() as this has been depreceated and image_dataset_from_directory will take its place (this also has the functionality of automatically splitting a single dataset into training and validation datasets automatically)
 - Added caching and prefetching of datasets to speed up the training process
 - Setting up the chosen model has been simplified and updated to match current best practices in TensorFlow
 - On all models 'include_top' has been set to false because of errors when it was set to True
-- Load weights has been updated to accept weights from models that might not be exactly the same
-- Saved weight now also contain the name of the model used during training as well as validation accuracy along with training accuracy still
+- Saved weights now also contain the name of the model used during training as well as validation accuracy
 - Removed tensorboard callback as it wasn't being used
 
 Custom Image Classification:
@@ -59,24 +57,25 @@ Loading Model:
 - Simplified code when setting up the model for prediction
 
 Classify Image:
-- Changed all keras.preprocessing.image or keras.utils as keras.preprocessing is deprecated
+- Changed all keras.preprocessing.image to keras.utils as keras.preprocessing is deprecated
 - Added extra processing of the prediction with tf.nn.softmax() as raw data was unreadable
-- Unfortunantly due to updates in Tensorflow models from previous generations of ImageAI are no longer going to be supported as the specific model used during training needs to be used during prediction. If you have a Tensorflow SavedModel, it can now be used for prediction regardless of if the model was trained in ImageAI or not. If you do not have the 'save_full_model' set to true on models you'd like to continue using, run a few epochs of transfer learning with that model and the 'save_full_model' set to True and it can be carried over to ImageAI V2.2.0
+- Unfortunantly due to updates in Tensorflow models from previous generations of ImageAI are no longer going to be supported as the specific model used during training needs to be used during prediction. If you have a Tensorflow SavedModel or HDF5 full model, it can now be used for prediction regardless of if the model was trained in ImageAI or not. If you do not have the 'save_full_model' set to true on models you'd like to continue using, run a few epochs of transfer learning with that model and the 'save_full_model' set to True and it can be carried over to ImageAI V2.2.0 
+(This is still being looked into to see if there is a way to transfer models over)
 
 
 ### Custom Model Prediction
 <div id="customprediction"></div>
 
-In this example, we will be using the model trained for 20 experiments on **IdenProf**, a dataset of uniformed professionals and achieved 65.17% accuracy on the test dataset.
+In this example, we will be using the model trained for 20 experiments on **IdenProf**, a dataset of uniformed professionals and achieved 72.0% accuracy on the test dataset.
 (You can use your own trained model and generated JSON file. This 'class' is provided mainly for the purpose to use your own custom models.)
 Download the ResNet model of the model and JSON files in links below:
 
-- [**ResNet50**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essentials-v5/idenprof_resnet_ex-056_acc-0.993062.h5) _(Size = 90.4 mb)_
-- [**IdenProf model_class.json file**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essentials-v5/idenprof.json)
+- [**ResNet50**](../../../examples/idenprof/idenprof_resnet50_ex-019_acc-0.773_vacc0.743) _(Size = 275 mb)_
+- [**IdenProf model_class.json file**](../../../examples/idenprof/idenprof.json)
 
 Great!
 Once you have downloaded this model file and the JSON file, start a new python project, and then copy the model file and the JSON file to your project folder where your python files (.py files) will be.
-Download the image below, or take any image on your computer that include any of the following professionals(Chef, Doctor, Engineer, Farmer, Fireman, Judge, Mechanic, Pilot, Police and Waiter) and copy it to your python project's folder.
+Download the image below, or take any image on your computer that include any of the following professionals(Chef, Doctor, Engineer, Farmer, Fireman, Judge, Mechanic, Pilot, Police, or Waiter) and copy it to your python project's folder.
 Then create a python file and give it a name; an example is **FirstCustomPrediction.py**.
 Then write the code below into the python file:
 
@@ -90,11 +89,11 @@ execution_path = os.getcwd()
 
 prediction = CustomImageClassification()
 prediction.set_model_type('ResNet50')
-prediction.set_model_path(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
+prediction.set_model_path(os.path.join(execution_path, "idenprof_resnet50_ex-019_acc-0.773_vacc0.743"))
 prediction.set_json_path(os.path.join(execution_path, "idenprof.json"))
-prediction.load_model()
+prediction.load_trained_model()
 
-predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "4.jpg"), result_count=5)
+predictions, probabilities = prediction.classify_image(os.path.join(execution_path, "4.jpg"), result_count=5)
 
 for eachPrediction, eachProbability in zip(predictions, probabilities):
     print(eachPrediction + " : " + eachProbability)
@@ -104,12 +103,14 @@ for eachPrediction, eachProbability in zip(predictions, probabilities):
 
 ![Sample Result](../../../data-images/4.jpg)
 ```
-mechanic : 76.82620286941528
-chef : 10.106072574853897
-waiter : 4.036874696612358
-police : 2.6663416996598244
-pilot : 2.239348366856575
+mechanic : 14.703840017318726
+waiter : 12.162463366985321
+chef : 10.105694830417633
+pilot : 9.323549270629883
+doctor : 9.005088359117508
 ```
+
+You will notice that the probabilities of each prediction are fairly low, this is due to the number of training cycles being only 20. We call these training cycles epochs and when training a new model from scratch 50 epochs is the minimum recommended with 100 epochs being a good place to start and 200 epochs being what you should strive for if you have the computing resources and time.
 
 The code above works as follows:
 ```python
@@ -122,31 +123,30 @@ The code above imports the **ImageAI** library for custom image prediction and t
 execution_path = os.getcwd()
 ```
 
-The above line obtains the path to the folder that contains your python file (in this example, your FirstCustomPrediction.py). Do note that this step is not completely necessary as the relative path to your root project folder will be used, however it is good practice to eliminate confusion.
+The above line obtains the path to the folder that contains your python file (in this example, your FirstCustomPrediction.py). Do note that this step is not completely necessary as the relative path to your root project folder will be used, however it is good practice and will eliminate confusion.
 
 ```python
 prediction = CustomImageClassification()
 preiction.set_model_type('ResNet50')
-prediction.set_model_path(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
+prediction.set_model_path(os.path.join(execution_path, "idenprof_resnet50_ex-019_acc-0.773_vacc0.743"))
 prediction.set_json_path(os.path.join(execution_path, "idenprof.json"))
-prediction.load_model()
+prediction.load_full_model()
 ```
 
-In the lines above, we created and instance of the `CustomImageClassification()`
- class in the first line, then we set the model type of the prediction object to ResNet by caling the `.set_model_type('ResNet50')` (if `.set_model_type() was not called it would default to ResNet50`) in the second line, we set the model path of the prediction object to the path of the custom model file (`idenprof_resnet_ex-056_acc-0.993062.h5`) we copied to the python file folder in the third line, we set the path to  the model_class.json of the model, and then we load the model.
+In the lines above, we created and instance of the `CustomImageClassification()` class in the first line, then we set the model type of the prediction object to ResNet by caling the `.set_model_type('ResNet50')` (if `.set_model_type() was not called it would default to ResNet50`) in the second line, we set the model path of the prediction object to the path of the custom model file (`idenprof_resnet50_ex-019_acc-0.773_vacc0.743`) we copied to the python file folder in the third line, we set the path to  the model_class.json of the model, and then we load the model.
 
 ```python
 predictions, probabilities = prediction.classify_image(os.path.join(execution_path, "4.jpg"), result_count=5)
 ```
 
-In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.classify_image()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 10 in this case) parsing `result_count=5`. The `.classify_image()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**percentage_probabilities**) being an array of the corresponding percentage probability for each prediction.
+In the above line, we defined 2 variables to be equal to the function called to predict an image, which is the `.classify_image()` function, into which we parsed the path to our image and also state the number of prediction results we want to have (values from 1 to 10 in this case) parsing `result_count=5`. The `.classify_image()` function will return 2 array objects with the first (**predictions**) being an array of predictions and the second (**probabilities**) being an array of the corresponding percentage probability for each prediction.
 
 ```python
 for eachPrediction, eachProbability in zip(predictions, probabilities):
     print(eachPrediction + " : " + eachProbability)
 ```
 
-The above line obtains each object in the **predictions** array, and also obtains the corresponding percentage probability from the **percentage_probabilities**, and finally prints the result of both to console.
+The above line obtains each object in the **predictions** array, and also obtains the corresponding percentage probability from the **probabilities**, and finally prints the result of both to console.
 
 **CustomImageClassification** class also supports the multiple predictions, input types and prediction speeds that are contained
 in the **ImageClassification** class. Follow this [link](README.md) to see all the details.
@@ -184,18 +184,18 @@ print(results)
 print(probabilities)
 
 
-results2, probabilities2 = predictor3.classify_image(image_input=os.path.join(execution_path, "9.jpg"),
+results2, probabilities2 = predictor2.classify_image(image_input=os.path.join(execution_path, "9.jpg"),
                                                        result_count=5)
 print(results2)
 print(probabilities2)
 print("-------------------------------")
 ```
 
-### Documentation
+<!-- ### Documentation
 
 We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:**
 
 * Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
 * Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-* Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
+* Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)** -->
 
