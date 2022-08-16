@@ -200,17 +200,15 @@ class ClassificationModelTrainer:
             print('No model type specified, defaulting to ResNet50')
             model_type = 'ResNet50'
 
-        rescale_value = 1. / 255
-        if model_type in ('MobileNetv2', 'InceptionV3'):
-            rescale_value = 1. / 127.5
-        outputs = tf.keras.layers.Rescaling(rescale_value,
-                                            input_shape=input_shape)(outputs)
-
         # Check for model type and build a model based on it
         match model_type:
             case 'MobileNetV2':
+                outputs = tf.keras.layers\
+                    .Rescaling(1. / 127.5,
+                               input_shape=input_shape,
+                               offset=-1)(outputs)
                 model_name = 'model_mobilenetv2_ex-{epoch:03d}'\
-                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
                 outputs = tf.keras.applications\
                     .mobilenet_v2.MobileNetV2(input_shape=input_shape,
                                               weights=None,
@@ -218,8 +216,11 @@ class ClassificationModelTrainer:
                                               include_top=False,
                                               pooling='avg')(outputs)
             case 'ResNet50':
+                outputs = tf.keras.layers\
+                    .Rescaling(1. / 255,
+                               input_shape=input_shape)(outputs)
                 model_name = 'model_resnet50_ex-{epoch:03d}'\
-                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
                 outputs = tf.keras.applications\
                     .resnet50.ResNet50(input_shape=input_shape,
                                        weights=None,
@@ -227,8 +228,11 @@ class ClassificationModelTrainer:
                                        include_top=False,
                                        pooling='avg')(outputs)
             case 'DenseNet121':
+                outputs = tf.keras.layers\
+                    .Rescaling(1. / 255,
+                               input_shape=input_shape)(outputs)
                 model_name = 'model_densenet121_ex-{epoch:03d}'\
-                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
                 outputs = tf.keras.applications\
                     .densenet.DenseNet121(input_shape=input_shape,
                                           weights=None,
@@ -236,8 +240,12 @@ class ClassificationModelTrainer:
                                           include_top=False,
                                           pooling='avg')(outputs)
             case 'InceptionV3':
+                outputs = tf.keras.layers\
+                    .Rescaling(1. / 127.5,
+                               input_shape=input_shape,
+                               offset=-1)(outputs)
                 model_name = 'model_inceptionv3_ex-{epoch:03d}'\
-                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
                 outputs = tf.keras.applications\
                     .inception_v3.InceptionV3(input_shape=input_shape,
                                               weights=None,
@@ -246,6 +254,7 @@ class ClassificationModelTrainer:
                                               pooling='avg')(outputs)
 
         # Build final output and create model
+        # outputs = tf.keras.layers.Dropout(0.2)(outputs)
         outputs = tf.keras.layers.Dense(
             num_classes, activation='softmax', use_bias=True)(outputs)
         model = tf.keras.Model(inputs=inputs, outputs=outputs)
@@ -267,6 +276,7 @@ class ClassificationModelTrainer:
             training_image_size=224,
             transfer_from_model=None,
             continue_from_model=None,
+            save_weights_only=False,
             show_training_graph=False):
         '''
         'train_model()' function starts the model actual training. It accepts
@@ -353,7 +363,7 @@ class ClassificationModelTrainer:
             model, model_name = self.build_model(
                 input_shape, self.__model_type, preprocess_layers, num_classes)
 
-            # If continuing or transfering a model set load those weights
+            # If continuing a model load those weights
             if transfer_from_model is not None:
                 model.load_weights(transfer_from_model)
         else:
@@ -361,26 +371,39 @@ class ClassificationModelTrainer:
             model_names = ['mobilenet_v2', 'resnet50',
                            'densenet121', 'inception_v3']
             model_name = ''
+            if self.__model_type == 'Custom':
+                model_name = 'model_custom_ex-{epoch:03d}'\
+                    '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
             for layer in model.layers:
                 if layer.name in model_names:
                     if layer.name == model_names[0]:
                         model_name = 'model_mobilenetv2_ex-{epoch:03d}'\
-                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
+                        # for layers in model.layers[:100]:
+                        #     layer.trainable = False
                     elif layer.name == model_names[1]:
                         model_name = 'model_resnet50_ex-{epoch:03d}'\
-                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
+                        # for layers in model.layers[:100]:
+                        #     layer.trainable = False
                     elif layer.name == model_names[2]:
                         model_name = 'model_densenet121_ex-{epoch:03d}'\
-                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
+                        # for layers in model.layers[:100]:
+                        #     layer.trainable = False
                     elif layer.name == model_names[3]:
                         model_name = 'model_inceptionv3_ex-{epoch:03d}'\
-                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}'
+                            '_acc-{accuracy:.3f}_vacc{val_accuracy:.3f}.h5'
+                        # for layers in model.layers[:100]:
+                        #     layer.trainable = False
                     break
 
         # Print model summary if set and print if using a previous model
         if show_network_summary:
             if transfer_from_model is not None:
                 print('Training using weights from a previous model')
+            if continue_from_model is not None:
+                print('Starting training from a previously trained model')
             model.summary()
 
         # Set templates for model name, model path, log name, and log path
@@ -398,10 +421,12 @@ class ClassificationModelTrainer:
                 os.makedirs(dirs)
 
         # Create a checkpoint callback to save models as they're completed
-        checkpoint = tf.keras.callbacks.ModelCheckpoint(filepath=model_path,
-                                                        monitor='accuracy',
-                                                        verbose=1,
-                                                        save_best_only=True)
+        checkpoint = tf.keras.callbacks\
+            .ModelCheckpoint(filepath=model_path,
+                             monitor='accuracy',
+                             verbose=1,
+                             save_weights_only=save_weights_only,
+                             save_best_only=True)
 
         # Create a model class json file
         class_json = {}
@@ -421,6 +446,7 @@ class ClassificationModelTrainer:
         history = model.fit(train_ds, epochs=self.__num_epochs,
                             validation_data=val_ds,
                             callbacks=[checkpoint, lr_scheduler])
+        # callbacks=[checkpoint])
 
         if show_training_graph:
             acc = history.history['accuracy']
@@ -648,6 +674,10 @@ class CustomImageClassification:
 
                 match self.__model_type:
                     case 'MobileNetV2':
+                        rescaled = tf.keras.layers\
+                            .Rescaling(1. / 127.5,
+                                       input_shape=input_shape,
+                                       offset=-1)(inputs)
                         outputs = tf.keras.applications\
                             .mobilenet_v2.MobileNetV2(input_shape=input_shape,
                                                       weights=None,
@@ -655,6 +685,9 @@ class CustomImageClassification:
                                                       include_top=False,
                                                       pooling='avg')(rescaled)
                     case 'ResNet50':
+                        rescaled = tf.keras.layers\
+                            .Rescaling(1. / 255,
+                                       input_shape=input_shape)(inputs)
                         outputs = tf.keras.applications\
                             .resnet50.ResNet50(input_shape=input_shape,
                                                weights=None,
@@ -662,6 +695,9 @@ class CustomImageClassification:
                                                include_top=False,
                                                pooling='avg')(rescaled)
                     case 'DenseNet121':
+                        rescaled = tf.keras.layers\
+                            .Rescaling(1. / 255,
+                                       input_shape=input_shape)(inputs)
                         outputs = tf.keras.applications\
                             .densenet.DenseNet121(input_shape=input_shape,
                                                   weights=None,
@@ -669,6 +705,10 @@ class CustomImageClassification:
                                                   include_top=True,
                                                   pooling='avg')(rescaled)
                     case 'InceptionV3':
+                        rescaled = tf.keras.layers\
+                            .Rescaling(1. / 127.5,
+                                       input_shape=input_shape,
+                                       offset=-1)(inputs)
                         outputs = tf.keras.applications\
                             .inception_v3.InceptionV3(input_shape=input_shape,
                                                       weights=None,
@@ -695,9 +735,9 @@ class CustomImageClassification:
                     f' {self.__model_type} Model and is located in the'
                     f' path {self.model_path}') from exc
 
-    def lead_full_model(self, classification_speed='normal'):
+    def load_full_model(self, classification_speed='normal'):
         '''
-        'lead_full_model()' function is used to load the model structure into
+        'load_full_model()' function is used to load the model structure into
         the program from the file path defined in the set_model_path()
         function. As opposed to the 'load_trained_model()' function, you don't
         need to specify the model type. This means you can load any Keras
@@ -772,65 +812,44 @@ class CustomImageClassification:
                 ' classification.')
 
         if input_type == 'file':
-            try:
-                image_to_predict = tf.keras.utils\
-                    .load_img(image_input, target_size=(
-                        self.__input_image_size, self.__input_image_size))
-                image_to_predict = tf.keras.utils.img_to_array(
-                    image_to_predict)
-                image_to_predict = tf.expand_dims(image_to_predict, 0)
-            except Exception as exc:
-                raise ValueError(
-                    'You have set a path to an invalid image file.')\
-                    from exc
+            image_to_predict = tf.keras.utils\
+                .load_img(image_input, target_size=(
+                    self.__input_image_size, self.__input_image_size))
+            image_to_predict = tf.keras.utils.img_to_array(
+                image_to_predict)
+            image_to_predict = tf.expand_dims(image_to_predict, 0)
         elif input_type == 'array':
-            try:
-                image_to_predict = Image.fromarray(image_input)
-                image_to_predict = image_to_predict.resize(
-                    (self.__input_image_size, self.__input_image_size))
-                image_to_predict = tf.keras.utils.img_to_array(
-                    image_to_predict)
-                image_to_predict = tf.expand_dims(image_to_predict, 0)
-            except Exception as exc:
-                raise ValueError(
-                    'You have parsed in a wrong array for the image')\
-                    from exc
+            image_to_predict = Image.fromarray(image_input)
+            image_to_predict = image_to_predict.resize(
+                (self.__input_image_size, self.__input_image_size))
+            image_to_predict = tf.keras.utils.img_to_array(
+                image_to_predict)
+            image_to_predict = tf.expand_dims(image_to_predict, 0)
         elif input_type == 'stream':
-            try:
-                image_to_predict = Image.open(image_input)
-                image_to_predict = image_to_predict.resize(
-                    (self.__input_image_size, self.__input_image_size))
-                image_to_predict = tf.expand_dims(image_to_predict, axis=0)
-                image_to_predict = image_to_predict.copy()
-                image_to_predict = np.asarray(
-                    image_to_predict, dtype=np.float64)
+            image_to_predict = Image.open(image_input)
+            image_to_predict = image_to_predict.resize(
+                (self.__input_image_size, self.__input_image_size))
+            image_to_predict = tf.expand_dims(image_to_predict, axis=0)
+            image_to_predict = image_to_predict.copy()
+            image_to_predict = np.asarray(
+                image_to_predict, dtype=np.float64)
+        model = self.__model_collection[0]
+        prediction = model.predict(
+            image_to_predict, verbose=1 if show_output is True else 0)
 
-            except Exception as exc:
-                raise ValueError(
-                    'You have parsed in a wrong stream for the image')\
-                    from exc
-        try:
-            model = self.__model_collection[0]
-            prediction = model.predict(
-                image_to_predict, verbose=1 if show_output is True else 0)
+        predictiondata = []
+        for pred in prediction:
+            scores = tf.nn.softmax(pred)
+            top_indices = pred.argsort()[-result_count:][::-1]
+            for i in top_indices:
+                each_result = []
+                each_result.append(self.__model_classes[str(i)])
+                each_result.append(100 * scores[i].numpy())
+                predictiondata.append(each_result)
 
-            predictiondata = []
-            for pred in prediction:
-                scores = tf.nn.softmax(pred)
-                top_indices = pred.argsort()[-result_count:][::-1]
-                for i in top_indices:
-                    each_result = []
-                    each_result.append(self.__model_classes[str(i)])
-                    each_result.append(100 * scores[i].numpy())
-                    predictiondata.append(each_result)
-
-            for result in predictiondata:
-                classification_results.append(str(result[0]))
-                classification_probabilities.append(str(result[1]))
-
-        except Exception as exc:
-            raise ValueError('Error. Ensure your input image is valid')\
-                from exc
+        for result in predictiondata:
+            classification_results.append(str(result[0]))
+            classification_probabilities.append(str(result[1]))
 
         return classification_results, classification_probabilities
 
