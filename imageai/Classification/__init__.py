@@ -9,6 +9,7 @@ from torchvision.models import resnet50, densenet121, mobilenet_v2, inception_v3
 import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image
+import traceback
 
 
 classification_models = {
@@ -85,6 +86,14 @@ class ImageClassification:
             if os.path.isfile(image_input):
                 img = Image.open(image_input).convert("RGB")
                 images.append(preprocess(img))
+            else:
+                raise ValueError(f"image path '{image_input}' is not found or a valid file")
+        elif type(image_input) == np.ndarray:
+            img = Image.fromarray(image_input).convert("RGB")
+            images.append(preprocess(img))
+        elif "PIL" in str(type(image_input)):
+            img = image_input.convert("RGB")
+            images.append(preprocess(img))
 
         return torch.stack(images)
 
@@ -147,11 +156,11 @@ class ImageClassification:
                 self.__model.eval()
                 self.__load_classes()
             except Exception:
+                print(traceback.print_exc())
                 print("Weight loading failed.\nEnsure the model path is"
                     " set and the weight file is in the specified model path.")
                 
-                import traceback
-                print(traceback.print_exc())
+                
 
     def classifyImage(self, image_input: Union[str, np.ndarray, Image.Image], result_count: int=5) -> Tuple[List[str], List[float]]:
         if not self.__model_loaded:
