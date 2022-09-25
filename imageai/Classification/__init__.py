@@ -1,4 +1,4 @@
-import os
+import os, re
 from typing import Union
 import warnings
 from pathlib import Path
@@ -125,8 +125,23 @@ class ImageClassification:
                         f"Model type '{self.__model_type}' not supported."
                     )
                 
+                state_dict = torch.load(self.__model_path, map_location=self.__device)
+                if self.__model_type == "densenet121":
+                    # '.'s are no longer allowed in module names, but previous densenet layers
+                    # as provided by the Pytorch's model zoon has names that uses '.'s.
+                    pattern = re.compile(
+                            r"^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\."
+                                    "(?:weight|bias|running_mean|running_var))$"
+                            )
+                    for key in list(state_dict.keys()):
+                        res = pattern.match(key)
+                        if res:
+                            new_key = res.group(1) + res.group(2)
+                            state_dict[new_key] = state_dict[key]
+                            del state_dict[key]
+
                 self.__model.load_state_dict(
-                        torch.load(self.__model_path, map_location=self.__device)
+                        state_dict
                     )
                 self.__model_loaded = True
                 self.__model.eval()
