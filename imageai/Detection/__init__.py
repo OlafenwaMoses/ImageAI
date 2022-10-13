@@ -341,7 +341,8 @@ class ObjectDetection:
                                 image=original_imgs[idx],
                                 boxes=torch.Tensor([[bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]]]),
                                 labels=[label + f" {round(score * 100, 2)}%"],
-                                colors=[(0, 255, 0)],
+                                label_color=(0, 0, 255),
+                                box_color=(0, 255, 0),
                                 width=1,
                                 fill=False,
                                 font_size=int(max_dim / 30)

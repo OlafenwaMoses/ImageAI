@@ -181,7 +181,8 @@ def draw_bounding_boxes(
     image: torch.Tensor,
     boxes: torch.Tensor,
     labels: Optional[List[str]] = None,
-    colors: Optional[Union[List[Union[str, Tuple[int, int, int]]], str, Tuple[int, int, int]]] = None,
+    label_color: Optional[Union[List[Union[str, Tuple[int, int, int]]], str, Tuple[int, int, int]]] = None,
+    box_color: Optional[Union[List[Union[str, Tuple[int, int, int]]], str, Tuple[int, int, int]]] = None,
     fill: Optional[bool] = False,
     width: int = 1,
     font: Optional[str] = None,
@@ -232,15 +233,6 @@ def draw_bounding_boxes(
             f"Number of boxes ({num_boxes}) and labels ({len(labels)}) mismatch. Please specify labels for each box."
         )
 
-    if colors is None:
-        colors = _generate_color_palette(num_boxes)
-    elif isinstance(colors, list):
-        if len(colors) < num_boxes:
-            raise ValueError(f"Number of colors ({len(colors)}) is less than number of boxes ({num_boxes}). ")
-    else:  # colors specifies a single color for all boxes
-        colors = [colors] * num_boxes
-
-    colors = [(ImageColor.getrgb(color) if isinstance(color, str) else color) for color in colors]
 
     # Handle Grayscale images
     if image.size(0) == 1:
@@ -257,16 +249,16 @@ def draw_bounding_boxes(
 
     txt_font = ImageFont.load_default() if font is None else ImageFont.truetype(font=font, size=font_size)
 
-    for bbox, color, label in zip(img_boxes, colors, labels):  # type: ignore[arg-type]
+    for bbox, label in zip(img_boxes, labels):  # type: ignore[arg-type]
         if fill:
-            fill_color = color + (100,)
-            draw.rectangle(bbox, width=width, outline=color, fill=fill_color)
+            fill_color = label_color + (100,)
+            draw.rectangle(bbox, width=width, outline=label_color, fill=fill_color)
         else:
-            draw.rectangle(bbox, width=width, outline=color)
+            draw.rectangle(bbox, width=width, outline=box_color)
 
         if label is not None:
             margin = width + 1
-            draw.text((bbox[0] + margin, bbox[1] + margin), label, fill=color, font=txt_font)
+            draw.text((bbox[0] + margin, bbox[1] + margin), label, fill=label_color, font=txt_font)
 
     return torch.from_numpy(np.array(img_to_draw)).permute(2, 0, 1).to(dtype=torch.uint8)
 
