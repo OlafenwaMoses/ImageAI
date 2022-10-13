@@ -94,6 +94,8 @@ class ImageClassification:
         elif "PIL" in str(type(image_input)):
             img = image_input.convert("RGB")
             images.append(preprocess(img))
+        else:
+            raise ValueError(f"Invalid image input format")
 
         return torch.stack(images)
 
