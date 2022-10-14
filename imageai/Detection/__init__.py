@@ -14,8 +14,8 @@ from typing import Union, List
 
 from ..yolov3.yolov3 import YoloV3
 from ..yolov3.tiny_yolov3 import YoloV3Tiny
-from ..yolov3.utils import draw_bbox, get_predictions, prepare_image
-from ..retinanet.utils import read_image, draw_bounding_boxes, save_image
+from ..yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
+from ..retinanet.utils import read_image, draw_bounding_boxes_and_labels, save_image
 import torchvision.transforms as transforms
 import uuid
 
@@ -323,12 +323,12 @@ class ObjectDetection:
             if output_image_path:
                 if self.__model_type == "yolov3" or self.__model_type == "tiny-yolov3":
                     if isinstance(output, torch.Tensor):
-                        for box in output:
-                            original_imgs[int(box[0].item())] = draw_bbox(
-                                                box[1:5].int(),
-                                                self.__classes[int(box[-1].item())],
-                                                original_imgs[int(box[0].item())]
-                                            )
+                        for pred in output:
+                            original_imgs[int(pred[0].item())] = draw_bbox_and_label(
+                                pred[1:5].int(),
+                                f"{self.__classes[int(pred[-1].item())]} : {round(float(pred[-2]) * 100, 2)}%",
+                                original_imgs[int(pred[0].item())]
+                            )
                         
                         cv2.imwrite(output_image_path, cv2.cvtColor(original_imgs[0], cv2.COLOR_RGB2BGR))
                 elif self.__model_type == "retinanet":
@@ -337,7 +337,7 @@ class ObjectDetection:
                         max_dim = max(list(original_imgs[idx].size()))
 
                         for label, score, bbox in pred:
-                            original_imgs[idx] = draw_bounding_boxes(
+                            original_imgs[idx] = draw_bounding_boxes_and_labels(
                                 image=original_imgs[idx],
                                 boxes=torch.Tensor([[bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]]]),
                                 labels=[label + f" {round(score * 100, 2)}%"],

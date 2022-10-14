@@ -5,7 +5,7 @@ import torch
 import numpy as np
 import cv2 as cv
 
-def draw_bbox(x : torch.Tensor, label : str, img : np.ndarray) -> np.ndarray:
+def draw_bbox_and_label(x : torch.Tensor, label : str, img : np.ndarray) -> np.ndarray:
     """
     Draws the predicted bounding boxes on the original image.
     """
@@ -13,8 +13,7 @@ def draw_bbox(x : torch.Tensor, label : str, img : np.ndarray) -> np.ndarray:
     img = cv.rectangle(img, (x1,y1), (x2,y2), (0, 255, 0), 1)
     t_size = cv.getTextSize(label, cv.FONT_HERSHEY_PLAIN, 1, 1)[0]
     c2 = (x1 + t_size[0] + 3, y1 + t_size[1] + 4)
-    img = cv.rectangle(img, (x1,y1), c2, (0,0,255), -1)
-    img = cv.putText(img, label, (x1, y1+t_size[1]+4), cv.FONT_HERSHEY_PLAIN, 1, (255,255,255), 1)
+    img = cv.putText(img, label, (x1, y1+t_size[1]+4), cv.FONT_HERSHEY_PLAIN, 1, (0,0,255), 1)
 
     return img 
 

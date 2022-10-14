@@ -177,7 +177,7 @@ def make_grid(
 
 
 @torch.no_grad()
-def draw_bounding_boxes(
+def draw_bounding_boxes_and_labels(
     image: torch.Tensor,
     boxes: torch.Tensor,
     labels: Optional[List[str]] = None,
