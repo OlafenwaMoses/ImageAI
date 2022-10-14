@@ -180,6 +180,7 @@ def make_grid(
 def draw_bounding_boxes_and_labels(
     image: torch.Tensor,
     boxes: torch.Tensor,
+    draw_boxes: bool,
     labels: Optional[List[str]] = None,
     label_color: Optional[Union[List[Union[str, Tuple[int, int, int]]], str, Tuple[int, int, int]]] = None,
     box_color: Optional[Union[List[Union[str, Tuple[int, int, int]]], str, Tuple[int, int, int]]] = None,
@@ -249,12 +250,13 @@ def draw_bounding_boxes_and_labels(
 
     txt_font = ImageFont.load_default() if font is None else ImageFont.truetype(font=font, size=font_size)
 
-    for bbox, label in zip(img_boxes, labels):  # type: ignore[arg-type]
-        if fill:
-            fill_color = label_color + (100,)
-            draw.rectangle(bbox, width=width, outline=label_color, fill=fill_color)
-        else:
-            draw.rectangle(bbox, width=width, outline=box_color)
+    for bbox, label in zip(img_boxes, labels):
+        if draw_boxes:
+            if fill:
+                fill_color = label_color + (100,)
+                draw.rectangle(bbox, width=width, outline=label_color, fill=fill_color)
+            else:
+                draw.rectangle(bbox, width=width, outline=box_color)
 
         if label is not None:
             margin = width + 1

@@ -324,9 +324,19 @@ class ObjectDetection:
                 if self.__model_type == "yolov3" or self.__model_type == "tiny-yolov3":
                     if isinstance(output, torch.Tensor):
                         for pred in output:
-                            original_imgs[int(pred[0].item())] = draw_bbox_and_label(
-                                pred[1:5].int(),
-                                f"{self.__classes[int(pred[-1].item())]} : {round(float(pred[-2]) * 100, 2)}%",
+                            percentage_conf = round(float(pred[-2]) * 100, 2)
+                            if percentage_conf < minimum_percentage_probability:
+                                continue
+
+                            displayed_label = ""
+                            if display_object_name:
+                                displayed_label = f"{self.__classes[int(pred[-1].item())]} : "
+                            if display_percentage_probability:
+                                displayed_label += f" {percentage_conf}%"
+
+
+                            original_imgs[int(pred[0].item())] = draw_bbox_and_label(pred[1:5].int() if display_box else None,
+                                displayed_label,
                                 original_imgs[int(pred[0].item())]
                             )
                         
@@ -337,10 +347,21 @@ class ObjectDetection:
                         max_dim = max(list(original_imgs[idx].size()))
 
                         for label, score, bbox in pred:
+                            percentage_conf = round(score * 100, 2)
+                            if percentage_conf < minimum_percentage_probability:
+                                continue
+                            
+                            displayed_label = ""
+                            if display_object_name:
+                                displayed_label = f"{label} :"
+                            if display_percentage_probability:
+                                displayed_label += f" {percentage_conf}%"
+
                             original_imgs[idx] = draw_bounding_boxes_and_labels(
                                 image=original_imgs[idx],
                                 boxes=torch.Tensor([[bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]]]),
-                                labels=[label + f" {round(score * 100, 2)}%"],
+                                draw_boxes=display_box,
+                                labels=[displayed_label],
                                 label_color=(0, 0, 255),
                                 box_color=(0, 255, 0),
                                 width=1,
