@@ -227,6 +227,35 @@ class ObjectDetection:
                 self.__model.to(self.__device).eval()
             except:
                 raise RuntimeError("Invalid weights!!!") from None
+    
+    def CustomObjects(self, **kwargs):
+
+        """
+        The 'CustomObjects()' function allows you to handpick the type of objects you want to detect
+        from an image. The objects are pre-initiated in the function variables and predefined as 'False',
+        which you can easily set to true for any number of objects available.  This function
+        returns a dictionary which must be parsed into the 'detectObjectsFromImage()'. Detecting
+        custom objects only happens when you call the function 'detectObjectsFromImage()'
+
+        Acceptable values are 'True' and 'False'  for all object values present
+        :param boolean_values:
+        :return: custom_objects_dict
+        """
+
+        if not self.__model_loaded:
+            self.loadModel()
+        all_objects_str = (obj_label.replace(" ", "_") for obj_label in self.__classes)
+        all_objects_dict = {}
+        for object_str in all_objects_str:
+            all_objects_dict[object_str] = False
+        
+        for karg in kwargs:
+            if karg in all_objects_dict:
+                all_objects_dict[karg] = kwargs[karg]
+
+        return all_objects_dict
+
+        
 
     def detectObjectsFromImage(self,
                 input_image: Union[str, np.ndarray, Image.Image],
@@ -297,8 +326,15 @@ class ObjectDetection:
                 output[idx, [2,4]] = torch.clamp(output[idx, [2,4]], 0.0, input_dims[idx, 1])
 
             for pred in output:
+                pred_label = self.__classes[int(pred[-1])]
+                if custom_objects:
+                    if pred_label.replace(" ", "_") in custom_objects.keys():
+                        if not custom_objects[pred_label.replace(" ", "_")]:
+                            continue
+                    else:
+                        continue
                 predictions[int(pred[0])].append((
-                        self.__classes[int(pred[-1])],
+                        pred_label,
                         float(pred[-2]),
                         {k:v for k,v in zip(["x1", "y1", "x2", "y2"], map(int, pred[1:5]))},
                     ))
@@ -310,9 +346,18 @@ class ObjectDetection:
             for idx, pred in enumerate(output):
                 for id in range(pred["labels"].shape[0]):
                     if pred["scores"][id] >= self.__objectness_score:
+                        pred_label = self.__classes[pred["labels"][id]]
+
+                        if custom_objects:
+                            if pred_label.replace(" ", "_") in custom_objects.keys():
+                                if not custom_objects[pred_label.replace(" ", "_")]:
+                                    continue
+                            else:
+                                continue
+
                         predictions[idx].append(
                                 (
-                                    self.__classes[pred["labels"][id]],
+                                    pred_label,
                                     pred["scores"][id].item(),
                                     {k:v for k,v in zip(["x1", "y1", "x2", "y2"], map(int, pred["boxes"][id]))}
                                 )
