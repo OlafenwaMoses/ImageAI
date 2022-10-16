@@ -114,9 +114,13 @@ class ObjectDetection:
             raise ValueError(f"Invalid image input format")
         
         img_h, img_w, _ = img.shape
+
         original_imgs.append(np.array(cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).astype(np.uint8))
         original_dims.append((img_w, img_h))
-        fnames.append(os.path.basename(input_image))
+        if type(input_image) == str:
+            fnames.append(os.path.basename(input_image)) 
+        else:
+            fnames.append("") 
         inputs.append(prepare_image(img, (416, 416)))
 
         if original_dims:
@@ -134,15 +138,22 @@ class ObjectDetection:
     
     def __save_temp_img(self, input_image : Union[np.ndarray, Image.Image]) -> str:
 
-        temp_path = f"{str(uuid.uuid4())}.jpg" 
+        temp_path = os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            f"{str(uuid.uuid4())}.jpg" 
+        ) 
         if type(input_image) == np.ndarray:
             cv2.imwrite(temp_path, input_image)
         elif "PIL" in str(type(input_image)):
             input_image.save(temp_path)
+        else:
+            raise ValueError(
+                f"Invalid image input. Supported formats are OpenCV/Numpy array, PIL image or image file path"
+            )
 
         return temp_path
 
-    def __load_image_retinanet(self, image_path : str) -> Tuple[List[str], List[torch.Tensor], List[torch.Tensor]]:
+    def __load_image_retinanet(self, input_image : str) -> Tuple[List[str], List[torch.Tensor], List[torch.Tensor]]:
         """
         Loads image/images from the given path. If the given path is a directory,
         this function only load the images in the directory (it does noot visit the
@@ -152,17 +163,28 @@ class ObjectDetection:
         images = []
         scaled_images = []
         fnames = []
-        if os.path.isfile(image_path):
-            if image_path.rsplit('.')[-1].lower() in allowed_file_extensions:
-                img = read_image(image_path, ImageReadMode.RGB)
+
+        delete_file = False
+        if type(input_image) is not str:
+            input_image = self.__save_temp_img(input_image=input_image)
+            delete_file = True
+        
+        if os.path.isfile(input_image):
+            if input_image.rsplit('.')[-1].lower() in allowed_file_extensions:
+                img = read_image(input_image, ImageReadMode.RGB)
                 images.append(img)
                 scaled_images.append(img.div(255.0).to(self.__device))
-                fnames.append(os.path.basename(image_path))
+                fnames.append(os.path.basename(input_image))
+        else:
+            raise ValueError(f"Input image with path {input_image} not a valid file")
+        
+        if delete_file:
+            os.remove(input_image)
 
         if images:
             return (fnames, images, scaled_images)
         raise RuntimeError(
-                    f"Error loading images from {os.path.abspath(image_path)}."
+                    f"Error loading image from input."
                     "\nEnsure the folder contains images,"
                     " allowed file extensions are .jpg, .jpeg, .png"
                 )
@@ -231,7 +253,7 @@ class ObjectDetection:
     def CustomObjects(self, **kwargs):
 
         """
-        The 'CustomObjects()' function allows you to handpick the type of objects you want to detect
+        The 'CustomObjects()' function allows you to handpick the type of objects ( from the COCO classes ) you want to detect
         from an image. The objects are pre-initiated in the function variables and predefined as 'False',
         which you can easily set to true for any number of objects available.  This function
         returns a dictionary which must be parsed into the 'detectObjectsFromImage()'. Detecting
@@ -252,6 +274,8 @@ class ObjectDetection:
         for karg in kwargs:
             if karg in all_objects_dict:
                 all_objects_dict[karg] = kwargs[karg]
+            else:
+                raise ValueError(f" object '{karg}' doesn't exist in the supported object classes")
 
         return all_objects_dict
 
@@ -415,7 +439,8 @@ class ObjectDetection:
                             )
                         save_image(original_imgs[idx].div(255.0), output_image_path)
 
-        predictions_list = list(predictions.values())[0]
+        predictions_batch = list(predictions.values())
+        predictions_list = predictions_batch[0] if len(predictions_batch) > 0 else []
         min_probability = minimum_percentage_probability / 100
         predictions_list = [
             {

@@ -12,7 +12,9 @@ test_folder = dirname(os.path.abspath(__file__))
 @pytest.mark.parametrize(
     "input_image",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "1.jpg"))
+        (os.path.join(test_folder, test_folder, "data-images", "1.jpg")),
+        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
+        (Image.open(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
     ]
 )
 def test_object_detection_retinanet(input_image):
@@ -44,7 +46,9 @@ def test_object_detection_retinanet(input_image):
 @pytest.mark.parametrize(
     "input_image",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "1.jpg"))
+        (os.path.join(test_folder, test_folder, "data-images", "1.jpg")),
+        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
+        (Image.open(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
     ]
 )
 def test_object_detection_yolov3(input_image):
@@ -75,7 +79,9 @@ def test_object_detection_yolov3(input_image):
 @pytest.mark.parametrize(
     "input_image",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "1.jpg"))
+        (os.path.join(test_folder, test_folder, "data-images", "1.jpg")),
+        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
+        (Image.open(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
     ]
 )
 def test_object_detection_tiny_yolov3(input_image):
@@ -107,7 +113,9 @@ def test_object_detection_tiny_yolov3(input_image):
 @pytest.mark.parametrize(
     "input_image",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "11.jpg"))
+        (os.path.join(test_folder, test_folder, "data-images", "11.jpg")),
+        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "11.jpg"))),
+        (Image.open(os.path.join(test_folder, test_folder, "data-images", "11.jpg"))),
     ]
 )
 def test_object_detection_retinanet_custom_objects(input_image):
@@ -131,7 +139,9 @@ def test_object_detection_retinanet_custom_objects(input_image):
 @pytest.mark.parametrize(
     "input_image",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "11.jpg"))
+        (os.path.join(test_folder, test_folder, "data-images", "11.jpg")),
+        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "11.jpg"))),
+        (Image.open(os.path.join(test_folder, test_folder, "data-images", "11.jpg"))),
     ]
 )
 def test_object_detection_yolov3_custom_objects(input_image):
@@ -155,7 +165,9 @@ def test_object_detection_yolov3_custom_objects(input_image):
 @pytest.mark.parametrize(
     "input_image",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "11.jpg"))
+        (os.path.join(test_folder, test_folder, "data-images", "11.jpg")),
+        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "11.jpg"))),
+        (Image.open(os.path.join(test_folder, test_folder, "data-images", "11.jpg"))),
     ]
 )
 def test_object_detection_tiny_yolov3_custom_objects(input_image):
