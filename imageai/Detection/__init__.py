@@ -15,7 +15,7 @@ from typing import Union, List
 from ..yolov3.yolov3 import YoloV3
 from ..yolov3.tiny_yolov3 import YoloV3Tiny
 from ..yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
-from ..retinanet.utils import read_image, draw_bounding_boxes_and_labels, save_image
+from ..retinanet.utils import read_image, draw_bounding_boxes_and_labels, save_image, tensor_to_ndarray
 import torchvision.transforms as transforms
 import uuid
 
@@ -155,20 +155,19 @@ class ObjectDetection:
 
     def __load_image_retinanet(self, input_image : str) -> Tuple[List[str], List[torch.Tensor], List[torch.Tensor]]:
         """
-        Loads image/images from the given path. If the given path is a directory,
-        this function only load the images in the directory (it does noot visit the
-        subdirectories).
+        Loads image from the given path.
         """
         allowed_file_extensions = ["jpg", "jpeg", "png"]
         images = []
         scaled_images = []
         fnames = []
-
+        
         delete_file = False
         if type(input_image) is not str:
             input_image = self.__save_temp_img(input_image=input_image)
             delete_file = True
-        
+
+
         if os.path.isfile(input_image):
             if input_image.rsplit('.')[-1].lower() in allowed_file_extensions:
                 img = read_image(input_image, ImageReadMode.RGB)
@@ -177,10 +176,10 @@ class ObjectDetection:
                 fnames.append(os.path.basename(input_image))
         else:
             raise ValueError(f"Input image with path {input_image} not a valid file")
-        
+
         if delete_file:
             os.remove(input_image)
-
+        
         if images:
             return (fnames, images, scaled_images)
         raise RuntimeError(
@@ -283,27 +282,29 @@ class ObjectDetection:
 
     def detectObjectsFromImage(self,
                 input_image: Union[str, np.ndarray, Image.Image],
-                output_image_path=None,
-                output_type="file",
-                extract_detected_objects=False, minimum_percentage_probability=50,
-                display_percentage_probability=True, display_object_name=True,
-                display_box=True,
-                custom_objects=None
-               ) -> List[List[Tuple[str, float, Dict[str, int]]]]:
+                output_image_path: str=None,
+                output_type: str ="file",
+                extract_detected_objects: bool=False, minimum_percentage_probability: int=50,
+                display_percentage_probability: bool=True, display_object_name: bool=True,
+                display_box: bool=True,
+                custom_objects: List=None
+               ) -> Union[List[List[Tuple[str, float, Dict[str, int]]]], np.ndarray, List[np.ndarray], List[str]]:
         """
         Detects objects in an image using the unique classes provided
         by COCO.
 
-        Parameters:
-        -----------
-            image_path: path to an image or a directory that contains images.
-            verbose:    if true, it prints the output of detection to screen.
-            output_dir: directory to place output images with bounding boxes
-                        overlayed on the detected object.
-        Returns:
-        --------
-            A list of tuples containing the label of detected object and the
-            confidence.
+        :param input_image: path to an image file, cv2 image or PIL image
+        :param output_image_path: path to save input image with predictions rendered
+        :param output_type: type of output for rendered image. Acceptable values are 'file' and 'array` ( a cv2 image )
+        :param extract_detected_objects: extract each object based on the output type
+        :param minimum_percentage_probability: the minimum confidence a detected object must have
+        :param display_percentage_probability: to diplay/not display the confidence on rendered image   
+        :param display_object_name: to diplay/not display the object name on rendered image  
+        :param display_box: to diplay/not display the object bounding box on rendered image 
+        :param custom_objects: a dictionary of detectable objects set to boolean values
+        
+        :returns: A list of tuples containing the label of detected object and the
+        confidence.
         """
         
         
@@ -388,60 +389,106 @@ class ObjectDetection:
                             )
 
         # TO DO: Unify image + prediction output generation code for supported architectures.
-        if output_type == "file":
-            if output_image_path:
-                if self.__model_type == "yolov3" or self.__model_type == "tiny-yolov3":
-                    if isinstance(output, torch.Tensor):
-                        for pred in output:
-                            percentage_conf = round(float(pred[-2]) * 100, 2)
-                            if percentage_conf < minimum_percentage_probability:
-                                continue
 
-                            displayed_label = ""
-                            if display_object_name:
-                                displayed_label = f"{self.__classes[int(pred[-1].item())]} : "
-                            if display_percentage_probability:
-                                displayed_label += f" {percentage_conf}%"
+        
+        # Render detection on copy of input image
+        original_input_image = None
+        output_image_array = None
+        extracted_objects = []
+
+        if self.__model_type == "yolov3" or self.__model_type == "tiny-yolov3":
+            original_input_image = cv2.cvtColor(original_imgs[0], cv2.COLOR_RGB2BGR)
+            if isinstance(output, torch.Tensor):
+                for pred in output:
+                    percentage_conf = round(float(pred[-2]) * 100, 2)
+                    if percentage_conf < minimum_percentage_probability:
+                        continue
+
+                    displayed_label = ""
+                    if display_object_name:
+                        displayed_label = f"{self.__classes[int(pred[-1].item())]} : "
+                    if display_percentage_probability:
+                        displayed_label += f" {percentage_conf}%"
 
 
-                            original_imgs[int(pred[0].item())] = draw_bbox_and_label(pred[1:5].int() if display_box else None,
-                                displayed_label,
-                                original_imgs[int(pred[0].item())]
-                            )
-                        
-                        cv2.imwrite(output_image_path, cv2.cvtColor(original_imgs[0], cv2.COLOR_RGB2BGR))
-                elif self.__model_type == "retinanet":
-                    for idx, pred in predictions.items():
-                        
-                        max_dim = max(list(original_imgs[idx].size()))
+                    original_imgs[int(pred[0].item())] = draw_bbox_and_label(pred[1:5].int() if display_box else None,
+                        displayed_label,
+                        original_imgs[int(pred[0].item())]
+                    )
+                
+                output_image_array = cv2.cvtColor(original_imgs[0], cv2.COLOR_RGB2BGR)
+                
+        elif self.__model_type == "retinanet":
+            original_input_image = tensor_to_ndarray(original_imgs[0].div(255.0))
+            original_input_image = cv2.cvtColor(original_input_image, cv2.COLOR_RGB2BGR)
+            for idx, pred in predictions.items():
+                
+                max_dim = max(list(original_imgs[idx].size()))
 
-                        for label, score, bbox in pred:
-                            percentage_conf = round(score * 100, 2)
-                            if percentage_conf < minimum_percentage_probability:
-                                continue
-                            
-                            displayed_label = ""
-                            if display_object_name:
-                                displayed_label = f"{label} :"
-                            if display_percentage_probability:
-                                displayed_label += f" {percentage_conf}%"
+                for label, score, bbox in pred:
+                    percentage_conf = round(score * 100, 2)
+                    if percentage_conf < minimum_percentage_probability:
+                        continue
+                    
+                    displayed_label = ""
+                    if display_object_name:
+                        displayed_label = f"{label} :"
+                    if display_percentage_probability:
+                        displayed_label += f" {percentage_conf}%"
 
-                            original_imgs[idx] = draw_bounding_boxes_and_labels(
-                                image=original_imgs[idx],
-                                boxes=torch.Tensor([[bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]]]),
-                                draw_boxes=display_box,
-                                labels=[displayed_label],
-                                label_color=(0, 0, 255),
-                                box_color=(0, 255, 0),
-                                width=1,
-                                fill=False,
-                                font_size=int(max_dim / 30)
-                            )
-                        save_image(original_imgs[idx].div(255.0), output_image_path)
+                    original_imgs[idx] = draw_bounding_boxes_and_labels(
+                        image=original_imgs[idx],
+                        boxes=torch.Tensor([[bbox["x1"], bbox["y1"], bbox["x2"], bbox["y2"]]]),
+                        draw_boxes=display_box,
+                        labels=[displayed_label],
+                        label_color=(0, 0, 255),
+                        box_color=(0, 255, 0),
+                        width=1,
+                        fill=False,
+                        font_size=int(max_dim / 30)
+                    )
+                
+            output_image_array = tensor_to_ndarray(original_imgs[0].div(255.0))
+            output_image_array = cv2.cvtColor(output_image_array, cv2.COLOR_RGB2BGR)
+        
 
+        # Format predictions for function reponse
         predictions_batch = list(predictions.values())
         predictions_list = predictions_batch[0] if len(predictions_batch) > 0 else []
         min_probability = minimum_percentage_probability / 100
+
+
+        if output_type == "file":
+            if output_image_path:
+                cv2.imwrite(output_image_path, output_image_array)
+
+                if extract_detected_objects:
+                    extraction_dir = ".".join(output_image_path.split(".")[:-1]) + "-extracted"
+                    os.mkdir(extraction_dir)
+                    count = 0
+                    for obj_prediction in predictions_list: 
+                        if obj_prediction[1] >= min_probability:
+                            count += 1
+                            extracted_path = os.path.join(
+                                extraction_dir, 
+                                ".".join(os.path.basename(output_image_path).split(".")[:-1]) + f"-{count}.jpg"
+                            )
+                            obj_bbox = obj_prediction[2]
+                            cv2.imwrite(extracted_path, original_input_image[obj_bbox["y1"] : obj_bbox["y2"], obj_bbox["x1"] : obj_bbox["x2"]])
+
+                            extracted_objects.append(extracted_path)
+
+        elif output_type == "array":
+            if extract_detected_objects:
+                for obj_prediction in predictions_list: 
+                    if obj_prediction[1] >= min_probability:
+                        obj_bbox = obj_prediction[2]
+
+                        extracted_objects.append(original_input_image[obj_bbox["y1"] : obj_bbox["y2"], obj_bbox["x1"] : obj_bbox["x2"]])
+        else:
+            raise ValueError(f"Invalid output_type '{output_type}'. Supported values are 'file' and 'array' ")
+
+        
         predictions_list = [
             {
                 "name": prediction[0], "percentage_probability": round(prediction[1] * 100, 2),
@@ -449,5 +496,15 @@ class ObjectDetection:
             } for prediction in predictions_list if prediction[1] >= min_probability
         ]
 
-        return predictions_list
+
+        if output_type == "array":
+            if extract_detected_objects:
+                return output_image_array, predictions_list, extracted_objects
+            else:
+                return output_image_array, predictions_list
+        else:
+            if extract_detected_objects:
+                return predictions_list, extracted_objects
+            else:
+                return predictions_list
 
