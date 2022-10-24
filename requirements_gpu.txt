@@ -5,3 +5,4 @@ opencv-python>=4.1.2
 torch>=1.9.0 --extra-index-url https://download.pytorch.org/whl/cu102
 torchvision>=0.10.0 --extra-index-url https://download.pytorch.org/whl/cu102
 pytest==7.1.3
+tqdm==4.64.1
