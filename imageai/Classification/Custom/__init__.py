@@ -10,14 +10,14 @@ from torch.optim import lr_scheduler
 from torchvision import datasets
 
 from .data_transformation import data_transforms1, data_transforms2
-from .training_params import resnet50_train_params
+from .training_params import resnet50_train_params, densenet121_train_params, inception_v3_train_params, mobilenet_v2_train_params
 from tqdm import tqdm
 
 
 
 class ClassificationModelTrainer():
 
-    def __init__(self, use_transfer_learning : bool = False) -> None:
+    def __init__(self) -> None:
         self.__model_type = ""
         self.__device = "cuda" if torch.cuda.is_available() else "cpu"
         self.__data_dir = ""
@@ -29,8 +29,7 @@ class ClassificationModelTrainer():
         self.__optimizer = None
         self.__lr_scheduler = None
         self.__loss_fn = nn.CrossEntropyLoss()
-        self.__transfer_learning = use_transfer_learning
-        self.__transfer_learning_mode = ""
+        self.__transfer_learning_mode = "fine_tune_all"
         self.__model_path = ""
         self.__training_params = None
 
@@ -49,8 +48,9 @@ class ClassificationModelTrainer():
         lr = self.__training_params["lr"]
         weight_decay = self.__training_params["weight_decay"]
 
-        if self.__transfer_learning and self.__model_path:
+        if self.__model_path:
             self.__set_transfer_learning_mode()
+            print("==> Transfer learning enabled")
         
         # change the last linear layer to have output features of
         # same size as the number of unique classes in the new
@@ -80,10 +80,7 @@ class ClassificationModelTrainer():
                             )
 
     def __set_transfer_learning_mode(self) -> None:
-        """
-        Put all layers of the neural network in right state for transfer
-        learning.
-        """
+
         state_dict = torch.load(self.__model_path, map_location=self.__device)
         if self.__model_type == "densenet121":
             # '.'s are no longer allowed in module names, but previous densenet layers
@@ -106,12 +103,7 @@ class ClassificationModelTrainer():
                 param.requires_grad = False
 
     def __load_data(self, batch_size : int = 8) -> None:
-        """
-        Load the data in the specified data directory.
-        The data directory should contain 'train' and 'val' subdirectories
-        for the training and validation datasets. The subdirectories in the
-        'train' and 'val' should be named  after each unique classes.
-        """
+        
         if not self.__data_dir:
             raise RuntimeError("The dataset directory not yet set.")
         image_dataset = {
@@ -132,47 +124,35 @@ class ClassificationModelTrainer():
         self.__class_names = image_dataset["train"].classes
         self.__dataset_name = os.path.basename(self.__data_dir.rstrip(os.path.sep))
 
-    # properties
-    model_type = property(
-                fget=lambda self: self.__model_type,
-                doc="the current computer vision model being used."
-            )
-    data_directory = property(
-                fget=lambda self : self.__data_dir,
-                fset=lambda self, path : self.set_data_directory(path),
-                doc="Path to the directory containing the training and validation data."
-            )
-    model_path = property(
-                fget=lambda self : self.__model_path,
-                fset=lambda self, path : self.set_model_path(path),
-                doc="Path to the binary file containing pretrained weights."
-            )
-
     def setDataDirectory(self, data_dir : str = "") -> None:
         """
-        Sets the directory that contains the training and validation 
-        dataset.
+        Sets the directory that contains the training and test dataset. The data directory should contain 'train' and 'test' subdirectories
+        for the training and test datasets.
+
+        In each of these subdirectories, each object must have a dedicated folder and the folder containing images for the object.
+
+        The structure of the 'test' and 'train' folder must be as follows:
+        
+        >> train >> class1 >> class1_train_images
+                    >> class2 >> class2_train_images
+                    >> class3 >> class3_train_images
+                    >> class4 >> class4_train_images
+                    >> class5 >> class5_train_images
+        >> test >> class1 >> class1_test_images
+                >> class2 >> class2_test_images
+                >> class3 >> class3_test_images
+                >> class4 >> class4_test_images
+                >> class5 >> class5_test_images
+
         """
         if os.path.isdir(data_dir):
             self.__data_dir = data_dir
             return
         raise ValueError("expected a path to a directory")
 
-    def set_model_path(self, path : str = "") -> None:
-        """
-        Sets the path to the binary file containing the pretrained
-        weights to be used for transfer learning.
-        """
-        if os.path.isfile(path):
-            self.__model_path = path
-            return
-        raise ValueError(
-                "Ensure the path points to the binary file containing the"
-                " pretrained weights."
-            )
-
     def setModelAsMobileNetV2(self) -> None:
         self.__model_type = "mobilenet_v2"
+        self.__training_params = mobilenet_v2_train_params()
 
     def setModelAsResNet50(self) -> None:
         self.__model_type = "resnet50"
@@ -180,11 +160,13 @@ class ClassificationModelTrainer():
 
     def setModelAsInceptionV3(self) -> None:
         self.__model_type = "inception_v3"
+        self.__training_params = inception_v3_train_params()
 
     def setModelAsDenseNet121(self) -> None:
         self.__model_type = "densenet121"
+        self.__training_params = densenet121_train_params()
 
-    def freeze_all_layers(self) -> None:
+    def freezeAllLayers(self) -> None:
         """
         Set the transfer learning mode to freeze all layers.
 
@@ -192,7 +174,7 @@ class ClassificationModelTrainer():
         """
         self.__transfer_learning_mode = "freeze_all"
 
-    def fine_tune_all_layers(self) -> None:
+    def fineTuneAllLayers(self) -> None:
         """
         Sets the transfer learning mode to fine-tune the pretrained weights
         """
@@ -202,28 +184,30 @@ class ClassificationModelTrainer():
                 self,
                 num_experiments : int = 100,
                 batch_size : int = 8,
-                model_directory  : str = "",
+                model_directory  : str = None,
+                transfer_from_model: str = None,
                 verbose : bool = True
             ) -> None:
 
-        if self.__transfer_learning and not self.__model_path:
-            warnings.warn(
-                    "Path to pretrained weights to use for transfer learnin isn't"
-                    " set.\nDefaulting to training all layers from scratch...",
-                    ResourceWarning
-                )
-
+        # Load dataset
         self.__load_data(batch_size)
+
+        # Check and effect transfer learning if enabled
+        if transfer_from_model:
+            self.__model_path = transfer_from_model
+
+        # Load training parameters for the specified model type
         self.__set_training_param()
 
-        if model_directory:
-            model_directory = os.path.join(model_directory, "models")
-        else:
+        
+        # Create output directory to save trained models and json mappings
+        if not model_directory:
             model_directory = os.path.join(self.__data_dir, "models")
 
         if not os.path.exists(model_directory):
             os.mkdir(model_directory)
         
+        # Dump class mappings to json file
         with open(os.path.join(model_directory, f"{self.__dataset_name}_model_classes.json"), "w") as f:
             classes_dict = {}
             class_list = sorted(self.__class_names)
@@ -231,17 +215,25 @@ class ClassificationModelTrainer():
                 classes_dict[str(i)] = class_list[i]
             json.dump(classes_dict, f)
 
+        # Prep model weights for training
         since = time.time()
 
         best_model_weights = copy.deepcopy(self.__model.state_dict())
         best_acc = 0.0
         prev_save_name, recent_save_name = "", ""
 
+        # Device check and log
+        print("=" * 50)
+        print("Training with GPU") if self.__device == "cuda" else print("Training with CPU. This might cause slower train.")
+        print("=" * 50)
+
+
+
         for epoch in range(num_experiments):
             if verbose:
                 print(f"Epoch {epoch}/{num_experiments - 1}", "-"*10, sep="\n")
 
-            # each epoch has a training and validation phase
+            # each epoch has a training and test phase
             for phase in ["train", "test"]:
                 if phase == "train":
                     self.__model.train()
@@ -251,6 +243,7 @@ class ClassificationModelTrainer():
                 running_loss = 0.0
                 running_corrects = 0
 
+                # Iterate on the dataset in batches
                 for imgs, labels in tqdm(self.__data_loaders[phase]):
                     imgs = imgs.to(self.__device)
                     labels = labels.to(self.__device)
@@ -270,6 +263,7 @@ class ClassificationModelTrainer():
                     running_loss += loss.item() * imgs.size(0)
                     running_corrects += torch.sum(preds==labels.data)
 
+                # Compute accuracy and loss metrics post epoch training
                 if phase == "train" and isinstance(self.__lr_scheduler, torch.optim.lr_scheduler.StepLR):
                     self.__lr_scheduler.step()
 
@@ -288,8 +282,7 @@ class ClassificationModelTrainer():
                             best_model_weights, os.path.join(model_directory, recent_save_name)
                         )
                     prev_save_name = recent_save_name
-            if verbose:
-                print()
+            
 
         time_elapsed = time.time() - since
         print(f"Training completed in {time_elapsed//60:.0f}m {time_elapsed % 60:.0f}s")
