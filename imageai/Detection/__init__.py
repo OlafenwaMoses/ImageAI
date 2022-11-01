@@ -212,6 +212,12 @@ class ObjectDetection:
                         "invalid path, path not pointing to a valid file."
                     ) from None
     
+    def useCPU(self):
+        self.__device = "cpu"
+        if self.__model_loaded:
+            self.__model_loaded = False
+            self.loadModel()
+    
     def loadModel(self) -> None:
         """
         Loads the pretrained weights in the specified model path.

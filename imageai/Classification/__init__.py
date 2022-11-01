@@ -61,7 +61,7 @@ class ImageClassification:
             self.__model_path = path
         else:
             raise ValueError(
-            f"The path '{path}' isn't a valid file. Ensure you specify the path to a valid file."
+                f"The path '{path}' isn't a valid file. Ensure you specify the path to a valid trained model file."
             )
 
     def __load_classes(self) -> List[str]:

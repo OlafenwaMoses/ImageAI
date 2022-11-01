@@ -3,11 +3,16 @@ import os
 import copy
 import re
 import json
+from typing import List, Tuple, Union
+from PIL import Image
+import numpy as np
 
 import torch
 import torch.nn as nn
 from torch.optim import lr_scheduler
 from torchvision import datasets
+from torchvision import transforms
+from torchvision.models import mobilenet_v2, inception_v3, resnet50, densenet121
 
 from .data_transformation import data_transforms1, data_transforms2
 from .training_params import resnet50_train_params, densenet121_train_params, inception_v3_train_params, mobilenet_v2_train_params
@@ -15,7 +20,11 @@ from tqdm import tqdm
 
 
 
+
 class ClassificationModelTrainer():
+    """
+    
+    """
 
     def __init__(self) -> None:
         self.__model_type = ""
@@ -287,3 +296,183 @@ class ClassificationModelTrainer():
         time_elapsed = time.time() - since
         print(f"Training completed in {time_elapsed//60:.0f}m {time_elapsed % 60:.0f}s")
         print(f"Best test accuracy: {best_acc:.4f}")
+
+
+class CustomImageClassification:
+    """
+    An implementation that allows for easy classification of images
+    using the state of the art computer vision classification model
+    trained on custom data.
+    """
+    def __init__(self) -> None:
+        self.__model = None
+        self.__model_type = ""
+        self.__model_loaded = False
+        self.__device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.__json_path = None
+        self.__class_names = None
+        self.__model_loaded = False
+
+    def __load_image(self, image_input: Union[str, np.ndarray, Image.Image]) -> torch.Tensor:
+        """
+        Loads image/images from the given path. If image_path is a directory, this
+        function only load the images in the directory (it does not visit the sub-
+        directories). This function also convert the loaded image/images to the
+        specification expected by the MobileNetV2 architecture.
+        """
+        images = []
+        preprocess = transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            ])
+        if type(image_input) == str:
+            if os.path.isfile(image_input):
+                img = Image.open(image_input).convert("RGB")
+                images.append(preprocess(img))
+            else:
+                raise ValueError(f"image path '{image_input}' is not found or a valid file")
+        elif type(image_input) == np.ndarray:
+            img = Image.fromarray(image_input).convert("RGB")
+            images.append(preprocess(img))
+        elif "PIL" in str(type(image_input)):
+            img = image_input.convert("RGB")
+            images.append(preprocess(img))
+        else:
+            raise ValueError(f"Invalid image input format")
+
+        return torch.stack(images)
+    
+    def __load_classes(self):
+        if self.__json_path:
+            with open(self.__json_path, 'r') as f:
+                self.__class_names = list(json.load(f).values())
+        else:
+            raise ValueError("Invalid json path. Set a valid json mapping path by calling the 'setJsonPath()' function")
+
+    def setModelPath(self, path : str) -> None:
+        """
+        Sets the path to the pretrained weight.
+        """
+        if os.path.isfile(path):
+            self.__model_path = path
+        else:
+            raise ValueError(
+                f"The path '{path}' isn't a valid file. Ensure you specify the path to a valid trained model file."
+            )
+    
+    def setJsonPath(self, path : str) -> None:
+        """
+        Sets the path to the pretrained weight.
+        """
+        if os.path.isfile(path):
+            self.__json_path = path
+        else:
+            raise ValueError(
+            "parameter path should be a valid path to the json mapping file."
+            )
+
+    def setModelAsMobilenetV2(self) -> None:
+        self.__model_type = "mobilenet_v2"
+
+    def setModelAsResNet50(self) -> None:
+        self.__model_type = "resnet50"
+
+    def setModelAsInceptionv3(self) -> None:
+        self.__model_type = "inception_v3"
+
+    def setModelAsDenseNet121(self) -> None:
+        self.__model_type = "densenet121"
+    
+    def useCPU(self):
+        self.__device = "cpu"
+        if self.__model_loaded:
+            self.__model_loaded = False
+            self.loadModel()
+
+    def loadModel(self) -> None:
+        """
+        Loads the mobilenet vison weight into the model architecture.
+        """
+        if not self.__model_loaded:
+            self.__load_classes()
+            try:
+                # change the last layer of the networks to conform to the number
+                # of unique classes in the custom dataset used to train the custom
+                # model
+
+                if self.__model_type == "resnet50":
+                    self.__model = resnet50(pretrained=False)
+                    in_features = self.__model.fc.in_features
+                    self.__model.fc = nn.Linear(in_features, len(self.__class_names))
+                elif self.__model_type == "mobilenet_v2":
+                    self.__model = mobilenet_v2(pretrained=False)
+                    in_features = self.__model.classifier[1].in_features
+                    self.__model.classifier[1] = nn.Linear(in_features, len(self.__class_names))
+                elif self.__model_type == "inception_v3":
+                    self.__model = inception_v3(pretrained=False)
+                    in_features = self.__model.fc.in_features
+                    self.__model.fc = nn.Linear(in_features, len(self.__class_names))
+                elif self.__model_type == "densenet121":
+                    self.__model = densenet121(pretrained=False)
+                    in_features = self.__model.classifier.in_features
+                    self.__model.classifier = nn.Linear(in_features, len(self.__class_names))
+                else:
+                    raise RuntimeError("Unknown model type.\nEnsure the model type is properly set.")
+
+                state_dict = torch.load(self.__model_path, map_location=self.__device)
+
+                if self.__model_type == "densenet121":
+                    # '.'s are no longer allowed in module names, but previous densenet layers
+                    # as provided by the pytorch organization has names that uses '.'s.
+                    pattern = re.compile(
+                            r"^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\."
+                                    "(?:weight|bias|running_mean|running_var))$"
+                            )
+                    for key in list(state_dict.keys()):
+                        res = pattern.match(key)
+                        if res:
+                            new_key = res.group(1) + res.group(2)
+                            state_dict[new_key] = state_dict[key]
+                            del state_dict[key]
+
+                self.__model.load_state_dict(state_dict)
+                self.__model.to(self.__device).eval()
+                self.__model_loaded = True
+
+            except Exception as e:
+                raise Exception("Weight loading failed.\nEnsure the model path is"
+                    " set and the weight file is in the specified model path.")
+
+    def classifyImage(self, image_input: Union[str, np.ndarray, Image.Image], result_count: int) -> Tuple[List[str], List[float]]:
+        if not self.__model_loaded:
+            raise RuntimeError(
+                "Model not yet loaded. You need to call '.loadModel()' before performing image classification"
+            )
+
+        images = self.__load_image(image_input)
+        images = images.to(self.__device)
+    
+        with torch.no_grad():
+            output = self.__model(images)
+        probabilities = torch.softmax(output, dim=1)
+        topN_prob, topN_catid = torch.topk(probabilities, result_count)
+        
+        predictions = [
+                [
+                    (self.__class_names[topN_catid[i][j]], topN_prob[i][j].item()*100)
+                    for j in range(topN_prob.shape[1])
+                ]
+                for i in range(topN_prob.shape[0])
+            ]
+        
+        labels_pred = []
+        probabilities_pred = []
+
+        for idx, pred in enumerate(predictions):
+            for label, score in pred:
+                labels_pred.append(label)
+                probabilities_pred.append(round(score, 4))
+        
+        return labels_pred, probabilities_pred
