@@ -13,6 +13,7 @@ from torch.optim import lr_scheduler
 from torchvision import datasets
 from torchvision import transforms
 from torchvision.models import mobilenet_v2, inception_v3, resnet50, densenet121
+from torchvision.models.inception import InceptionOutputs
 
 from .data_transformation import data_transforms1, data_transforms2
 from .training_params import resnet50_train_params, densenet121_train_params, inception_v3_train_params, mobilenet_v2_train_params
@@ -261,8 +262,8 @@ class ClassificationModelTrainer():
 
                     with torch.set_grad_enabled(phase == "train"):
                         output = self.__model(imgs)
-                        if self.__model_type == "inception_v3":
-                            output = output.logits
+                        if self.__model_type == "inception_v3" and type(output) == InceptionOutputs:
+                            output = output[0]
                         _, preds = torch.max(output, 1)
                         loss = self.__loss_fn(output, labels)
 
