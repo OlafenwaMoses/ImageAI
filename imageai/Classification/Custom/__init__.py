@@ -24,7 +24,9 @@ from tqdm import tqdm
 
 class ClassificationModelTrainer():
     """
-    
+        This is the Classification Model training class, that allows you to define a deep learning network
+        from the 4 available networks types supported by ImageAI which are MobileNetv2, ResNet50,
+        InceptionV3 and DenseNet121 and then train on custom image data.
     """
 
     def __init__(self) -> None:
@@ -198,6 +200,22 @@ class ClassificationModelTrainer():
                 transfer_from_model: str = None,
                 verbose : bool = True
             ) -> None:
+        
+        """
+        'trainModel()' function starts the model actual training. It accepts the following values:
+        - num_experiments: Also known as epochs, is the number of times the network will process all the images in the training dataset
+        - batch_size: The number of image data that will be loaded into memory at once during training
+        - model_directory: Location where json mapping and trained models will be saved
+        - transfer_from_model: Path to a pre-trained imagenet model that corresponds to the training model type
+        - verbose: Option to enable/disable training logs
+        
+        :param num_experiments:
+        :param batch_size:
+        :model_directory:
+        :transfer_from_model:
+        :verbose:
+        :return:
+        """
 
         # Load dataset
         self.__load_data(batch_size)
@@ -236,7 +254,6 @@ class ClassificationModelTrainer():
         print("=" * 50)
         print("Training with GPU") if self.__device == "cuda" else print("Training with CPU. This might cause slower train.")
         print("=" * 50)
-
 
 
         for epoch in range(num_experiments):
