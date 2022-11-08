@@ -21,7 +21,6 @@ from tqdm import tqdm
 
 
 
-
 class ClassificationModelTrainer():
     """
         This is the Classification Model training class, that allows you to define a deep learning network
@@ -136,7 +135,7 @@ class ClassificationModelTrainer():
         self.__class_names = image_dataset["train"].classes
         self.__dataset_name = os.path.basename(self.__data_dir.rstrip(os.path.sep))
 
-    def setDataDirectory(self, data_dir : str = "") -> None:
+    def setDataDirectory(self, data_directory : str = "") -> None:
         """
         Sets the directory that contains the training and test dataset. The data directory should contain 'train' and 'test' subdirectories
         for the training and test datasets.
@@ -157,24 +156,24 @@ class ClassificationModelTrainer():
                 >> class5 >> class5_test_images
 
         """
-        if os.path.isdir(data_dir):
-            self.__data_dir = data_dir
+        if os.path.isdir(data_directory):
+            self.__data_dir = data_directory
             return
         raise ValueError("expected a path to a directory")
 
-    def setModelAsMobileNetV2(self) -> None:
+    def setModelTypeAsMobileNetV2(self) -> None:
         self.__model_type = "mobilenet_v2"
         self.__training_params = mobilenet_v2_train_params()
 
-    def setModelAsResNet50(self) -> None:
+    def setModelTypeAsResNet50(self) -> None:
         self.__model_type = "resnet50"
         self.__training_params = resnet50_train_params()
 
-    def setModelAsInceptionV3(self) -> None:
+    def setModelTypeAsInceptionV3(self) -> None:
         self.__model_type = "inception_v3"
         self.__training_params = inception_v3_train_params()
 
-    def setModelAsDenseNet121(self) -> None:
+    def setModelTypeAsDenseNet121(self) -> None:
         self.__model_type = "densenet121"
         self.__training_params = densenet121_train_params()
 

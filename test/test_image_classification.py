@@ -13,9 +13,9 @@ test_folder = dirname(os.path.abspath(__file__))
 @pytest.mark.parametrize(
     "image_input",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "1.jpg")),
-        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
-        (Image.open(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
+        (os.path.join(test_folder, "data-images", "1.jpg")),
+        (cv2.imread(os.path.join(test_folder, "data-images", "1.jpg"))),
+        (Image.open(os.path.join(test_folder, "data-images", "1.jpg"))),
     ]
 )
 def test_recognition_model_mobilenetv2(image_input):
@@ -35,9 +35,9 @@ def test_recognition_model_mobilenetv2(image_input):
 @pytest.mark.parametrize(
     "image_input",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "1.jpg")),
-        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
-        (Image.open(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
+        (os.path.join(test_folder, "data-images", "1.jpg")),
+        (cv2.imread(os.path.join(test_folder, "data-images", "1.jpg"))),
+        (Image.open(os.path.join(test_folder, "data-images", "1.jpg"))),
     ]
 )
 def test_recognition_model_resnet(image_input):
@@ -56,9 +56,9 @@ def test_recognition_model_resnet(image_input):
 @pytest.mark.parametrize(
     "image_input",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "1.jpg")),
-        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
-        (Image.open(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
+        (os.path.join(test_folder, "data-images", "1.jpg")),
+        (cv2.imread(os.path.join(test_folder, "data-images", "1.jpg"))),
+        (Image.open(os.path.join(test_folder, "data-images", "1.jpg"))),
     ]
 )
 def test_recognition_model_inceptionv3(image_input):
@@ -77,9 +77,9 @@ def test_recognition_model_inceptionv3(image_input):
 @pytest.mark.parametrize(
     "image_input",
     [
-        (os.path.join(test_folder, test_folder, "data-images", "1.jpg")),
-        (cv2.imread(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
-        (Image.open(os.path.join(test_folder, test_folder, "data-images", "1.jpg"))),
+        (os.path.join(test_folder, "data-images", "1.jpg")),
+        (cv2.imread(os.path.join(test_folder, "data-images", "1.jpg"))),
+        (Image.open(os.path.join(test_folder, "data-images", "1.jpg"))),
     ]
 )
 def test_recognition_model_densenet(image_input):
