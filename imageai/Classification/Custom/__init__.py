@@ -390,16 +390,16 @@ class CustomImageClassification:
             "parameter path should be a valid path to the json mapping file."
             )
 
-    def setModelAsMobilenetV2(self) -> None:
+    def setModelTypeAsMobileNetV2(self) -> None:
         self.__model_type = "mobilenet_v2"
 
-    def setModelAsResNet50(self) -> None:
+    def setModelTypeAsResNet50(self) -> None:
         self.__model_type = "resnet50"
 
-    def setModelAsInceptionv3(self) -> None:
+    def setModelTypeAsInceptionV3(self) -> None:
         self.__model_type = "inception_v3"
 
-    def setModelAsDenseNet121(self) -> None:
+    def setModelTypeAsDenseNet121(self) -> None:
         self.__model_type = "densenet121"
     
     def useCPU(self):
