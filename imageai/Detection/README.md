@@ -175,7 +175,7 @@ for eachObject, eachObjectPath in zip(detections, objects_path):
     print("--------------------------------")
 ```
 
-In the above above lines, we called the `detectObjectsFromImage()` , parse in the input image path, output image part, and an extra parameter `extract_detected_objects=True`. This parameter states that the function should extract each object detected from the image and save it has a seperate image. The parameter is false by default. Once set to `true`, the function will create a directory which is the **output image path + "-objects"** . Then it saves all the extracted images into this new directory with each image's name being the **detected object name + "-" + a number** which corresponds to the order at which the objects were detected.
+In the above above lines, we called the `detectObjectsFromImage()` , parse in the input image path, output image path, and an extra parameter `extract_detected_objects=True`. This parameter states that the function should extract each object detected from the image and save it has a seperate image. The parameter is false by default. Once set to `true`, the function will create a directory which is the **output image path + "-objects"** . Then it saves all the extracted images into this new directory with each image's name being the **detected object name + "-" + a number** which corresponds to the order at which the objects were detected.
 
 This new parameter we set to extract and save detected objects as an image will make the function to return 2 values. The first is the array of dictionaries with each dictionary corresponding to a detected object. The second is an array of the paths to the saved images of each object detected and extracted, and they are arranged in order at which the objects are in the first array.
 
@@ -268,7 +268,7 @@ In the above code, we specified that both the object name and percentage probabi
 ## Image Input & Output Types
 <div id="inputoutputtype"></div>
 
-**ImageAI** supports 3 input types of inputs which are **file path to image file**(default), **numpy array of image** and **image file stream**
+**ImageAI** supports 3 types of inputs which are **file path to image file**(default), **numpy array of image** and **image file stream**
 as well as 2 types of output which are image **file**(default) and numpy  **array **.
 This means you can now perform object detection in production applications such as on a web server and system
  that returns file in any of the above stated formats.
