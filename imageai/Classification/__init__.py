@@ -47,12 +47,12 @@ class ImageClassification:
     """
     def __init__(self) -> None:
         self.__model_type:str = None
-        self.__model: Union[resnet50, densenet121, mobilenet_v2, inception_v3] = None
+        self.__model:Union[resnet50, densenet121, mobilenet_v2, inception_v3] = None
         self.__model_path: str = None
         self.__classes_path: str = os.path.join(os.path.dirname(os.path.abspath(__file__)), "imagenet_classes.txt")
-        self.__model_loaded = False
-        self.__device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.__classes = []
+        self.__model_loaded: bool = False
+        self.__device: str = "cuda" if torch.cuda.is_available() else "cpu"
+        self.__classes: List[str] = []
     
     def setModelPath(self, path: str):
         """
