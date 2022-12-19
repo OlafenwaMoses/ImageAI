@@ -162,3 +162,8 @@ cython_debug/
 
 # Other files and folders
 test/data-models
+test/data-images
+test/data-json
+test/data-videos
+test/data-datasets
+experiment

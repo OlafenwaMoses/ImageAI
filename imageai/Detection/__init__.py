@@ -323,9 +323,8 @@ class ObjectDetection:
                         ResourceWarning
                     )
             else:
-                warnings.warn(
-                        "Model path isn't set, pretrained weights aren't used.",
-                        ResourceWarning
+                raise RuntimeError(
+                        "Model path isn't set, pretrained weights aren't used."
                     )
         predictions = defaultdict(lambda : [])
         
@@ -393,9 +392,6 @@ class ObjectDetection:
                                     {k:v for k,v in zip(["x1", "y1", "x2", "y2"], map(int, pred["boxes"][id]))}
                                 )
                             )
-
-        # TO DO: Unify image + prediction output generation code for supported architectures.
-
         
         # Render detection on copy of input image
         original_input_image = None
