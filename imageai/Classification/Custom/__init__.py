@@ -45,11 +45,6 @@ class ClassificationModelTrainer():
         self.__training_params = None
 
     def __set_training_param(self) -> None:
-        """
-        Sets the required training parameters for the specified vision model.
-        The default parameters used are the ones specified by the authors in
-        their research paper.
-        """
         if not self.__model_type:
             raise RuntimeError("The model type is not set!!!")
         self.__model = self.__training_params["model"]
@@ -92,7 +87,7 @@ class ClassificationModelTrainer():
 
     def __set_transfer_learning_mode(self) -> None:
 
-        state_dict = torch.load(self.__model_path, map_location=self.__device)
+        state_dict = torch.load(self.__model_path)
         if self.__model_type == "densenet121":
             # '.'s are no longer allowed in module names, but previous densenet layers
             # as provided by the pytorch organization has names that uses '.'s.
@@ -108,6 +103,7 @@ class ClassificationModelTrainer():
                     del state_dict[key]
 
         self.__model.load_state_dict(state_dict)
+        self.__model.to(self.__device)
 
         if self.__transfer_learning_mode == "freeze_all":
             for param in self.__model.parameters():
@@ -162,18 +158,34 @@ class ClassificationModelTrainer():
         raise ValueError("expected a path to a directory")
 
     def setModelTypeAsMobileNetV2(self) -> None:
+        """
+        'setModelTypeAsMobileNetV2()' is used to set the model type to the MobileNetV2 model.
+        :return:
+        """
         self.__model_type = "mobilenet_v2"
         self.__training_params = mobilenet_v2_train_params()
 
     def setModelTypeAsResNet50(self) -> None:
+        """
+        'setModelTypeAsResNet50()' is used to set the model type to the ResNet50 model.
+        :return:
+        """
         self.__model_type = "resnet50"
         self.__training_params = resnet50_train_params()
 
     def setModelTypeAsInceptionV3(self) -> None:
+        """
+        'setModelTypeAsInceptionV3()' is used to set the model type to the InceptionV3 model.
+        :return:
+        """
         self.__model_type = "inception_v3"
         self.__training_params = inception_v3_train_params()
 
     def setModelTypeAsDenseNet121(self) -> None:
+        """
+        'setModelTypeAsDenseNet()' is used to set the model type to the DenseNet model.
+        :return:
+        """
         self.__model_type = "densenet121"
         self.__training_params = densenet121_train_params()
 
@@ -320,6 +332,24 @@ class CustomImageClassification:
     An implementation that allows for easy classification of images
     using the state of the art computer vision classification model
     trained on custom data.
+
+    The class provides 4 different classification models which are ResNet50, DensesNet121, InceptionV3 and MobileNetV2.
+
+    The following functions are required to be called before a classification can be made
+
+    * At least of of the following and it must correspond to the model set in the setModelPath()
+    [setModelTypeAsMobileNetV2(), setModelTypeAsResNet(), setModelTypeAsDenseNet, setModelTypeAsInceptionV3]
+
+    * setModelPath: This is used to specify the absolute path to the trained model file.
+
+    * setJsonPath: This is used to specify the absolute path to the
+    json file saved during the training of the custom model.
+
+    * useCPU (Optional): If you will like to force the image classification to be performed on CPU, call this function.
+
+    * loadModel: Used to load the trained model weights and json data.
+
+    * classifyImage(): Used for classifying an image.
     """
     def __init__(self) -> None:
         self.__model = None
@@ -331,12 +361,6 @@ class CustomImageClassification:
         self.__model_loaded = False
 
     def __load_image(self, image_input: Union[str, np.ndarray, Image.Image]) -> torch.Tensor:
-        """
-        Loads image/images from the given path. If image_path is a directory, this
-        function only load the images in the directory (it does not visit the sub-
-        directories). This function also convert the loaded image/images to the
-        specification expected by the MobileNetV2 architecture.
-        """
         images = []
         preprocess = transforms.Compose([
                 transforms.Resize(256),
@@ -391,18 +415,38 @@ class CustomImageClassification:
             )
 
     def setModelTypeAsMobileNetV2(self) -> None:
+        """
+        'setModelTypeAsMobileNetV2()' is used to set the model type to the MobileNetV2 model.
+        :return:
+        """
         self.__model_type = "mobilenet_v2"
 
     def setModelTypeAsResNet50(self) -> None:
+        """
+        'setModelTypeAsResNet50()' is used to set the model type to the ResNet50 model.
+        :return:
+        """
         self.__model_type = "resnet50"
 
     def setModelTypeAsInceptionV3(self) -> None:
+        """
+        'setModelTypeAsInceptionV3()' is used to set the model type to the InceptionV3 model.
+        :return:
+        """
         self.__model_type = "inception_v3"
 
     def setModelTypeAsDenseNet121(self) -> None:
+        """
+        'setModelTypeAsDenseNet121()' is used to set the model type to the DenseNet121 model.
+        :return:
+        """
         self.__model_type = "densenet121"
     
     def useCPU(self):
+        """
+        Used to force classification to be done on CPU.
+        By default, classification will occur on GPU compute if available else CPU compute.
+        """
         self.__device = "cpu"
         if self.__model_loaded:
             self.__model_loaded = False
@@ -410,7 +454,9 @@ class CustomImageClassification:
 
     def loadModel(self) -> None:
         """
-        Loads the mobilenet vison weight into the model architecture.
+        'loadModel()' function is used to load the model weights into the model architecture from the file path defined
+        in the setModelPath() function.
+        :return:
         """
         if not self.__model_loaded:
             self.__load_classes()
@@ -420,19 +466,19 @@ class CustomImageClassification:
                 # model
 
                 if self.__model_type == "resnet50":
-                    self.__model = resnet50(pretrained=False)
+                    self.__model = resnet50(weights=None)
                     in_features = self.__model.fc.in_features
                     self.__model.fc = nn.Linear(in_features, len(self.__class_names))
                 elif self.__model_type == "mobilenet_v2":
-                    self.__model = mobilenet_v2(pretrained=False)
+                    self.__model = mobilenet_v2(weights=None)
                     in_features = self.__model.classifier[1].in_features
                     self.__model.classifier[1] = nn.Linear(in_features, len(self.__class_names))
                 elif self.__model_type == "inception_v3":
-                    self.__model = inception_v3(pretrained=False)
+                    self.__model = inception_v3(weights=None)
                     in_features = self.__model.fc.in_features
                     self.__model.fc = nn.Linear(in_features, len(self.__class_names))
                 elif self.__model_type == "densenet121":
-                    self.__model = densenet121(pretrained=False)
+                    self.__model = densenet121(weights=None)
                     in_features = self.__model.classifier.in_features
                     self.__model.classifier = nn.Linear(in_features, len(self.__class_names))
                 else:
@@ -463,6 +509,20 @@ class CustomImageClassification:
                     " set and the weight file is in the specified model path.")
 
     def classifyImage(self, image_input: Union[str, np.ndarray, Image.Image], result_count: int) -> Tuple[List[str], List[float]]:
+        """
+        'classifyImage()' function is used to classify a given image by receiving the following arguments:
+            * image_input: file path, numpy array or PIL image of the input image.
+            * result_count (optional) , the number of classifications to be sent which must be whole numbers between 1 and total number of classes the model is trained to classify.
+
+        This function returns 2 arrays namely 'classification_results' and 'classification_probabilities'. The 'classification_results'
+        contains possible objects classes arranged in descending of their percentage probabilities. The 'classification_probabilities'
+        contains the percentage probability of each object class. The position of each object class in the 'classification_results'
+        array corresponds with the positions of the percentage probability in the 'classification_probabilities' array.
+        
+        :param image_input:
+        :param result_count:
+        :return classification_results, classification_probabilities:
+        """
         if not self.__model_loaded:
             raise RuntimeError(
                 "Model not yet loaded. You need to call '.loadModel()' before performing image classification"

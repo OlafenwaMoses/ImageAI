@@ -1,7 +1,5 @@
 import os, re
 from typing import Union
-import warnings
-from pathlib import Path
 from typing import List, Tuple
 import numpy as np
 import torch
@@ -14,16 +12,16 @@ import traceback
 
 classification_models = {
     "resnet50": {
-        "model": resnet50(pretrained=False)
+        "model": resnet50(weights=None)
     },
     "densenet121": {
-        "model": densenet121(pretrained=False)
+        "model": densenet121(weights=None)
     },
     "inceptionv3": {
-        "model": inception_v3(pretrained=False)
+        "model": inception_v3(weights=None)
     },
     "mobilenetv2": {
-        "model": mobilenet_v2(pretrained=False)
+        "model": mobilenet_v2(weights=None)
     }
 }
 
@@ -38,11 +36,11 @@ class ImageClassification:
     * At least of of the following and it must correspond to the model set in the setModelPath()
     [setModelTypeAsMobileNetV2(), setModelTypeAsResNet(), setModelTypeAsDenseNet, setModelTypeAsInceptionV3]
 
-    * setModelPath(): This is used to specify the abosulute path to the pretrained model files. Download the files in this release -> https://github.com/OlafenwaMoses/ImageAI/releases/tag/untagged-21782fe939a003386296 [TO DO]
+    * setModelPath: This is used to specify the absolute path to a pretrained model file. Download any of the files in this release -> https://github.com/OlafenwaMoses/ImageAI/releases/tag/3.0.0-pretrained
 
     * useCPU (Optional): If you will like to force the image classification to be performed on CPU, call this function.
 
-    * loadModel(): Used to load the pretrained model weights
+    * loadModel: Used to load the pretrained model weights
 
     * classifyImage(): Used for classifying an image.
 
@@ -57,6 +55,12 @@ class ImageClassification:
         self.__classes = []
     
     def setModelPath(self, path: str):
+        """
+        'setModelPath()' function is required and is used to set the file path to the model adopted from the list of the
+        available 4 model types. The model path must correspond to the model type set for the classification instance object.
+        :param model_path:
+        :return:
+        """
         if os.path.isfile(path):
             self.__model_path = path
         else:
@@ -69,12 +73,6 @@ class ImageClassification:
             self.__classes = [c.strip() for c in f.readlines()]
     
     def __load_image(self, image_input: Union[str, np.ndarray, Image.Image]) -> torch.Tensor:
-        """
-        Loads image/images from the given path. If image_path is a directory, this
-        function only load the images in the directory (it does not visit the sub-
-        directories). This function also convert the loaded image/images to the
-        specification expected by the MobileNetV2 architecture.
-        """
         images = []
         preprocess = transforms.Compose([
                 transforms.Resize(256),
@@ -100,28 +98,53 @@ class ImageClassification:
         return torch.stack(images)
 
     def setModelTypeAsResNet50(self):
+        """
+        'setModelTypeAsResNet50()' is used to set the model type to the ResNet50 model.
+        :return:
+        """
         if self.__model_type == None:
             self.__model_type = "resnet50"
 
     def setModelTypeAsDenseNet121(self):
+        """
+        'setModelTypeAsDenseNet121()' is used to set the model type to the DenseNet121 model.
+        :return:
+        """
         if self.__model_type == None:
             self.__model_type = "densenet121"
     
     def setModelTypeAsInceptionV3(self):
+        """
+        'setModelTypeAsInceptionV3()' is used to set the model type to the InceptionV3 model.
+        :return:
+        """
         if self.__model_type == None:
             self.__model_type = "inceptionv3"
     
     def setModelTypeAsMobileNetV2(self):
+        """
+        'setModelTypeAsMobileNetV2()' is used to set the model type to the MobileNetV2 model.
+        :return:
+        """
         if self.__model_type == None:
             self.__model_type = "mobilenetv2"
     
     def useCPU(self):
+        """
+        Used to force classification to be done on CPU.
+        By default, classification will occur on GPU compute if available else CPU compute.
+        """
         self.__device = "cpu"
         if self.__model_loaded:
             self.__model_loaded = False
             self.loadModel()
 
     def loadModel(self):
+        """
+        'loadModel()' function is used to load the model weights into the model architecture from the file path defined
+        in the setModelPath() function.
+        :return:
+        """
         if not self.__model_loaded:
             try:
                 if self.__model_path == None:
@@ -135,8 +158,7 @@ class ImageClassification:
                     raise ValueError(
                         f"Model type '{self.__model_type}' not supported."
                     )
-                
-                state_dict = torch.load(self.__model_path, map_location=self.__device)
+                state_dict = torch.load(self.__model_path)
                 if self.__model_type == "densenet121":
                     # '.'s are no longer allowed in module names, but previous densenet layers
                     # as provided by the Pytorch's model zoon has names that uses '.'s.
@@ -154,6 +176,7 @@ class ImageClassification:
                 self.__model.load_state_dict(
                         state_dict
                     )
+                self.__model.to(self.__device)
                 self.__model_loaded = True
                 self.__model.eval()
                 self.__load_classes()
@@ -165,6 +188,23 @@ class ImageClassification:
                 
 
     def classifyImage(self, image_input: Union[str, np.ndarray, Image.Image], result_count: int=5) -> Tuple[List[str], List[float]]:
+
+        """
+        'classifyImage()' function is used to classify a given image by receiving the following arguments:
+            * image_input: file path, numpy array or PIL image of the input image.
+            * result_count (optional) , the number of classifications to be sent which must be whole numbers between
+                1 and 1000. The default is 5.
+
+        This function returns 2 arrays namely 'classification_results' and 'classification_probabilities'. The 'classification_results'
+        contains possible objects classes arranged in descending of their percentage probabilities. The 'classification_probabilities'
+        contains the percentage probability of each object class. The position of each object class in the 'classification_results'
+        array corresponds with the positions of the percentage probability in the 'classification_probabilities' array.
+        
+        :param image_input:
+        :param result_count:
+        :return classification_results, classification_probabilities:
+        """
+
         if not self.__model_loaded:
             raise RuntimeError(
                 "Model not yet loaded. You need to call '.loadModel()' before performing image classification"
