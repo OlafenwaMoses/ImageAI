@@ -1,4 +1,5 @@
 import os, sys
+from typing import List
 import shutil
 import cv2
 import uuid
@@ -10,6 +11,15 @@ sys.path.insert(1, os.path.join(dirname(dirname(os.path.abspath(__file__)))))
 from imageai.Detection.Custom import CustomObjectDetection
 
 test_folder = dirname(os.path.abspath(__file__))
+
+
+
+def delete_cache(paths: List[str]):
+    for path in paths:
+        if os.path.isfile(path):
+            os.remove(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
 
 
 @pytest.mark.parametrize(
@@ -25,7 +35,7 @@ test_folder = dirname(os.path.abspath(__file__))
 def test_object_detection_yolov3(input_image, output_type, extract_objects):
     detector = CustomObjectDetection()
     detector.setModelTypeAsYOLOv3()
-    detector.setModelPath(os.path.join(test_folder, "data-models", "yolov3_number-plate-dataset-imageai_mAP-0.49467_epoch-5.pt"))
+    detector.setModelPath(os.path.join(test_folder, "data-models", "yolov3_number-plate-dataset-imageai_mAP-0.57145_epoch-11.pt"))
     detector.setJsonPath(os.path.join(test_folder, "data-json", "number-plate-dataset-imageai_yolov3_detection_config.json"))
     detector.loadModel()
 
@@ -35,29 +45,31 @@ def test_object_detection_yolov3(input_image, output_type, extract_objects):
         if extract_objects:
             output_image_array, detections, extracted_objects = detector.detectObjectsFromImage(input_image=input_image, output_type=output_type, extract_detected_objects=extract_objects)
 
-            assert len(detections) == 1
-            assert len(extracted_objects) == 1
+            assert len(detections) > 0
+            assert len(extracted_objects) > 0
             for extracted_obj in extracted_objects:
                 assert type(extracted_obj) == np.ndarray
         else:
             output_image_array, detections = detector.detectObjectsFromImage(input_image=input_image, output_type=output_type)
             assert type(output_image_array) == np.ndarray
-            assert len(detections) == 1
+            assert len(detections) > 0
     else:
         if extract_objects:
             detections, extracted_object_paths = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path, extract_detected_objects=True)
 
-            assert len(detections) == 1
+            assert len(detections) > 0
             assert os.path.isfile(output_img_path)
-            os.remove(output_img_path)
-            assert len(extracted_object_paths) == 1
-            for obj_path in extracted_object_paths:
-                assert os.path.isfile(obj_path)
-            shutil.rmtree(os.path.dirname(extracted_object_paths[0]))
+            assert len(extracted_object_paths) > 0
+            delete_cache(
+                extracted_object_paths
+            )
+            delete_cache(
+                [extracted_object_paths[0], output_img_path]
+            )
         else:
             detections = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path)
-            assert len(detections) == 1
-            os.remove(output_img_path)
+            assert len(detections) > 0
+            delete_cache([output_img_path])
 
     assert type(detections) == list
     
@@ -115,15 +127,17 @@ def test_object_detection_tiny_yolov3(input_image, output_type, extract_objects)
 
             assert len(detections) > 0
             assert os.path.isfile(output_img_path)
-            os.remove(output_img_path)
             assert len(extracted_object_paths) == len(detections)
-            for obj_path in extracted_object_paths:
-                assert os.path.isfile(obj_path)
-            shutil.rmtree(os.path.dirname(extracted_object_paths[0]))
+            delete_cache(
+                extracted_object_paths
+            )
+            delete_cache(
+                [extracted_object_paths[0], output_img_path]
+            )
         else:
             detections = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path)
             assert len(detections) > 0
-            os.remove(output_img_path)
+            delete_cache([output_img_path])
 
     assert type(detections) == list
     

@@ -343,8 +343,18 @@ class ObjectDetection:
                     device=self.__device
                 )
             
-            if isinstance(output, int):
-                return []
+            if output is None:
+                if output_type == "array":
+                    if extract_detected_objects:
+                        return original_imgs[0], [], []
+                    else:
+                        return original_imgs[0], []
+                else:
+                    if extract_detected_objects:
+                        return original_imgs[0], []
+                    else:
+                        return []
+            
             # scale the output to match the dimension of the original image
             input_dims = torch.index_select(input_dims, 0, output[:, 0].long())
             scaling_factor = torch.min(416 / input_dims, 1)[0].view(-1, 1)
@@ -374,6 +384,18 @@ class ObjectDetection:
             fnames, original_imgs, scaled_images = self.__load_image_retinanet(input_image)
             with torch.no_grad():
                 output = self.__model(scaled_images)
+            
+            if output is None:
+                if output_type == "array":
+                    if extract_detected_objects:
+                        return original_imgs[0], [], []
+                    else:
+                        return original_imgs[0], []
+                else:
+                    if extract_detected_objects:
+                        return original_imgs[0], []
+                    else:
+                        return []
 
             for idx, pred in enumerate(output):
                 for id in range(pred["labels"].shape[0]):

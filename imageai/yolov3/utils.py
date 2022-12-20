@@ -245,7 +245,5 @@ def get_predictions(
                 output  = torch.cat([output, out])
             else:
                 output = torch.cat([batch_idx, img_pred_class], 1)
-    if isinstance(output, torch.Tensor):
-        return output
-    return 0
+    return output
 

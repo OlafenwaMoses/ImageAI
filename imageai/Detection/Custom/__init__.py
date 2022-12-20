@@ -54,7 +54,8 @@ class DetectionModelTrainer:
         self.__output_json_dir: str = None
 
     def __set_training_param(self, epochs : int, accumulate : int) -> None:
-        self.__lr_lambda = lambda x : ((1 - math.cos(x * math.pi / epochs)) / 2  ) * (0.1 - 1.0) + 1.0
+        # self.__lr_lambda = lambda x : ((1 - math.cos(x * math.pi / epochs)) / 2  ) * (0.1 - 1.0) + 1.0
+        self.__lr_lambda = lambda x: (1 - x / (epochs - 1)) * (1.0 - 0.01) + 0.01
         self.__anchors = generate_anchors(
                                 self.__custom_train_dataset,
                                 n=9 if self.__model_type=="yolov3" else 6
@@ -87,9 +88,9 @@ class DetectionModelTrainer:
 
         self.__optimizer = SGD(
                     g0,
-                    lr=1e-4,
-                    momentum=0.937,
-                    weight_decay=w_d,
+                    lr=1e-2,
+                    momentum=0.6,
+                    # weight_decay=w_d,
                     nesterov=True
                 )
         self.__optimizer.add_param_group({'params': g1, 'weight_decay': w_d})  # add g1 with weight_decay
@@ -132,12 +133,45 @@ class DetectionModelTrainer:
                         )
 
     def setModelTypeAsYOLOv3(self) -> None:
+        """
+        'setModelTypeAsYOLOv3()' is used to set the model type to the YOLOv3 model.
+        :return:
+        """
         self.__model_type = "yolov3"
 
     def setModelTypeAsTinyYOLOv3(self) -> None:
+        """
+        'setModelTypeAsTinyYOLOv3()' is used to set the model type to the TinyYOLOv3 model.
+        :return:
+        """
         self.__model_type = "tiny-yolov3"
 
     def setDataDirectory(self, data_directory: str):
+        """
+        'setDataDirectory()' is required to set the path to which the data/dataset to be used for training is kept. The input dataset must be in the YOLO format. The directory can have any name, but it must have 'train' and 'validation'
+        sub-directory. In the 'train' and 'validation' sub-directories, there must be 'images' and 'annotations'
+        sub-directories respectively. The 'images' folder will contain the pictures for the dataset and the
+        'annotations' folder will contain the TXT files with details of the annotations for each image in the
+        'images folder'.
+        N.B: Strictly take note that the filenames (without the extension) of the pictures in the 'images folder'
+        must be the same as the filenames (except the extension) of their corresponding annotation TXT files in
+        the 'annotations' folder.
+        The structure of the 'train' and 'validation' folder must be as follows:
+            >> train    >> images       >> img_1.jpg
+                        >> images       >> img_2.jpg
+                        >> images       >> img_3.jpg
+                        >> annotations  >> img_1.txt
+                        >> annotations  >> img_2.txt
+                        >> annotations  >> img_3.txt
+            >> validation   >> images       >> img_151.jpg
+                            >> images       >> img_152.jpg
+                            >> images       >> img_153.jpg
+                            >> annotations  >> img_151.txt
+                            >> annotations  >> img_152.txt
+                            >> annotations  >> img_153.txt
+        :param data_directory:
+        :return:
+        """
         if os.path.isdir(data_directory):
             self.__data_dir = data_directory
         else:
@@ -145,6 +179,19 @@ class DetectionModelTrainer:
                     "The parameter passed should point to a valid directory"
                 )
     def setTrainConfig(self, object_names_array: List[str], batch_size: int=4, num_experiments=100, train_from_pretrained_model: str = None):
+        """
+        'setTrainConfig()' function allows you to set the properties for the training instances. It accepts the following values:
+        - object_names_array , this is an array of the names of the different objects in your dataset, in the index order your dataset is annotated
+        - batch_size (optional),  this is the batch size for the training instance
+        - num_experiments (optional),   also known as epochs, it is the number of times the network will train on all the training dataset
+        - train_from_pretrained_model (optional), this is used to perform transfer learning by specifying the path to a pre-trained YOLOv3 or TinyYOLOv3 model
+        :param object_names_array:
+        :param batch_size:
+        :param num_experiments:
+        :param train_from_pretrained_model:
+        :return:
+        """
+
         self.__model_path = train_from_pretrained_model
         self.__classes = object_names_array
         self.__mini_batch_size = batch_size
@@ -153,6 +200,14 @@ class DetectionModelTrainer:
         self.__output_json_dir = os.path.join(self.__data_dir, "json")
 
     def trainModel(self) -> None:
+        """
+        'trainModel()' function starts the actual model training. Once the training starts, the training instance
+        creates 3 sub-folders in your dataset folder which are:
+        - json,  where the JSON configuration file for using your trained model is stored
+        - models, where your trained models are stored once they are generated after each improved experiments
+        - cache , where temporary traing configuraton files are stored
+        :return:
+        """
 
         self.__load_data()
         os.makedirs(self.__output_models_dir, exist_ok=True)
@@ -278,22 +333,30 @@ class CustomObjectDetection:
         self.__objectness_score = 0.4
     
     def setModelTypeAsYOLOv3(self) -> None:
+        """
+        'setModelTypeAsYOLOv3()' is used to set the model type to the YOLOv3 model.
+        :return:
+        """
         self.__model_type = "yolov3"
 
     def setModelTypeAsTinyYOLOv3(self) -> None:
+        """
+        'setModelTypeAsTinyYOLOv3()' is used to set the model type to the TinyYOLOv3 model.
+        :return:
+        """
         self.__model_type = "tiny-yolov3"
     
-    def setModelPath(self, detection_model_path: str):
-        if os.path.isfile(detection_model_path):
-            self.__model_path = detection_model_path
+    def setModelPath(self, model_path: str):
+        if os.path.isfile(model_path):
+            self.__model_path = model_path
             self.__model_loaded = False
         else:
             raise ValueError(
                         "invalid path, path not pointing to the weightfile."
                     ) from None
-        self.__model_path = detection_model_path
+        self.__model_path = model_path
     
-    def setJsonPath(self,  configuration_json: str):
+    def setJsonPath(self, configuration_json: str):
         self.__json_path = configuration_json
     
     def __load_classes_and_anchors(self) -> List[str]:
@@ -349,6 +412,17 @@ class CustomObjectDetection:
                     "\nEnsure the file is a valid image,"
                     " allowed file extensions are .jpg, .jpeg, .png"
                 )
+    
+    def useCPU(self):
+        """
+        Used to force classification to be done on CPU.
+        By default, classification will occur on GPU compute if available else CPU compute.
+        """
+
+        self.__device = "cpu"
+        if self.__model_loaded:
+            self.__model_loaded = False
+            self.loadModel()
     
     def loadModel(self) -> None:
         """
@@ -442,8 +516,18 @@ class CustomObjectDetection:
                     device=self.__device
                 )
             
-            if isinstance(output, int):
-                return []
+            if output is None:
+                if output_type == "array":
+                    if extract_detected_objects:
+                        return original_imgs[0], [], []
+                    else:
+                        return original_imgs[0], []
+                else:
+                    if extract_detected_objects:
+                        return original_imgs[0], []
+                    else:
+                        return []
+            
             # scale the output to match the dimension of the original image
             input_dims = torch.index_select(input_dims, 0, output[:, 0].long())
             scaling_factor = torch.min(416 / input_dims, 1)[0].view(-1, 1)
@@ -551,3 +635,306 @@ class CustomObjectDetection:
                 return predictions_list, extracted_objects
             else:
                 return predictions_list
+
+
+class CustomVideoObjectDetection:
+    """
+    This is the custom objects detection class for videos and camera live stream inputs in the ImageAI library. It provides support for YOLOv3 and TinyYOLOv3 object detection networks. After instantiating this class, you can set it's properties and
+    make object detections using it's pre-defined functions.
+    The following functions are required to be called before object detection can be made
+    * setModelPath()
+    * At least of of the following and it must correspond to the model set in the setModelPath()
+    [setModelTypeAsRetinaNet(), setModelTypeAsYOLOv3(), setModelTinyYOLOv3()]
+    * loadModel() [This must be called once only before performing object detection]
+    Once the above functions have been called, you can call the detectObjectsFromVideo() function
+    or the detectCustomObjectsFromVideo() of  the object detection instance object at anytime to
+    obtain observable objects in any video or camera live stream.
+    """
+
+    def __init__(self):
+        self.__detector = CustomObjectDetection()
+
+    def setModelTypeAsYOLOv3(self):
+        self.__detector.setModelTypeAsYOLOv3()
+    
+    def setModelTypeAsTinyYOLOv3(self):
+        self.__detector.setModelTypeAsTinyYOLOv3()
+
+    def setModelPath(self, model_path: str):
+        self.__detector.setModelPath(model_path)
+    
+    def setJsonPath(self, configuration_json: str):
+        self.__detector.setJsonPath(configuration_json)
+
+    def loadModel(self):
+        self.__detector.loadModel()
+    
+    def useCPU(self):
+        self.__detector.useCPU()
+
+    def detectObjectsFromVideo(self, input_file_path="", camera_input=None, output_file_path="", frames_per_second=20,
+                               frame_detection_interval=1, minimum_percentage_probability=40, log_progress=False,
+                               display_percentage_probability=True, display_object_name=True, display_box=True, save_detected_video=True,
+                               per_frame_function=None, per_second_function=None, per_minute_function=None,
+                               video_complete_function=None, return_detected_frame=False, detection_timeout = None):
+
+        """
+        'detectObjectsFromVideo()' function is used to detect objects observable in the given video path or a camera input:
+        * input_file_path , which is the file path to the input video. It is required only if 'camera_input' is not set
+        * camera_input , allows you to parse in camera input for live video detections
+        * output_file_path , which is the path to the output video. It is required only if 'save_detected_video' is not set to False
+        * frames_per_second , which is the number of frames to be used in the output video
+        * frame_detection_interval (optional, 1 by default)  , which is the intervals of frames that will be detected.
+        * minimum_percentage_probability (optional, 50 by default) , option to set the minimum percentage probability for nominating a detected object for output.
+        * log_progress (optional) , which states if the progress of the frame processed is to be logged to console
+        * display_percentage_probability (optional), can be used to hide or show probability scores on the detected video frames
+        * display_object_name (optional), can be used to show or hide object names on the detected video frames
+        * save_save_detected_video (optional, True by default), can be set to or not to save the detected video
+        * per_frame_function (optional), this parameter allows you to parse in a function you will want to execute after each frame of the video is detected. If this parameter is set to a function, after every video  frame is detected, the function will be executed with the following values parsed into it:
+            -- position number of the frame
+            -- an array of dictinaries, with each dictionary corresponding to each object detected. Each dictionary contains 'name', 'percentage_probability' and 'box_points'
+            -- a dictionary with with keys being the name of each unique objects and value are the number of instances of the object present
+            -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed as the fourth value into the function
+        * per_second_function (optional), this parameter allows you to parse in a function you will want to execute after each second of the video is detected. If this parameter is set to a function, after every second of a video is detected, the function will be executed with the following values parsed into it:
+            -- position number of the second
+            -- an array of dictionaries whose keys are position number of each frame present in the last second , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+            -- an array of dictionaries, with each dictionary corresponding to each frame in the past second, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+            -- a dictionary with its keys being the name of each unique object detected throughout the past second, and the key values are the average number of instances of the object found in all the frames contained in the past second
+            -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed
+                                                                as the fifth value into the function
+        * per_minute_function (optional), this parameter allows you to parse in a function you will want to execute after each minute of the video is detected. If this parameter is set to a function, after every minute of a video is detected, the function will be executed with the following values parsed into it:
+            -- position number of the minute
+            -- an array of dictionaries whose keys are position number of each frame present in the last minute , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+            -- an array of dictionaries, with each dictionary corresponding to each frame in the past minute, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+            -- a dictionary with its keys being the name of each unique object detected throughout the past minute, and the key values are the average number of instances of the object found in all the frames contained in the past minute
+            -- If return_detected_frame is set to True, the numpy array of the detected frame will be parsed as the fifth value into the function
+        * video_complete_function (optional), this parameter allows you to parse in a function you will want to execute after all of the video frames have been detected. If this parameter is set to a function, after all of frames of a video is detected, the function will be executed with the following values parsed into it:
+            -- an array of dictionaries whose keys are position number of each frame present in the entire video , and the value for each key is the array for each frame that contains the dictionaries for each object detected in the frame
+            -- an array of dictionaries, with each dictionary corresponding to each frame in the entire video, and the keys of each dictionary are the name of the number of unique objects detected in each frame, and the key values are the number of instances of the objects found in the frame
+            -- a dictionary with its keys being the name of each unique object detected throughout the entire video, and the key values are the average number of instances of the object found in all the frames contained in the entire video
+        * return_detected_frame (optionally, False by default), option to obtain the return the last detected video frame into the per_per_frame_function, per_per_second_function or per_per_minute_function
+        * detection_timeout (optionally, None by default), option to state the number of seconds of a video that should be detected after which the detection function stop processing the video
+        * thread_safe (optional, False by default), enforce the loaded detection model works across all threads if set to true, made possible by forcing all Tensorflow inference to run on the default graph.
+                :param input_file_path:
+                :param camera_input
+                :param output_file_path:
+                :param save_detected_video:
+                :param frames_per_second:
+                :param frame_detection_interval:
+                :param minimum_percentage_probability:
+                :param log_progress:
+                :param display_percentage_probability:
+                :param display_object_name:
+                :param per_frame_function:
+                :param per_second_function:
+                :param per_minute_function:
+                :param video_complete_function:
+                :param return_detected_frame:
+                :param detection_timeout:
+                :param thread_safe:
+                :return output_video_filepath:
+                :return counting:
+                :return output_objects_array:
+                :return output_objects_count:
+                :return detected_copy:
+                :return this_second_output_object_array:
+                :return this_second_counting_array:
+                :return this_second_counting:
+                :return this_minute_output_object_array:
+                :return this_minute_counting_array:
+                :return this_minute_counting:
+                :return this_video_output_object_array:
+                :return this_video_counting_array:
+                :return this_video_counting:
+        """
+
+        if (input_file_path == "" and camera_input == None):
+            raise ValueError(
+                "You must set 'input_file_path' to a valid video file, or set 'camera_input' to a valid camera")
+        elif (save_detected_video == True and output_file_path == ""):
+            raise ValueError(
+                "You must set 'output_video_filepath' to a valid video file name, in which the detected video will be saved. If you don't intend to save the detected video, set 'save_detected_video=False'")
+
+        else:
+
+            output_frames_dict = {}
+            output_frames_count_dict = {}
+
+            input_video = cv2.VideoCapture(input_file_path)
+            if (camera_input != None):
+                input_video = camera_input
+
+            output_video_filepath = output_file_path + '.mp4'
+
+            frame_width = int(input_video.get(3))
+            frame_height = int(input_video.get(4))
+            output_video = cv2.VideoWriter(output_video_filepath, cv2.VideoWriter_fourcc(*"MP4V"),
+                                            frames_per_second,
+                                            (frame_width, frame_height))
+
+            counting = 0
+
+            detection_timeout_count = 0
+            video_frames_count = 0
+
+            while (input_video.isOpened()):
+                ret, frame = input_video.read()
+
+                if (ret == True):
+
+                    video_frames_count += 1
+                    if (detection_timeout != None):
+                        if ((video_frames_count % frames_per_second) == 0):
+                            detection_timeout_count += 1
+
+                        if (detection_timeout_count >= detection_timeout):
+                            break
+
+                    output_objects_array = []
+
+                    counting += 1
+
+                    if (log_progress == True):
+                        print("Processing Frame : ", str(counting))
+
+                    detected_copy = frame.copy()
+
+                    check_frame_interval = counting % frame_detection_interval
+
+                    if (counting == 1 or check_frame_interval == 0):
+                        try:
+                            detected_copy, output_objects_array = self.__detector.detectObjectsFromImage(
+                                input_image=frame, output_type="array",
+                                minimum_percentage_probability=minimum_percentage_probability,
+                                display_percentage_probability=display_percentage_probability,
+                                display_object_name=display_object_name,
+                                display_box=display_box)
+                            
+                        except Exception as e:
+                            warnings.warn()
+                    
+                    if (save_detected_video == True):
+                        output_video.write(detected_copy)
+
+                    if detected_copy is not None and output_objects_array is not None:
+
+                        output_frames_dict[counting] = output_objects_array
+
+                        output_objects_count = {}
+                        for eachItem in output_objects_array:
+                            eachItemName = eachItem["name"]
+                            try:
+                                output_objects_count[eachItemName] = output_objects_count[eachItemName] + 1
+                            except:
+                                output_objects_count[eachItemName] = 1
+
+                        output_frames_count_dict[counting] = output_objects_count
+
+                        if (counting == 1 or check_frame_interval == 0):
+                            if (per_frame_function != None):
+                                if (return_detected_frame == True):
+                                    per_frame_function(counting, output_objects_array, output_objects_count,
+                                                        detected_copy)
+                                elif (return_detected_frame == False):
+                                    per_frame_function(counting, output_objects_array, output_objects_count)
+
+                        if (per_second_function != None):
+                            if (counting != 1 and (counting % frames_per_second) == 0):
+
+                                this_second_output_object_array = []
+                                this_second_counting_array = []
+                                this_second_counting = {}
+
+                                for aa in range(counting):
+                                    if (aa >= (counting - frames_per_second)):
+                                        this_second_output_object_array.append(output_frames_dict[aa + 1])
+                                        this_second_counting_array.append(output_frames_count_dict[aa + 1])
+
+                                for eachCountingDict in this_second_counting_array:
+                                    for eachItem in eachCountingDict:
+                                        try:
+                                            this_second_counting[eachItem] = this_second_counting[eachItem] + \
+                                                                                eachCountingDict[eachItem]
+                                        except:
+                                            this_second_counting[eachItem] = eachCountingDict[eachItem]
+
+                                for eachCountingItem in this_second_counting:
+                                    this_second_counting[eachCountingItem] = int(this_second_counting[eachCountingItem] / frames_per_second)
+
+                                if (return_detected_frame == True):
+                                    per_second_function(int(counting / frames_per_second),
+                                                        this_second_output_object_array, this_second_counting_array,
+                                                        this_second_counting, detected_copy)
+
+                                elif (return_detected_frame == False):
+                                    per_second_function(int(counting / frames_per_second),
+                                                        this_second_output_object_array, this_second_counting_array,
+                                                        this_second_counting)
+
+                        if (per_minute_function != None):
+
+                            if (counting != 1 and (counting % (frames_per_second * 60)) == 0):
+
+                                this_minute_output_object_array = []
+                                this_minute_counting_array = []
+                                this_minute_counting = {}
+
+                                for aa in range(counting):
+                                    if (aa >= (counting - (frames_per_second * 60))):
+                                        this_minute_output_object_array.append(output_frames_dict[aa + 1])
+                                        this_minute_counting_array.append(output_frames_count_dict[aa + 1])
+
+                                for eachCountingDict in this_minute_counting_array:
+                                    for eachItem in eachCountingDict:
+                                        try:
+                                            this_minute_counting[eachItem] = this_minute_counting[eachItem] + \
+                                                                                eachCountingDict[eachItem]
+                                        except:
+                                            this_minute_counting[eachItem] = eachCountingDict[eachItem]
+
+                                for eachCountingItem in this_minute_counting:
+                                    this_minute_counting[eachCountingItem] = int(this_minute_counting[eachCountingItem] / (frames_per_second * 60))
+
+                                if (return_detected_frame == True):
+                                    per_minute_function(int(counting / (frames_per_second * 60)),
+                                                        this_minute_output_object_array, this_minute_counting_array,
+                                                        this_minute_counting, detected_copy)
+
+                                elif (return_detected_frame == False):
+                                    per_minute_function(int(counting / (frames_per_second * 60)),
+                                                        this_minute_output_object_array, this_minute_counting_array,
+                                                        this_minute_counting)
+                else:
+                    break
+
+            if (video_complete_function != None):
+
+                this_video_output_object_array = []
+                this_video_counting_array = []
+                this_video_counting = {}
+
+                for aa in range(counting):
+                    this_video_output_object_array.append(output_frames_dict[aa + 1])
+                    this_video_counting_array.append(output_frames_count_dict[aa + 1])
+
+                for eachCountingDict in this_video_counting_array:
+                    for eachItem in eachCountingDict:
+                        try:
+                            this_video_counting[eachItem] = this_video_counting[eachItem] + \
+                                                            eachCountingDict[eachItem]
+                        except:
+                            this_video_counting[eachItem] = eachCountingDict[eachItem]
+
+                for eachCountingItem in this_video_counting:
+                    this_video_counting[eachCountingItem] = int(this_video_counting[eachCountingItem] / counting)
+
+                video_complete_function(this_video_output_object_array, this_video_counting_array,
+                                        this_video_counting)
+
+            input_video.release()
+            output_video.release()
+
+            if (save_detected_video == True):
+                return output_video_filepath
+
+            

@@ -1,4 +1,5 @@
 import os, sys
+from typing import List
 import shutil
 import cv2
 import uuid
@@ -10,6 +11,14 @@ sys.path.insert(1, os.path.join(dirname(dirname(os.path.abspath(__file__)))))
 from imageai.Detection import ObjectDetection
 
 test_folder = dirname(os.path.abspath(__file__))
+
+
+def delete_cache(paths: List[str]):
+    for path in paths:
+        if os.path.isfile(path):
+            os.remove(path)
+        elif os.path.isdir(path):
+            shutil.rmtree(path)
 
 
 @pytest.mark.parametrize(
@@ -38,24 +47,30 @@ def test_object_detection_retinanet(input_image, output_type, extract_objects):
             assert len(extracted_objects) > 1
             for extracted_obj in extracted_objects:
                 assert type(extracted_obj) == np.ndarray
+            assert type(detections) == list
         else:
             output_image_array, detections = detector.detectObjectsFromImage(input_image=input_image, output_type=output_type)
             assert type(output_image_array) == np.ndarray
+            assert type(detections) == list
     else:
         if extract_objects:
             detections, extracted_object_paths = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path, extract_detected_objects=True)
 
+            assert type(detections) == list
             assert os.path.isfile(output_img_path)
-            os.remove(output_img_path)
             assert len(extracted_object_paths) > 3
-            for obj_path in extracted_object_paths:
-                assert os.path.isfile(obj_path)
-            shutil.rmtree(os.path.dirname(extracted_object_paths[0]))
+            delete_cache(
+                extracted_object_paths
+            )
+            delete_cache(
+                [extracted_object_paths[0], output_img_path]
+            )
         else:
             detections = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path)
-            os.remove(output_img_path)
-
-    assert type(detections) == list
+            assert type(detections) == list
+            delete_cache(
+                [output_img_path]
+            )
     
 
     for eachObject in detections:
@@ -97,26 +112,33 @@ def test_object_detection_yolov3(input_image, output_type, extract_objects):
             output_image_array, detections, extracted_objects = detector.detectObjectsFromImage(input_image=input_image, output_type=output_type, extract_detected_objects=extract_objects)
 
             assert len(extracted_objects) > 1
+            assert type(detections) == list
             for extracted_obj in extracted_objects:
                 assert type(extracted_obj) == np.ndarray
         else:
             output_image_array, detections = detector.detectObjectsFromImage(input_image=input_image, output_type=output_type)
             assert type(output_image_array) == np.ndarray
+            assert type(detections) == list
     else:
         if extract_objects:
             detections, extracted_object_paths = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path, extract_detected_objects=True)
 
             assert os.path.isfile(output_img_path)
-            os.remove(output_img_path)
             assert len(extracted_object_paths) > 3
-            for obj_path in extracted_object_paths:
-                assert os.path.isfile(obj_path)
-            shutil.rmtree(os.path.dirname(extracted_object_paths[0]))
+            assert type(detections) == list
+            delete_cache(
+                extracted_object_paths
+            )
+            delete_cache(
+                [extracted_object_paths[0], output_img_path]
+            )
         else:
             detections = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path)
-            os.remove(output_img_path)
+            assert type(detections) == list
+            delete_cache(
+                [output_img_path]
+            )
 
-    assert type(detections) == list
     
 
     for eachObject in detections:
@@ -159,26 +181,34 @@ def test_object_detection_tiny_yolov3(input_image, output_type, extract_objects)
             output_image_array, detections, extracted_objects = detector.detectObjectsFromImage(input_image=input_image, output_type=output_type, extract_detected_objects=extract_objects)
 
             assert len(extracted_objects) > 1
+            assert type(detections) == list
             for extracted_obj in extracted_objects:
                 assert type(extracted_obj) == np.ndarray
         else:
             output_image_array, detections = detector.detectObjectsFromImage(input_image=input_image, output_type=output_type)
             assert type(output_image_array) == np.ndarray
+            assert type(detections) == list
     else:
         if extract_objects:
             detections, extracted_object_paths = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path, extract_detected_objects=True)
 
             assert os.path.isfile(output_img_path)
-            os.remove(output_img_path)
             assert len(extracted_object_paths) > 1
-            for obj_path in extracted_object_paths:
-                assert os.path.isfile(obj_path)
-            shutil.rmtree(os.path.dirname(extracted_object_paths[0]))
+            assert type(detections) == list
+            delete_cache(
+                extracted_object_paths
+            )
+            delete_cache(
+                [extracted_object_paths[0], output_img_path]
+            )
+
         else:
             detections = detector.detectObjectsFromImage(input_image=input_image, output_image_path=output_img_path)
-            os.remove(output_img_path)
+            assert type(detections) == list
+            delete_cache(
+                [output_img_path]
+            )
         
-    assert type(detections) == list
     
 
     for eachObject in detections:
