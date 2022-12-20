@@ -19,6 +19,8 @@ from .data_transformation import data_transforms1, data_transforms2
 from .training_params import resnet50_train_params, densenet121_train_params, inception_v3_train_params, mobilenet_v2_train_params
 from tqdm import tqdm
 
+from ...backend_check.model_extension import extension_check
+
 
 
 class ClassificationModelTrainer():
@@ -233,6 +235,7 @@ class ClassificationModelTrainer():
 
         # Check and effect transfer learning if enabled
         if transfer_from_model:
+            extension_check(transfer_from_model)
             self.__model_path = transfer_from_model
 
         # Load training parameters for the specified model type
@@ -397,7 +400,9 @@ class CustomImageClassification:
         Sets the path to the pretrained weight.
         """
         if os.path.isfile(path):
+            extension_check(path)
             self.__model_path = path
+            self.__model_loaded = False
         else:
             raise ValueError(
                 f"The path '{path}' isn't a valid file. Ensure you specify the path to a valid trained model file."

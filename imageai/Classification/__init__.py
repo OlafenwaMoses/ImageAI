@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image
 import traceback
-
+from ..backend_check.model_extension import extension_check
 
 classification_models = {
     "resnet50": {
@@ -62,6 +62,7 @@ class ImageClassification:
         :return:
         """
         if os.path.isfile(path):
+            extension_check(path)
             self.__model_path = path
         else:
             raise ValueError(

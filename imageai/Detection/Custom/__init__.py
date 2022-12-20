@@ -20,7 +20,9 @@ from .yolo.compute_loss import compute_loss
 from .yolo import validate
 from ...yolov3.tiny_yolov3 import YoloV3Tiny
 from ...yolov3.yolov3 import YoloV3
-from ...yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image 
+from ...yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
+
+from ...backend_check.model_extension import extension_check
 
 
 class DetectionModelTrainer:
@@ -191,8 +193,9 @@ class DetectionModelTrainer:
         :param train_from_pretrained_model:
         :return:
         """
-
         self.__model_path = train_from_pretrained_model
+        if self.__model_path:
+            extension_check(self.__model_path)
         self.__classes = object_names_array
         self.__mini_batch_size = batch_size
         self.__epochs = num_experiments
@@ -348,6 +351,7 @@ class CustomObjectDetection:
     
     def setModelPath(self, model_path: str):
         if os.path.isfile(model_path):
+            extension_check(model_path)
             self.__model_path = model_path
             self.__model_loaded = False
         else:
@@ -661,6 +665,7 @@ class CustomVideoObjectDetection:
         self.__detector.setModelTypeAsTinyYOLOv3()
 
     def setModelPath(self, model_path: str):
+        extension_check(model_path)
         self.__detector.setModelPath(model_path)
     
     def setJsonPath(self, configuration_json: str):

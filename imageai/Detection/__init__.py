@@ -17,6 +17,8 @@ from ..yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
 from ..retinanet.utils import read_image, draw_bounding_boxes_and_labels, tensor_to_ndarray
 import uuid
 
+from ..backend_check.model_extension import extension_check
+
 warnings.filterwarnings("once", category=ResourceWarning)
 
 
@@ -201,6 +203,7 @@ class ObjectDetection:
         :return:
         """
         if os.path.isfile(path):
+            extension_check(path)
             self.__model_path = path
             self.__model_loaded = False
         else:
@@ -563,6 +566,7 @@ class VideoObjectDetection:
         self.__detector.setModelTypeAsRetinaNet()
 
     def setModelPath(self, model_path: str):
+        extension_check(model_path)
         self.__detector.setModelPath(model_path)
 
     def loadModel(self):
