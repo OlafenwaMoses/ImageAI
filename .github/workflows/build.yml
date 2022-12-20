@@ -22,6 +22,17 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install -r requirements_extra.txt
+    - name: Download and Setup Resources
+      run: |
+        apt-get update
+        apt-get install unzip -y 
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-datasets.zip
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-images.zip
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-videos.zip
+        unzip data-datasets.zip
+        unzip data-images.zip
+        unzip data-videos.zip
+        ls
     - name: Run Unittest
       run: |
         pytest test -vvv
