@@ -1,9 +1,10 @@
 name: Build and Testing
 
 on:
- 
   push:
     branches: [ master, olafenwamoses/github-action]
+  pull_request:
+    branches: [ master ]
 
 jobs:  
   UnitestPython38:
