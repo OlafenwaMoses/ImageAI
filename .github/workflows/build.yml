@@ -54,7 +54,6 @@ jobs:
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/number-plate-dataset-imageai_yolov3_detection_config.json -P data-json
 
         unzip data-datasets.zip
-        unzip data-images.zip
         unzip data-videos.zip
 
         ls
