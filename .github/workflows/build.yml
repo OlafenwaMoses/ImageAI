@@ -29,9 +29,6 @@ jobs:
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-datasets.zip
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-images.zip
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-videos.zip
-        unzip data-datasets.zip
-        unzip data-images.zip
-        unzip data-videos.zip
 
         mkdir data-models
         mkdir data-json
@@ -53,6 +50,10 @@ jobs:
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/idenprof.json -P data-json
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/number-plate-dataset-imageai_tiny_yolov3_detection_config.json -P data-json
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/number-plate-dataset-imageai_yolov3_detection_config.json -P data-json
+
+        unzip data-datasets.zip
+        unzip data-images.zip
+        unzip data-videos.zip
 
         ls
     - name: Run Unittest
