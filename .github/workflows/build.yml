@@ -23,6 +23,8 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements_extra.txt
     - name: Download and Setup Resources
+      env:
+        CI: false
       run: |
         sudo apt-get update
         sudo apt-get install unzip -y 
