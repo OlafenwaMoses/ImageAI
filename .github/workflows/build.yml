@@ -1,0 +1,23 @@
+name: Build and Testing
+
+on:
+ 
+  push:
+    branches: [ master, olafenwamoses/github-action]
+
+jobs:  
+  UnitestPython38:
+    
+    name: Python3.8 Tests
+    runs-on: ubuntu-latest
+    # needs: None
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+        cache: 'pip'
+    - name: Install Dependencies
+      run: |
+        pip install numpy
+        python -m pip list
