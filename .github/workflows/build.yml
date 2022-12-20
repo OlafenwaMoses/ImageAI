@@ -34,7 +34,6 @@ jobs:
         echo ==============================
 
         mkdir test/data-models
-        mkdir test/data-json
 
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/densenet121-a639ec97.pth -P test/data-models
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/densenet121-idenprof-test_acc_0.82550_epoch-95.pt -P test/data-models
