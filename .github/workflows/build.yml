@@ -30,7 +30,7 @@ jobs:
         sudo apt-get install unzip -y
 
         echo ==============================
-        ls
+        ls test
         echo ==============================
 
         mkdir test/data-models
