@@ -12,16 +12,16 @@ from ..backend_check.model_extension import extension_check
 
 classification_models = {
     "resnet50": {
-        "model": resnet50(weights=None)
+        "model": resnet50(pretrained=False)
     },
     "densenet121": {
-        "model": densenet121(weights=None)
+        "model": densenet121(pretrained=False)
     },
     "inceptionv3": {
-        "model": inception_v3(weights=None)
+        "model": inception_v3(pretrained=False)
     },
     "mobilenetv2": {
-        "model": mobilenet_v2(weights=None)
+        "model": mobilenet_v2(pretrained=False)
     }
 }
 

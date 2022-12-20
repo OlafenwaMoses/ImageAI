@@ -471,19 +471,19 @@ class CustomImageClassification:
                 # model
 
                 if self.__model_type == "resnet50":
-                    self.__model = resnet50(weights=None)
+                    self.__model = resnet50(pretrained=False)
                     in_features = self.__model.fc.in_features
                     self.__model.fc = nn.Linear(in_features, len(self.__class_names))
                 elif self.__model_type == "mobilenet_v2":
-                    self.__model = mobilenet_v2(weights=None)
+                    self.__model = mobilenet_v2(pretrained=False)
                     in_features = self.__model.classifier[1].in_features
                     self.__model.classifier[1] = nn.Linear(in_features, len(self.__class_names))
                 elif self.__model_type == "inception_v3":
-                    self.__model = inception_v3(weights=None)
+                    self.__model = inception_v3(pretrained=False)
                     in_features = self.__model.fc.in_features
                     self.__model.fc = nn.Linear(in_features, len(self.__class_names))
                 elif self.__model_type == "densenet121":
-                    self.__model = densenet121(weights=None)
+                    self.__model = densenet121(pretrained=False)
                     in_features = self.__model.classifier.in_features
                     self.__model.classifier = nn.Linear(in_features, len(self.__class_names))
                 else:
