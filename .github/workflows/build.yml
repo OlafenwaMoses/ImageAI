@@ -24,14 +24,36 @@ jobs:
         pip install -r requirements_extra.txt
     - name: Download and Setup Resources
       run: |
-        apt-get update
-        apt-get install unzip -y 
+        sudo apt-get update
+        sudo apt-get install unzip -y 
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-datasets.zip
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-images.zip
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-videos.zip
         unzip data-datasets.zip
         unzip data-images.zip
         unzip data-videos.zip
+
+        mkdir data-models
+        mkdir data-json
+
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/densenet121-a639ec97.pth -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/densenet121-idenprof-test_acc_0.82550_epoch-95.pt -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/inception_v3-idenprof-test_acc_0.81050_epoch-92.pt -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/inception_v3_google-1a9a5a14.pth -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/mobilenet_v2-b0353104.pth -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/mobilenet_v2-idenprof-test_acc_0.85300_epoch-92.pt -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/resnet50-19c8e357.pth -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/resnet50-idenprof-test_acc_0.78200_epoch-91.pt -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/retinanet_resnet50_fpn_coco-eeacb38b.pth -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/tiny-yolov3.pt -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/tiny_yolov3_number-plate-dataset-imageai_mAP-0.22595_epoch-20.pt -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3.pt -P data-models
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3_number-plate-dataset-imageai_mAP-0.57145_epoch-11.pt -P data-models
+
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/idenprof.json -P data-json
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/number-plate-dataset-imageai_tiny_yolov3_detection_config.json -P data-json
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/number-plate-dataset-imageai_yolov3_detection_config.json -P data-json
+
         ls
     - name: Run Unittest
       run: |
