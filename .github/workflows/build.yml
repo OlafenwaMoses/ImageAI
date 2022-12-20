@@ -20,5 +20,6 @@ jobs:
         cache: 'pip'
     - name: Install Dependencies
       run: |
-        pip install numpy
-        python -m pip list
+        pip install -r requirements.txt
+        pip install -r requirements_extra.txt
+        pytest test -vvv
