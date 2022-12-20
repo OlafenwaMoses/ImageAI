@@ -22,4 +22,6 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip install -r requirements_extra.txt
+    - name: Run Unittest
+      run: |
         pytest test -vvv
