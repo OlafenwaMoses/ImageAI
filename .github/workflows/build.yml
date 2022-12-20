@@ -49,6 +49,8 @@ jobs:
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/idenprof.json -P test/data-json
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/number-plate-dataset-imageai_tiny_yolov3_detection_config.json -P test/data-json
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/number-plate-dataset-imageai_yolov3_detection_config.json -P test/data-json
+        wget https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/idenprof_model_classes.json -P test/data-json
+        
 
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-datasets.zip -P test
         wget https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/data-images.zip -P test
