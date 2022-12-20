@@ -29,6 +29,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install unzip -y
 
+        echo ==============================
+        ls
+        echo ==============================
+
         mkdir test/data-models
         mkdir test/data-json
 
