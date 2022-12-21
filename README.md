@@ -62,6 +62,10 @@ To install ImageAI, run the python installation instruction below in the command
   ```
   pip install -r requirements.txt
   ```
+- Then run the command below to install ImageAI
+  ```
+  pip install imageai --upgrade
+  ```
 
 ### Features
 <div id="features"></div>
