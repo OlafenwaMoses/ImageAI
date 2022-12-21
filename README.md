@@ -28,7 +28,7 @@ Built with simplicity in mind, **ImageAI**
 Eventually, **ImageAI** will provide support for a wider and more specialized aspects of Computer Vision
 
 
-**New Release : ImageAI 3.0.0**
+**New Release : ImageAI 3.0.1**
 
 What's new:
 - PyTorch backend
