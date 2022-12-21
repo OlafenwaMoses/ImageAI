@@ -1,10 +1,5 @@
 # ImageAI : Custom Object Detection
 
-An **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
-
----
-
-
 ### TABLE OF CONTENTS
 
 - <a href="#customdetection" > :white_square_button: Custom Object Detection</a>
@@ -14,10 +9,10 @@ An **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 - <a href="#documentation" > :white_square_button: Documentation</a>
 
 
-ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image using your own **custom YOLOv3 model** and the corresponding **detection_config.json** generated during the training. To test the custom object detection, you can download a sample custom model we have trained to detect the Hololens headset and its **detection_config.json** file via the links below:
+ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image using your own **custom YOLOv3 or TinyYOLOv3 model** and the corresponding **.json** generated during the training. To test the custom object detection, you can download a sample custom model we have trained to detect the Hololens headset and its **.json** file via the links below:
 
-* [**hololens-ex-60--loss-2.76.h5**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/hololens-ex-60--loss-2.76.h5) _(Size = 236 mb)_
-* [**detection_config.json**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/detection_config.json)
+* [**yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt**](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt) _(Size = 236 mb)_
+* [**hololens-yolo_yolov3_detection_config.json**](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/hololens-yolo_yolov3_detection_config.json)
 
 
  Once you download the custom object detection model file, you should copy the model file to the your project folder where your **.py** files will be.
@@ -31,8 +26,8 @@ from imageai.Detection.Custom import CustomObjectDetection
 
 detector = CustomObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-detector.setJsonPath("detection_config.json")
+detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+detector.setJsonPath("hololens-yolo_yolov3_detection_config.json")
 detector.loadModel()
 detections = detector.detectObjectsFromImage(input_image="holo2.jpg", output_image_path="holo2-detected.jpg")
 for detection in detections:
@@ -69,12 +64,12 @@ detector.setModelTypeAsYOLOv3()
  In the 3 lines above , we import the **ImageAI custom object detection** class in the first line, created the class instance on the second line and set the model type to YOLOv3.
  
 ```python
-detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-detector.setJsonPath("detection_config.json")
+detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+detector.setJsonPath("hololens-yolo_yolov3_detection_config.json")
 detector.loadModel()
 ```
 
-  In the 3 lines above, we specified the file path to our downloaded model file in the first line , specified the path to our **detection_config.json** file in the second line and loaded the model on the third line.
+  In the 3 lines above, we specified the file path to our downloaded model file in the first line , specified the path to our **hololens-yolo_yolov3_detection_config.json** file in the second line and loaded the model on the third line.
 
 ```python
 detections = detector.detectObjectsFromImage(input_image="holo2.jpg", output_image_path="holo2-detected.jpg")
@@ -106,8 +101,8 @@ from imageai.Detection.Custom import CustomObjectDetection
 
 detector = CustomObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-detector.setJsonPath("detection_config.json") 
+detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+detector.setJsonPath("hololens-yolo_yolov3_detection_config.json") 
 detector.loadModel()
 detections, extracted_objects_array = detector.detectObjectsFromImage(input_image="holo2.jpg", output_image_path="holo2-detected.jpg", extract_detected_objects=True)
 
@@ -208,8 +203,6 @@ detected_image_array, detections = detector.detectObjectsFromImage(output_type="
 ### Documentation
 <div id="documentation" ></div>
 
-We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below: 
+We have provided full documentation for all **ImageAI** classes and functions. Find links below: 
 
-* Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)** 
-* Documentation - **Chinese Version**  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-* Documentation - **French Version**  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
+* Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)

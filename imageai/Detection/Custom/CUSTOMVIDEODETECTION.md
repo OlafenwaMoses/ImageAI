@@ -1,9 +1,5 @@
 # ImageAI : Custom Video Object Detection, Tracking  and Analysis
 
-An **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
-
----
-
 ### TABLE OF CONTENTS
 
 - <a href="#videodetection" > :white_square_button: First Custom Video Object Detection</a>
@@ -15,10 +11,11 @@ An **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 - <a href="#documentation" > :white_square_button: Documentation</a>
 
 
-ImageAI provides convenient, flexible and powerful methods to perform object detection on videos using your own **custom YOLOv3 model** and the corresponding **detection_config.json** generated during the training. This version of **ImageAI** provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
-To test the custom video object detection,you can download a sample custom model we have trained to detect the Hololens headset and its **detection_config.json** file via the links below:
-- [**hololens-ex-60--loss-2.76.h5**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/hololens-ex-60--loss-2.76.h5) _(Size = 236 mb)_
-- [**detection_config.json**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/detection_config.json)
+ImageAI provides convenient, flexible and powerful methods to perform object detection on videos using your own **custom YOLOv3 model** and the corresponding **.json** file generated during the training. This version of **ImageAI** provides commercial grade video objects detection features, which include but not limited to device/IP camera inputs, per frame, per second, per minute and entire video analysis for storing in databases and/or real-time visualizations and for future insights.
+To test the custom video object detection,you can download a sample custom model we have trained to detect the Hololens headset and its **.json** file via the links below:
+
+* [**yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt**](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt) _(Size = 236 mb)_
+* [**hololens-yolo_yolov3_detection_config.json**](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/hololens-yolo_yolov3_detection_config.json)
 
 
 Because video object detection is a compute intensive tasks, we advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow
@@ -40,8 +37,8 @@ execution_path = os.getcwd()
 
 video_detector = CustomVideoObjectDetection()
 video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-video_detector.setJsonPath("detection_config.json")
+video_detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+video_detector.setJsonPath("hololens-yolo_yolov3_detection_config.json")
 video_detector.loadModel()
 
 video_detector.detectObjectsFromVideo(input_file_path="holo1.mp4",
@@ -72,12 +69,12 @@ In the 3 lines above , we import the **ImageAI custom video object detection** c
 ```python
 video_detector = CustomVideoObjectDetection()
 video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-video_detector.setJsonPath("detection_config.json")
+video_detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+video_detector.setJsonPath("hololens-yolo_yolov3_detection_config.json")
 video_detector.loadModel()
 ```
 In the 4 lines above, we created a new instance of the `CustomVideoObjectDetection` class in the first line, set the model type to YOLOv3 in the second line,
-  set the model path to our custom YOLOv3 model file in the third line, specified the path to the model's corresponding **detection_config.json** in the fourth line and load the model in the fifth line.
+  set the model path to our custom YOLOv3 model file in the third line, specified the path to the model's corresponding **hololens-yolo_yolov3_detection_config.json** in the fourth line and load the model in the fifth line.
 
 ```python
 video_detector.detectObjectsFromVideo(input_file_path="holo1.mp4",
@@ -88,7 +85,7 @@ video_detector.detectObjectsFromVideo(input_file_path="holo1.mp4",
 ```
 
 In the code above, we ran the `detectObjectsFromVideo()` function and parse in the path to our video,the path to the new
- video (without the extension, it saves a .avi video by default) which the function will save, the number of frames per second (fps) that
+ video (without the extension, it saves a .mp4 video by default) which the function will save, the number of frames per second (fps) that
  you we desire the output video to have and option to log the progress of the detection in the console. Then the function returns a the path to the saved video
  which contains boxes and percentage probabilities rendered on objects detected in the video.
 
@@ -108,8 +105,8 @@ camera = cv2.VideoCapture(0)
 
 video_detector = CustomVideoObjectDetection()
 video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-video_detector.setJsonPath("detection_config.json")
+video_detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+video_detector.setJsonPath("hololens-yolo_yolov3_detection_config.json")
 video_detector.loadModel()
 
 video_detector.detectObjectsFromVideo(camera_input=camera,
@@ -154,8 +151,8 @@ def forMinute(minute_number, output_arrays, count_arrays, average_output_count):
 
 video_detector = CustomVideoObjectDetection()
 video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-video_detector.setJsonPath("detection_config.json")
+video_detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+video_detector.setJsonPath("hololens-yolo_yolov3_detection_config.json")
 video_detector.loadModel()
 
 video_detector.detectObjectsFromVideo(camera_input=camera,
@@ -229,8 +226,8 @@ camera = cv2.VideoCapture(0)
 
 video_detector = CustomVideoObjectDetection()
 video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath("hololens-ex-60--loss-2.76.h5")
-video_detector.setJsonPath("detection_config.json")
+video_detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt")
+video_detector.setJsonPath("hololens-yolo_yolov3_detection_config.json")
 video_detector.loadModel()
 
 video_detector.detectObjectsFromVideo(camera_input=camera,
@@ -243,9 +240,7 @@ video_detector.detectObjectsFromVideo(camera_input=camera,
 ###  >> Documentation
 <div id="documentation" ></div>
 
-We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below: 
+We have provided full documentation for all **ImageAI** classes and functions. Find links below: 
 
-* Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)** 
-* Documentation - **Chinese Version**  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-* Documentation - **French Version**  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
+* Documentation - **English Version**  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
 

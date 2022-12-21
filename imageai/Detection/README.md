@@ -1,7 +1,5 @@
 # ImageAI : Object Detection
 
-A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
-
 ### TABLE OF CONTENTS
 
 - <a href="#firstdetection" > :white_square_button: First Object Detection</a>
@@ -14,9 +12,9 @@ A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
 
 
 ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class supports RetinaNet, YOLOv3 and TinyYOLOv3. To start performing object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below: 
-* **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/essentials-v5/resnet50_coco_best_v2.1.0.h5)** _(Size = 145 mb, high performance and accuracy, with longer detection time)_
-* **[YOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5)** _(Size = 237 mb, moderate performance and accuracy, with a moderate detection time)_
-* **[TinyYOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5)** _(Size = 34 mb, optimized for speed and moderate performance, with fast detection time)_
+* **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/retinanet_resnet50_fpn_coco-eeacb38b.pth)** _(Size = 130 mb, high performance and accuracy, with longer detection time)_
+* **[YOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3.pt)** _(Size = 237 mb, moderate performance and accuracy, with a moderate detection time)_
+* **[TinyYOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/tiny-yolov3.pt)** _(Size = 34 mb, optimized for speed and moderate performance, with fast detection time)_
 
 
  Once you download the object detection model file, you should copy the model file to the your project folder where your .py files will be.
@@ -33,7 +31,7 @@ execution_path = os.getcwd()
 
 detector = ObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
+detector.setModelPath( os.path.join(execution_path , "yolov3.pt"))
 detector.loadModel()
 detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image2.jpg"), output_image_path=os.path.join(execution_path , "image2new.jpg"), minimum_percentage_probability=30)
 
@@ -89,7 +87,7 @@ execution_path = os.getcwd()
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
+detector.setModelPath( os.path.join(execution_path , "yolov3.pt"))
 detector.loadModel()
 ```
 
@@ -110,7 +108,7 @@ Should you want to use the RetinaNet which is appropriate for high-performance a
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsRetinaNet()
-detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.setModelPath( os.path.join(execution_path , "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
 detector.loadModel()
 ```
 
@@ -119,7 +117,7 @@ However, if you desire TinyYOLOv3 which is optimized for speed and embedded devi
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsTinyYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo-tiny.h5"))
+detector.setModelPath( os.path.join(execution_path , "tiny-yolov3.pt"))
 detector.loadModel()
 ```
 
@@ -139,7 +137,7 @@ execution_path = os.getcwd()
 
 detector = ObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
+detector.setModelPath( os.path.join(execution_path , "yolov3.pt"))
 detector.loadModel()
 
 detections, objects_path = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new.jpg"), minimum_percentage_probability=30,  extract_detected_objects=True)
@@ -210,7 +208,7 @@ execution_path = os.getcwd()
 
 detector = ObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5"))
+detector.setModelPath( os.path.join(execution_path , "yolov3.pt"))
 detector.loadModel()
 
 custom_objects = detector.CustomObjects(car=True, motorcycle=True)
@@ -236,19 +234,6 @@ This is to tell the model to detect only the object we set to True. Then we call
 which is the function that allows us to perform detection of custom objects. Then we will set the `custom_objects` value
  to the custom objects variable we defined.
 
-
-## Detection Speed
-<div id="detectionspeed"></div>
-
-**ImageAI** now provides detection speeds for all object detection tasks. The detection speeds allow you to reduce
- the time of detection at a rate between 20% - 80%, and yet having just slight changes but accurate detection
-results. Coupled with lowering the `minimum_percentage_probability` parameter, detections can match the normal
-speed and yet reduce detection time drastically. The available detection speeds are **"normal"**(default), **"fast"**, **"faster"** , **"fastest"** and **"flash"**.
-All you need to do is to state the speed mode you desire when loading the model as seen below.
-
-```python
-detector.loadModel(detection_speed="fast")
-```
 
 
 ## Hiding/Showing Object Name and Probability
@@ -292,8 +277,6 @@ detected_image_array, detections = detector.detectObjectsFromImage(output_type="
 ## Documentation
 <div id="documentation" ></div>
 
-We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:
+We have provided full documentation for all **ImageAI** classes and functions. Find links below:
 
 * Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
-* Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-* Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**

@@ -5,8 +5,8 @@ image_array = cv2.imread("holo2.jpg")
 
 detector = CustomObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath("hololens-ex-60--loss-2.76.h5") # download via https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/hololens-ex-60--loss-2.76.h5
-detector.setJsonPath("detection_config.json") # download via https://github.com/OlafenwaMoses/ImageAI/releases/download/essential-v4/detection_config.json
+detector.setModelPath("yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt") # https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3_hololens-yolo_mAP-0.82726_epoch-73.pt
+detector.setJsonPath("hololens-yolo_yolov3_detection_config.json") # https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/hololens-yolo_yolov3_detection_config.json
 detector.loadModel()
 detected_image, detections, extracted_objects = detector.detectObjectsFromImage(input_image=image_array, extract_detected_objects=True, input_type="array", output_type="array")
 

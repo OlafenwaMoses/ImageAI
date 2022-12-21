@@ -1,7 +1,4 @@
 # ImageAI : Custom Image Classification
-A **DeepQuest AI** project <a href="https://deepquestai.com" >https://deepquestai.com </a></p>
-
----
 
 ImageAI provides 4 different algorithms and model types to perform custom image prediction using your custom models.
 You will be able to use your model trained with **ImageAI** and the corresponding model_class JSON file to predict custom objects
@@ -11,10 +8,6 @@ that you have trained the model on.
 
 - <a href="#customprediction" > :white_square_button: Custom Model Prediction</a>
 - <a href="#custompredictionfullmodel" > :white_square_button: Custom Model Prediction with Full Model (NEW)</a>
-- <a href="#custompredictionmultiple" > :white_square_button: Custom Prediction with multiple models (NEW)</a>
-- <a href="#converttensorflow" > :white_square_button: Convert custom model to Tensorflow's format (NEW)</a>
-- <a href="#convertdeepstack" > :white_square_button: Convert custom model to DeepStack's format (NEW)</a>
-
 
 ### Custom Model Prediction
 <div id="customprediction"></div>
@@ -23,8 +16,8 @@ In this example, we will be using the model trained for 20 experiments on **Iden
 (You can use your own trained model and generated JSON file. This 'class' is provided mainly for the purpose to use your own custom models.)
 Download the ResNet model of the model and JSON files in links below:
 
-- [**ResNet50**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essentials-v5/idenprof_resnet_ex-056_acc-0.993062.h5) _(Size = 90.4 mb)_
-- [**IdenProf model_class.json file**](https://github.com/OlafenwaMoses/ImageAI/releases/download/essentials-v5/idenprof.json)
+- [**ResNet50**](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/resnet50-idenprof-test_acc_0.78200_epoch-91.pt) _(Size = 90.4 mb)_
+- [**idenprof_model_class.json file**](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/idenprof_model_classes.json)
 
 Great!
 Once you have downloaded this model file and the JSON file, start a new python project, and then copy the model file and the JSON file to your project folder where your python files (.py files) will be.
@@ -42,8 +35,8 @@ execution_path = os.getcwd()
 
 prediction = CustomImageClassification()
 prediction.setModelTypeAsResNet50()
-prediction.setModelPath(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
-prediction.setJsonPath(os.path.join(execution_path, "idenprof.json"))
+prediction.setModelPath(os.path.join(execution_path, "resnet50-idenprof-test_acc_0.78200_epoch-91.pt"))
+prediction.setJsonPath(os.path.join(execution_path, "idenprof_model_class.json"))
 prediction.loadModel(num_objects=10)
 
 predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "4.jpg"), result_count=5)
@@ -79,15 +72,15 @@ The above line obtains the path to the folder that contains your python file (in
 ```python
 prediction = CustomImageClassification()
 prediction.setModelTypeAsResNet50()
-prediction.setModelPath(os.path.join(execution_path, "idenprof_resnet_ex-056_acc-0.993062.h5"))
-prediction.setJsonPath(os.path.join(execution_path, "idenprof.json"))
+prediction.setModelPath(os.path.join(execution_path, "resnet50-idenprof-test_acc_0.78200_epoch-91.pt"))
+prediction.setJsonPath(os.path.join(execution_path, "idenprof_model_class.json"))
 prediction.loadModel(num_objects=10)
 ```
 
 In the lines above, we created and instance of the `CustomImageClassification()`
  class in the first line, then we set the model type of the prediction object to ResNet by caling the `.setModelTypeAsResNet50()`
-  in the second line, we set the model path of the prediction object to the path of the custom model file (`idenprof_resnet_ex-056_acc-0.993062.h5`) we copied to the python file folder
-  in the third line, we set the path to  the model_class.json of the model, we load the model and parse the number of objected that can be predicted in the model.
+  in the second line, we set the model path of the prediction object to the path of the custom model file (`resnet50-idenprof-test_acc_0.78200_epoch-91.pt`) we copied to the python file folder
+  in the third line, we set the path to the idenprof_model_class.json of the model, we load the model and parse the number of objected that can be predicted in the model.
 
 ```python
 predictions, probabilities = prediction.classifyImage(os.path.join(execution_path, "4.jpg"), result_count=5)
@@ -106,50 +99,8 @@ The above line obtains each object in the **predictions** array, and also obtain
 in the **ImageClassification** class. Follow this [link](README.md) to see all the details.
 
 
-
-### Custom Prediction with multiple models
-<div id="custompredictionmultiple"></div>
-
-
-In previous versions of **ImageAI**, running more than one custom model at once wasn't supported.
-Now you can run multiple custom models, as many as your computer memory can accommodate.
-See the example code below for running multiple custom prediction models.
-
-```python
-from imageai.Classification.Custom import CustomImageClassification
-import os
-
-execution_path = os.getcwd()
-
-predictor = CustomImageClassification()
-predictor.setModelPath(model_path=os.path.join(execution_path, "idenprof_resnet.h5"))
-predictor.setJsonPath(model_json=os.path.join(execution_path, "idenprof.json"))
-predictor.setModelTypeAsResNet50()
-predictor.loadModel(num_objects=10)
-
-predictor2 = CustomImageClassification()
-predictor2.setModelPath(model_path=os.path.join(execution_path, "idenprof_inception_0.719500.h5"))
-predictor2.setJsonPath(model_json=os.path.join(execution_path, "idenprof.json"))
-predictor2.setModelTypeAsInceptionV3()
-predictor2.loadModel(num_objects=10)
-
-results, probabilities = predictor.classifyImage(image_input=os.path.join(execution_path, "9.jpg"), result_count=5)
-print(results)
-print(probabilities)
-
-
-results2, probabilities2 = predictor3.classifyImage(image_input=os.path.join(execution_path, "9.jpg"),
-                                                       result_count=5)
-print(results2)
-print(probabilities2)
-print("-------------------------------")
-```
-
 ### Documentation
 
 We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below:**
 
 * Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
-* Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-* Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
-

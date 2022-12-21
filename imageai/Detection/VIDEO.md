@@ -1,8 +1,5 @@
 # ImageAI : Video Object Detection, Tracking  and Analysis
 
-A **DeepQuest AI** project [https://deepquestai.com](https://deepquestai.com)
-
----
 
 ## TABLE OF CONTENTS
 
@@ -20,9 +17,9 @@ ImageAI provides convenient, flexible and powerful methods to perform object det
 
 To start performing video object detection, you must download the RetinaNet, YOLOv3 or TinyYOLOv3 object detection model via the links below:
 
-- **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5)** _(Size = 145 mb, high performance and accuracy, with longer detection time)_
-- **[YOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo.h5)** _(Size = 237 mb, moderate performance and accuracy, with a moderate detection time)_
-- **[TinyYOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/yolo-tiny.h5)** _(Size = 34 mb, optimized for speed and moderate performance, with fast detection time)_
+* **[RetinaNet](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/retinanet_resnet50_fpn_coco-eeacb38b.pth)** _(Size = 130 mb, high performance and accuracy, with longer detection time)_
+* **[YOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3.pt)** _(Size = 237 mb, moderate performance and accuracy, with a moderate detection time)_
+* **[TinyYOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/tiny-yolov3.pt)** _(Size = 34 mb, optimized for speed and moderate performance, with fast detection time)_
 
 Because video object detection is a compute intensive tasks, we advise you perform this experiment using a computer with a NVIDIA GPU and the GPU version of Tensorflow installed. Performing Video Object Detection CPU will be slower than using an NVIDIA GPU powered computer. You can use Google Colab for this experiment as it has an NVIDIA K80 GPU available for free.
 
@@ -41,7 +38,7 @@ execution_path = os.getcwd()
 
 detector = VideoObjectDetection()
 detector.setModelTypeAsRetinaNet()
-detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.setModelPath( os.path.join(execution_path , "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
 detector.loadModel()
 
 video_path = detector.detectObjectsFromVideo(input_file_path=os.path.join(execution_path, "traffic.mp4"),
@@ -73,7 +70,7 @@ execution_path = os.getcwd()
 ```python
 detector = VideoObjectDetection()
 detector.setModelTypeAsRetinaNet()
-detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.setModelPath( os.path.join(execution_path , "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
 detector.loadModel()
 ```
 
@@ -116,7 +113,7 @@ execution_path = os.getcwd()
 
 detector = VideoObjectDetection()
 detector.setModelTypeAsRetinaNet()
-detector.setModelPath( os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.setModelPath( os.path.join(execution_path , "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
 detector.loadModel()
 
 custom_objects = detector.CustomObjects(person=True, bicycle=True, motorcycle=True)
@@ -169,7 +166,7 @@ camera = cv2.VideoCapture(0)
 
 detector = VideoObjectDetection()
 detector.setModelTypeAsRetinaNet()
-detector.setModelPath(os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.setModelPath(os.path.join(execution_path , "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
 detector.loadModel()
 
 
@@ -213,7 +210,7 @@ def forMinute(minute_number, output_arrays, count_arrays, average_output_count):
 
 video_detector = VideoObjectDetection()
 video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath(os.path.join(execution_path, "yolo.h5"))
+video_detector.setModelPath(os.path.join(execution_path, "yolov3.pt"))
 video_detector.loadModel()
 
 video_detector.detectObjectsFromVideo(
@@ -317,73 +314,11 @@ video_detector.detectObjectsFromVideo(
 )
 ```
 
-### Video Detection Speed
-<div id="videodetectionspeed"></div>
-
-**ImageAI** now provides detection speeds for all video object detection tasks. The detection speeds allow you to reduce
- the time of detection at a rate between 20% - 80%, and yet having just slight changes but accurate detection
-results. Coupled with lowering the **minimum_percentage_probability** parameter, detections can closely match the normal
-speed and yet reduce detection time drastically. The available detection speeds are **"normal"**(default), **"fast"**, **"faster"** , **"fastest"** and **"flash"**.
-All you need to do is to state the speed mode you desire when loading the model as seen below.
-
-```python
-detector.loadModel(detection_speed="fast")
-```
-
-To observe the differences in the detection speeds, look below for each speed applied to object detection with
- coupled with the adjustment of the minimum_percentage_probability , time taken to detect and detections given.
-The results below are obtained from detections performed on a NVIDIA K80 GPU. Links are provided below to download
- the videos for each detection speed applied.
-
-Video Length = 1min 24seconds, Detection Speed = "normal" , Minimum Percentage Probability = 50 (default), Detection Time = 29min 3seconds
-[![](../../data-images/video-4.jpg)](https://www.youtube.com/embed/qplVDqOmElI?rel=0)
-
-
-**Video Length = 1min 24seconds, Detection Speed = "fast" , Minimum Percentage Probability = 40, Detection Time = 11min 6seconds**
-<a href="https://drive.google.com/open?id=118m6UnEG7aFdzxO7uhO_6C-981LJ3Gpf" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "fast" </button></a>
-
-**Video Length = 1min 24seconds, Detection Speed = "faster" , Minimum Percentage Probability = 30, Detection Time = 7min 47seconds**
-<a href="https://drive.google.com/open?id=1s1FQWFsEX1Yf4FvUPVleK7vRxaQ6pgUy" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "faster" </button></a>
-
-**Video Length = 1min 24seconds, Detection Speed = "fastest" , Minimum Percentage Probability = 20, Detection Time = 6min 20seconds**
-<a href="https://drive.google.com/open?id=1Wlt0DTGxl-JX7otd30MH4qhURv0rG9rw" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "fastest" </button></a>
-
-**Video Length = 1min 24seconds, Detection Speed = "flash" , Minimum Percentage Probability = 10, Detection Time = 3min 55seconds**
-<a href="https://drive.google.com/open?id=1V3irCpP49bEUtpjG7Vuk6vEQQAZI-4PI" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "flash" </button></a>
-
-If you use more powerful NVIDIA GPUs, you will definitely have faster detection time than stated above.
-
 ### Frame Detection Intervals
 <div id="videodetectionintervals" ></div>
 
 The above video objects detection task are optimized for frame-real-time object detections that ensures that objects in every frame of the video is detected. **ImageAI** provides you the option to adjust the video frame detections which can speed up your video detection process. When calling the `.detectObjectsFromVideo()` or `.detectCustomObjectsFromVideo()`, you can specify at which frame interval detections should be made. By setting the **frame_detection_interval** parameter to be  equal to 5 or 20, that means the object detections in the video will be updated after 5 frames or 20 frames.
 If your output video **frames_per_second** is set to 20, that means the object detections in the video will be updated once in every quarter of a second or every second. This is useful in case scenarious where the available compute is less powerful and speeds of moving objects are low. This ensures you can have objects detected as second-real-time , half-a-second-real-time or whichever way suits your needs. We conducted video object detection on the same input video we have been using all this while by applying a **frame_detection_interval** value equal to 5.
-The results below are obtained from detections performed on a NVIDIA K80 GPU.
-See the results and link to download the videos below:
-
-
-**Video Length = 1min 24seconds, Detection Speed = "normal" , Minimum Percentage Probability = 50 (default), Frame Detection Interval = 5, Detection Time = 15min 49seconds**
-
-<a href="https://drive.google.com/open?id=10m6kXlXWGOGc-IPw6TsKxBi-SXXOH9xK" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "normal" and interval=5 </button></a>
-
-
-**Video Length = 1min 24seconds, Detection Speed = "fast" , Minimum Percentage Probability = 40, Frame Detection Interval = 5, Detection Time = 5min 6seconds**
-
-<a href="https://drive.google.com/open?id=17934YONVSXvd4uuJE0KwenEFks7fFYe4" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "fast" and interval=5 </button></a>
-
-
-**Video Length = 1min 24seconds, Detection Speed = "faster" , Minimum Percentage Probability = 30, Frame Detection Interval = 5, Detection Time = 3min 18seconds**
-
-<a href="https://drive.google.com/open?id=1cs_06CuhXDvZp3fHJWFpam-31eclOhc-" ><button style="font-size: 12px; color: white; background-color: blue; height: 20px " > >>> Download detected video at speed "faster" and interval=5 </button></a>
-
-
-**Video Length = 1min 24seconds, Detection Speed = "fastest" , Minimum Percentage Probability = 20 , Frame Detection Interval = 5, Detection Time = 2min 18seconds**
-[![](../../data-images/video-3.jpg)](https://www.youtube.com/embed/S-jgBTQgbd4?rel=0)
-
-
-**Video Length = 1min 24seconds, Detection Speed = "flash" , Minimum Percentage Probability = 10, Frame Detection Interval = 5, Detection Time = 1min 27seconds**
-
-[Download detected video at speed "flash" and interval=5](https://drive.google.com/open?id=1aN2nnVoFjhUWpcz2Und3dsCT9OKrakM0)
 
 
 ###Video Detection Timeout
@@ -402,7 +337,7 @@ camera = cv2.VideoCapture(0)
 
 detector = VideoObjectDetection()
 detector.setModelTypeAsRetinaNet()
-detector.setModelPath(os.path.join(execution_path , "resnet50_coco_best_v2.0.1.h5"))
+detector.setModelPath(os.path.join(execution_path , "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
 detector.loadModel()
 
 
@@ -418,9 +353,7 @@ video_path = detector.detectObjectsFromVideo(camera_input=camera,
 ### Documentation
 <div id="documentation" ></div>
 
-We have provided full documentation for all **ImageAI** classes and functions in 3 major languages. Find links below: 
+We have provided full documentation for all **ImageAI** classes and functions. Find links below: 
 
 - Documentation - **English Version  [https://imageai.readthedocs.io](https://imageai.readthedocs.io)**
-- Documentation - **Chinese Version  [https://imageai-cn.readthedocs.io](https://imageai-cn.readthedocs.io)**
-- Documentation - **French Version  [https://imageai-fr.readthedocs.io](https://imageai-fr.readthedocs.io)**
 

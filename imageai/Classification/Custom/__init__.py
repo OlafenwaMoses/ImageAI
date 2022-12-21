@@ -1,666 +1,560 @@
-import tensorflow as tf
-from PIL import Image
-import time
-import numpy as np
+import time, warnings
 import os
-import warnings
-from matplotlib.cbook import deprecated
+import copy
+import re
 import json
+from typing import List, Tuple, Union
+from PIL import Image
+import numpy as np
 
-class ClassificationModelTrainer:
+import torch
+import torch.nn as nn
+from torch.optim import lr_scheduler
+from torchvision import datasets
+from torchvision import transforms
+from torchvision.models import mobilenet_v2, inception_v3, resnet50, densenet121
+from torchvision.models.inception import InceptionOutputs
+
+from .data_transformation import data_transforms1, data_transforms2
+from .training_params import resnet50_train_params, densenet121_train_params, inception_v3_train_params, mobilenet_v2_train_params
+from tqdm import tqdm
+
+from ...backend_check.model_extension import extension_check
+
+
+
+class ClassificationModelTrainer():
     """
         This is the Classification Model training class, that allows you to define a deep learning network
         from the 4 available networks types supported by ImageAI which are MobileNetv2, ResNet50,
-        InceptionV3 and DenseNet121.
+        InceptionV3 and DenseNet121 and then train on custom image data.
     """
 
-    def __init__(self):
-        self.__modelType = ""
-        self.__use_pretrained_model = False
+    def __init__(self) -> None:
+        self.__model_type = ""
+        self.__device = "cuda" if torch.cuda.is_available() else "cpu"
         self.__data_dir = ""
-        self.__train_dir = ""
-        self.__test_dir = ""
-        self.__logs_dir = ""
-        self.__num_epochs = 10
-        self.__trained_model_dir = ""
-        self.__model_class_dir = ""
-        self.__initial_learning_rate = 1e-3
-        self.__model_collection = []
+        self.__data_loaders = None
+        self.__class_names = None
+        self.__dataset_sizes = None
+        self.__dataset_name = ""
+        self.__model = None
+        self.__optimizer = None
+        self.__lr_scheduler = None
+        self.__loss_fn = nn.CrossEntropyLoss()
+        self.__transfer_learning_mode = "fine_tune_all"
+        self.__model_path = ""
+        self.__training_params = None
 
+    def __set_training_param(self) -> None:
+        if not self.__model_type:
+            raise RuntimeError("The model type is not set!!!")
+        self.__model = self.__training_params["model"]
+        optimizer = self.__training_params["optimizer"]
+        lr_decay_rate = self.__training_params["lr_decay_rate"]
+        lr_step_size = self.__training_params["lr_step_size"]
+        lr = self.__training_params["lr"]
+        weight_decay = self.__training_params["weight_decay"]
 
-    def setModelTypeAsSqueezeNet(self):
-        raise ValueError("ImageAI no longer support SqueezeNet. You can use MobileNetV2 instead by downloading the MobileNetV2 model and call the function 'setModelTypeAsMobileNetV2'")
+        if self.__model_path:
+            self.__set_transfer_learning_mode()
+            print("==> Transfer learning enabled")
+        
+        # change the last linear layer to have output features of
+        # same size as the number of unique classes in the new
+        # dataset.
+        if self.__model_type == "mobilenet_v2":
+            in_features = self.__model.classifier[1].in_features
+            self.__model.classifier[1] = nn.Linear(in_features, len(self.__class_names))
+        elif self.__model_type == "densenet121":
+            in_features = self.__model.classifier.in_features
+            self.__model.classifier = nn.Linear(in_features, len(self.__class_names))
+        else:
+            in_features = self.__model.fc.in_features
+            self.__model.fc = nn.Linear(in_features, len(self.__class_names))
 
-    def setModelTypeAsMobileNetV2(self):
+        self.__model.to(self.__device)
+        self.__optimizer = optimizer(
+                    self.__model.parameters(),
+                    lr=lr,
+                    momentum=0.9,
+                    weight_decay=weight_decay
+                )
+        if lr_decay_rate and lr_step_size:
+            self.__lr_scheduler = lr_scheduler.StepLR(
+                                self.__optimizer,
+                                gamma=lr_decay_rate,
+                                step_size=lr_step_size
+                            )
+
+    def __set_transfer_learning_mode(self) -> None:
+
+        state_dict = torch.load(self.__model_path)
+        if self.__model_type == "densenet121":
+            # '.'s are no longer allowed in module names, but previous densenet layers
+            # as provided by the pytorch organization has names that uses '.'s.
+            pattern = re.compile(
+                    r"^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\."
+                    "(?:weight|bias|running_mean|running_var))$"
+                    )
+            for key in list(state_dict.keys()):
+                res = pattern.match(key)
+                if res:
+                    new_key = res.group(1) + res.group(2)
+                    state_dict[new_key] = state_dict[key]
+                    del state_dict[key]
+
+        self.__model.load_state_dict(state_dict)
+        self.__model.to(self.__device)
+
+        if self.__transfer_learning_mode == "freeze_all":
+            for param in self.__model.parameters():
+                param.requires_grad = False
+
+    def __load_data(self, batch_size : int = 8) -> None:
+        
+        if not self.__data_dir:
+            raise RuntimeError("The dataset directory not yet set.")
+        image_dataset = {
+                        x:datasets.ImageFolder(
+                                os.path.join(self.__data_dir, x),
+                                data_transforms2[x] if self.__model_type=="inception_v3" else data_transforms1[x]
+                            )
+                        for x in ["train", "test"]
+                    }
+        self.__data_loaders = {
+                        x:torch.utils.data.DataLoader(
+                                image_dataset[x], batch_size=batch_size,
+                                shuffle=True
+                            )
+                        for x in ["train", "test"]
+                    }
+        self.__dataset_sizes = {x:len(image_dataset[x]) for x in ["train", "test"]}
+        self.__class_names = image_dataset["train"].classes
+        self.__dataset_name = os.path.basename(self.__data_dir.rstrip(os.path.sep))
+
+    def setDataDirectory(self, data_directory : str = "") -> None:
         """
-        'setModelTypeAsMobileNetV2()' is used to set the model type to the MobileNetV2 model
-        for the training instance object .
+        Sets the directory that contains the training and test dataset. The data directory should contain 'train' and 'test' subdirectories
+        for the training and test datasets.
+
+        In each of these subdirectories, each object must have a dedicated folder and the folder containing images for the object.
+
+        The structure of the 'test' and 'train' folder must be as follows:
+        
+        >> train >> class1 >> class1_train_images
+                    >> class2 >> class2_train_images
+                    >> class3 >> class3_train_images
+                    >> class4 >> class4_train_images
+                    >> class5 >> class5_train_images
+        >> test >> class1 >> class1_test_images
+                >> class2 >> class2_test_images
+                >> class3 >> class3_test_images
+                >> class4 >> class4_test_images
+                >> class5 >> class5_test_images
+
+        """
+        if os.path.isdir(data_directory):
+            self.__data_dir = data_directory
+            return
+        raise ValueError("expected a path to a directory")
+
+    def setModelTypeAsMobileNetV2(self) -> None:
+        """
+        'setModelTypeAsMobileNetV2()' is used to set the model type to the MobileNetV2 model.
         :return:
         """
-        self.__modelType = "mobilenetv2"
+        self.__model_type = "mobilenet_v2"
+        self.__training_params = mobilenet_v2_train_params()
 
-    @deprecated(since="2.1.6", message="'.setModelTypeAsResNet()' has been deprecated! Please use 'setModelTypeAsResNet50()' instead.")
-    def setModelTypeAsResNet(self):
-        return self.setModelTypeAsResNet50()
-
-    def setModelTypeAsResNet50(self):
+    def setModelTypeAsResNet50(self) -> None:
         """
-         'setModelTypeAsResNet()' is used to set the model type to the ResNet model
-                for the training instance object .
+        'setModelTypeAsResNet50()' is used to set the model type to the ResNet50 model.
         :return:
         """
-        self.__modelType = "resnet50"
+        self.__model_type = "resnet50"
+        self.__training_params = resnet50_train_params()
 
-    
-    @deprecated(since="2.1.6", message="'.setModelTypeAsDenseNet()' has been deprecated! Please use 'setModelTypeAsDenseNet121()' instead.")
-    def setModelTypeAsDenseNet(self):
-        return self.setModelTypeAsDenseNet121()
-
-    def setModelTypeAsDenseNet121(self):
+    def setModelTypeAsInceptionV3(self) -> None:
         """
-         'setModelTypeAsDenseNet()' is used to set the model type to the DenseNet model
-                for the training instance object .
+        'setModelTypeAsInceptionV3()' is used to set the model type to the InceptionV3 model.
         :return:
         """
-        self.__modelType = "densenet121"
+        self.__model_type = "inception_v3"
+        self.__training_params = inception_v3_train_params()
 
-    def setModelTypeAsInceptionV3(self):
+    def setModelTypeAsDenseNet121(self) -> None:
         """
-         'setModelTypeAsInceptionV3()' is used to set the model type to the InceptionV3 model
-                for the training instance object .
+        'setModelTypeAsDenseNet()' is used to set the model type to the DenseNet model.
         :return:
         """
-        self.__modelType = "inceptionv3"
+        self.__model_type = "densenet121"
+        self.__training_params = densenet121_train_params()
 
-    def setDataDirectory(self, data_directory="", train_subdirectory="train", test_subdirectory="test",
-                         models_subdirectory="models", json_subdirectory="json"):
+    def freezeAllLayers(self) -> None:
         """
-        'setDataDirectory()'
+        Set the transfer learning mode to freeze all layers.
 
-        - data_directory , is required to set the path to which the data/dataset to be used for
-                 training is kept. The directory can have any name, but it must have 'train' and 'test'
-                 sub-directory. In the 'train' and 'test' sub-directories, there must be sub-directories
-                 with each having it's name corresponds to the name/label of the object whose images are
-                to be kept. The structure of the 'test' and 'train' folder must be as follows:
-
-                >> train >> class1 >> class1_train_images
-                         >> class2 >> class2_train_images
-                         >> class3 >> class3_train_images
-                         >> class4 >> class4_train_images
-                         >> class5 >> class5_train_images
-
-                >> test >> class1 >> class1_test_images
-                        >> class2 >> class2_test_images
-                        >> class3 >> class3_test_images
-                        >> class4 >> class4_test_images
-                        >> class5 >> class5_test_images
-
-        - train_subdirectory (optional), subdirectory within 'data_directory' where the training set is. Defaults to 'train'.
-        - test_subdirectory (optional), subdirectory within 'data_directory' where the testing set is. Defaults to 'test'.
-        - models_subdirectory (optional), subdirectory within 'data_directory' where the output models will be saved. Defaults to 'models'.
-        - json_subdirectory (optional), subdirectory within 'data_directory' where the model classes json file will be saved. Defaults to 'json'.
-
-        :param data_directory:
-        :param train_subdirectory:
-        :param test_subdirectory:
-        :param models_subdirectory:
-        :param json_subdirectory:
-        :return:
+        NOTE: The last layer (fully connected layer) is trainable.
         """
+        self.__transfer_learning_mode = "freeze_all"
 
-        self.__data_dir = data_directory
+    def fineTuneAllLayers(self) -> None:
+        """
+        Sets the transfer learning mode to fine-tune the pretrained weights
+        """
+        self.__transfer_learning_mode = "fine_tune_all"
 
-        self.__train_dir = os.path.join(self.__data_dir, train_subdirectory)
-        self.__test_dir = os.path.join(self.__data_dir, test_subdirectory)
-        self.__trained_model_dir = os.path.join(self.__data_dir, models_subdirectory)
-        self.__model_class_dir = os.path.join(self.__data_dir, json_subdirectory)
-        self.__logs_dir = os.path.join(self.__data_dir, "logs")
-
-    def lr_schedule(self, epoch):
-
-        # Learning Rate Schedule
-
-
-        lr = self.__initial_learning_rate
-        total_epochs = self.__num_epochs
-
-        check_1 = int(total_epochs * 0.9)
-        check_2 = int(total_epochs * 0.8)
-        check_3 = int(total_epochs * 0.6)
-        check_4 = int(total_epochs * 0.4)
-
-        if epoch > check_1:
-            lr *= 1e-4
-        elif epoch > check_2:
-            lr *= 1e-3
-        elif epoch > check_3:
-            lr *= 1e-2
-        elif epoch > check_4:
-            lr *= 1e-1
-
-
-        return lr
-
-
-
-
-    def trainModel(self, num_objects, num_experiments=200, enhance_data=False, batch_size = 32, initial_learning_rate=1e-3, show_network_summary=False, training_image_size = 224, continue_from_model=None, transfer_from_model=None, transfer_with_full_training=True, initial_num_objects = None, save_full_model = False):
-
+    def trainModel(
+                self,
+                num_experiments : int = 100,
+                batch_size : int = 8,
+                model_directory  : str = None,
+                transfer_from_model: str = None,
+                verbose : bool = True
+            ) -> None:
+        
         """
         'trainModel()' function starts the model actual training. It accepts the following values:
-        - num_objects , which is the number of classes present in the dataset that is to be used for training
-        - num_experiments , also known as epochs, it is the number of times the network will train on all the training dataset
-        - enhance_data (optional) , this is used to modify the dataset and create more instance of the training set to enhance the training result
-        - batch_size (optional) , due to memory constraints, the network trains on a batch at once, until all the training set is exhausted. The value is set to 32 by default, but can be increased or decreased depending on the meormory of the compute used for training. The batch_size is conventionally set to 16, 32, 64, 128.
-        - initial_learning_rate(optional) , this value is used to adjust the weights generated in the network. You rae advised to keep this value as it is if you don't have deep understanding of this concept.
-        - show_network_summary(optional) , this value is used to show the structure of the network should you desire to see it. It is set to False by default
-        - training_image_size(optional) , this value is used to define the image size on which the model will be trained. The value is 224 by default and is kept at a minimum of 100.
-        - continue_from_model (optional) , this is used to set the path to a model file trained on the same dataset. It is primarily for continuos training from a previously saved model.
-        - transfer_from_model (optional) , this is used to set the path to a model file trained on another dataset. It is primarily used to perform tramsfer learning.
-        - transfer_with_full_training (optional) , this is used to set the pre-trained model to be re-trained across all the layers or only at the top layers.
-        - initial_num_objects (required if 'transfer_from_model' is set ), this is used to set the number of objects the model used for transfer learning is trained on. If 'transfer_from_model' is set, this must be set as well.
-        - save_full_model ( optional ), this is used to save the trained models with their network types. Any model saved by this specification can be loaded without specifying the network type.
-
-
-        :param num_objects:
+        - num_experiments: Also known as epochs, is the number of times the network will process all the images in the training dataset
+        - batch_size: The number of image data that will be loaded into memory at once during training
+        - model_directory: Location where json mapping and trained models will be saved
+        - transfer_from_model: Path to a pre-trained imagenet model that corresponds to the training model type
+        - verbose: Option to enable/disable training logs
+        
         :param num_experiments:
-        :param enhance_data:
         :param batch_size:
-        :param initial_learning_rate:
-        :param show_network_summary:
-        :param training_image_size:
-        :param continue_from_model:
-        :param transfer_from_model:
-        :param initial_num_objects:
-        :param save_full_model:
+        :model_directory:
+        :transfer_from_model:
+        :verbose:
         :return:
         """
-        self.__num_epochs = num_experiments
-        self.__initial_learning_rate = initial_learning_rate
-        lr_scheduler = tf.keras.callbacks.LearningRateScheduler(self.lr_schedule)
 
+        # Load dataset
+        self.__load_data(batch_size)
 
-        if(training_image_size < 100):
-            warnings.warn("The specified training_image_size {} is less than 100. Hence the training_image_size will default to 100.".format(training_image_size))
-            training_image_size = 100
+        # Check and effect transfer learning if enabled
+        if transfer_from_model:
+            extension_check(transfer_from_model)
+            self.__model_path = transfer_from_model
 
-
-
-        if (self.__modelType == "mobilenetv2"):
-            if (continue_from_model != None):
-                model = tf.keras.applications.MobileNetV2(input_shape=(training_image_size, training_image_size, 3), weights=continue_from_model, classes=num_objects,
-                include_top=True)
-                if (show_network_summary == True):
-                    print("Training using weights from a previouly model")
-            elif (transfer_from_model != None):
-                base_model = tf.keras.applications.MobileNetV2(input_shape=(training_image_size, training_image_size, 3), weights= transfer_from_model,
-                include_top=False, pooling="avg")
-
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.model.Models(inputs=base_model.input, outputs=network)
-
-                if (show_network_summary == True):
-                    print("Training using weights from a pre-trained ImageNet model")
-            else:
-                base_model = tf.keras.applications.MobileNetV2(input_shape=(training_image_size, training_image_size, 3), weights= None, classes=num_objects,
-                include_top=False, pooling="avg")
-                
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.models.Model(inputs=base_model.input, outputs=network)
-
-        elif (self.__modelType == "resnet50"):
-            if (continue_from_model != None):
-                model = tf.keras.applications.ResNet50(input_shape=(training_image_size, training_image_size, 3), weights=continue_from_model, classes=num_objects,
-                include_top=True)
-                if (show_network_summary == True):
-                    print("Training using weights from a previouly model")
-            elif (transfer_from_model != None):
-                base_model = tf.keras.applications.ResNet50(input_shape=(training_image_size, training_image_size, 3), weights= transfer_from_model,
-                include_top=False, pooling="avg")
-
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.model.Models(inputs=base_model.input, outputs=network)
-
-                if (show_network_summary == True):
-                    print("Training using weights from a pre-trained ImageNet model")
-            else:
-                base_model = tf.keras.applications.ResNet50(input_shape=(training_image_size, training_image_size, 3), weights= None, classes=num_objects,
-                include_top=False, pooling="avg")
-
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.models.Model(inputs=base_model.input, outputs=network)
-
-        elif (self.__modelType == "inceptionv3"):
-
-            if (continue_from_model != None):
-                model = tf.keras.applications.InceptionV3(input_shape=(training_image_size, training_image_size, 3), weights=continue_from_model, classes=num_objects,
-                include_top=True)
-                if (show_network_summary == True):
-                    print("Training using weights from a previouly model")
-            elif (transfer_from_model != None):
-                base_model = tf.keras.applications.InceptionV3(input_shape=(training_image_size, training_image_size, 3), weights= transfer_from_model,
-                include_top=False, pooling="avg")
-
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.model.Models(inputs=base_model.input, outputs=network)
-
-                if (show_network_summary == True):
-                    print("Training using weights from a pre-trained ImageNet model")
-            else:
-                base_model = tf.keras.applications.InceptionV3(input_shape=(training_image_size, training_image_size, 3), weights= None, classes=num_objects,
-                include_top=False, pooling="avg")
-
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.models.Model(inputs=base_model.input, outputs=network)
-
-            base_model = tf.keras.applications.InceptionV3(input_shape=(training_image_size, training_image_size, 3), weights= None, classes=num_objects,
-                include_top=False, pooling="avg")
-
-        elif (self.__modelType == "densenet121"):
-            if (continue_from_model != None):
-                model = tf.keras.applications.DenseNet121(input_shape=(training_image_size, training_image_size, 3), weights=continue_from_model, classes=num_objects,
-                include_top=True)
-                if (show_network_summary == True):
-                    print("Training using weights from a previouly model")
-            elif (transfer_from_model != None):
-                base_model = tf.keras.applications.DenseNet121(input_shape=(training_image_size, training_image_size, 3), weights= transfer_from_model,
-                include_top=False, pooling="avg")
-
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.model.Models(inputs=base_model.input, outputs=network)
-
-                if (show_network_summary == True):
-                    print("Training using weights from a pre-trained ImageNet model")
-            else:
-                base_model = tf.keras.applications.DenseNet121(input_shape=(training_image_size, training_image_size, 3), weights= None, classes=num_objects,
-                include_top=False, pooling="avg")
-
-                network = base_model.output
-                network = tf.keras.layers.Dense(num_objects, activation='softmax',
-                         use_bias=True)(network)
-                
-                model = tf.keras.models.Model(inputs=base_model.input, outputs=network)
-
-            base_model = tf.keras.applications.DenseNet121(input_shape=(training_image_size, training_image_size, 3), weights= None, classes=num_objects,
-                include_top=False, pooling="avg")
-
-
-        optimizer = tf.keras.optimizers.Adam(lr=self.__initial_learning_rate, decay=1e-4)
-        model.compile(loss="categorical_crossentropy", optimizer=optimizer, metrics=["accuracy"])
-        if (show_network_summary == True):
-            model.summary()
-
-        model_name = 'model_ex-{epoch:03d}_acc-{accuracy:03f}.h5'
-
-        log_name = '{}_lr-{}_{}'.format(self.__modelType, initial_learning_rate, time.strftime("%Y-%m-%d-%H-%M-%S"))
-
-        if not os.path.isdir(self.__trained_model_dir):
-            os.makedirs(self.__trained_model_dir)
-
-        if not os.path.isdir(self.__model_class_dir):
-            os.makedirs(self.__model_class_dir)
-
-        if not os.path.isdir(self.__logs_dir):
-            os.makedirs(self.__logs_dir)
-
-        model_path = os.path.join(self.__trained_model_dir, model_name)
-
-
-        logs_path = os.path.join(self.__logs_dir, log_name)
-        if not os.path.isdir(logs_path):
-            os.makedirs(logs_path)
-
-        save_weights_condition = True
-
-        if(save_full_model == True ):
-            save_weights_condition = False
-
-
-        checkpoint = tf.keras.callbacks.ModelCheckpoint(filepath=model_path,
-                                     monitor='accuracy',
-                                     verbose=1,
-                                     save_weights_only=save_weights_condition,
-                                     save_best_only=True,
-                                     period=1)
-
-
-        tensorboard = tf.keras.callbacks.TensorBoard(log_dir=logs_path, 
-                                  histogram_freq=0, 
-                                  write_graph=False, 
-                                  write_images=False)
-        
-
-        if (enhance_data == True):
-            print("Using Enhanced Data Generation")
-
-        height_shift = 0
-        width_shift = 0
-        if (enhance_data == True):
-            height_shift = 0.1
-            width_shift = 0.1
-
-        train_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-            rescale=1. / 255,
-            horizontal_flip=enhance_data, height_shift_range=height_shift, width_shift_range=width_shift)
-
-        test_datagen = tf.keras.preprocessing.image.ImageDataGenerator(
-            rescale=1. / 255)
-
-        train_generator = train_datagen.flow_from_directory(self.__train_dir, target_size=(training_image_size, training_image_size),
-                                                            batch_size=batch_size,
-                                                            class_mode="categorical")
-        test_generator = test_datagen.flow_from_directory(self.__test_dir, target_size=(training_image_size, training_image_size),
-                                                          batch_size=batch_size,
-                                                          class_mode="categorical")
-
-        class_indices = train_generator.class_indices
-        class_json = {}
-        for eachClass in class_indices:
-            class_json[str(class_indices[eachClass])] = eachClass
-
-        with open(os.path.join(self.__model_class_dir, "model_class.json"), "w+") as json_file:
-            json.dump(class_json, json_file, indent=4, separators=(",", " : "),
-                      ensure_ascii=True)
-            json_file.close()
-        print("JSON Mapping for the model classes saved to ", os.path.join(self.__model_class_dir, "model_class.json"))
-
-        num_train = len(train_generator.filenames)
-        num_test = len(test_generator.filenames)
-        print("Number of experiments (Epochs) : ", self.__num_epochs)
+        # Load training parameters for the specified model type
+        self.__set_training_param()
 
         
-        model.fit_generator(train_generator, steps_per_epoch=int(num_train / batch_size), epochs=self.__num_epochs,
-                            validation_data=test_generator,
-                            validation_steps=int(num_test / batch_size), callbacks=[checkpoint, lr_scheduler])
+        # Create output directory to save trained models and json mappings
+        if not model_directory:
+            model_directory = os.path.join(self.__data_dir, "models")
+
+        if not os.path.exists(model_directory):
+            os.mkdir(model_directory)
+        
+        # Dump class mappings to json file
+        with open(os.path.join(model_directory, f"{self.__dataset_name}_model_classes.json"), "w") as f:
+            classes_dict = {}
+            class_list = sorted(self.__class_names)
+            for i in range(len(class_list)):
+                classes_dict[str(i)] = class_list[i]
+            json.dump(classes_dict, f)
+
+        # Prep model weights for training
+        since = time.time()
+
+        best_model_weights = copy.deepcopy(self.__model.state_dict())
+        best_acc = 0.0
+        prev_save_name, recent_save_name = "", ""
+
+        # Device check and log
+        print("=" * 50)
+        print("Training with GPU") if self.__device == "cuda" else print("Training with CPU. This might cause slower train.")
+        print("=" * 50)
 
 
+        for epoch in range(num_experiments):
+            if verbose:
+                print(f"Epoch {epoch + 1}/{num_experiments}", "-"*10, sep="\n")
 
+            # each epoch has a training and test phase
+            for phase in ["train", "test"]:
+                if phase == "train":
+                    self.__model.train()
+                else:
+                    self.__model.eval()
+
+                running_loss = 0.0
+                running_corrects = 0
+
+                # Iterate on the dataset in batches
+                for imgs, labels in tqdm(self.__data_loaders[phase]):
+                    imgs = imgs.to(self.__device)
+                    labels = labels.to(self.__device)
+
+                    self.__optimizer.zero_grad()
+
+                    with torch.set_grad_enabled(phase == "train"):
+                        output = self.__model(imgs)
+                        if self.__model_type == "inception_v3" and type(output) == InceptionOutputs:
+                            output = output[0]
+                        _, preds = torch.max(output, 1)
+                        loss = self.__loss_fn(output, labels)
+
+                        if phase=="train":
+                            loss.backward()
+                            self.__optimizer.step()
+                    running_loss += loss.item() * imgs.size(0)
+                    running_corrects += torch.sum(preds==labels.data)
+
+                # Compute accuracy and loss metrics post epoch training
+                if phase == "train" and isinstance(self.__lr_scheduler, torch.optim.lr_scheduler.StepLR):
+                    self.__lr_scheduler.step()
+
+                epoch_loss = running_loss / self.__dataset_sizes[phase]
+                epoch_acc = running_corrects.double() / self.__dataset_sizes[phase]
+
+                if verbose:
+                    print(f"{phase} Loss: {epoch_loss:.4f} Accuracy: {epoch_acc:.4f}")
+                if phase == "test" and epoch_acc > best_acc:
+                    best_acc = epoch_acc
+                    recent_save_name = self.__model_type+f"-{self.__dataset_name}-test_acc_{best_acc:.5f}_epoch-{epoch}.pt"
+                    if prev_save_name:
+                        os.remove(os.path.join(model_directory, prev_save_name))
+                    best_model_weights = copy.deepcopy(self.__model.state_dict())
+                    torch.save(
+                            best_model_weights, os.path.join(model_directory, recent_save_name)
+                        )
+                    prev_save_name = recent_save_name
+            
+
+        time_elapsed = time.time() - since
+        print(f"Training completed in {time_elapsed//60:.0f}m {time_elapsed % 60:.0f}s")
+        print(f"Best test accuracy: {best_acc:.4f}")
 
 
 class CustomImageClassification:
     """
-    This is the image classification class for custom models trained with the 'ClassificationModelTrainer' class. It provides support for 4 different models which are:
-    ResNet50, MobileNetV2, DenseNet121 and Inception V3. After instantiating this class, you can set it's properties and
-    make image classification using it's pre-defined functions.
+    An implementation that allows for easy classification of images
+    using the state of the art computer vision classification model
+    trained on custom data.
+
+    The class provides 4 different classification models which are ResNet50, DensesNet121, InceptionV3 and MobileNetV2.
 
     The following functions are required to be called before a classification can be made
-    * setModelPath() , path to your custom model
-    * setJsonPath , , path to your custom model's corresponding JSON file
+
     * At least of of the following and it must correspond to the model set in the setModelPath()
-    [setModelTypeAsMobileNetV2(), setModelTypeAsResNet50(), setModelTypeAsDenseNet121, setModelTypeAsInceptionV3]
-    * loadModel() [This must be called once only before making a classification]
+    [setModelTypeAsMobileNetV2(), setModelTypeAsResNet(), setModelTypeAsDenseNet, setModelTypeAsInceptionV3]
 
-    Once the above functions have been called, you can call the classifyImage() function of the classification instance
-    object at anytime to predict an image.
+    * setModelPath: This is used to specify the absolute path to the trained model file.
+
+    * setJsonPath: This is used to specify the absolute path to the
+    json file saved during the training of the custom model.
+
+    * useCPU (Optional): If you will like to force the image classification to be performed on CPU, call this function.
+
+    * loadModel: Used to load the trained model weights and json data.
+
+    * classifyImage(): Used for classifying an image.
     """
-    def __init__(self):
-        self.__modelType = ""
-        self.modelPath = ""
-        self.jsonPath = ""
-        self.numObjects = 10
-        self.__model_classes = dict()
-        self.__modelLoaded = False
-        self.__model_collection = []
-        self.__input_image_size = 224
+    def __init__(self) -> None:
+        self.__model = None
+        self.__model_type = ""
+        self.__model_loaded = False
+        self.__device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.__json_path = None
+        self.__class_names = None
+        self.__model_loaded = False
+
+    def __load_image(self, image_input: Union[str, np.ndarray, Image.Image]) -> torch.Tensor:
+        images = []
+        preprocess = transforms.Compose([
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            ])
+        if type(image_input) == str:
+            if os.path.isfile(image_input):
+                img = Image.open(image_input).convert("RGB")
+                images.append(preprocess(img))
+            else:
+                raise ValueError(f"image path '{image_input}' is not found or a valid file")
+        elif type(image_input) == np.ndarray:
+            img = Image.fromarray(image_input).convert("RGB")
+            images.append(preprocess(img))
+        elif "PIL" in str(type(image_input)):
+            img = image_input.convert("RGB")
+            images.append(preprocess(img))
+        else:
+            raise ValueError(f"Invalid image input format")
+
+        return torch.stack(images)
     
-    def setModelPath(self, model_path):
-        """
-        'setModelPath()' function is required and is used to set the file path to the model adopted from the list of the
-        available 4 model types. The model path must correspond to the model type set for the classification instance object.
+    def __load_classes(self):
+        if self.__json_path:
+            with open(self.__json_path, 'r') as f:
+                self.__class_names = list(json.load(f).values())
+        else:
+            raise ValueError("Invalid json path. Set a valid json mapping path by calling the 'setJsonPath()' function")
 
-        :param model_path:
+    def setModelPath(self, path : str) -> None:
+        """
+        Sets the path to the pretrained weight.
+        """
+        if os.path.isfile(path):
+            extension_check(path)
+            self.__model_path = path
+            self.__model_loaded = False
+        else:
+            raise ValueError(
+                f"The path '{path}' isn't a valid file. Ensure you specify the path to a valid trained model file."
+            )
+    
+    def setJsonPath(self, path : str) -> None:
+        """
+        Sets the path to the pretrained weight.
+        """
+        if os.path.isfile(path):
+            self.__json_path = path
+        else:
+            raise ValueError(
+            "parameter path should be a valid path to the json mapping file."
+            )
+
+    def setModelTypeAsMobileNetV2(self) -> None:
+        """
+        'setModelTypeAsMobileNetV2()' is used to set the model type to the MobileNetV2 model.
         :return:
         """
-        self.modelPath = model_path
+        self.__model_type = "mobilenet_v2"
 
-    def setJsonPath(self, model_json):
+    def setModelTypeAsResNet50(self) -> None:
         """
-        'setJsonPath()'
-
-        :param model_path:
+        'setModelTypeAsResNet50()' is used to set the model type to the ResNet50 model.
         :return:
         """
-        self.jsonPath = model_json
+        self.__model_type = "resnet50"
 
-    def setModelTypeAsMobileNetV2(self):
+    def setModelTypeAsInceptionV3(self) -> None:
         """
-        'setModelTypeAsMobileNetV2()' is used to set the model type to the MobileNetV2 model
-        for the classification instance object .
+        'setModelTypeAsInceptionV3()' is used to set the model type to the InceptionV3 model.
         :return:
         """
-        self.__modelType = "mobilenetv2"
+        self.__model_type = "inception_v3"
 
-    def setModelTypeAsResNet50(self):
+    def setModelTypeAsDenseNet121(self) -> None:
         """
-         'setModelTypeAsResNet50()' is used to set the model type to the ResNet50 model
-                for the classification instance object .
+        'setModelTypeAsDenseNet121()' is used to set the model type to the DenseNet121 model.
         :return:
         """
-        self.__modelType = "resnet50"
-
-    def setModelTypeAsDenseNet121(self):
+        self.__model_type = "densenet121"
+    
+    def useCPU(self):
         """
-         'setModelTypeAsDenseNet121()' is used to set the model type to the DenseNet121 model
-                for the classification instance object .
+        Used to force classification to be done on CPU.
+        By default, classification will occur on GPU compute if available else CPU compute.
+        """
+        self.__device = "cpu"
+        if self.__model_loaded:
+            self.__model_loaded = False
+            self.loadModel()
+
+    def loadModel(self) -> None:
+        """
+        'loadModel()' function is used to load the model weights into the model architecture from the file path defined
+        in the setModelPath() function.
         :return:
         """
-        self.__modelType = "densenet121"
+        if not self.__model_loaded:
+            self.__load_classes()
+            try:
+                # change the last layer of the networks to conform to the number
+                # of unique classes in the custom dataset used to train the custom
+                # model
 
-    def setModelTypeAsInceptionV3(self):
-        """
-         'setModelTypeAsInceptionV3()' is used to set the model type to the InceptionV3 model
-                for the classification instance object .
-        :return:
-        """
-        self.__modelType = "inceptionv3"
+                if self.__model_type == "resnet50":
+                    self.__model = resnet50(pretrained=False)
+                    in_features = self.__model.fc.in_features
+                    self.__model.fc = nn.Linear(in_features, len(self.__class_names))
+                elif self.__model_type == "mobilenet_v2":
+                    self.__model = mobilenet_v2(pretrained=False)
+                    in_features = self.__model.classifier[1].in_features
+                    self.__model.classifier[1] = nn.Linear(in_features, len(self.__class_names))
+                elif self.__model_type == "inception_v3":
+                    self.__model = inception_v3(pretrained=False)
+                    in_features = self.__model.fc.in_features
+                    self.__model.fc = nn.Linear(in_features, len(self.__class_names))
+                elif self.__model_type == "densenet121":
+                    self.__model = densenet121(pretrained=False)
+                    in_features = self.__model.classifier.in_features
+                    self.__model.classifier = nn.Linear(in_features, len(self.__class_names))
+                else:
+                    raise RuntimeError("Unknown model type.\nEnsure the model type is properly set.")
 
-    def loadModel(self, classification_speed="normal", num_objects=10):
-        """
-        'loadModel()' function is used to load the model structure into the program from the file path defined
-        in the setModelPath() function. This function receives an optional value which is "classification_speed".
-        The value is used to reduce the time it takes to classify an image, down to about 50% of the normal time,
-        with just slight changes or drop in classification accuracy, depending on the nature of the image.
-        * classification_speed (optional); Acceptable values are "normal", "fast", "faster" and "fastest"
+                state_dict = torch.load(self.__model_path, map_location=self.__device)
 
-        :param classification_speed :
-        :return:
-        """
+                if self.__model_type == "densenet121":
+                    # '.'s are no longer allowed in module names, but previous densenet layers
+                    # as provided by the pytorch organization has names that uses '.'s.
+                    pattern = re.compile(
+                            r"^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\."
+                                    "(?:weight|bias|running_mean|running_var))$"
+                            )
+                    for key in list(state_dict.keys()):
+                        res = pattern.match(key)
+                        if res:
+                            new_key = res.group(1) + res.group(2)
+                            state_dict[new_key] = state_dict[key]
+                            del state_dict[key]
 
-        self.__model_classes = json.load(open(self.jsonPath))
+                self.__model.load_state_dict(state_dict)
+                self.__model.to(self.__device).eval()
+                self.__model_loaded = True
 
-        if(classification_speed=="normal"):
-            self.__input_image_size = 224
-        elif(classification_speed=="fast"):
-            self.__input_image_size = 160
-        elif(classification_speed=="faster"):
-            self.__input_image_size = 120
-        elif (classification_speed == "fastest"):
-            self.__input_image_size = 100
+            except Exception as e:
+                raise Exception("Weight loading failed.\nEnsure the model path is"
+                    " set and the weight file is in the specified model path.")
 
-        if (self.__modelLoaded == False):
-
-            image_input = tf.keras.layers.Input(shape=(self.__input_image_size, self.__input_image_size, 3))
-
-            if(self.__modelType == "" ):
-                raise ValueError("You must set a valid model type before loading the model.")
-
-            elif(self.__modelType == "mobilenetv2"):
-                model = tf.keras.applications.MobileNetV2(input_shape=(self.__input_image_size, self.__input_image_size, 3), weights=self.modelPath, classes = num_objects )
-                self.__model_collection.append(model)
-                self.__modelLoaded = True
-                try:
-                    None
-                except:
-                    raise ValueError("An error occured. Ensure your model file is a MobileNetV2 Model and is located in the path {}".format(self.modelPath))
-
-            elif(self.__modelType == "resnet50"):
-                try:
-                    model = tf.keras.applications.ResNet50(input_shape=(self.__input_image_size, self.__input_image_size, 3), weights=None, classes = num_objects )
-                    model.load_weights(self.modelPath)
-                    self.__model_collection.append(model)
-                    self.__modelLoaded = True
-                except:
-                    raise ValueError("An error occured. Ensure your model file is a ResNet50 Model and is located in the path {}".format(self.modelPath))
-
-            elif (self.__modelType == "densenet121"):
-                try:
-                    model = tf.keras.applications.DenseNet121(input_shape=(self.__input_image_size, self.__input_image_size, 3), weights=self.modelPath, classes = num_objects)
-                    self.__model_collection.append(model)
-                    self.__modelLoaded = True
-                except:
-                    raise ValueError("An error occured. Ensure your model file is a DenseNet121 Model and is located in the path {}".format(self.modelPath))
-
-            elif (self.__modelType == "inceptionv3"):
-                try:
-                    model = tf.keras.applications.InceptionV3(input_shape=(self.__input_image_size, self.__input_image_size, 3), weights=self.modelPath, classes = num_objects )
-                    self.__model_collection.append(model)
-                    self.__modelLoaded = True
-                except:
-                    raise ValueError("An error occured. Ensure your model file is in {}".format(self.modelPath))
-    def loadFullModel(self, classification_speed="normal", num_objects=10):
-        """
-        'loadFullModel()' function is used to load the model structure into the program from the file path defined
-        in the setModelPath() function. As opposed to the 'loadModel()' function, you don't need to specify the model type. This means you can load any Keras model trained with or without ImageAI and perform image prediction.
-        - prediction_speed (optional), Acceptable values are "normal", "fast", "faster" and "fastest"
-        - num_objects (required), the number of objects the model is trained to recognize
-
-        :param prediction_speed:
-        :param num_objects:
-        :return:
-        """
-
-        self.numObjects = num_objects
-        self.__model_classes = json.load(open(self.jsonPath))
-
-        if (classification_speed == "normal"):
-            self.__input_image_size = 224
-        elif (classification_speed == "fast"):
-            self.__input_image_size = 160
-        elif (classification_speed == "faster"):
-            self.__input_image_size = 120
-        elif (classification_speed == "fastest"):
-            self.__input_image_size = 100
-
-        if (self.__modelLoaded == False):
-            
-            model = tf.keras.models.load_model(filepath=self.modelPath)
-            self.__model_collection.append(model)
-            self.__modelLoaded = True
-            self.__modelType = "full"
-
-    def getModels(self):
-        """
-        'getModels()' provides access to the internal model collection. Helpful if models are used down the line with tools like lime.
-        :return:
-        """
-        return self.__model_collection
-
-
-    def classifyImage(self, image_input, result_count=5, input_type="file"):
+    def classifyImage(self, image_input: Union[str, np.ndarray, Image.Image], result_count: int) -> Tuple[List[str], List[float]]:
         """
         'classifyImage()' function is used to classify a given image by receiving the following arguments:
-            * input_type (optional) , the type of input to be parsed. Acceptable values are "file", "array" and "stream"
-            * image_input , file path/numpy array/image file stream of the image.
-            * result_count (optional) , the number of classifications to be sent which must be whole numbers between
-                1 and 1000. The default is 5.
+            * image_input: file path, numpy array or PIL image of the input image.
+            * result_count (optional) , the number of classifications to be sent which must be whole numbers between 1 and total number of classes the model is trained to classify.
 
         This function returns 2 arrays namely 'classification_results' and 'classification_probabilities'. The 'classification_results'
         contains possible objects classes arranged in descending of their percentage probabilities. The 'classification_probabilities'
         contains the percentage probability of each object class. The position of each object class in the 'classification_results'
         array corresponds with the positions of the percentage probability in the 'classification_probabilities' array.
-
-
-        :param input_type:
+        
         :param image_input:
         :param result_count:
         :return classification_results, classification_probabilities:
         """
-        classification_results = []
-        classification_probabilities = []
-        if (self.__modelLoaded == False):
-            raise ValueError("You must call the loadModel() function before making classification.")
+        if not self.__model_loaded:
+            raise RuntimeError(
+                "Model not yet loaded. You need to call '.loadModel()' before performing image classification"
+            )
 
-        else:
-            if (input_type == "file"):
-                try:
-                    image_to_predict = tf.keras.preprocessing.image.load_img(image_input, target_size=(self.__input_image_size, self.__input_image_size))
-                    image_to_predict = tf.keras.preprocessing.image.img_to_array(image_to_predict, data_format="channels_last")
-                    image_to_predict = np.expand_dims(image_to_predict, axis=0)
-                except:
-                    raise ValueError("You have set a path to an invalid image file.")
-            elif (input_type == "array"):
-                try:
-                    image_input = Image.fromarray(np.uint8(image_input))
-                    image_input = image_input.resize((self.__input_image_size, self.__input_image_size))
-                    image_input = np.expand_dims(image_input, axis=0)
-                    image_to_predict = image_input.copy()
-                    image_to_predict = np.asarray(image_to_predict, dtype=np.float64)
-                except:
-                    raise ValueError("You have parsed in a wrong numpy array for the image")
-            elif (input_type == "stream"):
-                try:
-                    image_input = Image.open(image_input)
-                    image_input = image_input.resize((self.__input_image_size, self.__input_image_size))
-                    image_input = np.expand_dims(image_input, axis=0)
-                    image_to_predict = image_input.copy()
-                    image_to_predict = np.asarray(image_to_predict, dtype=np.float64)
-                    
-                except:
-                    raise ValueError("You have parsed in a wrong stream for the image")
+        images = self.__load_image(image_input)
+        images = images.to(self.__device)
+    
+        with torch.no_grad():
+            output = self.__model(images)
+        probabilities = torch.softmax(output, dim=1)
+        topN_prob, topN_catid = torch.topk(probabilities, result_count)
+        
+        predictions = [
+                [
+                    (self.__class_names[topN_catid[i][j]], topN_prob[i][j].item()*100)
+                    for j in range(topN_prob.shape[1])
+                ]
+                for i in range(topN_prob.shape[0])
+            ]
+        
+        labels_pred = []
+        probabilities_pred = []
 
-            if (self.__modelType == "mobilenetv2"):
-                image_to_predict = tf.keras.applications.mobilenet_v2.preprocess_input(image_to_predict)
-            elif (self.__modelType == "full"):
-                image_to_predict = tf.keras.applications.mobilenet_v2.preprocess_input(image_to_predict)
-            elif (self.__modelType == "inceptionv3"):
-                image_to_predict = tf.keras.applications.inception_v3.preprocess_input(image_to_predict)
-            elif (self.__modelType == "densenet121"):
-                image_to_predict = tf.keras.applications.densenet.preprocess_input(image_to_predict)
-            try:
-                model = self.__model_collection[0]
-                prediction = model.predict(image_to_predict, steps=1)
-
-                predictiondata = []
-                for pred in prediction:
-                    top_indices = pred.argsort()[-result_count:][::-1]
-                    for i in top_indices:
-                        each_result = []
-                        each_result.append(self.__model_classes[str(i)])
-                        each_result.append(pred[i])
-                        predictiondata.append(each_result)
-
-                for result in predictiondata:
-                    classification_results.append(str(result[0]))
-                    classification_probabilities.append(result[1] * 100)
-                        
-            except:
-                raise ValueError("Error. Ensure your input image is valid")
-
-            return classification_results, classification_probabilities
-                
-
-    @deprecated(since="2.1.6", message="'.predictImage()' has been deprecated! Please use 'classifyImage()' instead.")
-    def predictImage(self, image_input, result_count=5, input_type="file"):
-
-        return self.classifyImage(image_input, result_count, input_type)
+        for idx, pred in enumerate(predictions):
+            for label, score in pred:
+                labels_pred.append(label)
+                probabilities_pred.append(round(score, 4))
+        
+        return labels_pred, probabilities_pred
