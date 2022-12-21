@@ -1,4 +1,4 @@
-# ImageAI (3.0.0)
+# ImageAI (v3.0.1)
 
 
 
