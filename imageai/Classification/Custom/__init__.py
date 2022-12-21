@@ -272,7 +272,7 @@ class ClassificationModelTrainer():
 
         for epoch in range(num_experiments):
             if verbose:
-                print(f"Epoch {epoch}/{num_experiments - 1}", "-"*10, sep="\n")
+                print(f"Epoch {epoch + 1}/{num_experiments}", "-"*10, sep="\n")
 
             # each epoch has a training and test phase
             for phase in ["train", "test"]:

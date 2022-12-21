@@ -13,6 +13,7 @@ import torch
 from torch.cuda import amp
 from torch.utils.data import DataLoader
 from torch.optim import SGD, lr_scheduler
+from tqdm import tqdm
 
 from .yolo.dataset import LoadImagesAndLabels
 from .yolo.custom_anchors import generate_anchors
@@ -249,7 +250,7 @@ class DetectionModelTrainer:
                 if phase=="train":
                     self.__model.train()
                     print("Train: ")
-                    for batch_i, (data, anns) in enumerate(self.__train_loader):
+                    for batch_i, (data, anns) in tqdm(enumerate(self.__train_loader)):
                         batches_done = batch_i + nb * epoch
 
                         data = data.to(self.__device)

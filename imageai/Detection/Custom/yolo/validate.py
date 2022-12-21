@@ -6,6 +6,7 @@ from torchvision.ops import box_iou
 
 from ....yolov3.utils import get_predictions
 from .metric import ap_per_class
+from tqdm import tqdm
 
 # This new validation function is based on https://github.com/ultralytics/yolov3/blob/master/val.py
 
@@ -58,7 +59,7 @@ def run(model, val_dataloader, num_class, net_dim=416, nms_thresh=0.6, objectnes
     p, r, f1, mp, mr, map50, map = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     stats, ap, ap_class = [], [], []
  
-    for batch_i, (im, targets) in enumerate(val_dataloader):
+    for batch_i, (im, targets) in tqdm(enumerate(val_dataloader)):
         im = im.to(device)
         targets = targets.to(device)
         nb = im.shape[0]  # batch
