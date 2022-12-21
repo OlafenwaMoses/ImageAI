@@ -18,7 +18,21 @@ To use Tensorflow backend, do the following
   - GPU: `pip install tensorflow-gpu==2.4.0`
 - Install other dependencies: `pip install keras==2.4.3 numpy==1.19.3 pillow==7.0.0 scipy==1.4.1 h5py==2.10.0 matplotlib==3.3.2 opencv-python keras-resnet==0.2.0`
 - Install ImageAI **2.1.6**: `pip install imageai==2.1.6`
+- Download the Tensorflow models from the releases below
+  - [Models for Image Recognition and Object Detection](https://github.com/OlafenwaMoses/ImageAI/releases/tag/1.0)
+  - [TF2.x Models [ Exclusives ]](https://github.com/OlafenwaMoses/ImageAI/releases/tag/essentials-v5)
 
 
 
 # Convert Pascal VOC dataset to YOLO format
+Because ImageAI now uses `YOLO format` for training custom object detection models; should you need to train a new model with the new ImageAI version, you will need to convert your `Pascal VOC` datasets to YOLO format by doing the following 
+- Run the command below
+    ```
+    python scripts\pascval_voc_to_yolo.py --dataset_dir <path_to_your_dataset_folder>
+    ```
+- Once completed, you will find the YOLO version of the dataset next to your Pascal VOC dataset.
+  - E.g, if your dataset is in `C:/Users/Troublemaker/Documents/datasets/headset`, your conversion command will be
+    ```
+    python scripts\pascval_voc_to_yolo.py --dataset_dir C:/Users/Troublemaker/Documents/datasets/headset
+    ```
+    and once completed, the output will be in `C:/Users/Troublemaker/Documents/datasets/headset-yolo`
