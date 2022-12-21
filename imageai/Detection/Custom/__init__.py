@@ -15,15 +15,16 @@ from torch.utils.data import DataLoader
 from torch.optim import SGD, lr_scheduler
 from tqdm import tqdm
 
-from .yolo.dataset import LoadImagesAndLabels
-from .yolo.custom_anchors import generate_anchors
-from .yolo.compute_loss import compute_loss
-from .yolo import validate
-from ...yolov3.tiny_yolov3 import YoloV3Tiny
-from ...yolov3.yolov3 import YoloV3
-from ...yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
+from imageai.Detection.Custom.yolo.dataset import LoadImagesAndLabels
+from imageai.Detection.Custom.yolo.custom_anchors import generate_anchors
+from imageai.Detection.Custom.yolo.compute_loss import compute_loss
+from imageai.Detection.Custom.yolo import validate
 
-from ...backend_check.model_extension import extension_check
+from imageai.yolov3.tiny_yolov3 import YoloV3Tiny
+from imageai.yolov3.yolov3 import YoloV3
+from imageai.yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
+
+from imageai.backend_check.model_extension import extension_check
 
 
 class DetectionModelTrainer:

@@ -15,11 +15,11 @@ from torchvision import transforms
 from torchvision.models import mobilenet_v2, inception_v3, resnet50, densenet121
 from torchvision.models.inception import InceptionOutputs
 
-from .data_transformation import data_transforms1, data_transforms2
-from .training_params import resnet50_train_params, densenet121_train_params, inception_v3_train_params, mobilenet_v2_train_params
+from imageai.Classification.Custom.data_transformation import data_transforms1, data_transforms2
+from imageai.Classification.Custom.training_params import resnet50_train_params, densenet121_train_params, inception_v3_train_params, mobilenet_v2_train_params
 from tqdm import tqdm
 
-from ...backend_check.model_extension import extension_check
+from imageai.backend_check.model_extension import extension_check
 
 
 

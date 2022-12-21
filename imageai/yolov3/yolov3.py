@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from .utils import transform_prediction
+from imageai.yolov3.utils import transform_prediction
 
 
 def noop(x):

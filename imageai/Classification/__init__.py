@@ -8,7 +8,7 @@ import torch.nn.functional as F
 from torchvision import transforms
 from PIL import Image
 import traceback
-from ..backend_check.model_extension import extension_check
+from imageai.backend_check.model_extension import extension_check
 
 classification_models = {
     "resnet50": {

@@ -1,1 +1,1 @@
-from .backend_check import backend_check
+from imageai.backend_check import backend_check

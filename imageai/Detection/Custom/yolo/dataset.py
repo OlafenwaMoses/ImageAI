@@ -8,7 +8,7 @@ import torch
 from torch.utils.data import Dataset
 from torchvision import transforms
 
-from ....yolov3.utils import prepare_image
+from imageai.yolov3.utils import prepare_image
 
 class LoadImagesAndLabels(Dataset):
 

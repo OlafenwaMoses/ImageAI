@@ -4,8 +4,8 @@ import numpy as np
 import torch
 from torchvision.ops import box_iou
 
-from ....yolov3.utils import get_predictions
-from .metric import ap_per_class
+from imageai.yolov3.utils import get_predictions
+from imageai.Detection.Custom.yolo.metric import ap_per_class
 from tqdm import tqdm
 
 # This new validation function is based on https://github.com/ultralytics/yolov3/blob/master/val.py

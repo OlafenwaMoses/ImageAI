@@ -11,13 +11,13 @@ import torch
 import cv2
 from typing import Union, List
 
-from ..yolov3.yolov3 import YoloV3
-from ..yolov3.tiny_yolov3 import YoloV3Tiny
-from ..yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
-from ..retinanet.utils import read_image, draw_bounding_boxes_and_labels, tensor_to_ndarray
+from imageai.yolov3.yolov3 import YoloV3
+from imageai.yolov3.tiny_yolov3 import YoloV3Tiny
+from imageai.yolov3.utils import draw_bbox_and_label, get_predictions, prepare_image
+from imageai.retinanet.utils import read_image, draw_bounding_boxes_and_labels, tensor_to_ndarray
 import uuid
 
-from ..backend_check.model_extension import extension_check
+from imageai.backend_check.model_extension import extension_check
 
 warnings.filterwarnings("once", category=ResourceWarning)
 

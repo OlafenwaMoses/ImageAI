@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 
-from .yolov3 import DetectionLayer, ConvLayer
+from imageai.yolov3.yolov3 import DetectionLayer, ConvLayer
 
 
 class YoloV3Tiny(nn.Module):
