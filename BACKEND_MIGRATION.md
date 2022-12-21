@@ -8,6 +8,8 @@ In December 2022, ImageAI `3.0.0` was released which effected the change from Te
 - All `.h5` pretrained models and custom trained `.h5` models no longer supported. If you still intend to use these models, see the `Using Tensorflow backend` section.
 - `Speed mode` have been removed from model loading
 - Custom detection model training dataset format changed to YOLO format from Pascal VOC. To convert your dataset to YOLO format, see the  `Convert Pascal VOC dataset to YOLO format` section.
+- Enhance data for custom classification model training now removed
+- Detection model training standalone evaluation now removed
 
 # Using Tensorflow backend
 To use Tensorflow backend, do the following

@@ -256,3 +256,4 @@ You can cite **ImageAI** in your projects and research papers via the **BibTeX**
 [https://github.com/experiencor/keras-yolo3](https://github.com/experiencor/keras-yolo3)
  15. MobileNetV2: Inverted Residuals and Linear Bottlenecks
 [https://arxiv.org/abs/1801.04381](https://arxiv.org/abs/1801.04381)
+ 16. YOLOv3 in PyTorch > ONNX > CoreML > TFLite [https://github.com/ultralytics/yolov3](https://github.com/ultralytics/yolov3)

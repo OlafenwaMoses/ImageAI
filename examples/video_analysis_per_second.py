@@ -48,7 +48,7 @@ def forSecond(frame_number, output_arrays, count_arrays, average_count, returned
 
 video_detector = VideoObjectDetection()
 video_detector.setModelTypeAsYOLOv3()
-video_detector.setModelPath(os.path.join(execution_path, "yolo.h5")) # Download the model via this link https://github.com/OlafenwaMoses/ImageAI/releases/tag/1.0
+video_detector.setModelPath(os.path.join(execution_path, "yolov3.pt")) # https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3.pt
 video_detector.loadModel()
 
 plt.show()

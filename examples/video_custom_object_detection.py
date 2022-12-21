@@ -5,7 +5,7 @@ execution_path = os.getcwd()
 
 detector = VideoObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5")) # Download the model via this link https://github.com/OlafenwaMoses/ImageAI/releases/tag/1.0
+detector.setModelPath(os.path.join(execution_path, "yolov3.pt")) # https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/yolov3.pt
 detector.loadModel()
 
 custom = detector.CustomObjects(person=True, motorcycle=True, bus=True)

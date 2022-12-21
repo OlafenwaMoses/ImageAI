@@ -6,7 +6,7 @@ execution_path = os.getcwd()
 
 detector = ObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolo.h5")) # Download the model via this link https://github.com/OlafenwaMoses/ImageAI/releases/tag/1.0
+detector.setModelPath( os.path.join(execution_path , "yolov3.pt")) # Download the model via this link https://github.com/OlafenwaMoses/ImageAI/releases/tag/1.0
 detector.loadModel()
 
 our_time = time()
