@@ -1,0 +1,2 @@
+recursive-include imageai/Detection *.txt
+recursive-include imageai/Classification *.txt
