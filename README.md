@@ -1,4 +1,4 @@
-# ImageAI (v3.0.1)
+# ImageAI (v3.0.2)
 
 
 
@@ -11,7 +11,7 @@ An open-source python library built to empower developers to build applications 
  
 ## ---------------------------------------------------
 ## ImageAI now uses **PyTorch** backend.
-As from ImageAI `3.0.0`, the library now uses PyTorch has the backend. For full details on this and if you plan on using existing Tensorflow pretrained models, custom models and Pascal VOC dataset, visit the [BACKEND_MIGRATION.md](BACKEND_MIGRATION.md) documentation.
+As from ImageAI `3.0.2`, the library now uses PyTorch has the backend. For full details on this and if you plan on using existing Tensorflow pretrained models, custom models and Pascal VOC dataset, visit the [BACKEND_MIGRATION.md](BACKEND_MIGRATION.md) documentation.
 ## ---------------------------------------------------
  
 ![](logo1.png)
@@ -28,7 +28,7 @@ Built with simplicity in mind, **ImageAI**
 Eventually, **ImageAI** will provide support for a wider and more specialized aspects of Computer Vision
 
 
-**New Release : ImageAI 3.0.1**
+**New Release : ImageAI 3.0.2**
 
 What's new:
 - PyTorch backend

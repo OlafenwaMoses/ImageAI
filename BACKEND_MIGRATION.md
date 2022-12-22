@@ -1,6 +1,6 @@
 # Overview
 
-In December 2022, ImageAI `3.0.0` was released which effected the change from Tensorflow backend to PyTorch backend. This change allows ImageAI to support `Python 3.7` up to `Python 3.10` for all its features and deprecates a number of functionalities for this and future versions of ImageAI.
+In December 2022, ImageAI `3.0.2` was released which effected the change from Tensorflow backend to PyTorch backend. This change allows ImageAI to support `Python 3.7` up to `Python 3.10` for all its features and deprecates a number of functionalities for this and future versions of ImageAI.
 
 
 # Deprecated functionalities
