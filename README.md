@@ -77,11 +77,11 @@ To install ImageAI, run the python installation instruction below in the command
 - If you plan to train custom AI models, download [requirements_extra.txt](https://github.com/OlafenwaMoses/ImageAI/blob/master/requirements_extra.txt) file and install via the command
   
   ```
-  pip install -r requirements.txt
+  pip install -r requirements_extra.txt
   ```
   or simply copy and run the command below
   ```
-  pip install pycocotools @ git+https://github.com/gautamchitnis/cocoapi.git@cocodataset-master#subdirectory=PythonAPI
+  pip install pycocotools@git+https://github.com/gautamchitnis/cocoapi.git@cocodataset-master#subdirectory=PythonAPI
   ```
 - Then run the command below to install ImageAI
   ```
