@@ -576,7 +576,7 @@ class VideoObjectDetection:
         self.__detector.useCPU()
     
     def CustomObjects(self, **kwargs):
-        return self.__detector.CustomObjects(kwargs)
+        return self.__detector.CustomObjects(**kwargs)
 
     def detectObjectsFromVideo(self, input_file_path="", camera_input=None, output_file_path="", frames_per_second=20,
                                frame_detection_interval=1, minimum_percentage_probability=50, log_progress=False,
