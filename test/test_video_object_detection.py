@@ -76,6 +76,28 @@ def test_video_detection_retinanet():
     delete_cache([video_file_output + ".mp4"])
 
 
+def test_video_detection_retinanet_custom_objects():
+
+    delete_cache([video_file_output + ".mp4"])
+
+    detector = VideoObjectDetection()
+    detector.setModelTypeAsRetinaNet()
+    detector.setModelPath(model_path=os.path.join(test_folder, "data-models", "retinanet_resnet50_fpn_coco-eeacb38b.pth"))
+    detector.loadModel()
+
+    custom_objects = detector.CustomObjects(
+        person=True,
+        bus=True
+    )
+
+    video_path = detector.detectObjectsFromVideo(input_file_path=video_file, output_file_path=video_file_output, save_detected_video=True, frames_per_second=30, log_progress=True, custom_objects=custom_objects)
+
+    assert os.path.exists(video_file_output + ".mp4")
+    assert isinstance(video_path, str)
+
+    delete_cache([video_file_output + ".mp4"])
+
+
 
 
 def test_video_detection_yolov3():
