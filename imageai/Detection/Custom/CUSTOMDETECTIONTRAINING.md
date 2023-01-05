@@ -173,7 +173,6 @@ Validation:
   - The bounding box loss `box loss` is reported and expected to drop as the training progresses
   - The object localization loss  `object loss` is reported and expected to drop as the training progresses
   - The class loss  `class loss` is reported and expected to drop as the training progresses. If the class loss persists at 0.0000, it's because your dataset has a single class.
-  - The class loss  `class loss` is reported and expected to drop as the training progresses. If the class loss persists at 0.0000, it's because your dataset has a single class.
   - The `mAP50` and `mAP0.5-0.95` metrics are expected to increase. This signifies the models accuracy increases. There might be flunctuations in these metrics sometimes.
 - For each increase in the `mAP50`  after an experiment, a model is saved in the **hololens-yolo/models** folder. The higher the mAP50, the better the model. 
 
