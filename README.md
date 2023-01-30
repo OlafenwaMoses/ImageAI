@@ -6,7 +6,7 @@
 
 An open-source python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple and few lines of code.
  
- If you would like to sponsor this project, kindly visit the <strong>[Github sponsor page](https://github.com/sponsors/OlafenwaMoses)</strong>.
+ If you would like to sponsor this project, kindly visit the <strong>[GitHub sponsor page](https://github.com/sponsors/OlafenwaMoses)</strong>.
  
  
 ## ---------------------------------------------------
@@ -112,7 +112,7 @@ To install ImageAI, run the python installation instruction below in the command
   <tr>
     <td>
         <img src="data-images/image2new.jpg">
-        <h4>ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class provides support for RetinaNet, YOLOv3 and TinyYOLOv3, with options to adjust for state of the art performance or real time processing. Click the link below to see the full sample codes, explanations and best practices guide.</h4>
+        <h4>ImageAI provides very convenient and powerful methods to perform object detection on images and extract each object from the image. The object detection class provides support for RetinaNet, YOLOv3 and TinyYOLOv3, with options to adjust for state-of-the-art performance or real time processing. Click the link below to see the full sample codes, explanations and best practices guide.</h4>
     <a href="imageai/Detection"> >>> Get Started</a>
     </td>
   </tr>
@@ -218,7 +218,7 @@ We have provided full documentation for all **ImageAI** classes and functions. V
 
 **ImageAI** provides abstracted and convenient implementations of state-of-the-art Computer Vision technologies. All of **ImageAI** implementations and code can work on any computer system with moderate CPU capacity. However, the speed of processing for operations like image prediction, object detection and others on CPU is slow and not suitable for real-time applications. To perform real-time Computer Vision operations with high performance, you need to use GPU enabled technologies.
 
-**ImageAI** uses the PyTorch backbone for it's Computer Vision operations. PyTorch supports both CPUs and GPUs ( Specifically NVIDIA GPUs.  You can get one for your PC or get a PC that has one) for machine learning and artificial intelligence algorithms' implementations.
+**ImageAI** uses the PyTorch backbone for its Computer Vision operations. PyTorch supports both CPUs and GPUs ( Specifically NVIDIA GPUs.  You can get one for your PC or get a PC that has one) for machine learning and artificial intelligence algorithms' implementations.
 
 
 
