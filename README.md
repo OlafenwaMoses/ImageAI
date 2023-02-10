@@ -37,7 +37,7 @@ What's new:
 
 ### TABLE OF CONTENTS
 - <a href="#installation" > :white_square_button: Installation</a>
-- <a href="#features" > :white_square_button: Image Prediction</a>
+- <a href="#features" > :white_square_button: Features</a>
 - <a href="#documentation" > :white_square_button: Documentation</a>
 - <a href="#sponsors" > :white_square_button: Sponsors</a>
 - <a href="#sample" > :white_square_button: Projects Built on ImageAI</a>
