@@ -46,7 +46,7 @@ You will prepare the images as follows:
      ```
 8. You can train your custom detection model completely from scratch or use transfer learning (recommended for better accuracy) from a pre-trained YOLOv3 model. Also, we have provided a sample annotated Hololens and Headsets (Hololens and Oculus) dataset for you to train with. Download the pre-trained YOLOv3 model and the sample datasets in the link below.  
 
-[hololens-yolo.zip](https://github.com/OlafenwaMoses/ImageAI/releases/download/test-resources-v3/hololens-yolo.zip)
+Download dataset `hololens-yolo.zip` [here](https://github.com/OlafenwaMoses/ImageAI/releases/tag/test-resources-v3) and pre-trained model `yolov3.pt`  [here](https://github.com/OlafenwaMoses/ImageAI/releases/tag/3.0.0-pretrained)
 
 
 ### Training on your custom dataset
