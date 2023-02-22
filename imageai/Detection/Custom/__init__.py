@@ -113,12 +113,13 @@ class DetectionModelTrainer:
             # to differ.
             new_state_dict = {k:v for k,v in state_dict.items() if k in self.__model.state_dict().keys() and v.shape==self.__model.state_dict()[k].shape}
             self.__model.load_state_dict(new_state_dict, strict=False)
+            print("="*20)
+            print("Pretrained YOLOv3 model loaded to initialize weights")
+            print("="*20)
         except Exception as e:
+            print("="*20)
             print("pretrained weight loading failed. Defaulting to using random weight.")
-        
-        print("="*20)
-        print("Pretrained YOLOv3 model loaded to initialize weights")
-        print("="*20)
+            print("="*20)
 
     def __load_data(self) -> None:
         self.__num_classes = len(self.__classes)
