@@ -237,7 +237,7 @@ Kindly follow the link below to download the publication.
 
 [https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society](https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society/)
 
-### Contact Developer
+### Contact Developers
 <div id="contact"></div>
 
 - **Moses Olafenwa**
