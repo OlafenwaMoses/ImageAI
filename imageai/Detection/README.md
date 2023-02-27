@@ -17,7 +17,7 @@ ImageAI provides very convenient and powerful methods to perform object detectio
 * **[TinyYOLOv3](https://github.com/OlafenwaMoses/ImageAI/releases/download/3.0.0-pretrained/tiny-yolov3.pt)** _(Size = 34 mb, optimized for speed and moderate performance, with fast detection time)_
 
 
- Once you download the object detection model file, you should copy the model file to the your project folder where your .py files will be.
+ Once you download the object detection model file, you should copy the model file to your project folder where your .py files will be.
  Then create a python file and give it a name; an example is FirstObjectDetection.py. Then write the code below into the python file:
 
 ### FirstObjectDetection.py
@@ -82,12 +82,12 @@ import os
 execution_path = os.getcwd()
 ```
 
- In the 3 lines above , we import the **ImageAI object detection** class in the first line, import the `os` in the second line and obtained the path to folder where our python file runs.
+ In the 3 lines above, we import the **ImageAI object detection** class in the first line, import the `os` in the second line and obtained the path to folder where our python file runs.
   
 ```python
 detector = ObjectDetection()
 detector.setModelTypeAsYOLOv3()
-detector.setModelPath( os.path.join(execution_path , "yolov3.pt"))
+detector.setModelPath(os.path.join(execution_path , "yolov3.pt"))
 detector.loadModel()
 ```
 
@@ -101,7 +101,7 @@ for eachObject in detections:
     print("--------------------------------")
 ```
 
-In the 2 lines above, we ran the `detectObjectsFromImage()` function and parse in the path to our image, and the path to the new image which the function will save. Then the function returns an array of dictionaries with each dictionary corresponding to the number of objects detected in the image. Each dictionary has the properties `name` (name of the object), `percentage_probability` (percentage probability of the detection) and `box_points` (the x1,y1,x2 and y2 coordinates of the bounding box of the object).
+In the 2 lines above, we ran the `detectObjectsFromImage()` function and parse in the path to our image, and the path to the new image which the function will save. Then the function returns an array of dictionaries with each dictionary corresponding to the number of objects detected in the image. Each dictionary has the properties `name` (name of the object), `percentage_probability` (percentage probability of the detection) and `box_points` (the x1, y1, x2 and y2 coordinates of the bounding box of the object).
 
 Should you want to use the RetinaNet which is appropriate for high-performance and high-accuracy demanding detection tasks, you will download the RetinaNet model file from the links above, copy it to your python file's folder, set the model type and model path in your python code as seen below:
 
@@ -127,7 +127,7 @@ detector.loadModel()
 In the examples we used above, we ran the object detection on an image and it returned the detected objects in an array as well as save a new image with rectangular markers drawn on each object. In our next examples, we will be able to extract each object from the input image
   and save it independently.
 
-In the example code below which is very identical to the previous object detction code, we will save each object detected as a seperate image.
+In the example code below which is very identical to the previous object detection code, we will save each object detected as a seperate image.
 
 ```python
 from imageai.Detection import ObjectDetection
@@ -173,13 +173,13 @@ for eachObject, eachObjectPath in zip(detections, objects_path):
     print("--------------------------------")
 ```
 
-In the above above lines, we called the `detectObjectsFromImage()` , parse in the input image path, output image path, and an extra parameter `extract_detected_objects=True`. This parameter states that the function should extract each object detected from the image and save it has a seperate image. The parameter is false by default. Once set to `true`, the function will create a directory which is the **output image path + "-objects"** . Then it saves all the extracted images into this new directory with each image's name being the **detected object name + "-" + a number** which corresponds to the order at which the objects were detected.
+In the above lines, we called the `detectObjectsFromImage()`, parse in the input image path, output image path, and an extra parameter `extract_detected_objects=True`. This parameter states that the function should extract each object detected from the image and save it as a seperate image. The parameter is false by default. Once set to `True`, the function will create a directory which is the **output image path + "-objects"**. Then it saves all the extracted images into this new directory with each image's name being the **detected object name + "-" + a number** which corresponds to the order at which the objects were detected.
 
 This new parameter we set to extract and save detected objects as an image will make the function to return 2 values. The first is the array of dictionaries with each dictionary corresponding to a detected object. The second is an array of the paths to the saved images of each object detected and extracted, and they are arranged in order at which the objects are in the first array.
 
 
 **And one important feature you need to know!** You will recall that the percentage probability
-   for each detected object is sent back by the `detectObjectsFromImage()` function. The function has a parameter `minimum_percentage_probability`, whose default value is `50` (value ranges between 0 - 100) , but it set to 30 in this example. That means the function will only return a detected object if it's percentage probability is **30 or above**. The value was kept at this number to ensure the integrity of the detection results. You fine-tune the object detection by setting **minimum_percentage_probability** equal to a smaller value to detect more number of objects or higher value to detect less number of objects.
+   for each detected object is sent back by the `detectObjectsFromImage()` function. The function has a parameter `minimum_percentage_probability`, whose default value is `50` (value ranges between 0 - 100), but it set to 30 in this example. That means the function will only return a detected object if it's percentage probability is **30 or above**. The value was kept at this number to ensure the integrity of the detection results. You fine-tune the object detection by setting **minimum_percentage_probability** equal to a smaller value to detect more number of objects or higher value to detect less number of objects.
 
 
 ## Custom Object Detection
@@ -197,7 +197,7 @@ dining table,   toilet,   tv,   laptop,   mouse,   remote,   keyboard,   cell ph
 toaster,   sink,   refrigerator,   book,   clock,   vase,   scissors,   teddy bear,   hair dryer,   toothbrush.
 ```
 
-Interestingly, **ImageAI** allow you to perform detection for one or more of the items above. That means you can
+Interestingly, **ImageAI** allows you to perform detection for one or more of the items above. That means you can
  customize the type of object(s) you want to be detected in the image. Let's take a look at the code below:
 
 ```python
@@ -239,13 +239,13 @@ which is the function that allows us to perform detection of custom objects. The
 ## Hiding/Showing Object Name and Probability
 <div id="hidingdetails"></div>
 
-**ImageAI** provides options to hide the name of objects detected and/or the percentage probability from being shown on the saved/returned detected image. Using the `detectObjectsFromImage()` and `detectCustomObjectsFromImage()` functions, the parameters `display_object_name` and `display_percentage_probability`  can be set to True of False individually. Take a look at the code below:
+**ImageAI** provides options to hide the name of objects detected and/or the percentage probability from being shown on the saved/returned detected image. Using the `detectObjectsFromImage()` and `detectCustomObjectsFromImage()` functions, the parameters `display_object_name` and `display_percentage_probability`  can be set to True or False individually. Take a look at the code below:
 
 ```python
 detections = detector.detectObjectsFromImage(input_image=os.path.join(execution_path , "image3.jpg"), output_image_path=os.path.join(execution_path , "image3new_nodetails.jpg"), minimum_percentage_probability=30, display_percentage_probability=False, display_object_name=False)
 ```
 
-In the above code, we specified that both the object name and percentage probability should not be shown. As you can see in the result below, both the names of the objects and their individual percentage probability is not shown in the detected image.
+In the above code, we specified that both the object name and percentage probability should not be shown. As you can see in the result below, both the names of the objects and their individual percentage probability are not shown in the detected image.
 
 ![Result](../../data-images/nodetails.jpg)
 
@@ -253,8 +253,8 @@ In the above code, we specified that both the object name and percentage probabi
 ## Image Input & Output Types
 <div id="inputoutputtype"></div>
 
-**ImageAI** supports 3 types of inputs which are **file path to image file**(default), **numpy array of image** and **image file stream**
-as well as 2 types of output which are image **file**(default) and numpy  **array **.
+**ImageAI** supports 3 types of inputs which are **file path to image file** (default), **numpy array of image** and **image file stream**
+as well as 2 types of output which are image **file** (default) and numpy  **array**.
 This means you can now perform object detection in production applications such as on a web server and system
  that returns file in any of the above stated formats.
 
