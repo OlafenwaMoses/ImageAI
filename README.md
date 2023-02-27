@@ -70,7 +70,7 @@ To install ImageAI, run the python installation instruction below in the command
     ```
     pip install -r requirements_gpu.txt
     ```
-    or smiply copy and run the command below
+    or simply copy and run the command below
     ```
     pip install cython pillow>=7.0.0 numpy>=1.18.1 opencv-python>=4.1.2 torch>=1.9.0 --extra-index-url https://download.pytorch.org/whl/cu102 torchvision>=0.10.0 --extra-index-url https://download.pytorch.org/whl/cu102 pytest==7.1.3 tqdm==4.64.1 scipy>=1.7.3 matplotlib>=3.4.3 mock==4.0.3
     ```
@@ -181,7 +181,7 @@ To install ImageAI, run the python installation instruction below in the command
   </tr>
   <tr>
     <td><img src="data-images/holo2-detected.jpg">
-    <h4>ImageAI now provides classes and methods for you detect and recognize your own custom objects in images using your own model trained with the DetectionModelTrainer class. You can use your custom trained YOLOv3 or TinyYOLOv3 model and the **.json** file generated during the training. Click the link below to see the guide to sample training codes, explanations, and best practices guide.</h4>
+    <h4>ImageAI now provides classes and methods for you to detect and recognize your own custom objects in images using your own model trained with the DetectionModelTrainer class. You can use your custom trained YOLOv3 or TinyYOLOv3 model and the **.json** file generated during the training. Click the link below to see the guide to sample training codes, explanations, and best practices guide.</h4>
     <a href="imageai/Detection/Custom/CUSTOMDETECTION.md"> >>> Get Started</a>
     </td>
   </tr>
@@ -195,7 +195,7 @@ To install ImageAI, run the python installation instruction below in the command
   <tr>
     <td>
         <img src="data-images/customvideodetection.gif">
-        <h4>ImageAI now provides classes and methods for you detect and recognize your own custom objects in images using your own model trained with the DetectionModelTrainer class. You can use your custom trained YOLOv3 or TinyYOLOv3 model and the **.json** file generated during the training. Click the link below to see the guide to sample training codes, explanations, and best practices guide.</h4>
+        <h4>ImageAI now provides classes and methods for you to detect and recognize your own custom objects in images using your own model trained with the DetectionModelTrainer class. You can use your custom trained YOLOv3 or TinyYOLOv3 model and the **.json** file generated during the training. Click the link below to see the guide to sample training codes, explanations, and best practices guide.</h4>
     <a href="imageai/Detection/Custom/CUSTOMVIDEODETECTION.md"> >>> Get Started</a>
     </td>
   </tr>
@@ -218,7 +218,7 @@ We have provided full documentation for all **ImageAI** classes and functions. V
 
 **ImageAI** provides abstracted and convenient implementations of state-of-the-art Computer Vision technologies. All of **ImageAI** implementations and code can work on any computer system with moderate CPU capacity. However, the speed of processing for operations like image prediction, object detection and others on CPU is slow and not suitable for real-time applications. To perform real-time Computer Vision operations with high performance, you need to use GPU enabled technologies.
 
-**ImageAI** uses the PyTorch backbone for it's Computer Vision operations. PyTorch supports both CPUs and GPUs ( Specifically NVIDIA GPUs.  You can get one for your PC or get a PC that has one) for machine learning and artificial intelligence algorithms' implementations.
+**ImageAI** uses the PyTorch backbone for it's Computer Vision operations. PyTorch supports both CPUs and GPUs (Specifically NVIDIA GPUs.  You can get one for your PC or get a PC that has one.) for machine learning and artificial intelligence algorithms' implementations.
 
 
 
@@ -232,7 +232,7 @@ We have provided full documentation for all **ImageAI** classes and functions. V
 
 For anyone interested in building AI systems and using them for business, economic,  social and research purposes, it is critical that the person knows the likely positive, negative and unprecedented impacts the use of such technologies will have.
 They must also be aware of approaches and practices recommended by experienced industry experts to ensure every use of AI brings overall benefit to mankind.
-We therefore recommend to everyone that wishes to use ImageAI and other AI tools and resources to read Microsoft's January 2018 publication on AI titled "The Future Computed : Artificial Intelligence and its role in society".
+We therefore recommend to everyone that wishes to use ImageAI and other AI tools and resources to read Microsoft's January 2018 publication on AI titled "The Future Computed : Artificial Intelligence and its role in society."
 Kindly follow the link below to download the publication.
 
 [https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society](https://blogs.microsoft.com/blog/2018/01/17/future-computed-artificial-intelligence-role-society/)
