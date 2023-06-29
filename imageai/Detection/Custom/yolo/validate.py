@@ -112,5 +112,5 @@ def run(model, val_dataloader, num_class, net_dim=416, nms_thresh=0.6, objectnes
         ap50, ap = ap[:, 0], ap.mean(1)  # AP@0.5, AP@0.5:0.95
         mp, mr, map50, map = p.mean(), r.mean(), ap50.mean(), ap.mean()
 
-    return mp, mr, map50, map
+    return mp, mr, map50, map, ap_class
 
