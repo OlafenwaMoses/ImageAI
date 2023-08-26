@@ -10,8 +10,18 @@ An open-source python library built to empower developers to build applications 
  
  
 ## ---------------------------------------------------
-## ImageAI now uses **PyTorch** backend.
-As from ImageAI `3.0.2`, the library now uses PyTorch as the backend. For full details on this and if you plan on using existing Tensorflow pretrained models, custom models and Pascal VOC dataset, visit the [BACKEND_MIGRATION.md](BACKEND_MIGRATION.md) documentation.
+## Introducing TheiaEngine.
+We the creators of ImageAI are glad to announce [TheiaEngine](https://www.genxr.co/theia-engine), the next-generation computer Vision AI API capable of all computer vision tasks in a single API call and available via REST API to all programming languages. Features include
+- Detect 300+ objects ( 220 more objects than ImageAI)
+- Provide answers to any content or context questions asked on an image
+  - very useful to get information on any object, action or information without needing to train a new custom model for every tasks
+-  Generate scene description and summary
+-  Convert 2D image to 3D pointcloud and triangular mesh
+-  Semantic Scene mapping of objects, walls, floors, etc
+-  Stateless Face recognition and emotion detection
+-  Image generation and augmentation from prompt.
+
+Visit [https://www.genxr.co/theia-engine](https://www.genxr.co/theia-engine) to try the demo and join in the beta testing today.
 ## ---------------------------------------------------
  
 ![](logo1.png)
