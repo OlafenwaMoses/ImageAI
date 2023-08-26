@@ -11,6 +11,9 @@ An open-source python library built to empower developers to build applications 
  
 ## ---------------------------------------------------
 ## Introducing TheiaEngine.
+
+![](https://raw.githubusercontent.com/Gen-XR/TheiaEngine/main/logo.png)
+
 We the creators of ImageAI are glad to announce [TheiaEngine](https://www.genxr.co/theia-engine), the next-generation computer Vision AI API capable of all computer vision tasks in a single API call and available via REST API to all programming languages. Features include
 - Detect 300+ objects ( 220 more objects than ImageAI)
 - Provide answers to any content or context questions asked on an image
