@@ -51,7 +51,6 @@ def convert_annotation(input_ann_path):
         )
 
     return ann_list
-        # output_ann_path.write(str(cls_id) + " " + " ".join([str(a) for a in bb]) + '\n')
 
 
 def main(dataset_dir: str):
@@ -143,30 +142,6 @@ def main(dataset_dir: str):
             classes_writer.write("\n".join(all_classes))
     
 
-
-            
-        
-        
-
-            
-
-
-# for dir_path in dirs:
-#     full_dir_path = cwd + '/' + dir_path
-#     output_path = full_dir_path +'/yolo/'
-
-#     if not os.path.exists(output_path):
-#         os.makedirs(output_path)
-
-#     image_paths = getImagesInDir(full_dir_path)
-#     list_file = open(full_dir_path + '.txt', 'w')
-
-#     for image_path in image_paths:
-#         list_file.write(image_path + '\n')
-#         convert_annotation(full_dir_path, output_path, image_path)
-#     list_file.close()
-
-#     print("Finished processing: " + dir_path)
 
 if __name__ == "__main__":
 
