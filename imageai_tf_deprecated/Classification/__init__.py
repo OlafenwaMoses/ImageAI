@@ -113,7 +113,7 @@ class ImageClassification:
                 try:
                     None
                 except:
-                    raise ValueError("An error occured. Ensure your model file is a MobileNetV2 Model and is located in the path {}".format(self.modelPath))
+                    raise ValueError("An error occurred. Ensure your model file is a MobileNetV2 Model and is located in the path {}".format(self.modelPath))
 
             elif(self.__modelType == "resnet50"):
                 try:
@@ -122,7 +122,7 @@ class ImageClassification:
                     self.__model_collection.append(model)
                     self.__modelLoaded = True
                 except Exception as e:
-                    raise ValueError("An error occured. Ensure your model file is a ResNet50 Model and is located in the path {}".format(self.modelPath))
+                    raise ValueError("An error occurred. Ensure your model file is a ResNet50 Model and is located in the path {}".format(self.modelPath))
 
             elif (self.__modelType == "densenet121"):
                 try:
@@ -131,7 +131,7 @@ class ImageClassification:
                     self.__model_collection.append(model)
                     self.__modelLoaded = True
                 except:
-                    raise ValueError("An error occured. Ensure your model file is a DenseNet121 Model and is located in the path {}".format(self.modelPath))
+                    raise ValueError("An error occurred. Ensure your model file is a DenseNet121 Model and is located in the path {}".format(self.modelPath))
 
             elif (self.__modelType == "inceptionv3"):
                 try:
@@ -140,7 +140,7 @@ class ImageClassification:
                     self.__model_collection.append(model)
                     self.__modelLoaded = True
                 except:
-                    raise ValueError("An error occured. Ensure your model file is in {}".format(self.modelPath))
+                    raise ValueError("An error occurred. Ensure your model file is in {}".format(self.modelPath))
 
 
     def classifyImage(self, image_input, result_count=5, input_type="file"):
@@ -222,7 +222,7 @@ class ImageClassification:
                         classification_results.append(str(result[1]))
                         classification_probabilities.append(result[2] * 100)
             except:
-                raise ValueError("An error occured! Try again.")
+                raise ValueError("An error occurred! Try again.")
 
             return classification_results, classification_probabilities
                 

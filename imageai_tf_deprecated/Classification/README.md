@@ -209,7 +209,7 @@ predictions, probabilities = prediction.classifyImage(image_stream, result_count
 ### Prediction in MultiThreading
 <div id="threadprediction"></div>
 
-When developing programs that run heavy task on the deafult thread like User Interfaces (UI),
+When developing programs that run heavy task on the default thread like User Interfaces (UI),
  you should consider running your predictions in a new thread. When running image prediction using ImageAI in
  a new thread, you must take note the following:
 - You can create your prediction object, set its model type, set model path and json path
