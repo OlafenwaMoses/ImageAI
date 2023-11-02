@@ -107,7 +107,7 @@ trainer.setTrainConfig(object_names_array=["hololens"], batch_size=4, num_experi
 
 In the line above, we configured our detection model trainer. The parameters we stated in the function as as below:  
 
-- **num_objects** : this is an array containing the names of the objects in our dataset
+- **object_names_array** : this is an array containing the names of the objects in our dataset
 - **batch_size** : this is to state the batch size for the training
 - **num_experiments** : this is to state the number of times the network will train over all the training images,
  which is also called epochs 
