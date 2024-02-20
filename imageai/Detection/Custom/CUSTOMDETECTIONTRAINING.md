@@ -1,11 +1,23 @@
 # ImageAI : Custom Detection Model Training 
 
 ## ---------------------------------------------------
-## Introducing TheiaEngine.
+## Introducing Jarvis and TheiaEngine.
 
-![](https://raw.githubusercontent.com/Gen-XR/TheiaEngine/main/logo.png)
+We the creators of ImageAI are glad to announce 2 new AI projects to provide state-of-the-art Generative AI, LLM and Image Understanding on your personal computer and servers. 
 
-We the creators of ImageAI are glad to announce [TheiaEngine](https://www.genxr.co/theia-engine), the next-generation computer Vision AI API capable of all computer vision tasks in a single API call and available via REST API to all programming languages. Features include
+
+![](../../../jarvis.png)
+
+Install Jarvis on PC/Mac to setup limitless access to LLM powered AI Chats for your every day work, research and generative AI needs with 100% privacy and full offline capability.
+
+
+Visit [https://jarvis.genxr.co](https://jarvis.genxr.co/) to get started.
+
+
+![](../../../theiaengine.png)
+
+
+[TheiaEngine](https://www.genxr.co/theia-engine), the next-generation computer Vision AI API capable of all Generative and Understanding computer vision tasks in a single API call and available via REST API to all programming languages. Features include
 - **Detect 300+ objects** ( 220 more objects than ImageAI)
 - **Provide answers to any content or context questions** asked on an image
   - very useful to get information on any object, action or information without needing to train a new custom model for every tasks
