@@ -7,7 +7,7 @@
 We the creators of ImageAI are glad to announce 2 new AI projects to provide state-of-the-art Generative AI, LLM and Image Understanding on your personal computer and servers. 
 
 
-![](../../jarvis.png)
+[![](../../jarvis.png)](https://jarvis.genxr.co)
 
 Install Jarvis on PC/Mac to setup limitless access to LLM powered AI Chats for your every day work, research and generative AI needs with 100% privacy and full offline capability.
 
@@ -15,7 +15,7 @@ Install Jarvis on PC/Mac to setup limitless access to LLM powered AI Chats for y
 Visit [https://jarvis.genxr.co](https://jarvis.genxr.co/) to get started.
 
 
-![](../../theiaengine.png)
+[![](../../theiaengine.png)](https://www.genxr.co/theia-engine)
 
 
 [TheiaEngine](https://www.genxr.co/theia-engine), the next-generation computer Vision AI API capable of all Generative and Understanding computer vision tasks in a single API call and available via REST API to all programming languages. Features include
