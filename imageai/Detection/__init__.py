@@ -78,7 +78,7 @@ class ObjectDetection:
         return unique_classes
 
     def __load_image_yolo(self, input_image : Union[str, np.ndarray, Image.Image]) -> Tuple[List[str], List[np.ndarray], torch.Tensor, torch.Tensor]:
-        allowed_exts = ["jpg", "jpeg", "png"]
+        allowed_exts = ["jpg", "jpeg", "png", "webp", "tiff", "bmp"]
         fnames = []
         original_dims = []
         inputs = []
