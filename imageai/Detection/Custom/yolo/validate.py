@@ -56,6 +56,8 @@ def run(model, val_dataloader, num_class, net_dim=416, nms_thresh=0.6, objectnes
     iouv = torch.linspace(0.5, 0.95, 10).to(device)  # iou vector for mAP@0.5:0.95
     niou = iouv.numel()
 
+    torch.cuda.empty_cache()
+
     p, r, f1, mp, mr, map50, map = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     stats, ap, ap_class = [], [], []
  
