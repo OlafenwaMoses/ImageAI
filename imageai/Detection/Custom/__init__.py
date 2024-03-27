@@ -218,6 +218,8 @@ class DetectionModelTrainer:
         os.makedirs(self.__output_models_dir, exist_ok=True)
         os.makedirs(self.__output_json_dir, exist_ok=True)
 
+        torch.cuda.empty_cache()
+
         mp, mr, map50, map50_95, best_fitness = 0, 0, 0, 0, 0.0
         nbs = 64 # norminal batch size
         nb = len(self.__train_loader) # number of batches
