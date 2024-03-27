@@ -58,10 +58,10 @@ def run(model, val_dataloader, num_class, net_dim=416, nms_thresh=0.6, objectnes
 
     torch.cuda.empty_cache()
 
-    p, r, f1, mp, mr, map50, map = 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-    stats, ap, ap_class = [], [], []
+    mp, mr, map50, map = 0.0, 0.0, 0.0, 0.0
+    stats, ap = [], []
  
-    for batch_i, (im, targets) in tqdm(enumerate(val_dataloader)):
+    for im, targets in tqdm(val_dataloader):
         im = im.to(device)
         targets = targets.to(device)
         nb = im.shape[0]  # batch
@@ -110,7 +110,7 @@ def run(model, val_dataloader, num_class, net_dim=416, nms_thresh=0.6, objectnes
     # Compute metrics
     stats = [np.concatenate(x, 0) for x in zip(*stats)]  # to numpy
     if len(stats) and stats[0].any():
-        p, r, ap, f1, ap_class = ap_per_class(*stats)
+        p, r, ap, _, _ = ap_per_class(*stats)
         ap50, ap = ap[:, 0], ap.mean(1)  # AP@0.5, AP@0.5:0.95
         mp, mr, map50, map = p.mean(), r.mean(), ap50.mean(), ap.mean()
 
