@@ -15,7 +15,7 @@ In December 2022, ImageAI `3.0.2` was released which effected the change from Te
 To use Tensorflow backend, do the following
 
 - Install Python 3.7
-- Install Tensorflow 
+- Install Tensorflow
   - CPU: `pip install tensorflow==2.4.0`
   - GPU: `pip install tensorflow-gpu==2.4.0`
 - Install other dependencies: `pip install keras==2.4.3 numpy==1.19.3 pillow==7.0.0 scipy==1.4.1 h5py==2.10.0 matplotlib==3.3.2 opencv-python keras-resnet==0.2.0`
@@ -27,7 +27,7 @@ To use Tensorflow backend, do the following
 
 
 # Convert Pascal VOC dataset to YOLO format
-Because ImageAI now uses `YOLO format` for training custom object detection models; should you need to train a new model with the new ImageAI version, you will need to convert your `Pascal VOC` datasets to YOLO format by doing the following 
+Because ImageAI now uses `YOLO format` for training custom object detection models; should you need to train a new model with the new ImageAI version, you will need to convert your `Pascal VOC` datasets to YOLO format by doing the following
 - Run the command below
     ```
     python scripts/pascal_voc_to_yolo.py --dataset_dir <path_to_your_dataset_folder>

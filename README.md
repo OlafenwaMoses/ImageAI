@@ -5,14 +5,14 @@
 [![Build Status](https://travis-ci.com/OlafenwaMoses/ImageAI.svg?branch=master)](https://travis-ci.com/OlafenwaMoses/ImageAI)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/OlafenwaMoses/ImageAI/blob/master/LICENSE) [![PyPI version](https://badge.fury.io/py/imageai.svg)](https://badge.fury.io/py/imageai)   [![Downloads](https://pepy.tech/badge/imageai/month)](https://pepy.tech/project/imageai) [![Downloads](https://pepy.tech/badge/imageai/week)](https://pepy.tech/project/imageai)
 
 An open-source python library built to empower developers to build applications and systems with self-contained Deep Learning and Computer Vision capabilities using simple and few lines of code.
- 
+
  If you will like to sponsor this project, kindly visit the <strong>[Github sponsor page](https://github.com/sponsors/OlafenwaMoses)</strong>.
- 
- 
+
+
 ## ---------------------------------------------------
 ## Introducing Jarvis and TheiaEngine.
 
-We the creators of ImageAI are glad to announce 2 new AI projects to provide state-of-the-art Generative AI, LLM and Image Understanding on your personal computer and servers. 
+We the creators of ImageAI are glad to announce 2 new AI projects to provide state-of-the-art Generative AI, LLM and Image Understanding on your personal computer and servers.
 
 
 [![](jarvis.png)](https://jarvis.genxr.co)
@@ -39,18 +39,18 @@ Visit [https://jarvis.genxr.co](https://jarvis.genxr.co/) to get started.
 
 Visit [https://www.genxr.co/theia-engine](https://www.genxr.co/theia-engine) to try the demo and join in the beta testing today.
 ## ---------------------------------------------------
- 
+
 ![](logo1.png)
 
 Developed and maintained by [Moses Olafenwa](https://twitter.com/OlafenwaMoses)
 
 ---
 
-Built with simplicity in mind, **ImageAI** 
+Built with simplicity in mind, **ImageAI**
     supports a list of state-of-the-art Machine Learning algorithms for image prediction, custom image prediction, object detection, video detection, video object tracking
-    and image predictions trainings. **ImageAI** currently supports image prediction and training using 4 different Machine Learning algorithms 
-    trained on the ImageNet-1000 dataset. **ImageAI** also supports object detection, video detection and object tracking  using RetinaNet, YOLOv3 and TinyYOLOv3 trained on COCO dataset. Finally, **ImageAI** allows you to train custom models for performing detection and recognition of new objects. 
-   
+    and image predictions trainings. **ImageAI** currently supports image prediction and training using 4 different Machine Learning algorithms
+    trained on the ImageNet-1000 dataset. **ImageAI** also supports object detection, video detection and object tracking  using RetinaNet, YOLOv3 and TinyYOLOv3 trained on COCO dataset. Finally, **ImageAI** allows you to train custom models for performing detection and recognition of new objects.
+
 Eventually, **ImageAI** will provide support for a wider and more specialized aspects of Computer Vision
 
 
@@ -77,7 +77,7 @@ What's new:
 
 ## Installation
 <div id="installation"></div>
- 
+
 To install ImageAI, run the python installation instruction below in the command line:
 
 - [Download and Install](https://www.python.org/downloads/) **Python 3.7**, **Python 3.8**, **Python 3.9** or **Python 3.10**
@@ -101,7 +101,7 @@ To install ImageAI, run the python installation instruction below in the command
     pip install cython pillow>=7.0.0 numpy>=1.18.1 opencv-python>=4.1.2 torch>=1.9.0 --extra-index-url https://download.pytorch.org/whl/cu102 torchvision>=0.10.0 --extra-index-url https://download.pytorch.org/whl/cu102 pytest==7.1.3 tqdm==4.64.1 scipy>=1.7.3 matplotlib>=3.4.3 mock==4.0.3
     ```
 - If you plan to train custom AI models, download [requirements_extra.txt](https://github.com/OlafenwaMoses/ImageAI/blob/master/requirements_extra.txt) file and install via the command
-  
+
   ```
   pip install -r requirements_extra.txt
   ```
@@ -127,7 +127,7 @@ To install ImageAI, run the python installation instruction below in the command
     <a href="imageai/Classification"> >>> Get Started</a>
     </td>
   </tr>
-  
+
  </table>
 
  <div id="features"></div>
@@ -142,7 +142,7 @@ To install ImageAI, run the python installation instruction below in the command
     <a href="imageai/Detection"> >>> Get Started</a>
     </td>
   </tr>
-  
+
  </table>
 
 
@@ -156,7 +156,7 @@ To install ImageAI, run the python installation instruction below in the command
     <a href="imageai/Detection/VIDEO.md"> >>> Get Started</a>
     </td>
   </tr>
-  
+
  </table>
 
 
@@ -171,7 +171,7 @@ To install ImageAI, run the python installation instruction below in the command
     <a href="imageai/Classification/CUSTOMTRAINING.md"> >>> Get Started</a>
     </td>
   </tr>
-  
+
  </table>
 
  <table>
@@ -184,7 +184,7 @@ To install ImageAI, run the python installation instruction below in the command
     <a href="imageai/Classification/CUSTOMCLASSIFICATION.md"> >>> Get Started</a>
     </td>
   </tr>
-  
+
  </table>
 
  <table>
@@ -198,7 +198,7 @@ To install ImageAI, run the python installation instruction below in the command
     <a href="imageai/Detection/Custom/CUSTOMDETECTIONTRAINING.md"> >>> Get Started</a>
     </td>
   </tr>
-  
+
  </table>
 
 <table>
@@ -282,8 +282,8 @@ Kindly follow the link below to download the publication.
 ### Citation
 <div id="citation"></div>
 
-You can cite **ImageAI** in your projects and research papers via the **BibTeX** entry below.  
-  
+You can cite **ImageAI** in your projects and research papers via the **BibTeX** entry below.
+
 ```
 @misc {ImageAI,
     author = "Moses",
